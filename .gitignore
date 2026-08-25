@@ -10,7 +10,8 @@ logs/*.log
 
 # Python caches
 __pycache__/
-*.py[cod]
+*.pyc
+*.pyo
 
 # Editor and OS files
 .vscode/
@@ -22,4 +23,3 @@ Desktop.ini
 *.o
 *.obj
 *.mod
-
