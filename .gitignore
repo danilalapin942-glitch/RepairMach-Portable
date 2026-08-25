@@ -1,0 +1,25 @@
+# Runtime output
+logs/*.log
+*.tmp
+*.bak
+
+# Generated aerodynamic results
+**/05_machline_results/**/*.vtk
+**/05_machline_results/**/*.vtp
+**/05_machline_results/**/*.csv
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Editor and OS files
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+
+# Build products not required by the portable runtime
+*.o
+*.obj
+*.mod
+

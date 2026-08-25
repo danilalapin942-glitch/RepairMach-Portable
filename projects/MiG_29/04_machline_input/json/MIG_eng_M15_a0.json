@@ -1,0 +1,36 @@
+{
+    "flow": {
+        "freestream_velocity": [
+            100.0,
+            0.0,
+            0.0
+        ],
+        "gamma": 1.4,
+        "freestream_mach_number": 1.5
+    },
+    "geometry": {
+        "file": "D://RepairMach/02_working_meshes/final/MIG_eng_auto.tri",
+        "spanwise_axis": "+y",
+        "wake_model": {
+            "trefftz_distance": 20.0
+        },
+        "reference": {
+            "area": 454.0
+        }
+    },
+  "solver": {
+    "matrix_solver": "FQRUP",
+    "control_point_offset": 1.0e-5
+  },
+    "post_processing": {
+        "pressure_rules": {
+            "isentropic": true
+        }
+    },
+  "output": {
+    "body_file": "D://RepairMach/05_machline_results/vtk/MIG_eng_M15_a0_body.vtk",
+    "wake_file": "D://RepairMach/05_machline_results/vtk/MIG_eng_M15_a0_wake.vtk",
+    "control_point_file": "D://RepairMach/05_machline_results/vtk/MIG_eng_M15_a0_control_points.vtk",
+    "report_file": "D://RepairMach/05_machline_results/reports/MIG_eng_M15_a0_report.json"
+  }
+}

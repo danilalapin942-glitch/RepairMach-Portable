@@ -1,0 +1,80 @@
+{
+    "info" : {
+        "generated_by" : "MachLine (c) 2023 USU Aerolab",
+        "executed" : "Fri Aug 21 00:48:19 2026"
+    },
+    "mesh_info" : {
+        "N_body_panels" : 40236,
+        "N_body_vertices" : 20284,
+        "N_wake_panels" : 330,
+        "average_characteristic_length" : 1.76980547366964E-001,
+        "max_flow_turning_angle" : 1.71942187174450E+002
+    },
+    "solver_results" : {
+        "solver_status_code" : 0,
+        "system_dimension" : 20284,
+        "timing" : {
+            "system_sorting" : 8.20540200000000E-001,
+            "preconditioner" : 1.55062803000000E+001,
+            "matrix_solver" : 5.09344756900000E+002
+        },
+        "iterations" : 999,
+        "system_lower_bandwidth" : 14074,
+        "residual" : {
+            "max" : 2.88726013190256E-002,
+            "norm" : 1.52558111112149E-001
+        }
+    },
+    "pressure_calculations" : {
+        "isentropic_rule" : {
+            "max" : 3.19986275606946E-001,
+            "min" : -6.34920634920635E-001
+        }
+    },
+    "total_forces" : {
+        "Cx" : 1.51472296094896E-004,
+        "Cy" : 1.03015960815628E-006,
+        "Cz" : 3.63686135084895E-005
+    },
+    "total_moments" : {
+        "CMx" : 8.65996254574546E-005,
+        "CMy" : -5.17490165868092E-002,
+        "CMz" : -2.80672633823364E-006
+    },
+    "input" : {
+        "flow" : {
+            "freestream_velocity" : [
+                    1.00000000000000E+002,
+                    0.00000000000000E+000,
+                    0.00000000000000E+000
+                ],
+            "gamma" : 1.40000000000000E+000,
+            "freestream_mach_number" : 1.50000000000000E+000
+        },
+        "geometry" : {
+            "file" : "D://RepairMach/02_working_meshes/final/MIG_fuselage_wing_go_auto.tri",
+            "spanwise_axis" : "+y",
+            "wake_model" : {
+                "trefftz_distance" : 2.00000000000000E+001
+            },
+            "reference" : {
+                "area" : 4.54000000000000E+002
+            }
+        },
+        "solver" : {
+            "matrix_solver" : "GMRES"
+        },
+        "post_processing" : {
+            "pressure_rules" : {
+                "isentropic" : true
+            }
+        },
+        "output" : {
+            "body_file" : "D://RepairMach/05_machline_results/vtk/MIG_fuselage_wing_go_M15_a0_body.vtk",
+            "wake_file" : "D://RepairMach/05_machline_results/vtk/MIG_fuselage_wing_go_M15_a0_wake.vtk",
+            "control_point_file" : "D://RepairMach/05_machline_results/vtk/MIG_fuselage_wing_go_M15_a0_control_points.vtk",
+            "report_file" : "D://RepairMach/05_machline_results/reports/MIG_fuselage_wing_go_M15_a0_report.json"
+        }
+    },
+    "total_runtime" : 1.43860900000000E+003
+}

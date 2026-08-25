@@ -1,0 +1,235 @@
+### main.f90
+
+--- original/main.f90
++++ patched/main.f90
+@@ -156,7 +156,7 @@
+         ! Output slice
+         if (points_file /= 'none' .and. points_output_file /= 'none') then
+             call linear_solver%export_off_body_points(points_file, points_output_file, body_mesh)
+-            if (verbose) write(*,'(a30 a)') "     Off-Body Points: ", points_output_file
++            if (verbose) write(*,'(a30,a)') "     Off-Body Points: ", points_output_file
+         end if
+ 
+     end if
+@@ -172,7 +172,7 @@
+         open(newunit=i_unit, file=report_file, status='REPLACE')
+         call json_print(report_json, i_unit)
+         close(i_unit)
+-        if (verbose) write(*,'(a30 a)') "    Report: ", report_file
++        if (verbose) write(*,'(a30,a)') "    Report: ", report_file
+     end if
+ 
+     ! Destroy pointers
+
+### panel_solver.f90
+
+--- original/panel_solver.f90
++++ patched/panel_solver.f90
+@@ -333,9 +333,9 @@
+         ! Place control points
+         if (verbose) then
+             if (offset_type == 'direct') then
+-                write(*,'(a ES10.4 a)',advance='no') "     Placing control points using a direct offset of ", offset, "..."
++                write(*,'(a,ES10.4,a)',advance='no') "     Placing control points using a direct offset of ", offset, "..."
+             else
+-                write(*,'(a a a ES10.4 a)',advance='no') "     Placing control points using a ", offset_type, &
++                write(*,'(a,a,a,ES10.4,a)',advance='no') "     Placing control points using a ", offset_type, &
+                     " offset ratio of ", offset, "..."
+             end if
+         end if
+@@ -404,7 +404,7 @@
+             call body%place_centroid_control_points(.false., offset)
+ 
+         else if (this%formulation == N_MF_D_IF) then
+-            if (verbose) write(*,'(a a a ES10.4 a)',advance='no') "     Placing control points control points using a ", &
++            if (verbose) write(*,'(a,a,a,ES10.4,a)',advance='no') "     Placing control points control points using a ", &
+                                 offset_type," offset ratio of ", offset, "..."
+             call body%place_internal_vertex_control_points(offset, offset_type, this%freestream)
+         end if
+
+### surface_mesh.f90
+
+--- original/surface_mesh.f90
++++ patched/surface_mesh.f90
+@@ -796,7 +796,7 @@
+ 
+         end do
+ 
+-        if (verbose) write(*,'(a i7 a)') " Done. Found ", this%N_supinc, " superinclined panels."
++        if (verbose) write(*,'(a,i7,a)') " Done. Found ", this%N_supinc, " superinclined panels."
+         
+     end subroutine surface_mesh_init_panels_with_flow
+ 
+@@ -1693,7 +1693,7 @@
+ 
+         real,dimension(:,:),allocatable :: cp_locs
+ 
+-        integer :: i, j, i_panel
++        integer :: i, j, i_panel, iter, max_iter
+         real,dimension(3) :: dir, new_dir, n_avg, disp
+         real :: this_offset
+ 
+@@ -1701,7 +1701,7 @@
+         allocate(cp_locs(3,this%N_verts))
+ 
+         ! Loop through vertices
+-        !$OMP parallel do private(j, i_panel, dir, new_dir, n_avg, this_offset, disp) &
++        !$OMP parallel do private(j, i_panel, dir, new_dir, n_avg, this_offset, disp, iter, max_iter) &
+         !$OMP & schedule(dynamic) shared(this, offset, freestream, offset_type)
+         do i=1,this%N_verts
+ 
+@@ -1732,8 +1732,30 @@
+             ! Initialize control point
+             cp_locs(:,i) = this%vertices(i)%loc + this_offset*dir
+ 
++            iter = 0
++            max_iter = 200
++
+             ! Check if the control point is outside the mesh
+             get_back_in_loop: do while (this%control_point_outside_mesh(cp_locs(:,i), i))
++
++                iter = iter + 1
++
++                if (iter > max_iter) then
++                    write(*,*)
++                    write(*,*) "!!! Control point placement loop failed."
++                    write(*,*) "!!! Vertex =", i
++                    write(*,*) "!!! Vertex loc =", this%vertices(i)%loc
++                    write(*,*) "!!! Offset =", this_offset
++                    write(*,*) "!!! Current cp =", cp_locs(:,i)
++                    write(*,*) "!!! Direction =", dir
++                    write(*,*) "!!! Number of adjacent panels =", this%vertices(i)%panels%len()
++                    write(*,*) "!!! Adjacent panels:"
++                    do j = 1, this%vertices(i)%panels%len()
++                        call this%vertices(i)%panels%get(j, i_panel)
++                        write(*,*) "panel =", i_panel
++                    end do
++                    stop
++                end if
+ 
+                 ! Loop through neighboring panels to find ones the control point is outside
+                 n_avg = 0.
+@@ -2514,13 +2536,13 @@
+         ! Write out data for body
+         if (body_file /= 'none') then
+             call this%write_body(body_file, solved=.true.)
+-            if (verbose) write(*,'(a30 a)') "    Surface: ", body_file
++            if (verbose) write(*,'(a30,a)') "    Surface: ", body_file
+         end if
+ 
+         ! Write out data for mirrored body
+         if (mirrored_body_file /= 'none' .and. this%asym_flow) then
+             call this%write_body_mirror(mirrored_body_file, solved=.true.)
+-            if (verbose) write(*,'(a30 a)') "    Mirrored surface: ", mirrored_body_file
++            if (verbose) write(*,'(a30,a)') "    Mirrored surface: ", mirrored_body_file
+         end if
+         
+         ! Write out data for wake
+@@ -2528,9 +2550,9 @@
+             call this%wake%write_strips(wake_file, wake_exported, this%mu)
+ 
+             if (wake_exported) then
+-                if (verbose) write(*,'(a30 a)') "    Wake: ", wake_file
++                if (verbose) write(*,'(a30,a)') "    Wake: ", wake_file
+             else
+-                if (verbose) write(*,'(a30 a)') "    Wake: ", "no wake to export"
++                if (verbose) write(*,'(a30,a)') "    Wake: ", "no wake to export"
+             end if
+         end if
+         
+@@ -2538,7 +2560,7 @@
+         if (control_point_file /= 'none') then
+             call this%write_control_points(control_point_file, solved=.true.)
+ 
+-            if (verbose) write(*,'(a30 a)') "    Control points: ", control_point_file
++            if (verbose) write(*,'(a30,a)') "    Control points: ", control_point_file
+         end if
+         
+     end subroutine surface_mesh_output_results
+
+### vtk.f90
+
+--- original/vtk.f90
++++ patched/vtk.f90
+@@ -89,7 +89,7 @@
+         ! Write vertex information
+         N_verts = size(vertices)
+         write(this%unit,'(a)') "DATASET POLYDATA"
+-        write(this%unit,'(a i20 a)') "POINTS", N_verts, " float"
++        write(this%unit,'(a,i20,a)') "POINTS", N_verts, " float"
+ 
+         ! Write out vertices
+         do i=1,N_verts
+@@ -119,7 +119,7 @@
+         ! Write vertex information
+         N_verts = size(vertices)/3
+         write(this%unit,'(a)') "DATASET POLYDATA"
+-        write(this%unit,'(a i20 a)') "POINTS", N_verts, " float"
++        write(this%unit,'(a,i20,a)') "POINTS", N_verts, " float"
+ 
+         ! Write out vertices
+         do i=1,N_verts
+@@ -163,7 +163,7 @@
+         ! Write polygon header
+         if (.not. this%panels_already_started) then
+             this%panels_already_started = .true.
+-            write(this%unit,'(a i20 i20)') "POLYGONS", N_panels, N_panels*4
++            write(this%unit,'(a,i20,i20)') "POLYGONS", N_panels, N_panels*4
+         end if
+         
+         ! Write out panels
+@@ -202,11 +202,11 @@
+         integer :: i
+ 
+         ! Write out vertices
+-        write(this%unit,'(a i20 i20)') "VERTICES", N_verts, N_verts*2
++        write(this%unit,'(a,i20,i20)') "VERTICES", N_verts, N_verts*2
+         do i=1,N_verts
+ 
+             ! Index of each vertex
+-            write(this%unit,'(i1 i20)') 1, i-1
++            write(this%unit,'(i1,i20)') 1, i-1
+ 
+         end do
+     
+@@ -222,7 +222,7 @@
+         if (.not. this%point_data_begun) then
+             
+             ! Write out header
+-            write(this%unit,'(a i20)') "POINT_DATA", N_points
++            write(this%unit,'(a,i20)') "POINT_DATA", N_points
+ 
+             ! Set toggle that header has already been written
+             this%point_data_begun = .true.
+@@ -241,7 +241,7 @@
+         if (.not. this%cell_data_begun) then
+             
+             ! Write out header
+-            write(this%unit,'(a i20)') "CELL_DATA", N_cells
++            write(this%unit,'(a,i20)') "CELL_DATA", N_cells
+ 
+             ! Set toggle that header has already been written
+             this%cell_data_begun = .true.
+
+### wake_mesh.f90
+
+--- original/wake_mesh.f90
++++ patched/wake_mesh.f90
+@@ -50,7 +50,7 @@
+         real,intent(in) :: trefftz_dist
+         logical,intent(in) :: body_mirrored
+ 
+-        if (verbose) write(*,'(a ES10.4 a)',advance='no') "     Initializing wake with a Trefftz distance of ", trefftz_dist, "..."
++        if (verbose) write(*,'(a,ES10.4,a)',advance='no') "     Initializing wake with a Trefftz distance of ", trefftz_dist, "..."
+ 
+         ! Set whether the wake will be mirrored
+         this%mirrored = body_mirrored .and. .not. asym_flow
+@@ -60,7 +60,7 @@
+         call this%init_strips(body_edges, body_verts, freestream, asym_flow, mirror_plane, N_panels_streamwise, &
+                               trefftz_dist, initial_panel_order, N_body_panels)
+ 
+-        if (verbose) write(*,'(a i7 a i7 a i7 a)') "Done. Created ", this%N_verts, " wake vertices and ", &
++        if (verbose) write(*,'(a,i7,a,i7,a,i7,a)') "Done. Created ", this%N_verts, " wake vertices and ", &
+                                               this%N_panels, " wake panels distributed between ", &
+                                               this%N_strips, " strips."
+ 

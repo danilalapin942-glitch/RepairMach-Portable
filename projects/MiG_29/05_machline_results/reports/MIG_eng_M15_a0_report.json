@@ -1,0 +1,80 @@
+{
+    "info" : {
+        "generated_by" : "MachLine (c) 2023 USU Aerolab",
+        "executed" : "Sat Aug 22 12:10:50 2026"
+    },
+    "mesh_info" : {
+        "N_body_panels" : 27142,
+        "N_body_vertices" : 13621,
+        "N_wake_panels" : 0,
+        "average_characteristic_length" : 1.36429852809629E-001,
+        "max_flow_turning_angle" : 1.22574468105801E+002
+    },
+    "solver_results" : {
+        "solver_status_code" : 0,
+        "system_dimension" : 13621,
+        "timing" : {
+            "system_sorting" : 3.04368200000000E-001,
+            "preconditioner" : 3.15043475000000E+001,
+            "matrix_solver" : 4.94674633000000E+001
+        },
+        "system_lower_bandwidth" : 142,
+        "residual" : {
+            "max" : 2.14055431886628E-009,
+            "norm" : 2.47890777077441E-009
+        }
+    },
+    "pressure_calculations" : {
+        "isentropic_rule" : {
+            "max" : 3.98894882558948E-001,
+            "min" : -6.34920634920635E-001
+        }
+    },
+    "total_forces" : {
+        "Cx" : 3.37371623718008E-003,
+        "Cy" : -1.68333054867957E-006,
+        "Cz" : 6.89698562044221E-006
+    },
+    "total_moments" : {
+        "CMx" : -1.70012271147360E-002,
+        "CMy" : -8.47124661241254E-001,
+        "CMz" : -8.43777476819568E-003
+    },
+    "input" : {
+        "flow" : {
+            "freestream_velocity" : [
+                    1.00000000000000E+002,
+                    0.00000000000000E+000,
+                    0.00000000000000E+000
+                ],
+            "gamma" : 1.40000000000000E+000,
+            "freestream_mach_number" : 1.50000000000000E+000
+        },
+        "geometry" : {
+            "file" : "D://RepairMach/02_working_meshes/final/MIG_eng_auto.tri",
+            "spanwise_axis" : "+y",
+            "wake_model" : {
+                "trefftz_distance" : 2.00000000000000E+001
+            },
+            "reference" : {
+                "area" : 4.54000000000000E+002
+            }
+        },
+        "solver" : {
+            "matrix_solver" : "FQRUP",
+            "control_point_offset" : 1.00000000000000E-005
+        },
+        "post_processing" : {
+            "pressure_rules" : {
+                "isentropic" : true
+            }
+        },
+        "output" : {
+            "body_file" : "D://RepairMach/05_machline_results/vtk/MIG_eng_M15_a0_body.vtk",
+            "wake_file" : "D://RepairMach/05_machline_results/vtk/MIG_eng_M15_a0_wake.vtk",
+            "control_point_file" : "D://RepairMach/05_machline_results/vtk/MIG_eng_M15_a0_control_points.vtk",
+            "report_file" : "D://RepairMach/05_machline_results/reports/MIG_eng_M15_a0_report.json"
+        }
+    },
+    "total_runtime" : 3.54718000000000E+002
+}

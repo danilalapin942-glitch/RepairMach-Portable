@@ -1,0 +1,33 @@
+{
+  "repairmach_version": "8.0-beta-portable",
+  "portable_mode": true,
+  "machline": {
+    "exe_relative_path": "engines/MachLine/machline.exe",
+    "working_dir_relative_path": "engines/MachLine",
+    "input_method": "stdin",
+    "timeout_seconds": 0
+  },
+  "python": {
+    "preferred": "runtime/python/python.exe",
+    "fallback_to_system": true
+  },
+  "paths": {
+    "projects_root": "projects",
+    "default_project": "MiG_29"
+  },
+  "defaults": {
+    "solver": "GMRES",
+    "mach": 1.5,
+    "alpha_deg": 0.0,
+    "beta_deg": 0.0,
+    "safety_margin": 0.001,
+    "area": 454.0,
+    "longitudinal_length": 16.45663,
+    "lateral_length": 34.23951,
+    "center": [
+      29.0,
+      0.0,
+      0.0
+    ]
+  }
+}
