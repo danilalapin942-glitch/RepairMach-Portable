@@ -1,0 +1,3 @@
+RepairMach 9.1
+Build channel: public beta
+GitHub publication: main

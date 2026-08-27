@@ -1,0 +1,40 @@
+{
+  "project_name": "MiG_29",
+  "reference_status": "working geometry reference; confirm for each new aircraft",
+  "length_unit": "ft",
+  "default_reference": {
+    "area": 409.631374,
+    "longitudinal_length": 12.3614,
+    "lateral_length": 37.270341,
+    "center": [
+      20.46778,
+      0.0,
+      0.0
+    ]
+  },
+  "default_solver": {
+    "formulation": "dirichlet-morino",
+    "matrix_solver": "FQRUP",
+    "control_point_offset": 1e-05
+  },
+  "openvsp_sets": {
+    "fuselage_and_nacelles": {
+      "user_set": 1,
+      "api_index": 4,
+      "vspaero_role": "thick"
+    },
+    "wing_and_empennage": {
+      "user_set": 2,
+      "api_index": 5,
+      "vspaero_role": "thin"
+    }
+  },
+  "repair_policy": {
+    "enabled": true,
+    "baseline_mach": 1.5,
+    "baseline_alpha_deg": 0.0,
+    "max_bad_panels": 100,
+    "max_bad_fraction": 0.005,
+    "require_final_bad_zero": true
+  }
+}

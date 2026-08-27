@@ -1741,6 +1741,29 @@ contains
                 iter = iter + 1
 
                 if (iter > max_iter) then
+                    ! At a concave union edge (for example, a wing/body CFD-mesh
+                    ! intersection), no single direction can lie below every
+                    ! incident panel.  Try the inward normal of each incident
+                    ! panel and accept the first point which the local ray test
+                    ! identifies as interior to the union.
+                    do j = 1, this%vertices(i)%panels%len()
+                        call this%vertices(i)%panels%get(j, i_panel)
+                        new_dir = -this%panels(i_panel)%n_g
+                        if (this%vertices(i)%on_mirror_plane) new_dir(this%mirror_plane) = 0.
+                        if (norm2(new_dir) < 1.e-16) cycle
+                        new_dir = new_dir/norm2(new_dir)
+                        cp_locs(:,i) = this%vertices(i)%loc + this_offset*new_dir
+                        if (.not. this%control_point_outside_mesh(cp_locs(:,i), i)) then
+                            iter = -1
+                            exit
+                        end if
+                    end do
+
+                    if (iter == -1) then
+                        write(*,*) "!!! Used concave-union control-point fallback at vertex", i
+                        exit get_back_in_loop
+                    end if
+
                     write(*,*)
                     write(*,*) "!!! Control point placement loop failed."
                     write(*,*) "!!! Vertex =", i

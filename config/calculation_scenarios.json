@@ -1,0 +1,126 @@
+{
+  "schema": "repairmach.calculation-scenarios/1.0",
+  "catalog_version": "9.1",
+  "component_naming": {
+    "canonical_bases": ["Wing", "Fuselage", "GO", "VO", "Gondola"],
+    "required_exact": ["Wing", "Fuselage"],
+    "set_roles": {
+      "Fuselage": 1,
+      "Gondola": 1,
+      "Wing": 2,
+      "GO": 2,
+      "VO": 2
+    },
+    "additional_component_suffix": "_<suffix>"
+  },
+  "scenarios": [
+    {
+      "id": "geometry_diagnostics",
+      "title": "Диагностика геометрии TRI",
+      "description": "Проверка структуры TRI, нормалей, границ и сверхзвукового критерия.",
+      "availability": "ready",
+      "execution": "tri_diagnostics",
+      "quality_level": "diagnostic",
+      "outputs": ["scan_json", "repair_json", "repaired_tri"]
+    },
+    {
+      "id": "quick_assessment",
+      "title": "Быстрая оценка АДХ",
+      "description": "Три контрольных числа Маха и углы атаки 0–5 градусов.",
+      "availability": "ready",
+      "execution": "vspaero_study",
+      "quality_level": "screening",
+      "tail_incidence": "optional",
+      "vspaero_cases": [
+        {"name": "quick_M0p8", "mach_start": 0.8, "mach_end": 0.8, "mach_points": 1, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6},
+        {"name": "quick_M1p2", "mach_start": 1.2, "mach_end": 1.2, "mach_points": 1, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6},
+        {"name": "quick_M1p7", "mach_start": 1.7, "mach_end": 1.7, "mach_points": 1, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6}
+      ]
+    },
+    {
+      "id": "subsonic_adh",
+      "title": "Дозвуковая АДХ",
+      "description": "M=0,0–0,8 с шагом 0,1; alpha=0–5 градусов с шагом 1 градус.",
+      "availability": "ready",
+      "execution": "vspaero_study",
+      "quality_level": "engineering",
+      "tail_incidence": "optional",
+      "vspaero_cases": [
+        {"name": "subsonic_M0p0_0p8", "mach_start": 0.0, "mach_end": 0.8, "mach_points": 9, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6}
+      ]
+    },
+    {
+      "id": "supersonic_adh",
+      "title": "Сверхзвуковая АДХ",
+      "description": "M=1,1–2,2 с шагом 0,1; alpha=0–5 градусов с шагом 1 градус.",
+      "availability": "ready",
+      "execution": "vspaero_study",
+      "quality_level": "engineering",
+      "tail_incidence": "optional",
+      "vspaero_cases": [
+        {"name": "supersonic_M1p1_2p2", "mach_start": 1.1, "mach_end": 2.2, "mach_points": 12, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6}
+      ]
+    },
+    {
+      "id": "full_adh",
+      "title": "Полная АДХ",
+      "description": "Дозвуковой и сверхзвуковой диапазоны без автоматических точек M=0,9–1,0.",
+      "availability": "ready",
+      "execution": "vspaero_study",
+      "quality_level": "engineering",
+      "tail_incidence": "optional",
+      "vspaero_cases": [
+        {"name": "subsonic_M0p0_0p8", "mach_start": 0.0, "mach_end": 0.8, "mach_points": 9, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6},
+        {"name": "supersonic_M1p1_2p2", "mach_start": 1.1, "mach_end": 2.2, "mach_points": 12, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6}
+      ]
+    },
+    {
+      "id": "fixed_tail_study",
+      "title": "АДХ с заданным углом ГО",
+      "description": "Контрольные M=0,8; 1,2; 1,7 с обязательным заданным углом геометрии GO.",
+      "availability": "ready",
+      "execution": "vspaero_study",
+      "quality_level": "engineering",
+      "tail_incidence": "required",
+      "vspaero_cases": [
+        {"name": "tail_M0p8", "mach_start": 0.8, "mach_end": 0.8, "mach_points": 1, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6},
+        {"name": "tail_M1p2", "mach_start": 1.2, "mach_end": 1.2, "mach_points": 1, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6},
+        {"name": "tail_M1p7", "mach_start": 1.7, "mach_end": 1.7, "mach_points": 1, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6}
+      ]
+    },
+    {
+      "id": "mesh_convergence",
+      "title": "Сеточная сходимость",
+      "description": "Протокол Coarse/Medium/Fine, контрольных режимов, GCI и критериев допуска.",
+      "availability": "protocol",
+      "execution": "mesh_convergence_protocol",
+      "quality_level": "research",
+      "mesh_levels": {"coarse_h": 1.0, "medium_h": 0.7071067811865476, "fine_h": 0.5},
+      "control_points": [
+        {"mach": 0.8, "alpha_deg": 0.0}, {"mach": 0.8, "alpha_deg": 5.0},
+        {"mach": 1.2, "alpha_deg": 0.0}, {"mach": 1.2, "alpha_deg": 3.0},
+        {"mach": 1.6, "alpha_deg": 0.0}, {"mach": 1.6, "alpha_deg": 3.0}
+      ],
+      "limits": {"CL_percent": 2.0, "CL_absolute": 0.005, "CD_percent": 2.0, "CD_absolute": 0.0005, "Cm_percent": 5.0, "Cm_absolute": 0.01}
+    },
+    {
+      "id": "night_high_accuracy",
+      "title": "Ночной точный расчёт",
+      "description": "Протокол полного гибридного расчёта только после сертификации сетки.",
+      "availability": "protocol",
+      "execution": "night_hybrid_protocol",
+      "quality_level": "research",
+      "prerequisites": ["geometry_diagnostics", "mesh_convergence"],
+      "required_solvers": ["MachLine", "VSPAERO", "semiempirical_build_up"]
+    },
+    {
+      "id": "verification",
+      "title": "Верификация по независимым данным",
+      "description": "Протокол сравнения расчёта с книжными, экспериментальными или эталонными данными.",
+      "availability": "protocol",
+      "execution": "verification_protocol",
+      "quality_level": "research",
+      "outputs": ["point_errors", "summary_metrics", "comparison_charts"]
+    }
+  ]
+}

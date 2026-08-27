@@ -1,11 +1,39 @@
 {
-  "repairmach_version": "8.0-beta-portable",
+  "repairmach_version": "9.1",
   "portable_mode": true,
   "machline": {
     "exe_relative_path": "engines/MachLine/machline.exe",
     "working_dir_relative_path": "engines/MachLine",
     "input_method": "stdin",
     "timeout_seconds": 0
+  },
+  "openvsp": {
+    "install_dir": null
+  },
+  "vspaero": {
+    "fuselage_user_set": 1,
+    "wing_user_set": 2,
+    "standard_study": {
+      "subsonic_mach": [0.0, 0.8, 0.1],
+      "supersonic_mach": [1.1, 2.2, 0.1],
+      "alpha_deg": [0.0, 5.0, 1.0],
+      "beta_deg": 0.0
+    },
+    "mach_start": 0.8,
+    "mach_end": 0.8,
+    "mach_points": 1,
+    "alpha_start": 0.0,
+    "alpha_end": 24.0,
+    "alpha_points": 13,
+    "beta_deg": 0.0,
+    "tail_geometry_name": "GO",
+    "ncpu": 4
+  },
+  "parasite_drag": {
+    "mach": 0.8,
+    "altitude_ft": 0.0,
+    "reference_area": 409.631374,
+    "geometry_set": 0
   },
   "python": {
     "preferred": "runtime/python/python.exe",
@@ -16,16 +44,20 @@
     "default_project": "MiG_29"
   },
   "defaults": {
-    "solver": "GMRES",
+    "solver": "FQRUP",
+    "formulation": "dirichlet-morino",
+    "control_point_offset": 1e-05,
+    "trefftz_distance": 80.0,
+    "wake_shedding_angle": 169.0,
     "mach": 1.5,
     "alpha_deg": 0.0,
     "beta_deg": 0.0,
     "safety_margin": 0.001,
-    "area": 454.0,
-    "longitudinal_length": 16.45663,
-    "lateral_length": 34.23951,
+    "area": 409.631374,
+    "longitudinal_length": 12.3614,
+    "lateral_length": 37.270341,
     "center": [
-      29.0,
+      20.46778,
       0.0,
       0.0
     ]

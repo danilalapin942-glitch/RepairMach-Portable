@@ -23,3 +23,5 @@ Desktop.ini
 *.o
 *.obj
 *.mod
+*_experimental.exe
+*.before_*
