@@ -12,6 +12,7 @@ from aero_hybrid import (
     parse_openvsp_results_csv,
     parse_vspaero_polar,
     select_vspaero_point,
+    validate_vspaero_run_outputs,
 )
 from openvsp_runner import generate_parasite_drag_script
 
@@ -48,6 +49,35 @@ class AeroHybridTests(unittest.TestCase):
         self.assertEqual(2, len(rows))
         self.assertAlmostEqual(0.2, select_vspaero_point(rows, 0.8, 2.0)["CLtot"])
 
+    def test_polar_parser_rejects_nonfinite_terminal_point(self):
+        polar = """VSPAERO test
+ Beta Mach AoA CLtot L2Res
+ 0.0 1.5 1.0 nan nan
+"""
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "invalid.polar"
+            path.write_text(polar, encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "ни одной числовой"):
+                parse_vspaero_polar(path)
+
+    def test_polar_parser_ignores_msvc_nan_in_optional_ratio(self):
+        polar = """VSPAERO test
+ Beta Mach AoA CLtot CDtot E
+ 0.0 0.8 0.0 0.0 0.0069 -nan(ind)
+"""
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "msvc_nan.polar"
+            path.write_text(polar, encoding="utf-8")
+            rows = parse_vspaero_polar(path)
+        self.assertEqual(1, len(rows))
+        self.assertNotIn("E", rows[0])
+        self.assertAlmostEqual(0.0069, rows[0]["CDtot"])
+
+    def test_selector_rejects_divergent_residual(self):
+        rows = [{"Mach": 1.5, "AoA": 1.0, "CLtot": 0.04, "L2Res": 9.0}]
+        with self.assertRaisesRegex(ValueError, "контроль невязки"):
+            select_vspaero_point(rows, 1.5, 1.0)
+
     def test_openvsp_component_result_parser(self):
         with TemporaryDirectory() as tmp:
             path = Path(tmp) / "parasite.csv"
@@ -56,6 +86,88 @@ class AeroHybridTests(unittest.TestCase):
         self.assertAlmostEqual(0.00756, result["total_cd"])
         self.assertEqual("Wing", result["components"][0]["label"])
         self.assertAlmostEqual(1.2, result["components"][0]["form_factor"])
+
+    def test_strict_parasite_parser_rejects_empty_result(self):
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "empty.csv"
+            path.write_text(
+                "FC_Mach,0.8\nFC_Sref,100\nNum_Comp,0\nTotal_CD_Total,0\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "ни одного компонента"):
+                parse_openvsp_results_csv(path, strict=True)
+
+    def test_vspaero_output_gate_requires_full_grid_and_finite_residual(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            polar = root / "run.polar"
+            log = root / "run.log"
+            polar.write_text(POLAR, encoding="utf-8")
+            log.write_text(
+                "Solving... Mach: 0.800000 ... Alpha: 0.000000 ... Beta: 0\n"
+                " 8 0.80000 0.00000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.2 0.2 1\n"
+                "Solving... Mach: 0.800000 ... Alpha: 2.000000 ... Beta: 0\n"
+                " 8 0.80000 2.00000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.1 0.3 1\n",
+                encoding="utf-8",
+            )
+            report = validate_vspaero_run_outputs(
+                polar,
+                log,
+                mach_start=0.8,
+                mach_end=0.8,
+                mach_points=1,
+                alpha_start=0.0,
+                alpha_end=2.0,
+                alpha_points=2,
+                max_log10_l2_residual=-1.0,
+            )
+        self.assertTrue(report["valid"])
+        self.assertEqual(2, report["actual_points"])
+
+    def test_vspaero_output_gate_rejects_missing_convergence_record(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            polar = root / "run.polar"
+            log = root / "run.log"
+            polar.write_text(POLAR, encoding="utf-8")
+            log.write_text("REPAIRMACH_COMPUTE_FINISHED\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "конечной невязки"):
+                validate_vspaero_run_outputs(
+                    polar,
+                    log,
+                    mach_start=0.8,
+                    mach_end=0.8,
+                    mach_points=1,
+                    alpha_start=0.0,
+                    alpha_end=2.0,
+                    alpha_points=2,
+                )
+
+    def test_vspaero_output_gate_allows_only_explicit_zero_mach_log_exception(self):
+        polar_text = """VSPAERO test
+ Beta Mach AoA Re/1e6 CLo CLi CLtot CDo CDi CDtot CStot
+ 0.0 0.0 0.0 10.0 0.0 0.10 0.10 0.0 0.012 0.012 0.001
+"""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            polar = root / "run.polar"
+            log = root / "run.log"
+            polar.write_text(polar_text, encoding="utf-8")
+            log.write_text("REPAIRMACH_COMPUTE_FINISHED\n", encoding="utf-8")
+            report = validate_vspaero_run_outputs(
+                polar,
+                log,
+                mach_start=0.0,
+                mach_end=0.0,
+                mach_points=1,
+                alpha_start=0.0,
+                alpha_end=0.0,
+                alpha_points=1,
+                allow_zero_mach_without_logged_residual=True,
+            )
+        self.assertTrue(report["valid"])
+        self.assertEqual("three_grid_only", report["points"][0]["convergence_evidence"])
+        self.assertIsNone(report["points"][0]["L2Res"])
 
     def test_hybrid_build_up_has_no_calibration_offset(self):
         with TemporaryDirectory() as tmp:
@@ -66,7 +178,10 @@ class AeroHybridTests(unittest.TestCase):
             report_path.write_text(
                 json.dumps({
                     "mesh_info": {"N_wake_panels": 0},
-                    "solver_results": {"residual": {"max": 1e-8, "norm": 2e-8}},
+                    "solver_results": {
+                        "solver_status_code": 0,
+                        "residual": {"max": 1e-8, "norm": 2e-8},
+                    },
                     "total_forces": {"Cx": 0.03, "Cy": 0.0, "Cz": 0.10},
                     "input": {
                         "flow": {

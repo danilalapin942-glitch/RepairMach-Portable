@@ -7,10 +7,12 @@ import hashlib
 import json
 from copy import deepcopy
 from datetime import datetime
+import math
 from pathlib import Path
 
 
-READY_EXECUTIONS = {"tri_diagnostics", "vspaero_study"}
+READY_EXECUTIONS = {"tri_diagnostics", "vspaero_study", "geometry_certification"}
+POINT_EXECUTIONS = {"sweep", "independent_alpha", "independent_mach_alpha"}
 PROTOCOL_EXECUTIONS = {
     "mesh_convergence_protocol",
     "night_hybrid_protocol",
@@ -46,6 +48,7 @@ def load_scenario_catalog(path: Path) -> dict:
             )
         if execution == "vspaero_study":
             _validate_vspaero_cases(scenario_id, scenario.get("vspaero_cases"))
+            _validate_tail_policy(scenario_id, scenario)
     return payload
 
 
@@ -69,6 +72,102 @@ def _validate_vspaero_cases(scenario_id: str, cases: object) -> None:
             )
         if int(case["mach_points"]) < 1 or int(case["alpha_points"]) < 1:
             raise ValueError(f"Сценарий {scenario_id}: число точек должно быть положительным")
+        point_execution = case.get("point_execution", "sweep")
+        if point_execution not in POINT_EXECUTIONS:
+            raise ValueError(
+                f"Сценарий {scenario_id}, case {case.get('name')}: "
+                f"неизвестный point_execution {point_execution!r}"
+            )
+
+
+def expand_vspaero_cases(cases: list[dict]) -> list[dict]:
+    """Expand points that must run as independent solver processes.
+
+    A combined VSPAERO alpha sweep may carry an unstable solution from one
+    angle to the next near the lower supersonic boundary.  The
+    ``independent_alpha`` mode preserves the original Mach grid but starts a
+    fresh solver process for every requested angle.  The stricter
+    ``independent_mach_alpha`` mode also isolates every Mach value, preventing
+    a singular point (notably around M=1.4–1.5) from poisoning the remaining
+    series.  Parent metadata remains in every expanded case so the resulting
+    manifests are auditable.
+    """
+    expanded: list[dict] = []
+    for source in cases:
+        case = deepcopy(source)
+        mode = case.get("point_execution", "sweep")
+        if mode == "sweep":
+            case["point_execution"] = mode
+            expanded.append(case)
+            continue
+
+        alpha_points = int(case["alpha_points"])
+        alpha_start = float(case["alpha_start"])
+        alpha_end = float(case["alpha_end"])
+        if alpha_points == 1:
+            alpha_values = [alpha_start]
+        else:
+            alpha_step = (alpha_end - alpha_start) / (alpha_points - 1)
+            alpha_values = [alpha_start + index * alpha_step for index in range(alpha_points)]
+
+        if mode == "independent_mach_alpha":
+            mach_points = int(case["mach_points"])
+            mach_start = float(case["mach_start"])
+            mach_end = float(case["mach_end"])
+            if mach_points == 1:
+                mach_values = [mach_start]
+            else:
+                mach_step = (mach_end - mach_start) / (mach_points - 1)
+                mach_values = [mach_start + index * mach_step for index in range(mach_points)]
+        else:
+            mach_values = [None]
+
+        for mach in mach_values:
+            for alpha in alpha_values:
+                point = deepcopy(case)
+                point["parent_case_name"] = case["name"]
+                mach_token = "" if mach is None else f"_M{_number_token(mach)}"
+                point["name"] = f"{case['name']}{mach_token}_A{_number_token(alpha)}"
+                point["alpha_start"] = alpha
+                point["alpha_end"] = alpha
+                point["alpha_points"] = 1
+                point["requested_alpha_step_deg"] = (
+                    0.0 if alpha_points == 1 else (alpha_end - alpha_start) / (alpha_points - 1)
+                )
+                if mach is not None:
+                    point["mach_start"] = mach
+                    point["mach_end"] = mach
+                    point["mach_points"] = 1
+                    point["requested_mach_step"] = (
+                        0.0 if mach_points == 1 else (mach_end - mach_start) / (mach_points - 1)
+                    )
+                expanded.append(point)
+    return expanded
+
+
+def _number_token(value: float) -> str:
+    text = f"{float(value):.8g}".replace("-", "m").replace(".", "p")
+    return text
+
+
+def _validate_tail_policy(scenario_id: str, scenario: dict) -> None:
+    policy = scenario.get("tail_incidence", "optional")
+    if policy not in {"optional", "required", "fixed"}:
+        raise ValueError(
+            f"Сценарий {scenario_id}: tail_incidence должен быть optional, required или fixed"
+        )
+    if policy != "fixed":
+        return
+    name = scenario.get("tail_geometry_name")
+    angle = scenario.get("tail_incidence_deg")
+    if not isinstance(name, str) or not name.strip():
+        raise ValueError(f"Сценарий {scenario_id}: не задано имя фиксированного ГО")
+    try:
+        finite_angle = math.isfinite(float(angle))
+    except (TypeError, ValueError):
+        finite_angle = False
+    if not finite_angle:
+        raise ValueError(f"Сценарий {scenario_id}: задан некорректный угол ГО")
 
 
 def scenario_by_id(catalog: dict, scenario_id: str) -> dict:
@@ -82,7 +181,12 @@ def component_name_policy(catalog: dict) -> dict:
     return deepcopy(catalog.get("component_naming", {}))
 
 
-def validate_component_names(geometries: list[dict], policy: dict) -> dict:
+def validate_component_names(
+    geometries: list[dict],
+    policy: dict,
+    *,
+    allow_excluded_thick: bool = False,
+) -> dict:
     """Validate canonical OpenVSP names and their Set roles.
 
     Exact base names are used for the primary component. Additional mirrored
@@ -107,16 +211,34 @@ def validate_component_names(geometries: list[dict], policy: dict) -> dict:
             continue
         recognized.append({"name": name, "base": base})
         required_set = roles.get(base)
-        if required_set is not None and not bool(item.get(f"IN_SET_{required_set}", False)):
+        thick_is_intentionally_excluded = allow_excluded_thick and required_set == 1
+        if (
+            required_set is not None
+            and not thick_is_intentionally_excluded
+            and not bool(item.get(f"IN_SET_{required_set}", False))
+        ):
             errors.append(f"{name} должен находиться в Set_{required_set}")
 
     for name in sorted(required - exact_names):
         errors.append(f"Отсутствует обязательная геометрия с точным именем {name}")
 
-    warnings = [
-        f"Имя {name} не соответствует Wing/Fuselage/GO/VO/Gondola[_суффикс]"
-        for name in unknown
-    ]
+    legacy_names = {
+        "WingGeom": "Wing",
+        "FuselageGeom": "Fuselage",
+        "HorizontalTail": "GO",
+        "VerticalTail": "VO",
+        "Nacelle": "Gondola",
+    }
+    warnings = []
+    for name in unknown:
+        if name in legacy_names:
+            warnings.append(
+                f"Устаревшее имя {name}: после ручной проверки используйте {legacy_names[name]}"
+            )
+        else:
+            warnings.append(
+                f"Имя {name} не соответствует Wing/Fuselage/GO/VO/Gondola[_суффикс]"
+            )
     return {
         "valid": not errors,
         "recognized": recognized,

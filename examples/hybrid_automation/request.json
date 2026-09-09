@@ -1,0 +1,10 @@
+{
+  "schema": "repairmach.hybrid-request/1.0",
+  "policy": "../../config/hybrid_method.json",
+  "vspaero_source": "full.polar",
+  "machline_reports_dir": "machline",
+  "machline_report_glob": "*_report.json",
+  "parasite_results_dir": "parasite",
+  "parasite_result_glob": "*.csv",
+  "auto_build_excel": true
+}

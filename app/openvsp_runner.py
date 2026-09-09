@@ -45,23 +45,101 @@ def run_vspscript(
     script: Path,
     log_path: Path,
     working_dir: Path | None = None,
+    timeout_seconds: float | None = None,
 ) -> int:
+    executable = executable.resolve()
+    script = script.resolve()
+    log_path = log_path.resolve()
+    if working_dir is not None:
+        working_dir = working_dir.resolve()
     if not executable.is_file():
         raise FileNotFoundError(f"Не найден vspscript.exe: {executable}")
     if not script.is_file():
         raise FileNotFoundError(f"Не найден сценарий OpenVSP: {script}")
     log_path.parent.mkdir(parents=True, exist_ok=True)
-    process = subprocess.run(
+    if timeout_seconds is not None and timeout_seconds <= 0.0:
+        raise ValueError("Лимит времени vspscript должен быть положительным")
+    baseline_vspaero = _windows_process_ids("vspaero.exe")
+    process = subprocess.Popen(
         [str(executable), "-script", str(script)],
         cwd=str(working_dir or script.parent),
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
         errors="replace",
+        creationflags=getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0),
+    )
+    try:
+        output, _ = process.communicate(timeout=timeout_seconds)
+        return_code = process.returncode
+    except subprocess.TimeoutExpired as exc:
+        partial = exc.output or ""
+        _terminate_exact_process(process.pid)
+        for pid in sorted(_windows_process_ids("vspaero.exe") - baseline_vspaero):
+            _terminate_exact_process(pid)
+        try:
+            output, _ = process.communicate(timeout=15)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            output, _ = process.communicate()
+        output = f"{partial}{output or ''}\nREPAIRMACH_VSPSCRIPT_TIMEOUT={timeout_seconds:g}\n"
+        return_code = 124
+    log_path.write_text(output or "", encoding="utf-8")
+    return int(return_code)
+
+
+def _windows_process_ids(image_name: str) -> set[int]:
+    if os.name != "nt":
+        return set()
+    process_name = Path(image_name).stem
+    if not process_name or any(
+        char not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.-"
+        for char in process_name
+    ):
+        raise ValueError(f"Недопустимое имя процесса: {image_name}")
+    completed = subprocess.run(
+        [
+            "powershell.exe",
+            "-NoProfile",
+            "-Command",
+            (
+                f"Get-Process -Name '{process_name}' -ErrorAction SilentlyContinue "
+                "| ForEach-Object { $_.Id }"
+            ),
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True,
+        errors="replace",
         check=False,
     )
-    log_path.write_text(process.stdout or "", encoding="utf-8")
-    return process.returncode
+    result: set[int] = set()
+    for line in (completed.stdout or "").splitlines():
+        try:
+            result.add(int(line.strip()))
+        except ValueError:
+            continue
+    return result
+
+
+def _terminate_exact_process(pid: int) -> None:
+    if os.name == "nt":
+        subprocess.run(
+            [
+                "powershell.exe",
+                "-NoProfile",
+                "-Command",
+                f"Stop-Process -Id {int(pid)} -Force -ErrorAction SilentlyContinue",
+            ],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+        return
+    try:
+        os.kill(int(pid), 9)
+    except ProcessLookupError:
+        pass
 
 
 def _vsp_path(path: Path) -> str:

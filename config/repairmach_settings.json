@@ -15,7 +15,7 @@
     "wing_user_set": 2,
     "standard_study": {
       "subsonic_mach": [0.0, 0.8, 0.1],
-      "supersonic_mach": [1.1, 2.2, 0.1],
+      "supersonic_mach": [1.2, 2.2, 0.1],
       "alpha_deg": [0.0, 5.0, 1.0],
       "beta_deg": 0.0
     },

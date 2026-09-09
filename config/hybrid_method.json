@@ -1,0 +1,47 @@
+{
+  "schema": "repairmach.hybrid-policy/1.0",
+  "method_version": "RM91-HYBRID-AUTO-1",
+  "reference_independent": true,
+  "pointwise_tuning": false,
+  "transonic_excluded": [0.8, 1.2],
+  "matching": {
+    "mach_tolerance": 0.000001,
+    "alpha_tolerance": 0.000001,
+    "parasite_mach_tolerance": 0.000001
+  },
+  "quality": {
+    "machline_residual_norm_max": 0.05
+  },
+  "drag": {
+    "pressure_wave_source": "MachLine_wind_axis_CD",
+    "induced_source": "VSPAERO_CDi",
+    "parasite_source": "OpenVSP_ParasiteDrag",
+    "require_parasite_below_mach_one": true,
+    "allow_machline_wake_with_vspaero_cdi": false,
+    "machline_geometry_glob": "*",
+    "semiempirical_terms": [
+      {
+        "id": "external_details",
+        "label": "Антенны, щели и выступающие элементы",
+        "enabled": false,
+        "provenance": "Задать до слепого расчёта по независимой полуэмпирической методике",
+        "applicability": {
+          "mach_min": 0.0,
+          "mach_max": 3.0
+        },
+        "model": {
+          "type": "constant",
+          "value": 0.0
+        }
+      }
+    ]
+  },
+  "lift": {
+    "coefficient_source": "VSPAERO_CLtot",
+    "cy_alpha": {
+      "method": "direct",
+      "alpha_start_deg": 0.0,
+      "alpha_end_deg": 1.0
+    }
+  }
+}

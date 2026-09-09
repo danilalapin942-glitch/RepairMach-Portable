@@ -1,0 +1,8 @@
+Results_Name,Parasite_Drag
+FC_Mach,0.8
+FC_Sref,100
+Num_Comp,1
+Comp_Label,Wing
+Comp_CD,0.007
+Total_CD_Total,0.007
+TurbCfEqnName,Blasius Power Law

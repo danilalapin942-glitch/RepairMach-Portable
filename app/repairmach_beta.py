@@ -18,10 +18,18 @@ if str(APP_DIR) not in sys.path:
 
 from tri_mesh import diagnose, format_diagnostics, read_tri, repair, write_tri
 from mach_repair import repair_mach_criterion, scan_mach_criterion, summarize_scan, write_scan_csv
-from aero_hybrid import build_hybrid_report, parse_openvsp_results_csv
+from aero_hybrid import (
+    load_machline_report,
+    machline_wind_axes,
+    parse_openvsp_results_csv,
+    parse_vspaero_polar,
+    validate_vspaero_run_outputs,
+)
 from calculation_scenarios import (
     build_scenario_manifest,
     component_name_policy,
+    expand_vspaero_cases,
+    geometry_sha256,
     load_scenario_catalog,
     scenario_by_id,
     validate_component_names,
@@ -41,6 +49,25 @@ from vspaero_runner import (
     standard_vspaero_cases,
     user_set_to_api_index,
 )
+from validation_metrics import cy_alpha_per_degree
+from blind_study import (
+    attach_reference_after_seal,
+    prepare_blind_package,
+    seal_predictions,
+    verify_blind_package,
+    verify_prediction_seal,
+)
+from hybrid_pipeline import (
+    REQUEST_SCHEMA as HYBRID_REQUEST_SCHEMA,
+    find_node_executable,
+    find_node_modules,
+    latest_completed_vspaero_study,
+    load_hybrid_policy,
+    run_hybrid_request,
+)
+from geometry_certification import certify_geometry
+from geometry_certificate import resolve_certificate_artifact, verify_certificate
+from geometry_manifest import sha256_payload
 
 
 def app_root() -> Path:
@@ -50,6 +77,8 @@ def app_root() -> Path:
 ROOT = app_root()
 SETTINGS_PATH = ROOT / "config" / "repairmach_settings.json"
 SCENARIOS_PATH = ROOT / "config" / "calculation_scenarios.json"
+HYBRID_POLICY_PATH = ROOT / "config" / "hybrid_method.json"
+GEOMETRY_POLICY_PATH = ROOT / "config" / "geometry_certification.json"
 
 
 PROJECT_DIRS = [
@@ -88,6 +117,9 @@ PROJECT_DIRS = [
     "09_parasite_drag/scripts",
     "09_parasite_drag/results",
     "09_parasite_drag/logs",
+    "09_parasite_drag/runs",
+    "10_blind_validation",
+    "11_geometry_certification",
 ]
 
 
@@ -139,6 +171,8 @@ def check_environment() -> None:
     mach_wd = machline_working_dir(settings)
     openvsp_dir = find_openvsp_dir(settings.get("openvsp", {}).get("install_dir"))
     openvsp_tools = tool_paths(openvsp_dir)
+    node = find_node_executable()
+    node_modules = find_node_modules()
 
     print("\nПроверка среды")
     print("-" * 58)
@@ -152,6 +186,8 @@ def check_environment() -> None:
     print(f"OpenVSP dir     : {openvsp_dir or 'не найден'}")
     print(f"vspscript.exe   : {openvsp_tools['vspscript'] or 'не найден'}")
     print(f"vspaero.exe     : {openvsp_tools['vspaero'] or 'не найден'}")
+    print(f"Excel runtime   : {node or 'не найден'}")
+    print(f"Excel module    : {node_modules or 'не найден'}")
 
     if not mach.exists():
         print("\n[!] MachLine не найден.")
@@ -166,6 +202,11 @@ def check_environment() -> None:
         print("[!] OpenVSP найден, но vspaero.exe отсутствует.")
     else:
         print("OK: OpenVSP/VSPAERO найдены.")
+
+    if node is None or node_modules is None:
+        print("[!] Автоматический Excel недоступен. Проверьте Node.js и @oai/artifact-tool.")
+    else:
+        print("OK: автоматическое построение Excel доступно.")
 
     print("-" * 58)
 
@@ -233,6 +274,12 @@ def create_project() -> None:
                 "max_bad_panels": 100,
                 "max_bad_fraction": 0.005,
                 "require_final_bad_zero": True
+            },
+            "geometry_certification": {
+                "policy_overrides": {},
+                "scope_override": None,
+                "tri_path": None,
+                "run_vspaero_probes": True
             }
         }
         (project / "project_config.json").write_text(
@@ -310,6 +357,111 @@ def unique_import_path(directory: Path, source_name: str) -> Path:
 def save_report(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def output_sha256(paths: dict[str, Path]) -> dict[str, str]:
+    """Hash existing run artifacts so downstream consumers can detect changes."""
+    return {
+        role: geometry_sha256(Path(path))
+        for role, path in paths.items()
+        if Path(path).is_file()
+    }
+
+
+def executable_fingerprints(paths: dict[str, Path | None]) -> dict[str, dict[str, str]]:
+    """Bind a run to the exact executables that produced its outputs."""
+    result: dict[str, dict[str, str]] = {}
+    for role, value in paths.items():
+        if value is None:
+            continue
+        path = Path(value).resolve()
+        if not path.is_file():
+            continue
+        result[role] = {"path": str(path), "sha256": geometry_sha256(path)}
+    return result
+
+
+def certified_solver_geometry(
+    project: Path,
+    master_path: Path,
+    backend_name: str,
+    *,
+    runtime_executables: dict[str, Path] | None = None,
+    scenario: dict | None = None,
+    scenario_fingerprint: str | None = None,
+) -> tuple[Path, dict, Path] | None:
+    """Return the exact certified solver twin for *master_path* when available.
+
+    An unrelated latest certificate is ignored.  A certificate for the same
+    MASTER is fail-closed: an invalid backend binding must be corrected by a
+    fresh certification instead of silently falling back to the user's file.
+    """
+    pointer_path = project / "11_geometry_certification" / "latest_certificate.json"
+    if not pointer_path.is_file():
+        return None
+    pointer = json.loads(pointer_path.read_text(encoding="utf-8"))
+    certificate_path = Path(pointer["certificate_path"]).resolve()
+    if not certificate_path.is_file():
+        raise FileNotFoundError(
+            f"Последний сертификат ссылается на отсутствующий файл: {certificate_path}"
+        )
+    certificate = json.loads(certificate_path.read_text(encoding="utf-8"))
+    master_hash = geometry_sha256(master_path)
+    if master_hash != certificate.get("master", {}).get("sha256_before"):
+        return None
+    verification = verify_certificate(
+        certificate_path,
+        master_path=master_path,
+        backend=backend_name,
+        runtime_executables=runtime_executables,
+        scenario_id=str(scenario.get("id")) if isinstance(scenario, dict) else None,
+        scenario=scenario,
+        scenario_fingerprint=scenario_fingerprint,
+    )
+    if not verification["valid"]:
+        raise ValueError(
+            f"Сертификат для backend {backend_name} не принят: "
+            + "; ".join(verification["errors"])
+        )
+    backend = certificate.get("backends", {}).get(backend_name, {})
+    solver_geometry = backend.get("solver_geometry", {})
+    solver_path = resolve_certificate_artifact(
+        certificate_path,
+        solver_geometry,
+        label=f"Расчётная геометрия backend {backend_name}",
+    )
+    expected_hash = solver_geometry.get("sha256")
+    if not solver_path.is_file() or geometry_sha256(solver_path) != expected_hash:
+        raise ValueError(
+            f"Сертифицированный двойник {backend_name} отсутствует или изменён"
+        )
+    return solver_path, certificate, certificate_path
+
+
+def _certified_vspaero_study_geometry(
+    project: Path,
+    requested_source: Path,
+    tools: dict,
+    scenario: dict | None,
+) -> tuple[Path, dict, Path] | None:
+    """Bind only an immutable catalog scenario to a VSPAERO certificate.
+
+    The interactive path accepts arbitrary ranges and tail incidence after
+    this decision point, so it cannot truthfully inherit a certificate issued
+    for another setup.  It deliberately remains an uncertified MASTER run.
+    """
+    if scenario is None:
+        return None
+    return certified_solver_geometry(
+        project,
+        requested_source,
+        "vspaero",
+        runtime_executables={
+            "openvsp": tools["vspscript"],
+            "vspaero": tools["vspaero"],
+        },
+        scenario=scenario,
+    )
 
 
 def parse_flow(text: str) -> tuple[float, float, float]:
@@ -686,6 +838,72 @@ def run_machline() -> None:
         print(p.stdout)
         print(f"\nЛог сохранён: {log_path}")
         print(f"Код завершения: {p.returncode}")
+        if p.returncode != 0:
+            raise RuntimeError(f"MachLine завершился с кодом {p.returncode}")
+        input_payload = json.loads(json_path.read_text(encoding="utf-8"))
+        report_value = input_payload.get("output", {}).get("report_file")
+        if not report_value:
+            raise RuntimeError("В MachLine JSON не указан output.report_file")
+        report_path = Path(report_value)
+        if not report_path.is_absolute():
+            report_path = (cwd / report_path).resolve()
+        if not report_path.is_file():
+            raise RuntimeError(f"MachLine не создал отчёт: {report_path}")
+        report = load_machline_report(report_path)
+        axes = machline_wind_axes(report)
+        status_code = int(report["solver_results"]["solver_status_code"])
+        residual = report["solver_results"]["residual"]
+        residual_norm = float(residual["norm"])
+        residual_max = float(residual["max"])
+        if (
+            status_code != 0
+            or not all(math.isfinite(value) for value in (residual_norm, residual_max))
+        ):
+            raise RuntimeError("MachLine report не прошёл контроль статуса и невязки")
+        geometry_value = report.get("input", {}).get("geometry", {}).get("file")
+        geometry_path = Path(str(geometry_value or ""))
+        if not geometry_path.is_absolute():
+            geometry_path = (json_path.parent / geometry_path).resolve()
+        if not geometry_path.is_file():
+            raise RuntimeError("TRI из MachLine report отсутствует")
+        manifest_path = report_path.with_name(report_path.stem + "_manifest.json")
+        manifest = {
+            "schema": "repairmach.machline-run/1.0",
+            "repairmach_version": settings.get("repairmach_version"),
+            "status": "completed",
+            "solver": {
+                "path": str(mach.resolve()),
+                "sha256": geometry_sha256(mach),
+            },
+            "input": {
+                "path": str(json_path.resolve()),
+                "sha256": geometry_sha256(json_path),
+            },
+            "geometry": {
+                "path": str(geometry_path.resolve()),
+                "sha256": geometry_sha256(geometry_path),
+            },
+            "conditions": {
+                "mach": axes["mach"],
+                "alpha_deg": axes["alpha_deg"],
+            },
+            "outputs": {
+                "report": str(report_path.resolve()),
+                "log": str(log_path.resolve()),
+            },
+            "output_sha256": {
+                "report": geometry_sha256(report_path),
+                "log": geometry_sha256(log_path),
+            },
+            "output_quality": {
+                "valid": True,
+                "solver_status_code": status_code,
+                "residual_norm": residual_norm,
+                "residual_max": residual_max,
+            },
+        }
+        save_report(manifest_path, manifest)
+        print(f"Манифест запуска: {manifest_path}")
     except Exception as e:
         print(f"Ошибка запуска MachLine: {e}")
 
@@ -752,10 +970,11 @@ def import_vsp3_and_run_vspaero() -> None:
     imported = unique_import_path(project / "00_original" / "vsp", source.name)
     shutil.copy2(source, imported)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    run_name = f"{imported.stem}_vspaero_{timestamp}"
+    model_token = safe_vsp3_name(source.name)[:24]
+    run_name = f"{model_token}_vspaero_{timestamp}"
     run_dir = project / "06_vspaero_results" / "runs" / run_name
     run_dir.mkdir(parents=True, exist_ok=True)
-    working_model = run_dir / f"{imported.stem}.vsp3"
+    working_model = run_dir / "model.vsp3"
     shutil.copy2(imported, working_model)
 
     script = project / "06_vspaero_input" / "scripts" / f"{run_name}.vspscript"
@@ -829,14 +1048,41 @@ def import_vsp3_and_run_vspaero() -> None:
         print("\n[ОШИБКА] Наборы корректны, но VSPAERO не создал полный комплект результатов.")
         print(f"Лог: {log_path}")
         return
+    if return_code not in (0, 1):
+        print(f"\n[ОШИБКА] VSPAERO завершился с недопустимым кодом {return_code}.")
+        print(f"Лог: {log_path}")
+        return
+    try:
+        output_quality = validate_vspaero_run_outputs(
+            polar_in_run,
+            log_path,
+            mach_start=mach_start,
+            mach_end=mach_end,
+            mach_points=mach_points,
+            alpha_start=alpha_start,
+            alpha_end=alpha_end,
+            alpha_points=alpha_points,
+        )
+    except (OSError, ValueError) as exc:
+        print(f"\n[ОШИБКА] Результат VSPAERO не прошёл контроль полноты: {exc}")
+        print(f"Лог: {log_path}")
+        return
+    polar_output.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(polar_in_run, polar_output)
 
     manifest = {
         "schema": "repairmach.vspaero-run/1.0",
         "repairmach_version": settings.get("repairmach_version"),
+        "executables": executable_fingerprints({
+            "openvsp": executable,
+            "vspaero": executable.with_name("vspaero.exe"),
+        }),
         "source_vsp3": str(source.resolve()),
+        "source_vsp3_sha256": geometry_sha256(source),
         "imported_vsp3": str(imported.resolve()),
+        "imported_vsp3_sha256": geometry_sha256(imported),
         "working_vsp3": str(working_model.resolve()),
+        "working_vsp3_sha256": geometry_sha256(working_model),
         "sets": {
             "fuselage_and_nacelles": {"user_set": 1, "api_index": user_set_to_api_index(1)},
             "wing_and_empennage": {"user_set": 2, "api_index": user_set_to_api_index(2)},
@@ -859,6 +1105,14 @@ def import_vsp3_and_run_vspaero() -> None:
             "log": str(log_path.resolve()),
             "run_directory": str(run_dir.resolve()),
         },
+        "output_quality": output_quality,
+        "output_sha256": output_sha256({
+            "polar": polar_output,
+            "results_csv": results_csv,
+            "set_validation": set_report_path,
+            "log": log_path,
+            "script": script,
+        }),
         "vspscript_return_code": return_code,
         "status": "completed",
     }
@@ -879,7 +1133,8 @@ def _run_standard_vspaero_case(
     settings: dict,
     project: Path,
     executable: Path,
-    source: Path,
+    master_source: Path,
+    solver_source: Path,
     imported: Path,
     case: dict,
     beta_deg: float,
@@ -889,12 +1144,17 @@ def _run_standard_vspaero_case(
     tail_geometry_name: str | None,
     tail_incidence_deg: float,
     scenario_id: str,
+    scenario_sha256: str | None,
     naming_policy: dict,
+    solver_controls: dict,
+    solver_mode: str = "mixed",
+    geometry_certificate: dict | None = None,
 ) -> dict:
-    run_name = f"{imported.stem}_{case['name']}_{study_timestamp}"
+    model_token = safe_vsp3_name(master_source.name)[:24]
+    run_name = f"{model_token}_{case['name']}_{study_timestamp}"
     run_dir = project / "06_vspaero_results" / "runs" / run_name
     run_dir.mkdir(parents=True, exist_ok=True)
-    working_model = run_dir / f"{imported.stem}.vsp3"
+    working_model = run_dir / "model.vsp3"
     shutil.copy2(imported, working_model)
 
     script = project / "06_vspaero_input" / "scripts" / f"{run_name}.vspscript"
@@ -906,13 +1166,35 @@ def _run_standard_vspaero_case(
     manifest = {
         "schema": "repairmach.vspaero-run/1.0",
         "repairmach_version": settings.get("repairmach_version"),
+        "executables": executable_fingerprints({
+            "openvsp": executable,
+            "vspaero": executable.with_name("vspaero.exe"),
+        }),
         "scenario_id": scenario_id,
+        "scenario_sha256": scenario_sha256,
         "preset": case["name"],
-        "source_vsp3": str(source.resolve()),
+        "parent_case_name": case.get("parent_case_name"),
+        "point_execution": case.get("point_execution", "sweep"),
+        "engine_boundary": case.get("engine_boundary"),
+        "vspaero_mode": solver_mode,
+        "geometry_certificate": geometry_certificate,
+        "source_vsp3": str(master_source.resolve()),
+        "source_vsp3_sha256": geometry_sha256(master_source),
+        "solver_geometry": {
+            "path": str(solver_source.resolve()),
+            "sha256": geometry_sha256(solver_source),
+        },
+        "solver_geometry_sha256": geometry_sha256(solver_source),
         "imported_vsp3": str(imported.resolve()),
+        "imported_vsp3_sha256": geometry_sha256(imported),
         "working_vsp3": str(working_model.resolve()),
+        "working_vsp3_sha256": geometry_sha256(working_model),
         "sets": {
-            "fuselage_and_nacelles": {"user_set": 1, "api_index": user_set_to_api_index(1)},
+            "fuselage_and_nacelles": {
+                "user_set": 1 if solver_mode == "mixed" else 3,
+                "api_index": user_set_to_api_index(1 if solver_mode == "mixed" else 3),
+                "included": solver_mode == "mixed",
+            },
             "wing_and_empennage": {"user_set": 2, "api_index": user_set_to_api_index(2)},
         },
         "conditions": {
@@ -942,7 +1224,17 @@ def _run_standard_vspaero_case(
             },
         },
         "reference": reference,
+        "numerical_controls": {
+            "forward_gmres_convergence_factor": float(
+                solver_controls.get("forward_gmres_convergence_factor", 1.0)
+            ),
+            "wake_num_iter": int(solver_controls.get("wake_num_iter", 8)),
+            "num_wake_nodes": int(solver_controls.get("num_wake_nodes", 24)),
+            "wake_relax": float(solver_controls.get("wake_relax", 0.8)),
+            "point_timeout_seconds": float(solver_controls.get("point_timeout_seconds", 900.0)),
+        },
         "outputs": {
+            "script": str(script.resolve()),
             "results_csv": str(results_csv.resolve()),
             "set_validation": str(set_report_path.resolve()),
             "log": str(log_path.resolve()),
@@ -967,22 +1259,38 @@ def _run_standard_vspaero_case(
             reference_chord=reference["cref"],
             reference_span=reference["bref"],
             center=reference["center"],
-            fuselage_user_set=1,
+            fuselage_user_set=1 if solver_mode == "mixed" else 3,
             wing_user_set=2,
             ncpu=ncpu,
+            forward_gmres_convergence_factor=manifest["numerical_controls"]["forward_gmres_convergence_factor"],
+            wake_num_iter=manifest["numerical_controls"]["wake_num_iter"],
+            num_wake_nodes=manifest["numerical_controls"]["num_wake_nodes"],
+            wake_relax=manifest["numerical_controls"]["wake_relax"],
             tail_geometry_name=tail_geometry_name,
             tail_incidence_deg=tail_incidence_deg,
+            engine_boundary=case.get("engine_boundary"),
             require_canonical_components=True,
+            require_nonempty_fuselage_set=(solver_mode == "mixed"),
+            require_all_geometries_assigned=(solver_mode == "mixed"),
         )
         print(
             f"\nЗапуск {case['name']}: M={case['mach_start']:.1f}…{case['mach_end']:.1f} "
-            f"({case['mach_points']} точек), alpha=0…5° (6 точек)"
+            f"({case['mach_points']} точек), "
+            f"alpha={case['alpha_start']:g}…{case['alpha_end']:g}° "
+            f"({case['alpha_points']} точек)"
         )
-        return_code = run_vspscript(executable, script, log_path, run_dir)
+        return_code = run_vspscript(
+            executable,
+            script,
+            log_path,
+            run_dir,
+            timeout_seconds=manifest["numerical_controls"]["point_timeout_seconds"],
+        )
         log_text = log_path.read_text(encoding="utf-8", errors="replace")
         set_report = parse_set_report(log_text)
         set_report["component_names"] = validate_component_names(
-            set_report["geometries"], naming_policy
+            set_report["geometries"], naming_policy,
+            allow_excluded_thick=(solver_mode == "lifting"),
         )
         save_report(set_report_path, set_report)
         manifest["vspscript_return_code"] = return_code
@@ -1028,10 +1336,49 @@ def _run_standard_vspaero_case(
         manifest["error"] = "VSPAERO не создал POLAR и CSV"
         save_report(manifest_path, manifest)
         return manifest
+    if return_code not in (0, 1):
+        manifest["status"] = "solver_failed"
+        manifest["error"] = f"Недопустимый код vspscript: {return_code}"
+        save_report(manifest_path, manifest)
+        return manifest
 
     polar_output = project / "06_vspaero_results" / "polars" / f"{run_name}.polar"
+    polar_output.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(polar_in_run, polar_output)
     manifest["outputs"]["polar"] = str(polar_output.resolve())
+    try:
+        manifest["output_quality"] = validate_vspaero_run_outputs(
+            polar_output,
+            log_path,
+            mach_start=case["mach_start"],
+            mach_end=case["mach_end"],
+            mach_points=case["mach_points"],
+            alpha_start=case["alpha_start"],
+            alpha_end=case["alpha_end"],
+            alpha_points=case["alpha_points"],
+            max_log10_l2_residual=float(
+                solver_controls.get("max_log10_l2_residual", -0.3)
+            ),
+        )
+    except (OSError, ValueError) as exc:
+        manifest["status"] = "output_validation_failed"
+        manifest["error"] = str(exc)
+        manifest["output_sha256"] = output_sha256({
+            "polar": polar_output,
+            "results_csv": results_csv,
+            "set_validation": set_report_path,
+            "log": log_path,
+            "script": script,
+        })
+        save_report(manifest_path, manifest)
+        return manifest
+    manifest["output_sha256"] = output_sha256({
+        "polar": polar_output,
+        "results_csv": results_csv,
+        "set_validation": set_report_path,
+        "log": log_path,
+        "script": script,
+    })
     manifest["status"] = "completed"
     save_report(manifest_path, manifest)
     manifest["manifest_path"] = str(manifest_path.resolve())
@@ -1053,16 +1400,56 @@ def run_standard_vspaero_study(scenario: dict | None = None) -> None:
         return
 
     source_text = input("Полный путь к модели OpenVSP .vsp3: ").strip().strip('"')
-    source = Path(source_text) if source_text else Path()
-    if not source_text or not source.is_file() or source.suffix.lower() != ".vsp3":
+    requested_source = Path(source_text) if source_text else Path()
+    if not source_text or not requested_source.is_file() or requested_source.suffix.lower() != ".vsp3":
         print("Не найден корректный файл .vsp3.")
         return
+    requested_source = requested_source.resolve()
+    source = requested_source
+    solver_mode = "mixed"
+    certificate_binding = None
+    try:
+        certified = _certified_vspaero_study_geometry(
+            project, requested_source, tools, scenario
+        )
+    except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        print(f"[ОСТАНОВЛЕНО] Сертификат VSPAERO не принят: {exc}")
+        return
+    if certified is not None:
+        source, certificate, certificate_path = certified
+        backend = certificate["backends"]["vspaero"]
+        expected = backend.get("solver_geometry", {}).get("sha256")
+        solver_mode = str(backend.get("mode", "mixed"))
+        certificate_binding = {
+            "certificate_id": certificate.get("certificate_id"),
+            "certificate_path": str(certificate_path.resolve()),
+            "certificate_sha256": geometry_sha256(certificate_path),
+            "master_path": str(requested_source),
+            "master_sha256": certificate.get("master", {}).get("sha256_before"),
+            "solver_geometry_path": str(source),
+            "solver_geometry_sha256": expected,
+            "selected_mode": solver_mode,
+            "vspaero_mode": solver_mode,
+            "reference": certificate.get("reference"),
+            "scenario_id": scenario.get("id") if scenario else None,
+            "scenario_sha256": sha256_payload(scenario) if scenario else None,
+        }
+        print(
+            f"Сертификат {certificate.get('certificate_id')} принят: "
+            f"автоматически выбран Fine-двойник VSPAERO ({solver_mode})."
+        )
+    elif scenario is None:
+        print(
+            "[НЕСЕРТИФИЦИРОВАННЫЙ ЗАПУСК] Интерактивные Mach/alpha/GO "
+            "могут отличаться от запечатанной постановки. Расчёт выполняется "
+            "на выбранном MASTER без certificate_binding."
+        )
 
     if scenario is None:
         print("\nСтандартный сценарий VSPAERO:")
         print("[1] Дозвук: M=0,0…0,8, шаг 0,1")
-        print("[2] Сверхзвук: M=1,1…2,2, шаг 0,1")
-        print("[3] Всё вместе: два последовательных диапазона без M=0,9–1,0")
+        print("[2] Сверхзвук: M=1,2…2,2, шаг 0,1")
+        print("[3] Всё вместе: два последовательных диапазона без M=0,9–1,1")
         print("Для всех вариантов: alpha=0…5°, шаг 1°; beta=0°.")
     else:
         print(f"\nСценарий: {scenario['title']}")
@@ -1078,12 +1465,19 @@ def run_standard_vspaero_study(scenario: dict | None = None) -> None:
         cases = (
             standard_vspaero_cases(input("Режим [1/2/3]: "))
             if scenario is None
-            else [dict(item) for item in scenario["vspaero_cases"]]
+            else expand_vspaero_cases([dict(item) for item in scenario["vspaero_cases"]])
         )
         defaults = settings.get("vspaero", {})
         ncpu = int(input(f"Потоков VSPAERO, Enter = {defaults.get('ncpu', 4)}: ").strip() or defaults.get("ncpu", 4))
         tail_policy = scenario.get("tail_incidence", "optional") if scenario else "optional"
         tail_answer = "y" if tail_policy == "required" else ""
+        if tail_policy == "fixed":
+            tail_geometry_name = str(scenario["tail_geometry_name"])
+            tail_incidence_deg = float(scenario["tail_incidence_deg"])
+            print(
+                f"Фиксированный угол ГО из сценария: "
+                f"{tail_geometry_name} = {tail_incidence_deg:g}°"
+            )
         if tail_policy == "optional":
             tail_answer = input("Использовать заданный балансировочный угол ГО? [y/N]: ").strip().lower()
         if tail_answer in ("y", "yes", "д", "да"):
@@ -1091,33 +1485,55 @@ def run_standard_vspaero_study(scenario: dict | None = None) -> None:
                 f"Точное имя геометрии ГО, Enter = {defaults.get('tail_geometry_name', 'GO')}: "
             ).strip() or defaults.get("tail_geometry_name", "GO")
             tail_incidence_deg = float(input("Абсолютный угол установки ГО, град: ").strip())
-        project_ref = load_project_reference(project, settings)
-        print("\nПодтвердите опорные величины импортируемого самолёта.")
-        sref = float(input(f"Sref, Enter = {project_ref['area']}: ").strip() or project_ref["area"])
-        cref = float(input(f"cref/САХ, Enter = {project_ref['longitudinal_length']}: ").strip() or project_ref["longitudinal_length"])
-        bref = float(input(f"bref/размах, Enter = {project_ref['lateral_length']}: ").strip() or project_ref["lateral_length"])
-        center_text = input("CG X Y Z, Enter = " + " ".join(str(value) for value in project_ref["center"]) + ": ").strip()
-        center = list(parse_flow(center_text)) if center_text else project_ref["center"]
+        if certificate_binding:
+            certified_reference = certificate_binding["reference"]
+            sref = float(certified_reference["area"])
+            cref = float(certified_reference["cref"])
+            bref = float(certified_reference["bref"])
+            center = [float(value) for value in certified_reference["center"]]
+            print("\nОпорные величины взяты из сертификата и заблокированы для этого запуска:")
+            print(f"Sref={sref:g}; cref={cref:g}; bref={bref:g}; CG={center}")
+        else:
+            project_ref = load_project_reference(project, settings)
+            print("\nПодтвердите опорные величины импортируемого самолёта.")
+            sref = float(input(f"Sref, Enter = {project_ref['area']}: ").strip() or project_ref["area"])
+            cref = float(input(f"cref/САХ, Enter = {project_ref['longitudinal_length']}: ").strip() or project_ref["longitudinal_length"])
+            bref = float(input(f"bref/размах, Enter = {project_ref['lateral_length']}: ").strip() or project_ref["lateral_length"])
+            center_text = input("CG X Y Z, Enter = " + " ".join(str(value) for value in project_ref["center"]) + ": ").strip()
+            center = list(parse_flow(center_text)) if center_text else project_ref["center"]
     except ValueError as exc:
         print(f"Некорректные параметры: {exc}")
         return
 
-    imported = unique_import_path(project / "00_original" / "vsp", source.name)
-    shutil.copy2(source, imported)
+    imported_master = unique_import_path(project / "00_original" / "vsp", requested_source.name)
+    shutil.copy2(requested_source, imported_master)
+    if source == requested_source:
+        imported = imported_master
+    else:
+        imported = unique_import_path(
+            project / "06_vspaero_input" / "models",
+            f"{requested_source.stem}_certified_solver.vsp3",
+        )
+        shutil.copy2(source, imported)
     study_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     reference = {"area": sref, "cref": cref, "bref": bref, "center": center}
     study_results = []
     scenario_id = scenario["id"] if scenario else "standard_vspaero_interactive"
+    scenario_fingerprint = sha256_payload(scenario) if scenario else None
     catalog = load_scenario_catalog(SCENARIOS_PATH)
     naming_policy = component_name_policy(catalog)
-    print(f"\nVSP3 импортирован: {imported}")
+    solver_controls = dict(scenario.get("solver_controls", {})) if scenario else {}
+    print(f"\nMASTER VSP3 импортирован: {imported_master}")
+    if imported != imported_master:
+        print(f"Сертифицированный расчётный двойник: {imported}")
     print("Set_1 = фюзеляж и мотогондолы; Set_2 = крыло и оперение.")
     for case in cases:
         result = _run_standard_vspaero_case(
             settings=settings,
             project=project,
             executable=executable,
-            source=source,
+            master_source=requested_source,
+            solver_source=source,
             imported=imported,
             case=case,
             beta_deg=0.0,
@@ -1127,37 +1543,118 @@ def run_standard_vspaero_study(scenario: dict | None = None) -> None:
             tail_geometry_name=tail_geometry_name,
             tail_incidence_deg=tail_incidence_deg,
             scenario_id=scenario_id,
+            scenario_sha256=scenario_fingerprint,
             naming_policy=naming_policy,
+            solver_controls=solver_controls,
+            solver_mode=solver_mode,
+            geometry_certificate=certificate_binding,
         )
         study_results.append(result)
-        if result["status"] != "completed":
+        if result["status"] != "completed" and case.get("point_execution", "sweep") == "sweep":
             break
+
+    cy_alpha_points = []
+    postprocess_errors = []
+    polar_sources = []
+    polar_rows = []
+    for result in study_results:
+        if result.get("status") != "completed":
+            continue
+        polar_path = Path(result["outputs"]["polar"])
+        polar_sources.append(str(polar_path.resolve()))
+        try:
+            polar_rows.extend(parse_vspaero_polar(polar_path))
+        except (OSError, ValueError) as exc:
+            postprocess_errors.append(f"{polar_path.name}: {exc}")
+
+    if polar_rows and not postprocess_errors:
+        try:
+            cy_alpha_points = cy_alpha_per_degree(polar_rows)
+        except ValueError as exc:
+            postprocess_errors.append(str(exc))
+
+    run_complete = (
+        len(study_results) == len(cases)
+        and all(item["status"] == "completed" for item in study_results)
+    )
+    derived_complete = bool(cy_alpha_points) and not postprocess_errors
+    study_stem = f"{safe_vsp3_name(requested_source.name)[:24]}_standard_{study_timestamp}"
+    cy_alpha_path = project / "06_vspaero_results" / "runs" / f"{study_stem}_cy_alpha.json"
+    cy_alpha_report = {
+        "schema": "repairmach.cy-alpha/1.0",
+        "definition": "Cy_alpha=[Cy(1deg)-Cy(0deg)]/1deg",
+        "coefficient_mapping": "VSPAERO CLtot = RepairMach Cy",
+        "interpolation_used": False,
+        "independent_alpha_supported": True,
+        "independent_mach_alpha_supported": True,
+        "hybrid_method": scenario.get("cy_alpha_method") if scenario else None,
+        "polar_sources": polar_sources,
+        "points": sorted(cy_alpha_points, key=lambda item: item["Mach"]),
+        "errors": postprocess_errors,
+        "status": "completed" if run_complete and derived_complete else "incomplete",
+    }
+    save_report(cy_alpha_path, cy_alpha_report)
 
     study_manifest = {
         "schema": "repairmach.vspaero-standard-study/1.0",
         "repairmach_version": settings.get("repairmach_version"),
         "scenario_id": scenario_id,
+        "scenario_sha256": scenario_fingerprint,
         "scenario_title": scenario.get("title") if scenario else "Стандартный VSPAERO",
-        "source_vsp3": str(source.resolve()),
+        "requested_master_vsp3": str(requested_source),
+        "requested_master_sha256": geometry_sha256(requested_source),
+        "geometry_certificate": certificate_binding,
+        "vspaero_mode": solver_mode,
+        "source_vsp3": str(requested_source.resolve()),
+        "source_vsp3_sha256": geometry_sha256(requested_source),
+        "solver_geometry": {
+            "path": str(source.resolve()),
+            "sha256": geometry_sha256(source),
+        },
+        "solver_geometry_sha256": geometry_sha256(source),
         "imported_vsp3": str(imported.resolve()),
+        "imported_vsp3_sha256": geometry_sha256(imported),
+        "reference": reference,
         "standard": {
             "mach_step": 0.1,
-            "alpha_start_deg": 0.0,
-            "alpha_end_deg": 5.0,
-            "alpha_step_deg": 1.0,
-            "excluded_transonic_interval": [0.9, 1.0],
+            "alpha_start_deg": min(case["alpha_start"] for case in cases),
+            "alpha_end_deg": max(case["alpha_end"] for case in cases),
+            "alpha_step_deg": min(
+                (
+                    case.get("requested_alpha_step_deg")
+                    if case.get("requested_alpha_step_deg") is not None
+                    else (
+                        (case["alpha_end"] - case["alpha_start"]) / (case["alpha_points"] - 1)
+                        if case["alpha_points"] > 1 else 0.0
+                    )
+                )
+                for case in cases
+                if case.get("requested_alpha_step_deg", 1.0) > 0.0 or case["alpha_points"] > 1
+            ),
+            "excluded_transonic_interval": [0.9, 1.1],
             "horizontal_tail": {
                 "mode": "fixed_incidence" if tail_geometry_name else "model_default",
                 "geometry_name": tail_geometry_name,
                 "incidence_deg": tail_incidence_deg if tail_geometry_name else None,
             },
+            "acceptance_criteria": (
+                scenario.get("acceptance_criteria") if scenario else None
+            ),
+            "cy_alpha_method": scenario.get("cy_alpha_method") if scenario else None,
+            "solver_controls": solver_controls,
+        },
+        "derived_outputs": {
+            "cy_alpha": str(cy_alpha_path.resolve()),
+            "cy_alpha_status": cy_alpha_report["status"],
+            "postprocess_errors": postprocess_errors,
         },
         "runs": study_results,
-        "status": "completed" if len(study_results) == len(cases) and all(item["status"] == "completed" for item in study_results) else "incomplete",
+        "status": "completed" if run_complete and derived_complete else "incomplete",
     }
-    study_path = project / "06_vspaero_results" / "runs" / f"{imported.stem}_standard_{study_timestamp}.json"
+    study_path = project / "06_vspaero_results" / "runs" / f"{study_stem}.json"
     save_report(study_path, study_manifest)
     print(f"\nСводный манифест: {study_path}")
+    print(f"Cyα(M), прямые точки: {cy_alpha_path}")
     print(f"Статус: {study_manifest['status']}")
 
 
@@ -1211,37 +1708,142 @@ def run_parasite_drag_workflow() -> None:
     if not vsp3_text:
         print("Отменено.")
         return
-    vsp3 = Path(vsp3_text)
+    requested_vsp3 = Path(vsp3_text).resolve()
+    if not requested_vsp3.is_file() or requested_vsp3.suffix.lower() != ".vsp3":
+        print(f"Не найден корректный файл .vsp3: {requested_vsp3}")
+        return
+    solver_vsp3 = requested_vsp3
+    certificate_binding = None
+    try:
+        certified = certified_solver_geometry(
+            project,
+            requested_vsp3,
+            "parasite_drag",
+            runtime_executables={"openvsp": executable},
+        )
+    except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        print(f"[ОСТАНОВЛЕНО] Сертификат Parasite Drag не принят: {exc}")
+        return
+    if certified is not None:
+        solver_vsp3, certificate, certificate_path = certified
+        backend = certificate["backends"]["parasite_drag"]
+        certificate_binding = {
+            "certificate_id": certificate.get("certificate_id"),
+            "certificate_path": str(certificate_path),
+            "certificate_sha256": geometry_sha256(certificate_path),
+            "master_path": str(requested_vsp3),
+            "master_sha256": certificate.get("master", {}).get("sha256_before"),
+            "solver_geometry_path": str(solver_vsp3),
+            "solver_geometry_sha256": backend.get("solver_geometry", {}).get("sha256"),
+            "selected_mode": backend.get("mode"),
+            "reference": certificate.get("reference"),
+        }
+        print(
+            f"Сертификат {certificate.get('certificate_id')} принят: "
+            "автоматически выбран отдельный двойник Parasite Drag."
+        )
     defaults = settings.get("parasite_drag", {})
     mach_text = input(f"Mach (только < 1), Enter = {defaults.get('mach', 0.8)}: ").strip()
     altitude_text = input(f"Высота, ft, Enter = {defaults.get('altitude_ft', 0.0)}: ").strip()
-    sref_text = input(
-        f"Опорная площадь в единицах VSP3, Enter = {defaults.get('reference_area', settings['defaults']['area'])}: "
-    ).strip()
-    set_text = input(f"Номер OpenVSP Set, Enter = {defaults.get('geometry_set', 0)}: ").strip()
+    if certificate_binding:
+        sref_text = ""
+        set_text = ""
+        certified_area = float(certificate_binding["reference"]["area"])
+        print(
+            f"Сертификат фиксирует Sref={certified_area:g} и полный OpenVSP Set=0; "
+            "изменение в этом запуске запрещено."
+        )
+    else:
+        sref_text = input(
+            f"Опорная площадь в единицах VSP3, Enter = {defaults.get('reference_area', settings['defaults']['area'])}: "
+        ).strip()
+        set_text = input(f"Номер OpenVSP Set, Enter = {defaults.get('geometry_set', 0)}: ").strip()
     try:
         mach = float(mach_text or defaults.get("mach", 0.8))
         altitude = float(altitude_text or defaults.get("altitude_ft", 0.0))
-        sref = float(sref_text or defaults.get("reference_area", settings["defaults"]["area"]))
-        geometry_set = int(set_text or defaults.get("geometry_set", 0))
+        sref = (
+            float(certificate_binding["reference"]["area"])
+            if certificate_binding
+            else float(sref_text or defaults.get("reference_area", settings["defaults"]["area"]))
+        )
+        geometry_set = 0 if certificate_binding else int(set_text or defaults.get("geometry_set", 0))
     except ValueError:
         print("Некорректное числовое значение.")
         return
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    stem = f"{vsp3.stem}_M{mach:g}_{timestamp}"
+    stem = f"{requested_vsp3.stem}_M{mach:g}_{timestamp}"
     script = project / "09_parasite_drag" / "scripts" / f"{stem}.vspscript"
     results = project / "09_parasite_drag" / "results" / f"{stem}.csv"
     log = project / "09_parasite_drag" / "logs" / f"{stem}.log"
+    manifest_path = project / "09_parasite_drag" / "runs" / f"{stem}.json"
     try:
         generate_parasite_drag_script(
-            script, vsp3, results, mach, altitude, sref, geometry_set
+            script, solver_vsp3, results, mach, altitude, sref, geometry_set
         )
         code = run_vspscript(executable, script, log, script.parent)
-        parsed = parse_openvsp_results_csv(results)
+        if code not in (0, 1):
+            raise RuntimeError(f"Недопустимый код vspscript: {code}")
+        parsed = parse_openvsp_results_csv(results, strict=True)
+        if abs(float(parsed["mach"]) - mach) > 1.0e-6:
+            raise RuntimeError(
+                f"Parasite Drag вернул M={float(parsed['mach']):g} вместо M={mach:g}"
+            )
+        if abs(float(parsed["reference_area"]) - sref) > 1.0e-9 * max(1.0, abs(sref)):
+            raise RuntimeError(
+                "Parasite Drag вернул FC_Sref, не совпадающий с заданным Sref"
+            )
     except Exception as exc:
         print(f"Parasite Drag не выполнен: {exc}")
         return
+
+    manifest = {
+        "schema": "repairmach.parasite-drag-run/1.0",
+        "repairmach_version": settings.get("repairmach_version"),
+        "executables": executable_fingerprints({"openvsp": executable}),
+        "source_vsp3": str(requested_vsp3),
+        "source_vsp3_sha256": geometry_sha256(requested_vsp3),
+        "solver_geometry": {
+            "path": str(solver_vsp3),
+            "sha256": geometry_sha256(solver_vsp3),
+        },
+        "solver_geometry_sha256": geometry_sha256(solver_vsp3),
+        "geometry_mode": (
+            certificate_binding.get("selected_mode")
+            if certificate_binding else "unsealed_full_geometry"
+        ),
+        "geometry_certification": certificate_binding,
+        "conditions": {
+            "mach": mach,
+            "altitude_ft": altitude,
+            "reference_area": sref,
+            "geometry_set": geometry_set,
+        },
+        "outputs": {
+            "results_csv": str(results.resolve()),
+            "script": str(script.resolve()),
+            "log": str(log.resolve()),
+        },
+        "output_quality": {
+            "valid": True,
+            "component_count": len(parsed["components"]),
+            "total_cd": float(parsed["total_cd"]),
+            "reported_mach": float(parsed["mach"]),
+            "reported_reference_area": float(parsed["reference_area"]),
+        },
+        "output_sha256": output_sha256({
+            "results_csv": results,
+            "script": script,
+            "log": log,
+        }),
+        "vspscript_return_code": code,
+        "status": "completed",
+    }
+    # Seal the complete producer record after all actual input/output hashes
+    # have been captured.  Hybrid consumers reject edited or relabelled
+    # manifests instead of trusting their descriptive fields.
+    manifest["record_fingerprint"] = sha256_payload(manifest)
+    save_report(manifest_path, manifest)
 
     print("\nКомпонентный расчёт Parasite Drag")
     print("-" * 58)
@@ -1258,53 +1860,340 @@ def run_parasite_drag_workflow() -> None:
     print(f"Результат: {results}")
     print(f"Сценарий : {script}")
     print(f"Лог      : {log}")
+    print(f"Манифест : {manifest_path}")
     print(f"Код      : {code}")
 
 
 def build_hybrid_report_workflow() -> None:
+    """Create one repeatable request and run the complete hybrid post-process."""
     project = default_project_path()
     if not project.exists():
         print("Проект по умолчанию не найден.")
         return
-    machline_text = input("Полный путь к отчёту MachLine *_report.json: ").strip().strip('"')
-    polar_text = input("Полный путь к VSPAERO *.polar: ").strip().strip('"')
-    parasite_text = input("Путь к OpenVSP Parasite Drag CSV или Enter, если его нет: ").strip().strip('"')
-    if not machline_text or not polar_text:
-        print("Нужны отчёт MachLine и POLAR VSPAERO.")
+    latest = latest_completed_vspaero_study(project / "06_vspaero_results" / "runs")
+    latest_hint = str(latest) if latest else "не найден"
+    vspaero_text = input(
+        f"Манифест исследования VSPAERO или POLAR, Enter = {latest_hint}: "
+    ).strip().strip('"')
+    if not vspaero_text and latest is None:
+        print("Не найдено завершённое исследование VSPAERO.")
         return
-    induced_answer = input("Добавить VSPAERO CDi? [Y/n]: ").strip().lower()
-    base_text = input("CD базового сопротивления, Enter = 0: ").strip()
-    external_text = input("CD внешних элементов, Enter = 0: ").strip()
+    vspaero_source = Path(vspaero_text) if vspaero_text else latest
+
+    default_machline = project / "05_machline_results" / "reports"
+    machline_text = input(
+        f"Папка отчётов MachLine, Enter = {default_machline}: "
+    ).strip().strip('"')
+    machline_dir = Path(machline_text) if machline_text else default_machline
+    pattern = input("Маска отчётов MachLine, Enter = *full*_report.json: ").strip()
+    pattern = pattern or "*full*_report.json"
+
+    default_parasite = project / "09_parasite_drag" / "runs"
+    parasite_text = input(
+        f"Папка OpenVSP Parasite Drag, Enter = {default_parasite}: "
+    ).strip().strip('"')
+    parasite_dir = Path(parasite_text) if parasite_text else default_parasite
+    policy_text = input(
+        f"Файл гибридной методики, Enter = {HYBRID_POLICY_PATH}: "
+    ).strip().strip('"')
+    policy_path = Path(policy_text) if policy_text else HYBRID_POLICY_PATH
+
+    latest_certificate = None
+    latest_pointer = project / "11_geometry_certification" / "latest_certificate.json"
+    if latest_pointer.is_file():
+        try:
+            candidate = Path(
+                json.loads(latest_pointer.read_text(encoding="utf-8"))["certificate_path"]
+            )
+            if candidate.is_file():
+                latest_certificate = candidate
+        except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError):
+            latest_certificate = None
+    certificate_hint = str(latest_certificate) if latest_certificate else "не найден"
+    certificate_text = input(
+        f"Сертификат геометрии или Enter = {certificate_hint}: "
+    ).strip().strip('"')
+    certificate_path = Path(certificate_text) if certificate_text else latest_certificate
+    if certificate_path is not None and not certificate_path.is_file():
+        print(f"Не найден сертификат геометрии: {certificate_path}")
+        return
+    if certificate_path is None:
+        print("[!] Сертификат не приложен: результат совместим с 9.1, но не годится как полностью запечатанный слепой пакет.")
+
+    scenario_id = None
+    scenario_fingerprint = None
+    if certificate_path is not None:
+        try:
+            source_payload = json.loads(Path(vspaero_source).read_text(encoding="utf-8"))
+            scenario_id = str(source_payload.get("scenario_id", "")).strip()
+            declared_fingerprint = str(
+                source_payload.get("scenario_sha256", "")
+            ).strip().lower()
+            if not scenario_id or len(declared_fingerprint) != 64 or any(
+                char not in "0123456789abcdef" for char in declared_fingerprint
+            ):
+                raise ValueError(
+                    "манифест VSPAERO не содержит scenario_id/scenario_sha256"
+                )
+            catalog = load_scenario_catalog(SCENARIOS_PATH)
+            current_scenario = scenario_by_id(catalog, scenario_id)
+            scenario_fingerprint = sha256_payload(current_scenario)
+            if declared_fingerprint != scenario_fingerprint:
+                raise ValueError(
+                    "сценарий изменён после расчёта; запустите VSPAERO заново"
+                )
+        except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+            print(
+                "Запечатанный гибридный расчёт не может использовать выбранный "
+                f"источник VSPAERO: {exc}"
+            )
+            return
+
     try:
-        report = build_hybrid_report(
-            Path(machline_text),
-            Path(polar_text),
-            Path(parasite_text) if parasite_text else None,
-            include_vspaero_induced_drag=induced_answer in ("", "y", "yes", "д", "да"),
-            base_drag=float(base_text or 0.0),
-            external_drag=float(external_text or 0.0),
-        )
+        policy = load_hybrid_policy(policy_path)
     except Exception as exc:
-        print(f"Гибридный отчёт не создан: {exc}")
+        print(f"Файл методики не принят: {exc}")
         return
 
+    thin_source = None
+    if policy.get("lift", {}).get("cy_alpha", {}).get("method") != "direct":
+        thin_text = input(
+            "Манифест/POLAR тонкостенной конфигурации для гибридного Cyα: "
+        ).strip().strip('"')
+        if not thin_text:
+            print("Для выбранной методики Cyα нужен тонкостенный расчёт.")
+            return
+        thin_source = str(Path(thin_text).resolve())
+
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output = project / "08_hybrid_results" / f"hybrid_{timestamp}.json"
-    save_report(output, report)
-    terms = report["drag_build_up"]
-    print("\nГибридный результат")
+    output_dir = project / "08_hybrid_results" / f"hybrid_{timestamp}"
+    request_path = output_dir / "hybrid_request.json"
+    request = {
+        "schema": HYBRID_REQUEST_SCHEMA,
+        "vspaero_source": str(Path(vspaero_source).resolve()),
+        "thin_vspaero_source": thin_source,
+        "machline_reports_dir": str(machline_dir.resolve()),
+        "machline_report_glob": pattern,
+        "parasite_results_dir": str(parasite_dir.resolve()),
+        "parasite_result_glob": "*.json",
+        "policy": str(policy_path.resolve()),
+        "geometry_certificate": str(certificate_path.resolve()) if certificate_path else None,
+        "scenario_id": scenario_id,
+        "scenario_sha256": scenario_fingerprint,
+        "replacement_coverage": "auto" if certificate_path else [],
+        "auto_build_excel": True,
+    }
+    save_report(request_path, request)
+    try:
+        result = run_hybrid_request(request_path, output_dir=output_dir, build_workbook=True)
+    except Exception as exc:
+        print(f"Автоматический гибридный расчёт не завершён: {exc}")
+        print(f"Задание сохранено для повторного запуска: {request_path}")
+        return
+
+    bundle = result["bundle"]
+    outputs = result["outputs"]
+    print("\nАвтоматический гибридный результат")
     print("-" * 58)
-    print(f"CL (VSPAERO)        : {report['coefficients']['CL']:.9g}")
-    print(f"CD MachLine         : {terms['machline_pressure_wave_candidate']:.9g}")
-    print(f"CDi VSPAERO         : {terms['vspaero_induced']:.9g}")
-    print(f"CD0 OpenVSP         : {terms['openvsp_viscous_form_factor']:.9g}")
-    print(f"CD base             : {terms['base']:.9g}")
-    print(f"CD external         : {terms['external']:.9g}")
-    print(f"CD total            : {report['coefficients']['CD']:.9g}")
-    print("Калибровочная константа: не используется")
-    for warning in report["warnings"]:
-        print(f"[!] {warning}")
-    print(f"Отчёт: {output}")
+    print(f"Статус              : {bundle['status']}")
+    print(f"Точек АДХ           : {bundle['summary']['points']}")
+    print(f"Полных точек        : {bundle['summary']['complete_points']}")
+    print(f"Точек Cyα           : {bundle['summary']['cy_alpha_points']}")
+    print(f"Ошибок              : {bundle['summary']['errors']}")
+    print("Поточечная подстройка и эталонная кривая: не используются")
+    for error in bundle["errors"][:12]:
+        print(f"[!] {error}")
+    if len(bundle["errors"]) > 12:
+        print(f"[!] Ещё ошибок: {len(bundle['errors']) - 12}; см. JSON")
+    print(f"JSON                : {outputs['json']}")
+    print(f"CSV АДХ             : {outputs['points_csv']}")
+    print(f"CSV Cyα             : {outputs['cy_alpha_csv']}")
+    print(f"Excel с графиками   : {outputs['workbook']}")
+    print(f"Проверка Excel      : {outputs['workbook_verification']}")
+
+
+def _prompt_existing_files(prompt: str) -> list[Path]:
+    text = input(prompt).strip()
+    if not text:
+        return []
+    paths = [Path(item.strip().strip('"')) for item in text.split(";") if item.strip()]
+    missing = [path for path in paths if not path.is_file()]
+    if missing:
+        raise FileNotFoundError("Не найдены файлы: " + "; ".join(str(path) for path in missing))
+    return paths
+
+
+def prepare_blind_study_workflow() -> None:
+    """Create a sealed calculation package before reference data is opened."""
+    settings = load_settings()
+    project = default_project_path()
+    project_config = project / "project_config.json"
+    if not project_config.is_file():
+        print("Проект или project_config.json не найден. Сначала создайте/выберите проект.")
+        return
+    try:
+        catalog = load_scenario_catalog(SCENARIOS_PATH)
+    except Exception as exc:
+        print(f"Каталог сценариев не загружен: {exc}")
+        return
+
+    candidates = [
+        scenario for scenario in catalog["scenarios"]
+        if scenario.get("availability") == "ready"
+        and scenario.get("execution") == "vspaero_study"
+        and scenario.get("tail_incidence") == "fixed"
+        and scenario.get("acceptance_criteria")
+    ]
+    print("\nСценарий слепого расчёта")
+    print("-" * 58)
+    for index, scenario in enumerate(candidates, start=1):
+        print(f"[{index}] {scenario['title']}")
+    choice = input("Сценарий: ").strip()
+    try:
+        scenario = candidates[int(choice) - 1]
+    except (ValueError, IndexError):
+        print("Неверный номер сценария.")
+        return
+
+    geometry_text = input("Полный путь к окончательной модели VSP3: ").strip().strip('"')
+    geometry = Path(geometry_text)
+    if not geometry.is_file() or geometry.suffix.lower() != ".vsp3":
+        print(f"Не найдена модель VSP3: {geometry}")
+        return
+    tri_text = input("Полный путь к TRI для MachLine или Enter: ").strip().strip('"')
+    additional_inputs = []
+    if tri_text:
+        tri = Path(tri_text)
+        if not tri.is_file():
+            print(f"Не найден TRI: {tri}")
+            return
+        additional_inputs.append(("machline_geometry", tri))
+    for module_name in (
+        "validation_metrics.py",
+        "aero_hybrid.py",
+        "hybrid_pipeline.py",
+        "hybrid_workbook.mjs",
+        "vspaero_runner.py",
+        "calculation_scenarios.py",
+        "repairmach_beta.py",
+    ):
+        method_source = APP_DIR / module_name
+        if method_source.is_file():
+            additional_inputs.append((f"method_source_{method_source.stem}", method_source))
+    if HYBRID_POLICY_PATH.is_file():
+        additional_inputs.append(("hybrid_method_policy", HYBRID_POLICY_PATH))
+
+    method_default = scenario.get("cy_alpha_method", "predeclared_repairmach_method")
+    method_text = input(f"Версия методики, Enter = {method_default}: ").strip()
+    method_declaration = {
+        "method_version": method_text or method_default,
+        "hybrid_pipeline_version": "RM91-HYBRID-AUTO-1",
+        "scenario_id": scenario["id"],
+        "pointwise_tuning": False,
+        "geometry_adjustment_after_seal": False,
+        "semiempirical_policy": "only terms declared before the blind run",
+        "transonic_policy": "exclude M=0.9...1.1 unless a separate declared method exists",
+        "horizontal_tail": {
+            "mode": scenario.get("tail_incidence", "optional"),
+            "name": scenario.get("tail_geometry_name"),
+            "incidence_deg": scenario.get("tail_incidence_deg"),
+        },
+        "acceptance_criteria": scenario.get("acceptance_criteria", {
+            "numerical_percent": 5.0,
+            "total_mean_percent": 11.0,
+        }),
+    }
+
+    solver_paths = []
+    python = find_python(settings)
+    if python and python.is_file():
+        solver_paths.append(("Python", python))
+    machline = find_machline(settings)
+    if machline.is_file():
+        solver_paths.append(("MachLine", machline))
+    openvsp_dir = find_openvsp_dir(settings.get("openvsp", {}).get("install_dir"))
+    tools = tool_paths(openvsp_dir)
+    for role, key in (("VSPscript", "vspscript"), ("VSPAERO", "vspaero")):
+        candidate = tools.get(key)
+        if candidate and candidate.is_file():
+            solver_paths.append((role, candidate))
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    package_dir = project / "10_blind_validation" / f"{timestamp}_{scenario['id']}"
+    try:
+        manifest = prepare_blind_package(
+            package_dir,
+            repairmach_version=str(settings.get("repairmach_version", "9.1")),
+            project_name=project.name,
+            geometry_path=geometry,
+            project_config_path=project_config,
+            scenario_catalog_path=SCENARIOS_PATH,
+            settings_path=SETTINGS_PATH,
+            selected_scenario=scenario,
+            method_declaration=method_declaration,
+            additional_inputs=additional_inputs,
+            solver_paths=solver_paths,
+        )
+        verification = verify_blind_package(manifest)
+    except Exception as exc:
+        print(f"Слепой пакет не создан: {exc}")
+        return
+
+    print("\nВходной пакет слепого расчёта запечатан")
+    print("-" * 58)
+    print(f"Папка       : {package_dir}")
+    print(f"Манифест    : {manifest}")
+    print(f"Отпечаток   : {verification['package_fingerprint']}")
+    print(f"Целостность : {'OK' if verification['valid'] else 'ОШИБКА'}")
+    print("Эталонные данные пока подключать нельзя. Сначала выполните и запечатайте прогноз.")
+
+
+def blind_study_control_workflow() -> None:
+    print("\nСлепая верификация")
+    print("-" * 58)
+    print("[1] Подготовить и запечатать входной пакет")
+    print("[2] Проверить целостность входного пакета")
+    print("[3] Запечатать файлы прогноза")
+    print("[4] Подключить эталон после запечатывания прогноза")
+    print("[0] Назад")
+    choice = input("Выбор: ").strip()
+    if choice == "1":
+        prepare_blind_study_workflow()
+        return
+    if choice == "0" or not choice:
+        return
+
+    try:
+        if choice == "2":
+            manifest = Path(input("Путь к blind_manifest.json: ").strip().strip('"'))
+            result = verify_blind_package(manifest)
+            print(f"Целостность: {'OK' if result['valid'] else 'ОШИБКА'}")
+            print(f"Состояние: {result['state']}")
+            print(f"Отпечаток: {result['package_fingerprint']}")
+            for error in result["errors"]:
+                print(f"[!] {error}")
+        elif choice == "3":
+            manifest = Path(input("Путь к blind_manifest.json: ").strip().strip('"'))
+            predictions = _prompt_existing_files(
+                "Файлы прогноза через точку с запятой (CSV/JSON/XLSX): "
+            )
+            output = seal_predictions(manifest, predictions)
+            result = verify_prediction_seal(output)
+            print(f"Прогноз запечатан: {output}")
+            print(f"Целостность: {'OK' if result['valid'] else 'ОШИБКА'}")
+        elif choice == "4":
+            prediction_seal = Path(
+                input("Путь к prediction_seal.json: ").strip().strip('"')
+            )
+            references = _prompt_existing_files(
+                "Эталонные файлы через точку с запятой: "
+            )
+            output = attach_reference_after_seal(prediction_seal, references)
+            print(f"Эталон подключён после фиксации прогноза: {output}")
+        else:
+            print("Неизвестная команда.")
+    except Exception as exc:
+        print(f"Операция слепой верификации не выполнена: {exc}")
 
 
 def open_project_folder() -> None:
@@ -1366,6 +2255,119 @@ def prepare_protocol_scenario(scenario: dict) -> None:
     print("[!] Это протокол, а не выполненный аэродинамический расчёт.")
 
 
+def geometry_certification_workflow(scenario: dict | None = None) -> None:
+    """Certify one immutable VSP3 MASTER and create backend-specific twins."""
+    settings = load_settings()
+    project = default_project_path()
+    project_config_path = project / "project_config.json"
+    if not project_config_path.is_file():
+        print("Проект или project_config.json не найден. Сначала создайте/выберите проект.")
+        return
+    openvsp_dir = find_openvsp_dir(settings.get("openvsp", {}).get("install_dir"))
+    tools = tool_paths(openvsp_dir)
+    if tools["vspscript"] is None or not tools["vspscript"].is_file():
+        print("OpenVSP/vspscript не найден. Сначала выполните проверку среды.")
+        return
+    if not GEOMETRY_POLICY_PATH.is_file():
+        print(f"Не найдена политика сертификации: {GEOMETRY_POLICY_PATH}")
+        return
+
+    print("\nАвтоматическая сертификация геометрии G0–G8")
+    print("-" * 58)
+    print("MASTER останется неизменным; все исправления выполняются только в двойниках.")
+    source_text = input("Полный путь к MASTER OpenVSP .vsp3: ").strip().strip('"')
+    source = Path(source_text) if source_text else Path()
+    if not source_text or not source.is_file() or source.suffix.lower() != ".vsp3":
+        print("Не найден корректный MASTER .vsp3.")
+        return
+
+    try:
+        project_payload = json.loads(project_config_path.read_text(encoding="utf-8"))
+        cert_config = project_payload.get("geometry_certification", {})
+        if not isinstance(cert_config, dict):
+            raise ValueError("project_config.geometry_certification должен быть объектом")
+        policy_overrides = cert_config.get("policy_overrides") or {}
+        scope_override = cert_config.get("scope_override")
+        if not isinstance(policy_overrides, dict):
+            raise ValueError("geometry_certification.policy_overrides должен быть объектом")
+        if scope_override is not None and not isinstance(scope_override, dict):
+            raise ValueError("geometry_certification.scope_override должен быть объектом или null")
+
+        tri_default = cert_config.get("tri_path")
+        tri_prompt = "TRI для сертификации MachLine или Enter"
+        if tri_default:
+            tri_prompt += f", по умолчанию {tri_default}"
+        tri_text = input(tri_prompt + ": ").strip().strip('"') or str(tri_default or "")
+        tri_path = None
+        if tri_text:
+            tri_path = Path(tri_text)
+            if not tri_path.is_absolute():
+                tri_path = project / tri_path
+            if not tri_path.is_file():
+                raise FileNotFoundError(f"Не найден TRI: {tri_path}")
+
+        project_reference = load_project_reference(project, settings)
+        reference = {
+            "area": project_reference["area"],
+            "cref": project_reference["longitudinal_length"],
+            "bref": project_reference["lateral_length"],
+            "center": project_reference["center"],
+        }
+        run_probes = bool(cert_config.get("run_vspaero_probes", True))
+        machline = find_machline(settings)
+        executables = {
+            "vspscript": tools["vspscript"],
+            "vspaero": tools["vspaero"] if tools["vspaero"] and tools["vspaero"].is_file() else None,
+            "machline": machline if machline.is_file() else None,
+        }
+        print(f"Проект : {project.name}")
+        print(
+            f"Опоры  : Sref={reference['area']:g}; cref={reference['cref']:g}; "
+            f"bref={reference['bref']:g}; CG={reference['center']}"
+        )
+        print(f"Проба VSPAERO: {'да' if run_probes else 'нет (диагностический пакет без допуска)'}")
+        result = certify_geometry(
+            master_path=source,
+            output_root=project / "11_geometry_certification",
+            project_name=project.name,
+            reference=reference,
+            policy_path=GEOMETRY_POLICY_PATH,
+            executables=executables,
+            tri_path=tri_path,
+            scope_override=scope_override,
+            policy_overrides=policy_overrides,
+            run_vspaero_probes=run_probes,
+        )
+    except Exception as exc:
+        print(f"[ОШИБКА] Сертификация не запущена или аварийно завершилась: {exc}")
+        return
+
+    certificate = result["certificate"]
+    pointer_name = "latest_certificate.json" if certificate.get("verdict") != "FAIL" else "latest_failed_certificate.json"
+    latest_path = project / "11_geometry_certification" / pointer_name
+    save_report(latest_path, {
+        "certificate_id": certificate.get("certificate_id"),
+        "verdict": certificate.get("verdict"),
+        "master_sha256": certificate.get("master", {}).get("sha256_before"),
+        "certificate_path": str(result["certificate_path"].resolve()),
+        "report_path": str(result["report_path"].resolve()),
+        "updated_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+    })
+    flags = certificate.get("flags", {})
+    blockers = [item for item in certificate.get("findings", []) if item.get("severity") == "BLOCKER"]
+    print("\nСертификация завершена")
+    print("-" * 58)
+    print(f"Вердикт      : {certificate.get('verdict')}")
+    print(f"ID           : {certificate.get('certificate_id')}")
+    print(f"MASTER цел   : {'да' if flags.get('master_unchanged') else 'НЕТ'}")
+    print(f"Решатель     : {'допущен' if flags.get('solver_eligible') else 'не допущен'}")
+    print(f"Гибрид нужен : {'да' if flags.get('hybrid_substitution_required') else 'нет'}")
+    print(f"Блокирующих  : {len(blockers)}")
+    print(f"Сертификат   : {result['certificate_path']}")
+    print(f"Отчёт        : {result['report_path']}")
+    print(f"Последний ID : {latest_path}")
+
+
 def run_calculation_scenario() -> None:
     try:
         catalog = load_scenario_catalog(SCENARIOS_PATH)
@@ -1396,6 +2398,8 @@ def run_calculation_scenario() -> None:
         diagnose_existing_tri()
     elif execution == "vspaero_study":
         run_standard_vspaero_study(scenario)
+    elif execution == "geometry_certification":
+        geometry_certification_workflow(scenario)
     else:
         prepare_protocol_scenario(scenario)
 
@@ -1415,9 +2419,10 @@ def menu() -> None:
         print("[8] Импортировать VSP3 и запустить VSPAERO с ручным диапазоном")
         print("[9] Готовые сценарии расчёта RepairMach 9.1")
         print("[10] Рассчитать OpenVSP Parasite Drag")
-        print("[11] Собрать гибридный отчёт")
+        print("[11] Автоматический гибридный расчёт и Excel с графиками")
         print("[12] Открыть папку проекта")
         print("[13] Запустить готовый .vspscript (расширенный режим)")
+        print("[14] Слепая верификация: запечатать входы и прогноз")
         print("[0] Выход")
         choice = input("\nВыбор: ").strip()
 
@@ -1447,6 +2452,8 @@ def menu() -> None:
             open_project_folder()
         elif choice == "13":
             run_openvsp_script_workflow()
+        elif choice == "14":
+            blind_study_control_workflow()
         elif choice == "0":
             return
         else:

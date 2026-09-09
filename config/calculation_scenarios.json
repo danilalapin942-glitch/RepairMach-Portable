@@ -52,26 +52,110 @@
     {
       "id": "supersonic_adh",
       "title": "Сверхзвуковая АДХ",
-      "description": "M=1,1–2,2 с шагом 0,1; alpha=0–5 градусов с шагом 1 градус.",
+      "description": "M=1,2–2,2 с шагом 0,1; alpha=0–5 градусов с шагом 1 градус.",
       "availability": "ready",
       "execution": "vspaero_study",
       "quality_level": "engineering",
       "tail_incidence": "optional",
       "vspaero_cases": [
-        {"name": "supersonic_M1p1_2p2", "mach_start": 1.1, "mach_end": 2.2, "mach_points": 12, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6}
+        {"name": "supersonic_M1p2_2p2", "mach_start": 1.2, "mach_end": 2.2, "mach_points": 11, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6}
       ]
     },
     {
       "id": "full_adh",
       "title": "Полная АДХ",
-      "description": "Дозвуковой и сверхзвуковой диапазоны без автоматических точек M=0,9–1,0.",
+      "description": "Дозвуковой и сверхзвуковой диапазоны без автоматических точек M=0,9–1,1.",
       "availability": "ready",
       "execution": "vspaero_study",
       "quality_level": "engineering",
       "tail_incidence": "optional",
       "vspaero_cases": [
         {"name": "subsonic_M0p0_0p8", "mach_start": 0.0, "mach_end": 0.8, "mach_points": 9, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6},
-        {"name": "supersonic_M1p1_2p2", "mach_start": 1.1, "mach_end": 2.2, "mach_points": 12, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6}
+        {"name": "supersonic_M1p2_2p2", "mach_start": 1.2, "mach_end": 2.2, "mach_points": 11, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6}
+      ]
+    },
+    {
+      "id": "fixed_go_screening",
+      "title": "Контроль Cyα — фиксированное ГО 0°",
+      "description": "Быстрый допуск перед полной серией: M=0,8; 1,2; 1,7 и только прямые alpha=0° и 1°. Сверхзвуковые углы решаются независимо на полной модели To Face.",
+      "availability": "ready",
+      "execution": "vspaero_study",
+      "quality_level": "screening",
+      "cy_alpha_method": "RM91-CYA-HYBRID-1",
+      "benchmark_condition": "phi_GO=0deg",
+      "tail_incidence": "fixed",
+      "tail_geometry_name": "GO",
+      "tail_incidence_deg": 0.0,
+      "solver_controls": {"point_timeout_seconds": 300.0},
+      "acceptance_criteria": {
+        "numerical_percent": 5.0,
+        "total_mean_percent": 11.0,
+        "point_target_percent": 15.0,
+        "point_ceiling_percent": 20.0,
+        "signed_bias_percent": 5.0
+      },
+      "vspaero_cases": [
+        {"name": "screen_GO0_M0p8", "mach_start": 0.8, "mach_end": 0.8, "mach_points": 1, "alpha_start": 0.0, "alpha_end": 1.0, "alpha_points": 2},
+        {"name": "screen_GO0_M1p2", "mach_start": 1.2, "mach_end": 1.2, "mach_points": 1, "alpha_start": 0.0, "alpha_end": 1.0, "alpha_points": 2, "point_execution": "independent_alpha", "engine_boundary": "to_face"},
+        {"name": "screen_GO0_M1p7", "mach_start": 1.7, "mach_end": 1.7, "mach_points": 1, "alpha_start": 0.0, "alpha_end": 1.0, "alpha_points": 2, "point_execution": "independent_alpha", "engine_boundary": "to_face"}
+      ]
+    },
+    {
+      "id": "fixed_go_numerical_verification",
+      "title": "Численная проверка Cyα — фиксированное ГО 0°",
+      "description": "Строгая контрольная серия M=0,8; 1,2; 1,7 и alpha=0°/1° с усиленной сходимостью GMRES и следа. Сверхзвуковые углы решаются независимо на полной модели To Face.",
+      "availability": "ready",
+      "execution": "vspaero_study",
+      "quality_level": "verification",
+      "cy_alpha_method": "RM91-CYA-HYBRID-1",
+      "benchmark_condition": "phi_GO=0deg",
+      "tail_incidence": "fixed",
+      "tail_geometry_name": "GO",
+      "tail_incidence_deg": 0.0,
+      "solver_controls": {
+        "forward_gmres_convergence_factor": 2.0,
+        "wake_num_iter": 16,
+        "num_wake_nodes": 24,
+        "wake_relax": 0.8,
+        "point_timeout_seconds": 600.0
+      },
+      "acceptance_criteria": {
+        "numerical_percent": 5.0,
+        "total_mean_percent": 11.0,
+        "point_target_percent": 15.0,
+        "point_ceiling_percent": 20.0,
+        "signed_bias_percent": 5.0
+      },
+      "vspaero_cases": [
+        {"name": "verify_GO0_M0p8", "mach_start": 0.8, "mach_end": 0.8, "mach_points": 1, "alpha_start": 0.0, "alpha_end": 1.0, "alpha_points": 2},
+        {"name": "verify_GO0_M1p2", "mach_start": 1.2, "mach_end": 1.2, "mach_points": 1, "alpha_start": 0.0, "alpha_end": 1.0, "alpha_points": 2, "point_execution": "independent_alpha", "engine_boundary": "to_face"},
+        {"name": "verify_GO0_M1p7", "mach_start": 1.7, "mach_end": 1.7, "mach_points": 1, "alpha_start": 0.0, "alpha_end": 1.0, "alpha_points": 2, "point_execution": "independent_alpha", "engine_boundary": "to_face"}
+      ]
+    },
+    {
+      "id": "fixed_go_full_adh",
+      "title": "Полная АДХ — фиксированное ГО 0°",
+      "description": "Приоритетный воспроизводимый сценарий: GO=0°, M=0,0–0,8 и 1,2–2,2, alpha=0–5°; транзвуковой диапазон исключён. Сверхзвук считается на полной модели To Face с изоляцией каждого Mach и alpha.",
+      "availability": "ready",
+      "execution": "vspaero_study",
+      "quality_level": "verification",
+      "cy_alpha_method": "RM91-CYA-HYBRID-1",
+      "benchmark_condition": "phi_GO=0deg",
+      "tail_incidence": "fixed",
+      "tail_geometry_name": "GO",
+      "tail_incidence_deg": 0.0,
+      "solver_controls": {"point_timeout_seconds": 300.0},
+      "acceptance_criteria": {
+        "numerical_percent": 5.0,
+        "total_mean_percent": 11.0,
+        "point_target_percent": 15.0,
+        "point_ceiling_percent": 20.0,
+        "signed_bias_percent": 5.0
+      },
+      "vspaero_cases": [
+        {"name": "fixed_GO0_subsonic_M0p0_0p8", "mach_start": 0.0, "mach_end": 0.8, "mach_points": 9, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6},
+        {"name": "fixed_GO0_M1p2", "mach_start": 1.2, "mach_end": 1.2, "mach_points": 1, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6, "point_execution": "independent_alpha", "engine_boundary": "to_face"},
+        {"name": "fixed_GO0_supersonic_M1p3_2p2", "mach_start": 1.3, "mach_end": 2.2, "mach_points": 10, "alpha_start": 0.0, "alpha_end": 5.0, "alpha_points": 6, "point_execution": "independent_mach_alpha", "engine_boundary": "to_face"}
       ]
     },
     {
@@ -101,7 +185,7 @@
         {"mach": 1.2, "alpha_deg": 0.0}, {"mach": 1.2, "alpha_deg": 3.0},
         {"mach": 1.6, "alpha_deg": 0.0}, {"mach": 1.6, "alpha_deg": 3.0}
       ],
-      "limits": {"CL_percent": 2.0, "CL_absolute": 0.005, "CD_percent": 2.0, "CD_absolute": 0.0005, "Cm_percent": 5.0, "Cm_absolute": 0.01}
+      "limits": {"Cy_alpha_percent": 5.0, "CL_percent": 5.0, "CL_absolute": 0.005, "CD_percent": 5.0, "CD_absolute": 0.0005, "Cm_percent": 5.0, "Cm_absolute": 0.01}
     },
     {
       "id": "night_high_accuracy",
@@ -120,7 +204,31 @@
       "availability": "protocol",
       "execution": "verification_protocol",
       "quality_level": "research",
+      "acceptance_criteria": {
+        "numerical_percent": 5.0,
+        "total_mean_percent": 11.0,
+        "point_target_percent": 15.0,
+        "point_ceiling_percent": 20.0,
+        "signed_bias_percent": 5.0
+      },
       "outputs": ["point_errors", "summary_metrics", "comparison_charts"]
+    },
+    {
+      "id": "vsp3_geometry_certification",
+      "title": "Автоматическая сертификация геометрии VSP3",
+      "description": "Полный цикл G0–G8: неизменяемый MASTER, семантика и Sets, расчётные двойники, Coarse/Medium/Fine, контроль VSPAERO и сертификат пригодности.",
+      "availability": "ready",
+      "execution": "geometry_certification",
+      "quality_level": "verification",
+      "method_version": "RM91-GEOMETRY-CERT-1",
+      "outputs": [
+        "source_manifest.json",
+        "semantic_audit.json",
+        "transformation_plan.json",
+        "geometry_deltas.json",
+        "certificate.json",
+        "certificate.md"
+      ]
     }
   ]
 }

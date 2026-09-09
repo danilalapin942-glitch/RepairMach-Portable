@@ -1,0 +1,9 @@
+{
+  "mesh_info": {"N_wake_panels": 0},
+  "solver_results": {"solver_status_code": 0, "residual": {"norm": 0.0001, "max": 0.00005}},
+  "total_forces": {"Cx": 0.020, "Cy": 0.0, "Cz": 0.100},
+  "input": {
+    "flow": {"freestream_mach_number": 0.8, "freestream_velocity": [100.0, 0.0, 0.0]},
+    "geometry": {"file": "demonstration_full.tri"}
+  }
+}

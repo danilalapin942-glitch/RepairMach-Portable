@@ -15,7 +15,7 @@ def standard_vspaero_cases(mode: str) -> list[dict]:
     """Return the version-9 standard sweeps.
 
     Mach spacing is 0.1. The combined mode stays split into two analyses so
-    that no automatic points are inserted in the 0.9--1.0 transonic gap.
+    that no automatic points are inserted in the 0.9--1.1 transonic gap.
     Alpha is always 0--5 degrees in one-degree increments.
     """
     key = mode.strip().lower()
@@ -46,10 +46,10 @@ def standard_vspaero_cases(mode: str) -> list[dict]:
             "alpha_points": 6,
         },
         "supersonic": {
-            "name": "supersonic_M1p1_2p2",
-            "mach_start": 1.1,
+            "name": "supersonic_M1p2_2p2",
+            "mach_start": 1.2,
             "mach_end": 2.2,
-            "mach_points": 12,
+            "mach_points": 11,
             "alpha_start": 0.0,
             "alpha_end": 5.0,
             "alpha_points": 6,
@@ -105,9 +105,17 @@ def generate_vspaero_sweep_script(
     fuselage_user_set: int = 1,
     wing_user_set: int = 2,
     ncpu: int = 4,
+    forward_gmres_convergence_factor: float = 1.0,
+    wake_num_iter: int = 8,
+    num_wake_nodes: int = 24,
+    wake_relax: float = 0.8,
     tail_geometry_name: str | None = None,
     tail_incidence_deg: float = 0.0,
+    engine_boundary: str | None = None,
+    engine_geometry_aliases: list[str] | None = None,
     require_canonical_components: bool = False,
+    require_nonempty_fuselage_set: bool = True,
+    require_all_geometries_assigned: bool = True,
 ) -> None:
     """Generate a self-validating mixed thick/thin VSPAERO sweep script."""
     if not vsp3_path.is_file():
@@ -120,12 +128,29 @@ def generate_vspaero_sweep_script(
         raise ValueError("Центр масс должен содержать X, Y, Z")
     if ncpu < 1:
         raise ValueError("Число потоков VSPAERO должно быть не меньше 1")
+    if forward_gmres_convergence_factor <= 0.0:
+        raise ValueError("Коэффициент сходимости GMRES должен быть положительным")
+    if wake_num_iter < 1:
+        raise ValueError("Число итераций следа должно быть не меньше 1")
+    if num_wake_nodes < 2:
+        raise ValueError("Число узлов следа должно быть не меньше 2")
+    if not 0.0 < wake_relax <= 1.0:
+        raise ValueError("Коэффициент релаксации следа должен лежать в (0; 1]")
     if fuselage_user_set == wing_user_set:
         raise ValueError("Наборы фюзеляжа и крыла должны различаться")
     if tail_geometry_name is not None and not tail_geometry_name.strip():
         raise ValueError("Имя геометрии горизонтального оперения пустое")
     if not math.isfinite(float(tail_incidence_deg)):
         raise ValueError("Угол горизонтального оперения должен быть конечным числом")
+    if engine_boundary not in {None, "model", "to_face"}:
+        raise ValueError("engine_boundary должен быть model, to_face или None")
+    engine_geometry_aliases = list(engine_geometry_aliases or [])
+    if (
+        any(not isinstance(name, str) or not name.strip() or name != name.strip()
+            for name in engine_geometry_aliases)
+        or len(engine_geometry_aliases) != len(set(engine_geometry_aliases))
+    ):
+        raise ValueError("Имена alias мотогондол должны быть уникальными непустыми строками")
 
     thick_set = user_set_to_api_index(fuselage_user_set)
     thin_set = user_set_to_api_index(wing_user_set)
@@ -136,7 +161,9 @@ def generate_vspaero_sweep_script(
         tail_validation = '''
     Print( "TAIL;MODE=model_default" );
 '''
-        tail_apply = ""
+        tail_apply = '''
+    Print( "REPAIRMACH_TAIL_SETUP;MODE=model_default;VALID=true" );
+'''
     else:
         tail_name = _vsp_string(tail_geometry_name.strip())
         tail_validation = f'''
@@ -164,10 +191,30 @@ def generate_vspaero_sweep_script(
     }}
 '''
         tail_apply = f'''
-    SetParmVal( tail_id, "Y_Rel_Rotation", "XForm", {float(tail_incidence_deg):.17g} );
-    Update();
-    WriteVSPFile( "{_vsp_path(vsp3_path)}", 0 );
-    Print( "REPAIRMACH_TAIL_INCIDENCE_APPLIED={float(tail_incidence_deg):.17g}" );
+    string tail_rotation_parm = FindParm( tail_id, "Y_Rel_Rotation", "XForm" );
+    if ( !ValidParm( tail_rotation_parm ) )
+    {{
+        Print( "ERROR=Horizontal-tail incidence parameter is missing;ID=" + tail_id );
+        Print( "REPAIRMACH_TAIL_SETUP;MODE=fixed_incidence;NAME=" + GetGeomName( tail_id ) + ";ID=" + tail_id + ";REQUESTED_ANGLE_DEG={float(tail_incidence_deg):.17g};VALID=false" );
+        invalid_setup = true;
+    }}
+    else
+    {{
+        SetParmVal( tail_rotation_parm, {float(tail_incidence_deg):.17g} );
+        Update();
+        double actual_tail_incidence = GetParmVal( tail_rotation_parm );
+        bool tail_applied = actual_tail_incidence == actual_tail_incidence && abs( actual_tail_incidence - {float(tail_incidence_deg):.17g} ) <= 1.0e-9;
+        Print( "REPAIRMACH_TAIL_SETUP;MODE=fixed_incidence;NAME=" + GetGeomName( tail_id ) + ";ID=" + tail_id + ";PARM_ID=" + tail_rotation_parm + ";REQUESTED_ANGLE_DEG={float(tail_incidence_deg):.17g};ACTUAL_ANGLE_DEG=" + actual_tail_incidence + ";VALID=" + tail_applied );
+        if ( !tail_applied )
+        {{
+            Print( "ERROR=Horizontal-tail incidence was not applied;ID=" + tail_id );
+            invalid_setup = true;
+        }}
+        else
+        {{
+            Print( "REPAIRMACH_TAIL_INCIDENCE_APPLIED=" + actual_tail_incidence );
+        }}
+    }}
 '''
 
     canonical_validation = ""
@@ -199,11 +246,128 @@ def generate_vspaero_sweep_script(
     }}
 '''
 
+    if engine_boundary in {None, "model"}:
+        engine_apply = '''
+    Print( "REPAIRMACH_ENGINE_BOUNDARY=model" );
+    Print( "REPAIRMACH_ENGINE_SETUP;MODE=model;VALID=true" );
+'''
+    else:
+        engine_name_match = (
+            'gondola_name == "Gondola" || '
+            '( gondola_name.length() >= 8 && gondola_name.substr( 0, 8 ) == "Gondola_" )'
+        )
+        for alias in engine_geometry_aliases:
+            engine_name_match += f' || gondola_name == "{_vsp_string(alias)}"'
+        engine_apply = '''
+    array<string> all_engine_geoms = FindGeoms();
+    int engine_expected_count = 0;
+    int engine_applied_count = 0;
+    for ( int engine_index = 0; engine_index < int( all_engine_geoms.size() ); ++engine_index )
+    {
+        string gondola_id = all_engine_geoms[engine_index];
+        string gondola_name = GetGeomName( gondola_id );
+        bool is_gondola = __ENGINE_NAME_MATCH__;
+        if ( !is_gondola )
+        {
+            continue;
+        }
+        engine_expected_count += 1;
+        string geom_in_parm = FindParm( gondola_id, "GeomInType", "EngineModel" );
+        string geom_out_parm = FindParm( gondola_id, "GeomOutType", "EngineModel" );
+        string inlet_mode_parm = FindParm( gondola_id, "InletModeType", "EngineModel" );
+        string outlet_mode_parm = FindParm( gondola_id, "OutletModeType", "EngineModel" );
+        bool engine_parms_valid = ValidParm( geom_in_parm ) && ValidParm( geom_out_parm ) && ValidParm( inlet_mode_parm ) && ValidParm( outlet_mode_parm );
+        if ( !engine_parms_valid )
+        {
+            Print( "ERROR=Gondola EngineModel parameters required for to_face are missing;ID=" + gondola_id );
+            Print( "REPAIRMACH_ENGINE_COMPONENT;MODE=to_face;NAME=" + gondola_name + ";ID=" + gondola_id + ";VALID=false" );
+            invalid_setup = true;
+            continue;
+        }
+
+        SetParmVal( geom_in_parm, 3 );
+        SetParmVal( geom_out_parm, 3 );
+        SetParmVal( inlet_mode_parm, 4 );
+        SetParmVal( outlet_mode_parm, 4 );
+        Update();
+        double actual_geom_in = GetParmVal( geom_in_parm );
+        double actual_geom_out = GetParmVal( geom_out_parm );
+        double actual_inlet_mode = GetParmVal( inlet_mode_parm );
+        double actual_outlet_mode = GetParmVal( outlet_mode_parm );
+        bool engine_applied = actual_geom_in == actual_geom_in && actual_geom_out == actual_geom_out && actual_inlet_mode == actual_inlet_mode && actual_outlet_mode == actual_outlet_mode && abs( actual_geom_in - 3.0 ) <= 1.0e-9 && abs( actual_geom_out - 3.0 ) <= 1.0e-9 && abs( actual_inlet_mode - 4.0 ) <= 1.0e-9 && abs( actual_outlet_mode - 4.0 ) <= 1.0e-9;
+        Print( "REPAIRMACH_ENGINE_COMPONENT;MODE=to_face;NAME=" + gondola_name + ";ID=" + gondola_id + ";GEOM_IN_TYPE=" + actual_geom_in + ";GEOM_OUT_TYPE=" + actual_geom_out + ";INLET_MODE_TYPE=" + actual_inlet_mode + ";OUTLET_MODE_TYPE=" + actual_outlet_mode + ";VALID=" + engine_applied );
+        if ( !engine_applied )
+        {
+            Print( "ERROR=Gondola to_face boundary parameters were not applied;ID=" + gondola_id );
+            invalid_setup = true;
+        }
+        else
+        {
+            engine_applied_count += 1;
+            Print( "REPAIRMACH_ENGINE_BOUNDARY_APPLIED=to_face;NAME=" + gondola_name + ";ID=" + gondola_id );
+        }
+    }
+    bool engine_setup_valid = engine_expected_count > 0 && engine_applied_count == engine_expected_count && !invalid_setup;
+    Print( "REPAIRMACH_ENGINE_SETUP;MODE=to_face;EXPECTED_COUNT=" + engine_expected_count + ";APPLIED_COUNT=" + engine_applied_count + ";VALID=" + engine_setup_valid );
+    if ( !engine_setup_valid )
+    {
+        Print( "ERROR=To-Face requires every Gondola/Gondola_suffix component;EXPECTED_COUNT=" + engine_expected_count + ";APPLIED_COUNT=" + engine_applied_count );
+        invalid_setup = true;
+    }
+'''
+        engine_apply = engine_apply.replace("__ENGINE_NAME_MATCH__", engine_name_match)
+
+    setup_write = ""
+    if tail_geometry_name is not None or engine_boundary == "to_face":
+        setup_write = f'''
+    WriteVSPFile( "{_vsp_path(vsp3_path)}", 0 );
+    int setup_write_error_count = GetNumTotalErrors();
+    while ( GetNumTotalErrors() > 0 )
+    {{
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }}
+    if ( setup_write_error_count > 0 )
+    {{
+        Print( "REPAIRMACH_ABORTED_SETUP_WRITE_ERRORS=1" );
+        return;
+    }}
+'''
+
+    if require_nonempty_fuselage_set:
+        thick_set_validation = f'''
+    if ( thick_geoms.size() == 0 )
+    {{
+        Print( "ERROR=Set_{fuselage_user_set} is empty" );
+        invalid_sets = true;
+    }}
+'''
+    else:
+        thick_set_validation = '''
+    if ( thick_geoms.size() == 0 )
+    {
+        Print( "DIAGNOSTIC=Empty thick-geometry set accepted" );
+    }
+'''
+
+    if require_all_geometries_assigned:
+        unassigned_validation = f'''
+        if ( !in_thick && !in_thin )
+        {{
+            Print( "ERROR=Geometry is not assigned to Set_{fuselage_user_set} or Set_{wing_user_set};ID=" + gid + ";NAME=" + name );
+            invalid_sets = true;
+        }}
+'''
+    else:
+        unassigned_validation = ""
+
     text = f'''void main()
 {{
     ClearVSPModel();
     ReadVSPFile( "{_vsp_path(vsp3_path)}" );
     Update();
+    bool invalid_setup = false;
+{engine_apply}
 
     int thick_set = {thick_set};
     int thin_set = {thin_set};
@@ -216,11 +380,7 @@ def generate_vspaero_sweep_script(
     Print( "ROLE=fuselage_and_nacelles;USER_SET={fuselage_user_set};API_INDEX=" + thick_set + ";NAME=" + GetSetName( thick_set ) + ";COUNT=" + thick_geoms.size() );
     Print( "ROLE=wing_and_empennage;USER_SET={wing_user_set};API_INDEX=" + thin_set + ";NAME=" + GetSetName( thin_set ) + ";COUNT=" + thin_geoms.size() );
 
-    if ( thick_geoms.size() == 0 )
-    {{
-        Print( "ERROR=Set_{fuselage_user_set} is empty" );
-        invalid_sets = true;
-    }}
+{thick_set_validation}
     if ( thin_geoms.size() == 0 )
     {{
         Print( "ERROR=Set_{wing_user_set} is empty" );
@@ -241,11 +401,7 @@ def generate_vspaero_sweep_script(
             Print( "ERROR=Geometry belongs to both sets;ID=" + gid + ";NAME=" + name );
             invalid_sets = true;
         }}
-        if ( !in_thick && !in_thin )
-        {{
-            Print( "ERROR=Geometry is not assigned to Set_{fuselage_user_set} or Set_{wing_user_set};ID=" + gid + ";NAME=" + name );
-            invalid_sets = true;
-        }}
+{unassigned_validation}
         if ( in_thick && geom_type == "Wing" )
         {{
             Print( "ERROR=Wing geometry is assigned to fuselage Set_{fuselage_user_set};ID=" + gid + ";NAME=" + name );
@@ -266,6 +422,19 @@ def generate_vspaero_sweep_script(
         return;
     }}
 {tail_apply}
+    int setup_error_count = GetNumTotalErrors();
+    while ( GetNumTotalErrors() > 0 )
+    {{
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }}
+    if ( invalid_setup || setup_error_count > 0 )
+    {{
+        Print( "REPAIRMACH_ABORTED_SETUP_VALIDATION=1" );
+        return;
+    }}
+{setup_write}
+    Print( "REPAIRMACH_SETUP_VALIDATION=OK" );
     Print( "REPAIRMACH_SET_VALIDATION=OK" );
 
     string compute_name = "VSPAEROComputeGeometry";
@@ -319,17 +488,30 @@ def generate_vspaero_sweep_script(
     SetIntAnalysisInput( sweep_name, "BetaNpts", beta_points );
     array<int> cpu_count(1, {int(ncpu)});
     SetIntAnalysisInput( sweep_name, "NCPU", cpu_count );
+    array<double> gmres_factor(1, {float(forward_gmres_convergence_factor):.17g});
+    array<int> wake_iterations(1, {int(wake_num_iter)});
+    array<int> wake_nodes(1, {int(num_wake_nodes)});
+    array<double> wake_relaxation(1, {float(wake_relax):.17g});
+    SetDoubleAnalysisInput( sweep_name, "ForwardGMRESConvergenceFactor", gmres_factor );
+    SetIntAnalysisInput( sweep_name, "WakeNumIter", wake_iterations );
+    SetIntAnalysisInput( sweep_name, "NumWakeNodes", wake_nodes );
+    SetDoubleAnalysisInput( sweep_name, "WakeRelax", wake_relaxation );
 
     string sweep_result = ExecAnalysis( sweep_name );
     Print( "REPAIRMACH_SWEEP_RESULT_ID=" + sweep_result );
     WriteResultsCSVFile( sweep_result, "{_vsp_path(results_csv_path)}" );
-    Print( "REPAIRMACH_VSPAERO_COMPLETE=1" );
-
+    int solver_error_count = GetNumTotalErrors();
     while ( GetNumTotalErrors() > 0 )
     {{
         ErrorObj err = PopLastError();
         Print( "OPENVSP_ERROR=" + err.GetErrorString() );
     }}
+    if ( solver_error_count > 0 )
+    {{
+        Print( "REPAIRMACH_ABORTED_SOLVER_ERRORS=1" );
+        return;
+    }}
+    Print( "REPAIRMACH_VSPAERO_COMPLETE=1" );
 }}
 '''
     script_path.write_text(text, encoding="utf-8")
@@ -341,9 +523,27 @@ def parse_set_report(log_text: str) -> dict:
     geometries: list[dict] = []
     errors: list[str] = []
     tail: dict = {}
+    tail_setup: dict = {}
+    engine_setup: dict = {}
+    engine_components: list[dict] = []
     inside = False
     for raw_line in log_text.splitlines():
         line = raw_line.strip()
+        if line.startswith("ERROR="):
+            errors.append(line.removeprefix("ERROR="))
+            continue
+        if line.startswith("OPENVSP_ERROR="):
+            errors.append(line)
+            continue
+        if line.startswith("REPAIRMACH_TAIL_SETUP;"):
+            tail_setup = _parse_fields(line)
+            continue
+        if line.startswith("REPAIRMACH_ENGINE_SETUP;"):
+            engine_setup = _parse_fields(line)
+            continue
+        if line.startswith("REPAIRMACH_ENGINE_COMPONENT;"):
+            engine_components.append(_parse_fields(line))
+            continue
         if line == "REPAIRMACH_SET_REPORT_BEGIN":
             inside = True
             continue
@@ -369,15 +569,101 @@ def parse_set_report(log_text: str) -> dict:
             tail = _parse_fields(line)
             if "ANGLE_DEG" in tail:
                 tail["ANGLE_DEG"] = float(tail["ANGLE_DEG"])
-        elif line.startswith("ERROR="):
-            errors.append(line.removeprefix("ERROR="))
+
+    for setup_name, setup in (("ГО", tail_setup), ("Engine boundary", engine_setup)):
+        if not setup:
+            errors.append(f"Отсутствует машинное подтверждение настройки: {setup_name}")
+            continue
+        setup["VALID"] = str(setup.get("VALID", "false")).lower() in {"1", "true"}
+        if not setup["VALID"]:
+            errors.append(f"Настройка не подтверждена: {setup_name}")
+
+    if tail_setup.get("MODE") == "fixed_incidence" and tail_setup.get("VALID"):
+        try:
+            requested = float(tail_setup["REQUESTED_ANGLE_DEG"])
+            actual = float(tail_setup["ACTUAL_ANGLE_DEG"])
+            tail_setup["REQUESTED_ANGLE_DEG"] = requested
+            tail_setup["ACTUAL_ANGLE_DEG"] = actual
+            if not all(math.isfinite(value) for value in (requested, actual)) or abs(actual - requested) > 1.0e-9:
+                errors.append("Фактический угол ГО не совпадает с заданным")
+        except (KeyError, TypeError, ValueError):
+            errors.append("Машинное подтверждение угла ГО неполно")
+
+    if engine_setup.get("MODE") == "to_face" and engine_setup.get("VALID"):
+        try:
+            expected_count = int(engine_setup["EXPECTED_COUNT"])
+            applied_count = int(engine_setup["APPLIED_COUNT"])
+            engine_setup["EXPECTED_COUNT"] = expected_count
+            engine_setup["APPLIED_COUNT"] = applied_count
+            if expected_count < 1 or applied_count != expected_count:
+                errors.append(
+                    "Engine to_face: число подтверждённых мотогондол не совпадает с ожидаемым"
+                )
+            if len(engine_components) != expected_count:
+                errors.append(
+                    "Engine to_face: неполный набор машинных подтверждений мотогондол"
+                )
+        except (KeyError, TypeError, ValueError):
+            errors.append("Engine to_face: итоговое подтверждение количества неполно")
+
+        expected_engine = {
+            "GEOM_IN_TYPE": 3.0,
+            "GEOM_OUT_TYPE": 3.0,
+            "INLET_MODE_TYPE": 4.0,
+            "OUTLET_MODE_TYPE": 4.0,
+        }
+        seen_ids: set[str] = set()
+        for component in engine_components:
+            component["VALID"] = str(component.get("VALID", "false")).lower() in {
+                "1", "true"
+            }
+            geom_id = str(component.get("ID", ""))
+            if not geom_id or geom_id in seen_ids:
+                errors.append("Engine to_face: отсутствует или повторяется ID мотогондолы")
+            seen_ids.add(geom_id)
+            if not component["VALID"]:
+                errors.append(
+                    f"Engine to_face: настройка мотогондолы {component.get('NAME', geom_id)} не подтверждена"
+                )
+            for key, expected in expected_engine.items():
+                try:
+                    actual = float(component[key])
+                    component[key] = actual
+                    if not math.isfinite(actual) or abs(actual - expected) > 1.0e-9:
+                        errors.append(
+                            f"Engine to_face: {component.get('NAME', geom_id)} "
+                            f"{key}={actual:g}, ожидалось {expected:g}"
+                        )
+                except (KeyError, TypeError, ValueError):
+                    errors.append(
+                        f"Engine to_face: у {component.get('NAME', geom_id)} "
+                        f"отсутствует фактическое значение {key}"
+                    )
+
+    setup_valid = "REPAIRMACH_SETUP_VALIDATION=OK" in log_text and not any(
+        marker in log_text for marker in (
+            "REPAIRMACH_ABORTED_SETUP_VALIDATION=1",
+            "REPAIRMACH_ABORTED_SETUP_WRITE_ERRORS=1",
+        )
+    )
+    if not setup_valid:
+        errors.append("Настройка VSPAERO не получила финальный маркер SETUP_VALIDATION")
     return {
         "roles": roles,
         "geometries": geometries,
         "errors": errors,
         "tail": tail,
-        "valid": not errors and "REPAIRMACH_SET_VALIDATION=OK" in log_text,
-        "calculation_complete": "REPAIRMACH_VSPAERO_COMPLETE=1" in log_text,
+        "tail_setup": tail_setup,
+        "engine_setup": engine_setup,
+        "engine_components": engine_components,
+        "setup_valid": setup_valid,
+        "valid": not errors and "REPAIRMACH_SET_VALIDATION=OK" in log_text and setup_valid,
+        "calculation_complete": (
+            not errors
+            and setup_valid
+            and "REPAIRMACH_VSPAERO_COMPLETE=1" in log_text
+            and "REPAIRMACH_ABORTED_SOLVER_ERRORS=1" not in log_text
+        ),
     }
 
 
