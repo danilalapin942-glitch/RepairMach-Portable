@@ -558,6 +558,38 @@ def write_certificate_report(path: Path, certificate: dict) -> None:
                 "Нельзя выбирать единственную сетку, на которой отказ случайно исчез: "
                 "допуск выдаётся только по полной сеточной лестнице.",
             ])
+    plateau_anchors = []
+    if isinstance(probes, dict):
+        for mode_name, qualification in probes.items():
+            if not isinstance(qualification, dict):
+                continue
+            for anchor in qualification.get("anchors", []):
+                convergence = anchor.get("convergence", {})
+                if convergence.get("local_span_plateau_attempted"):
+                    plateau_anchors.append((mode_name, anchor, convergence))
+    if plateau_anchors:
+        lines.extend([
+            "",
+            "## Локальная сеточная полка после отказа плотной сетки",
+            "",
+            "Плотная сетка с нечисловым результатом сохранена как отклонённое "
+            "доказательство. Допуск основан только на трёх валидных, повторно "
+            "прочитанных уровнях непосредственно ниже границы устойчивости; "
+            "численный допуск не изменялся.",
+            "",
+            "| Постановка | M | alpha | Принятые уровни | CL, последнее изменение | CD, последнее изменение |",
+            "|---|---:|---:|---|---:|---:|",
+        ])
+        for mode_name, anchor, convergence in plateau_anchors:
+            quantities = convergence.get("quantities", {})
+            cl_change = quantities.get("CLtot", {}).get("medium_fine_relative")
+            cd_change = quantities.get("CDtot", {}).get("medium_fine_relative")
+            lines.append(
+                f"| {mode_name} | {anchor.get('mach')} | {anchor.get('alpha_deg')} | "
+                f"{', '.join(convergence.get('level_sequence', []))} | "
+                f"{'' if cl_change is None else f'{100.0 * float(cl_change):.3f}%'} | "
+                f"{'' if cd_change is None else f'{100.0 * float(cd_change):.3f}%'} |"
+            )
     lines.extend([
         "",
         "## Артефакты",

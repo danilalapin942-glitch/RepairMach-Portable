@@ -1146,6 +1146,144 @@ def mesh_convergence(
     }
 
 
+def _is_nonfinite_solver_failure(probe: dict) -> bool:
+    """Return True only for a numerical solver breakdown, not a setup error."""
+    if probe.get("valid"):
+        return False
+    health_errors = {str(item) for item in probe.get("health_errors", [])}
+    output_errors = " ".join(
+        str(item) for item in probe.get("output_quality", {}).get("errors", [])
+    ).lower()
+    return "nan_or_inf" in health_errors and "nonfinite_solver" in output_errors
+
+
+def _build_local_span_plateau_meshes(
+    *,
+    mode: str,
+    meshes: dict[str, dict],
+    run_dir: Path,
+    condition_id: str,
+    reference: dict,
+    policy: dict,
+    executable: Path,
+) -> dict:
+    """Build two verified meshes immediately below Fine in thin Tess_W.
+
+    These meshes are not a looser fallback.  Together with Fine they form a
+    three-level local convergence ladder immediately below a denser mesh that
+    failed numerically.  Every persisted Tess_* value is read back and checked.
+    """
+    settings = (
+        policy.get("convergence", {})
+        .get("adaptive_refinement", {})
+        .get("local_span_plateau", {})
+    )
+    offsets = [int(item) for item in settings.get("backoff_offsets", [8, 4])]
+    if len(offsets) != 2 or not offsets[0] > offsets[1] > 0:
+        return {
+            "valid": False,
+            "levels": [],
+            "meshes": {},
+            "errors": ["Некорректные backoff_offsets локальной сеточной полки"],
+        }
+    fine_record = meshes.get("fine", {})
+    fine_policy = deepcopy(fine_record.get("mesh_policy", {}))
+    inventory_path = Path(str(fine_record.get("post_inventory", "")))
+    if not fine_policy or not inventory_path.is_file():
+        return {
+            "valid": False,
+            "levels": [],
+            "meshes": {},
+            "errors": ["Для локальной полки отсутствует проверенная сетка Fine"],
+        }
+    try:
+        fine_inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
+        fine_audit = semantic_audit(fine_inventory, reference, policy)
+        fine_tess_w = int(fine_policy["thin_tess_w"])
+    except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError) as exc:
+        return {
+            "valid": False,
+            "levels": [],
+            "meshes": {},
+            "errors": [f"Не удалось прочитать параметры Fine для локальной полки: {exc}"],
+        }
+
+    twin_name = "vspaero_lifting" if mode == "lifting" else "vspaero_mixed"
+    mode_token = "vl" if mode == "lifting" else "vm"
+    result_meshes: dict[str, dict] = {}
+    levels: list[str] = []
+    errors: list[str] = []
+    for offset in offsets:
+        target_tess_w = fine_tess_w - offset
+        level_name = f"local_span_m{offset}"
+        levels.append(level_name)
+        if target_tess_w < 2:
+            errors.append(
+                f"Локальный уровень {level_name} даёт недопустимый thin_tess_w={target_tess_w}"
+            )
+            continue
+        level_policy = deepcopy(fine_policy)
+        level_policy["thin_tess_w"] = target_tess_w
+        mesh_root = run_dir / "am" / mode_token / condition_id / level_name
+        destination = mesh_root / "model.vsp3"
+        actions = mesh_actions(fine_inventory, fine_audit, level_policy, twin_name)
+        record = apply_model_actions(
+            source_path=Path(fine_record["path"]),
+            output_path=destination,
+            actions=actions,
+            twin_name=twin_name,
+            vspscript_executable=executable,
+            work_dir=mesh_root / "script",
+            empty_thick_user_set=(
+                int(policy["sets"]["empty_thick_user_set"])
+                if mode == "lifting"
+                else None
+            ),
+        )
+        record["level"] = level_name
+        record["mesh_policy"] = deepcopy(level_policy)
+        verification = {
+            "valid": False,
+            "errors": ["Локальный сеточный двойник не создан"],
+        }
+        inventory_output = mesh_root / "diag" / "inventory.json"
+        if destination.is_file():
+            try:
+                inventory, _, _ = inventory_model(
+                    destination,
+                    vspscript_executable=executable,
+                    work_dir=inventory_output.parent,
+                )
+                write_json(inventory_output, inventory)
+                audit = semantic_audit(inventory, reference, policy)
+                verification = verify_mesh_inventory(inventory, audit, level_policy)
+            except Exception as exc:
+                verification = {
+                    "valid": False,
+                    "errors": [f"Сбой проверки локального сеточного двойника: {exc}"],
+                }
+        record["post_inventory"] = (
+            str(inventory_output.resolve()) if inventory_output.is_file() else None
+        )
+        record["mesh_verification"] = verification
+        record["valid"] = bool(record.get("valid") and verification.get("valid"))
+        if not record["valid"]:
+            record.setdefault("errors", []).extend(verification.get("errors", []))
+            errors.append(f"Локальный уровень {level_name} не прошёл проверку Tess_*")
+        result_meshes[level_name] = record
+    levels.append("fine")
+    return {
+        "valid": not errors and len(result_meshes) == 2,
+        "levels": levels,
+        "meshes": result_meshes,
+        "errors": errors,
+        "axis": "thin_tess_w",
+        "fine_value": fine_tess_w,
+        "backoff_offsets": offsets,
+        "acceptance_tolerance": float(policy["convergence"]["relative_tolerance"]),
+    }
+
+
 def _run_vspaero_ladder(
     *,
     mode: str,
@@ -1252,6 +1390,7 @@ def _run_vspaero_ladder(
         and failed_relative_changes
         and max(failed_relative_changes) <= retry_limit
     )
+    retry_probe = None
     if should_retry:
         retry_mesh = meshes.get(retry_level, {})
         retry_mesh_valid = bool(
@@ -1300,6 +1439,87 @@ def _run_vspaero_ladder(
     else:
         convergence["adaptive_refinement_attempted"] = False
         convergence["adaptive_recoverable_oscillation"] = recoverable_oscillation
+
+    # A denser grid can cross a numerical stability boundary of VSPAERO even
+    # when a locally converged family exists immediately below it.  In that
+    # narrowly defined case, construct two independently persisted Tess_W
+    # levels below Fine and require the same three-grid tolerance.  The failed
+    # denser probe remains rejection evidence and is never used as a result.
+    plateau_settings = adaptive.get("local_span_plateau", {})
+    should_try_plateau = bool(
+        plateau_settings.get("enabled", False)
+        and should_retry
+        and retry_probe is not None
+        and _is_nonfinite_solver_failure(retry_probe)
+        and not convergence.get("converged")
+    )
+    if should_try_plateau:
+        failed_refinement = deepcopy(convergence)
+        plateau = _build_local_span_plateau_meshes(
+            mode=mode,
+            meshes=meshes,
+            run_dir=run_dir,
+            condition_id=condition_id,
+            reference=reference,
+            policy=policy,
+            executable=executable,
+        )
+        plateau_probes: list[dict] = []
+        if plateau.get("valid"):
+            for level_name in plateau["levels"][:-1]:
+                mesh_record = plateau["meshes"][level_name]
+                local_probe = _run_one_vspaero_probe(
+                    model=Path(mesh_record["path"]),
+                    probe_dir=(
+                        run_dir
+                        / "probes"
+                        / f"vspaero_{mode}"
+                        / condition_id
+                        / level_name
+                    ),
+                    mode=mode,
+                    level=level_name,
+                    reference=reference,
+                    policy=policy,
+                    vspscript_executable=executable,
+                    mach=mach,
+                    alpha_deg=alpha,
+                    engine_boundary=boundary,
+                )
+                probes.append(local_probe)
+                plateau_probes.append(local_probe)
+                if not local_probe.get("valid"):
+                    break
+            fine_probe = next(
+                (item for item in probes if item.get("level") == "fine"), None
+            )
+            if len(plateau_probes) == 2 and fine_probe is not None:
+                convergence = mesh_convergence(
+                    [*plateau_probes, fine_probe],
+                    policy,
+                    levels=tuple(plateau["levels"]),
+                )
+            else:
+                convergence = {
+                    "valid": False,
+                    "converged": False,
+                    "level_sequence": list(plateau.get("levels", [])),
+                    "errors": ["Локальная полка не дала три валидных уровня"],
+                }
+        else:
+            convergence = {
+                "valid": False,
+                "converged": False,
+                "level_sequence": list(plateau.get("levels", [])),
+                "errors": list(plateau.get("errors", [])),
+            }
+        convergence["local_span_plateau_attempted"] = True
+        convergence["local_span_plateau"] = plateau
+        convergence["rejected_dense_refinement"] = retry_probe
+        convergence["pre_plateau_convergence"] = failed_refinement
+        convergence["initial_convergence"] = initial_convergence
+    else:
+        convergence["local_span_plateau_attempted"] = False
 
     # If ExtraFine brought every latest change inside the unchanged numerical
     # limits but the three-level direction still oscillates, one final
@@ -1387,6 +1607,12 @@ def _run_vspaero_ladder(
         convergence["initial_convergence"] = initial_convergence
     else:
         convergence["oscillation_resolution_attempted"] = False
+    probe_by_level = {item.get("level"): item for item in probes}
+    selected_levels = list(convergence.get("level_sequence", []))
+    selected_probes_valid = bool(selected_levels) and all(
+        level in probe_by_level and probe_by_level[level].get("valid")
+        for level in selected_levels
+    )
     return {
         "mode": mode,
         "id": condition_id,
@@ -1394,7 +1620,7 @@ def _run_vspaero_ladder(
         "alpha_deg": alpha,
         "beta_deg": float(policy["scope"].get("beta_deg", 0.0)),
         "engine_boundary": boundary,
-        "valid": all(item["valid"] for item in probes),
+        "valid": bool(convergence.get("valid") and selected_probes_valid),
         "converged": convergence["converged"],
         "probes": probes,
         "convergence": convergence,

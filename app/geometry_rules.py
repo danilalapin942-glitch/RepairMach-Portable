@@ -260,6 +260,21 @@ def validate_geometry_policy(policy: dict) -> None:
             raise ValueError(
                 "Порог адаптивного уточнения должен быть больше основного допуска и меньше 1"
             )
+        plateau = adaptive.get("local_span_plateau", {})
+        if plateau:
+            if not isinstance(plateau.get("enabled", False), bool):
+                raise ValueError("local_span_plateau.enabled должен быть логическим")
+            offsets = plateau.get("backoff_offsets", [8, 4])
+            if (
+                not isinstance(offsets, list)
+                or len(offsets) != 2
+                or any(isinstance(item, bool) or not isinstance(item, int) for item in offsets)
+                or not offsets[0] > offsets[1] > 0
+            ):
+                raise ValueError(
+                    "local_span_plateau.backoff_offsets должны содержать два "
+                    "положительных целых убывающих смещения"
+                )
 
     probe = policy.get("probes", {}).get("vspaero", {})
     probe_mach = float(probe.get("mach", math.nan))

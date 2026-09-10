@@ -101,7 +101,11 @@
       "enabled": true,
       "level": "extra_fine",
       "oscillation_resolution_level": "ultra_fine",
-      "max_initial_relative_for_retry": 0.10
+      "max_initial_relative_for_retry": 0.10,
+      "local_span_plateau": {
+        "enabled": true,
+        "backoff_offsets": [8, 4]
+      }
     }
   },
   "probes": {

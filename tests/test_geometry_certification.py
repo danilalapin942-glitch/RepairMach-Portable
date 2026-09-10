@@ -214,6 +214,11 @@ class GeometryPolicyTests(unittest.TestCase):
             list(policy["mesh_levels"]),
         )
         self.assertTrue(policy["convergence"]["adaptive_refinement"]["enabled"])
+        self.assertEqual(
+            [8, 4],
+            policy["convergence"]["adaptive_refinement"]
+            ["local_span_plateau"]["backoff_offsets"],
+        )
         self.assertEqual({"Wing", "Fuselage", "GO", "VO", "Gondola"}, set(policy["semantics"]["roles"]))
 
     def test_effective_policy_merges_without_mutating_base(self):
@@ -878,6 +883,139 @@ class GeometryPlanTests(unittest.TestCase):
             self.assertTrue(result["convergence"]["adaptive_recoverable_oscillation"])
             self.assertTrue(result["convergence"]["initial_convergence"]["oscillating"])
 
+    def test_vspaero_ladder_recovers_verified_local_span_plateau_after_dense_nan(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            meshes = {}
+            for level in ("coarse", "medium", "fine", "extra_fine"):
+                model = root / f"{level}.vsp3"
+                model.write_text(level, encoding="utf-8")
+                meshes[level] = {
+                    "path": str(model),
+                    "valid": True,
+                    "mesh_policy": deepcopy(self.policy["mesh_levels"][
+                        level if level in self.policy["mesh_levels"] else "fine"
+                    ]),
+                    "post_inventory": str(root / f"{level}.json"),
+                    "mesh_verification": {"valid": True},
+                }
+            local_meshes = {}
+            for level in ("local_span_m8", "local_span_m4"):
+                model = root / f"{level}.vsp3"
+                model.write_text(level, encoding="utf-8")
+                local_meshes[level] = {
+                    "path": str(model),
+                    "valid": True,
+                    "mesh_verification": {"valid": True},
+                }
+            values = {
+                "coarse": {"CLtot": 0.32938, "CDtot": 0.03544},
+                "medium": {"CLtot": 0.35252, "CDtot": 0.03775},
+                "fine": {"CLtot": 0.37617, "CDtot": 0.04009},
+                "local_span_m8": {"CLtot": 0.37482, "CDtot": 0.039963},
+                "local_span_m4": {"CLtot": 0.37459, "CDtot": 0.039941},
+            }
+
+            def make_probe(**kwargs):
+                level = kwargs["level"]
+                if level == "extra_fine":
+                    return {
+                        "level": level,
+                        "valid": False,
+                        "values": None,
+                        "health_errors": ["nan_or_inf"],
+                        "output_quality": {
+                            "errors": ["nonfinite_solver"],
+                        },
+                    }
+                return {"level": level, "valid": True, "values": values[level]}
+
+            plateau = {
+                "valid": True,
+                "levels": ["local_span_m8", "local_span_m4", "fine"],
+                "meshes": local_meshes,
+                "errors": [],
+                "axis": "thin_tess_w",
+            }
+            with patch(
+                "geometry_certification._run_one_vspaero_probe",
+                side_effect=make_probe,
+            ) as probe, patch(
+                "geometry_certification._build_local_span_plateau_meshes",
+                return_value=plateau,
+            ) as build_plateau:
+                result = _run_vspaero_ladder(
+                    mode="lifting",
+                    meshes=meshes,
+                    run_dir=root,
+                    reference=reference(),
+                    policy=self.policy,
+                    executable=root / "vspscript.exe",
+                )
+
+            self.assertEqual(6, probe.call_count)
+            build_plateau.assert_called_once()
+            self.assertTrue(result["valid"])
+            self.assertTrue(result["converged"])
+            self.assertTrue(result["convergence"]["local_span_plateau_attempted"])
+            self.assertEqual(
+                ["local_span_m8", "local_span_m4", "fine"],
+                result["convergence"]["level_sequence"],
+            )
+            self.assertFalse(
+                result["convergence"]["rejected_dense_refinement"]["valid"]
+            )
+
+    def test_vspaero_ladder_does_not_use_local_plateau_for_non_nan_failure(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            meshes = {}
+            for level in ("coarse", "medium", "fine", "extra_fine"):
+                model = root / f"{level}.vsp3"
+                model.write_text(level, encoding="utf-8")
+                meshes[level] = {
+                    "path": str(model),
+                    "valid": True,
+                    "mesh_verification": {"valid": True},
+                }
+            values = {
+                "coarse": {"CLtot": 0.32938, "CDtot": 0.03544},
+                "medium": {"CLtot": 0.35252, "CDtot": 0.03775},
+                "fine": {"CLtot": 0.37617, "CDtot": 0.04009},
+            }
+
+            def make_probe(**kwargs):
+                level = kwargs["level"]
+                if level == "extra_fine":
+                    return {
+                        "level": level,
+                        "valid": False,
+                        "values": None,
+                        "health_errors": ["timeout"],
+                        "output_quality": {"errors": ["missing_output"]},
+                    }
+                return {"level": level, "valid": True, "values": values[level]}
+
+            with patch(
+                "geometry_certification._run_one_vspaero_probe",
+                side_effect=make_probe,
+            ), patch(
+                "geometry_certification._build_local_span_plateau_meshes"
+            ) as build_plateau:
+                result = _run_vspaero_ladder(
+                    mode="lifting",
+                    meshes=meshes,
+                    run_dir=root,
+                    reference=reference(),
+                    policy=self.policy,
+                    executable=root / "vspscript.exe",
+                )
+
+            build_plateau.assert_not_called()
+            self.assertFalse(result["valid"])
+            self.assertFalse(result["converged"])
+            self.assertFalse(result["convergence"]["local_span_plateau_attempted"])
+
     def test_vspaero_ladder_uses_ultra_fine_only_for_unresolved_bounded_oscillation(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -997,6 +1135,45 @@ class GeometryManifestAndDeltaTests(unittest.TestCase):
         self.assertIn("| VO | конечное решение восстановлено |", text)
         self.assertIn("Локализованные группы: `VO`", text)
         self.assertIn("Нельзя выбирать единственную сетку", text)
+
+    def test_human_certificate_report_discloses_local_span_plateau(self):
+        certificate = {
+            "certificate_id": "RMC-PLATEAU",
+            "method_version": "test",
+            "verdict": "PASS_WITH_DECLARED_EXCLUSIONS",
+            "flags": {},
+            "master": {},
+            "qualification": {},
+            "backends": {},
+            "probes": {
+                "vspaero_lifting": {
+                    "anchors": [{
+                        "mach": 1.2,
+                        "alpha_deg": 5.0,
+                        "convergence": {
+                            "local_span_plateau_attempted": True,
+                            "level_sequence": [
+                                "local_span_m8",
+                                "local_span_m4",
+                                "fine",
+                            ],
+                            "quantities": {
+                                "CLtot": {"medium_fine_relative": 0.004342},
+                                "CDtot": {"medium_fine_relative": 0.003884},
+                            },
+                        },
+                    }]
+                }
+            },
+        }
+        with TemporaryDirectory() as tmp:
+            report = Path(tmp) / "certificate.md"
+            write_certificate_report(report, certificate)
+            text = report.read_text(encoding="utf-8")
+        self.assertIn("Локальная сеточная полка", text)
+        self.assertIn("local_span_m8, local_span_m4, fine", text)
+        self.assertIn("0.434%", text)
+        self.assertIn("0.388%", text)
 
     def test_raw_hash_detects_any_change(self):
         with TemporaryDirectory() as tmp:
