@@ -95,6 +95,15 @@ _VSPAERO_FATAL_PATTERNS = {
 }
 
 
+# VSPAERO can leave a few units of numerical lift in the sixth decimal place
+# when the alpha=beta=0 lifting-system right-hand side is exactly zero.  In
+# that case GMRES prints NaN only for the 0/0 *normalized* reduction while the
+# dimensional residual and the final aerodynamic row remain finite.  Keep the
+# tolerance well below the geometry-certification CL convergence allowance so
+# this exception cannot mask a genuinely lifting solution.
+_VSPAERO_ZERO_RHS_CL_TOLERANCE = 1.0e-5
+
+
 def _only_normalized_zero_rhs_nan(log_text: str) -> bool:
     """Recognize VSPAERO's finite-solution 0/0 residual normalization only."""
     nan_lines = [line for line in log_text.splitlines() if re.search(r"(?i)nan", line)]
@@ -214,7 +223,8 @@ def validate_vspaero_run_outputs(
         and all(
             abs(point["alpha_deg"]) <= alpha_tolerance
             and abs(point["Beta"]) <= alpha_tolerance
-            and abs(point["CLtot"]) <= 1.0e-12
+            and abs(point["CLtot"]) <= _VSPAERO_ZERO_RHS_CL_TOLERANCE
+            and abs(point["CDi"]) <= 1.0e-12
             and point["L2Res"] is not None
             and math.isfinite(point["L2Res"])
             for point in checked

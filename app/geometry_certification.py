@@ -2120,6 +2120,32 @@ def certify_geometry(
                         scope=f"vspaero_{ladder_name}",
                         evidence={"probes": warning_evidence},
                     ))
+                localized_failures = []
+                for anchor in ladder.get("anchors", []):
+                    diagnostics = anchor.get("failure_diagnostics")
+                    if not isinstance(diagnostics, dict):
+                        continue
+                    restored_groups = diagnostics.get(
+                        "groups_whose_exclusion_restored_solution", []
+                    )
+                    if not restored_groups:
+                        continue
+                    localized_failures.append({
+                        "mach": anchor.get("mach"),
+                        "alpha_deg": anchor.get("alpha_deg"),
+                        "mesh_level": diagnostics.get("condition", {}).get("mesh_level"),
+                        "groups": list(restored_groups),
+                    })
+                if localized_failures:
+                    findings.append(finding(
+                        "GEO-VSP-004",
+                        "WARNING",
+                        "Нечисловой отказ локализован по компонентам; подбор одной "
+                        "проходящей сетки запрещён, требуется исправление MASTER или "
+                        "явный физически обоснованный гибридный контракт",
+                        scope=f"vspaero_{ladder_name}",
+                        evidence={"localized_failures": localized_failures},
+                    ))
             if not mixed_ok and lifting and lifting.get("valid") and lifting.get("converged"):
                 findings.append(finding(
                     "GEO-VSP-002",

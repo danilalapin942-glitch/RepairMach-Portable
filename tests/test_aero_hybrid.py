@@ -235,6 +235,40 @@ class AeroHybridTests(unittest.TestCase):
                     allow_zero_rhs_normalization_nan=True,
                 )
 
+    def test_vspaero_output_gate_allows_roundoff_lift_for_zero_rhs_nan(self):
+        polar_text = """VSPAERO test
+ Beta Mach AoA Re/1e6 CLo CLi CLtot CDo CDi CDtot CStot
+ 0.0 1.7 0.0 10.0 -0.0000029 0.0 -0.0000029 0.00696 0.0 0.00696 0.0
+"""
+        log_text = (
+            "Solving... Mach: 1.700000 ... Alpha: 0.000000 ... Beta: 0\n"
+            "Wake Iter: 1 / 8 ... GMRES Iter: 0 ... Red: -nan(ind) / -1 "
+            "... Max: -nan(ind) / 1 ... KTRes: 0.00000\n"
+            "Wake Iter: 1 / 8 ... GMRES Iter: 1 ... Red: nan / -1 "
+            "... Max: nan / 1\n"
+            "1 1.7 0 0 -0.0000029 0 -0.0000029 0.00696 0 0.00696 "
+            "0 0 0 0 0 0 0 0 0 0 -14.4 -13.4 0.2\n"
+        )
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            polar = root / "run.polar"
+            log = root / "run.log"
+            polar.write_text(polar_text, encoding="utf-8")
+            log.write_text(log_text, encoding="utf-8")
+            report = validate_vspaero_run_outputs(
+                polar,
+                log,
+                mach_start=1.7,
+                mach_end=1.7,
+                mach_points=1,
+                alpha_start=0.0,
+                alpha_end=0.0,
+                alpha_points=1,
+                allow_zero_rhs_normalization_nan=True,
+            )
+        self.assertTrue(report["valid"])
+        self.assertTrue(report["benign_zero_rhs_normalization_nan"])
+
     def test_hybrid_build_up_has_no_calibration_offset(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)

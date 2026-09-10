@@ -996,6 +996,7 @@ class GeometryManifestAndDeltaTests(unittest.TestCase):
         self.assertIn("Автоматическая локализация", text)
         self.assertIn("| VO | конечное решение восстановлено |", text)
         self.assertIn("Локализованные группы: `VO`", text)
+        self.assertIn("Нельзя выбирать единственную сетку", text)
 
     def test_raw_hash_detects_any_change(self):
         with TemporaryDirectory() as tmp:
