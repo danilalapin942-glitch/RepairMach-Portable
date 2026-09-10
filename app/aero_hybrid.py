@@ -95,6 +95,20 @@ _VSPAERO_FATAL_PATTERNS = {
 }
 
 
+def _only_normalized_zero_rhs_nan(log_text: str) -> bool:
+    """Recognize VSPAERO's finite-solution 0/0 residual normalization only."""
+    nan_lines = [line for line in log_text.splitlines() if re.search(r"(?i)nan", line)]
+    if not nan_lines or re.search(r"(?i)floating point exception", log_text):
+        return False
+    return all(
+        "Wake Iter:" in line
+        and "GMRES Iter:" in line
+        and re.search(r"(?i)Red:\s*[+-]?(?:nan|nan\([^)]*\))", line)
+        and re.search(r"(?i)Max:\s*[+-]?(?:nan|nan\([^)]*\))", line)
+        for line in nan_lines
+    )
+
+
 def validate_vspaero_run_outputs(
     polar_path: Path,
     log_path: Path,
@@ -109,6 +123,7 @@ def validate_vspaero_run_outputs(
     alpha_tolerance: float = 1.0e-5,
     max_log10_l2_residual: float = -0.3,
     allow_zero_mach_without_logged_residual: bool = False,
+    allow_zero_rhs_normalization_nan: bool = False,
 ) -> dict:
     """Validate finite coefficients and exact requested Mach/alpha coverage."""
     if mach_points < 1 or alpha_points < 1:
@@ -118,14 +133,19 @@ def validate_vspaero_run_outputs(
         name for name, pattern in _VSPAERO_FATAL_PATTERNS.items()
         if re.search(pattern, log_text)
     ]
-    if health_signals:
+    zero_rhs_nan_candidate = bool(
+        allow_zero_rhs_normalization_nan
+        and health_signals == ["nonfinite_solver"]
+        and _only_normalized_zero_rhs_nan(log_text)
+    )
+    if health_signals and not zero_rhs_nan_candidate:
         raise ValueError(
             "Лог VSPAERO содержит признаки недостоверного расчёта: "
             + ", ".join(health_signals)
         )
 
     rows = parse_vspaero_polar(
-        Path(polar_path), required_fields=("Mach", "AoA", "CLtot", "CDi")
+        Path(polar_path), required_fields=("Beta", "Mach", "AoA", "CLtot", "CDi")
     )
     convergence_rows = _parse_vspaero_log_convergence(log_text)
     mach_grid = _linear_grid(mach_start, mach_end, mach_points)
@@ -172,6 +192,7 @@ def validate_vspaero_run_outputs(
                 f"M={mach:g}, alpha={alpha:g}, log10(L2)={float(residual):.4g}"
             )
         checked_point = {
+            "Beta": float(row["Beta"]),
             "Mach": float(row["Mach"]),
             "alpha_deg": float(row["AoA"]),
             "CLtot": float(row["CLtot"]),
@@ -188,11 +209,30 @@ def validate_vspaero_run_outputs(
         raise ValueError(
             f"POLAR содержит незапрошенные или повторные строки: {len(rows) - len(used)}"
         )
+    benign_zero_rhs_nan = bool(
+        zero_rhs_nan_candidate
+        and all(
+            abs(point["alpha_deg"]) <= alpha_tolerance
+            and abs(point["Beta"]) <= alpha_tolerance
+            and abs(point["CLtot"]) <= 1.0e-12
+            and point["L2Res"] is not None
+            and math.isfinite(point["L2Res"])
+            for point in checked
+        )
+    )
+    if zero_rhs_nan_candidate and not benign_zero_rhs_nan:
+        raise ValueError(
+            "NaN нормированной невязки не подтверждён как случай нулевой правой части"
+        )
     return {
         "valid": True,
         "expected_points": len(expected),
         "actual_points": len(rows),
         "fatal_health_signals": [],
+        "health_warnings": (
+            ["zero_rhs_normalization_nan"] if benign_zero_rhs_nan else []
+        ),
+        "benign_zero_rhs_normalization_nan": benign_zero_rhs_nan,
         "max_log10_l2_residual": max_log10_l2_residual,
         "points": checked,
     }

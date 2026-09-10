@@ -15,14 +15,17 @@ from geometry_certificate import (
     certificate_integrity_errors,
     seal_certificate,
     verify_certificate,
+    write_certificate_report,
 )
 from geometry_certification import (
     MACHLINE_TRI_EXPORT_SCHEMA,
     _export_machline_tri,
     _run_vspaero_ladder,
+    _run_vspaero_component_isolation,
     _run_vspaero_qualification,
     _seal_machline_export_record,
     _tri_certification,
+    _unique_run_dir,
     _validate_scope,
     classify_vspaero_health,
     certify_geometry,
@@ -193,10 +196,24 @@ def machline_export_record(tri: Path, source_twin: Path, policy: dict) -> dict:
 
 
 class GeometryPolicyTests(unittest.TestCase):
+    def test_run_directory_is_short_and_keeps_identity_hash(self):
+        with TemporaryDirectory() as tmp:
+            path = _unique_run_dir(
+                Path(tmp),
+                "Very_Long_Project_Name_For_A_Blind_Aircraft",
+                "Very_Long_Model_File_Name_With_Many_Versions_And_Notes",
+            )
+        self.assertLessEqual(len(path.name), 56)
+        self.assertRegex(path.name, r"^\d{8}_\d{6}_.+_[0-9a-f]{8}$")
+
     def test_repository_policy_is_valid_and_complete(self):
         policy = load_geometry_policy(POLICY_PATH)
         self.assertEqual("RM91-GEOMETRY-CERT-1", policy["method_version"])
-        self.assertEqual(["coarse", "medium", "fine"], list(policy["mesh_levels"]))
+        self.assertEqual(
+            ["coarse", "medium", "fine", "extra_fine", "ultra_fine"],
+            list(policy["mesh_levels"]),
+        )
+        self.assertTrue(policy["convergence"]["adaptive_refinement"]["enabled"])
         self.assertEqual({"Wing", "Fuselage", "GO", "VO", "Gondola"}, set(policy["semantics"]["roles"]))
 
     def test_effective_policy_merges_without_mutating_base(self):
@@ -696,7 +713,13 @@ class GeometryPlanTests(unittest.TestCase):
             with patch(
                 "geometry_certification._run_one_vspaero_probe",
                 return_value=failed_probe,
-            ) as probe:
+            ) as probe, patch(
+                "geometry_certification._run_vspaero_component_isolation",
+                return_value={
+                    "attempted": True,
+                    "groups_whose_exclusion_restored_solution": ["VO"],
+                },
+            ) as isolate:
                 result = _run_vspaero_ladder(
                     mode="mixed",
                     meshes=meshes,
@@ -706,9 +729,202 @@ class GeometryPlanTests(unittest.TestCase):
                     executable=root / "vspscript.exe",
                 )
             self.assertEqual(1, probe.call_count)
+            isolate.assert_called_once()
             self.assertEqual(1, len(result["probes"]))
             self.assertFalse(result["valid"])
             self.assertFalse(result["converged"])
+            self.assertEqual(
+                ["VO"],
+                result["failure_diagnostics"][
+                    "groups_whose_exclusion_restored_solution"
+                ],
+            )
+
+    def test_component_isolation_disables_fixed_tail_only_for_go_variant(self):
+        failed_probe = {
+            "valid": False,
+            "set_validation": {
+                "geometries": [
+                    {"ID": "wing", "NAME": "Wing", "IN_SET_2": True},
+                    {"ID": "go", "NAME": "GO", "IN_SET_2": True},
+                    {"ID": "vo1", "NAME": "VO_upper", "IN_SET_2": True},
+                    {"ID": "vo2", "NAME": "VO_lower", "IN_SET_2": True},
+                ]
+            },
+        }
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            model = root / "model.vsp3"
+            model.write_text("fixture", encoding="utf-8")
+
+            def fake_apply(*, output_path, **_kwargs):
+                output_path = Path(output_path)
+                output_path.parent.mkdir(parents=True, exist_ok=True)
+                output_path.write_text("diagnostic", encoding="utf-8")
+                return {"valid": True, "path": str(output_path)}
+
+            with patch(
+                "geometry_certification.apply_model_actions",
+                side_effect=fake_apply,
+            ), patch(
+                "geometry_certification._run_one_vspaero_probe",
+                return_value={"valid": False},
+            ) as probe:
+                result = _run_vspaero_component_isolation(
+                    failed_probe=failed_probe,
+                    model=model,
+                    diagnostic_root=root / "isolation",
+                    mode="lifting",
+                    level="medium",
+                    reference=reference(),
+                    policy=self.policy,
+                    executable=root / "vspscript.exe",
+                    mach=1.7,
+                    alpha_deg=1.0,
+                    engine_boundary="model",
+                )
+
+        self.assertTrue(result["attempted"])
+        calls = {
+            item.kwargs["probe_dir"].parent.name: item.kwargs
+            for item in probe.call_args_list
+        }
+        self.assertTrue(calls["no_GO"]["diagnostic_ignore_fixed_tail"])
+        self.assertFalse(calls["no_VO"]["diagnostic_ignore_fixed_tail"])
+
+    def test_vspaero_ladder_uses_extra_fine_only_for_monotonic_marginal_failure(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            meshes = {}
+            for level in ("coarse", "medium", "fine", "extra_fine"):
+                model = root / f"{level}.vsp3"
+                model.write_text(level, encoding="utf-8")
+                meshes[level] = {
+                    "path": str(model),
+                    "valid": True,
+                    "mesh_verification": {"valid": True},
+                }
+            values = {
+                "coarse": {"CLtot": 0.3333, "CDtot": 0.02236},
+                "medium": {"CLtot": 0.2965, "CDtot": 0.01909},
+                "fine": {"CLtot": 0.2964, "CDtot": 0.01805},
+                "extra_fine": {"CLtot": 0.29635, "CDtot": 0.01780},
+            }
+
+            def make_probe(**kwargs):
+                level = kwargs["level"]
+                return {"level": level, "valid": True, "values": values[level]}
+
+            with patch(
+                "geometry_certification._run_one_vspaero_probe",
+                side_effect=make_probe,
+            ) as probe:
+                result = _run_vspaero_ladder(
+                    mode="lifting",
+                    meshes=meshes,
+                    run_dir=root,
+                    reference=reference(),
+                    policy=self.policy,
+                    executable=root / "vspscript.exe",
+                )
+            self.assertEqual(4, probe.call_count)
+            self.assertTrue(result["valid"])
+            self.assertTrue(result["converged"])
+            self.assertTrue(result["convergence"]["adaptive_refinement_attempted"])
+            self.assertEqual(
+                ["medium", "fine", "extra_fine"],
+                result["convergence"]["level_sequence"],
+            )
+
+    def test_vspaero_ladder_uses_extra_fine_to_resolve_sub_tolerance_oscillation(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            meshes = {}
+            for level in ("coarse", "medium", "fine", "extra_fine"):
+                model = root / f"{level}.vsp3"
+                model.write_text(level, encoding="utf-8")
+                meshes[level] = {
+                    "path": str(model),
+                    "valid": True,
+                    "mesh_verification": {"valid": True},
+                }
+            values = {
+                "coarse": {"CLtot": 0.41461, "CDtot": 0.03120},
+                "medium": {"CLtot": 0.35225, "CDtot": 0.02405},
+                "fine": {"CLtot": 0.35404, "CDtot": 0.02238},
+                "extra_fine": {"CLtot": 0.35380, "CDtot": 0.02190},
+            }
+
+            def make_probe(**kwargs):
+                level = kwargs["level"]
+                return {"level": level, "valid": True, "values": values[level]}
+
+            with patch(
+                "geometry_certification._run_one_vspaero_probe",
+                side_effect=make_probe,
+            ) as probe:
+                result = _run_vspaero_ladder(
+                    mode="lifting",
+                    meshes=meshes,
+                    run_dir=root,
+                    reference=reference(),
+                    policy=self.policy,
+                    executable=root / "vspscript.exe",
+                )
+            self.assertEqual(4, probe.call_count)
+            self.assertTrue(result["valid"])
+            self.assertTrue(result["converged"])
+            self.assertTrue(result["convergence"]["adaptive_refinement_attempted"])
+            self.assertTrue(result["convergence"]["adaptive_recoverable_oscillation"])
+            self.assertTrue(result["convergence"]["initial_convergence"]["oscillating"])
+
+    def test_vspaero_ladder_uses_ultra_fine_only_for_unresolved_bounded_oscillation(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            meshes = {}
+            for level in ("coarse", "medium", "fine", "extra_fine", "ultra_fine"):
+                model = root / f"{level}.vsp3"
+                model.write_text(level, encoding="utf-8")
+                meshes[level] = {
+                    "path": str(model),
+                    "valid": True,
+                    "mesh_verification": {"valid": True},
+                }
+            values = {
+                "coarse": {"CLtot": 0.41461, "CDtot": 0.03120},
+                "medium": {"CLtot": 0.35225, "CDtot": 0.02405},
+                "fine": {"CLtot": 0.35404, "CDtot": 0.02238},
+                "extra_fine": {"CLtot": 0.34305, "CDtot": 0.02199},
+                "ultra_fine": {"CLtot": 0.34270, "CDtot": 0.02180},
+            }
+
+            def make_probe(**kwargs):
+                level = kwargs["level"]
+                return {"level": level, "valid": True, "values": values[level]}
+
+            with patch(
+                "geometry_certification._run_one_vspaero_probe",
+                side_effect=make_probe,
+            ) as probe:
+                result = _run_vspaero_ladder(
+                    mode="lifting",
+                    meshes=meshes,
+                    run_dir=root,
+                    reference=reference(),
+                    policy=self.policy,
+                    executable=root / "vspscript.exe",
+                )
+            self.assertEqual(5, probe.call_count)
+            self.assertTrue(result["valid"])
+            self.assertTrue(result["converged"])
+            self.assertTrue(result["convergence"]["oscillation_resolution_attempted"])
+            self.assertEqual(
+                ["fine", "extra_fine", "ultra_fine"],
+                result["convergence"]["level_sequence"],
+            )
+            self.assertTrue(
+                result["convergence"]["first_adaptive_convergence"]["oscillating"]
+            )
 
     def test_vspaero_qualification_stops_after_first_failed_anchor(self):
         failed_ladder = {
@@ -736,6 +952,51 @@ class GeometryPlanTests(unittest.TestCase):
 
 
 class GeometryManifestAndDeltaTests(unittest.TestCase):
+    def test_human_certificate_report_includes_component_isolation(self):
+        certificate = {
+            "certificate_id": "RMC-TEST",
+            "method_version": "test",
+            "verdict": "FAIL",
+            "flags": {},
+            "master": {},
+            "qualification": {},
+            "backends": {},
+            "probes": {
+                "vspaero_lifting": {
+                    "anchors": [{
+                        "mach": 1.7,
+                        "alpha_deg": 1.0,
+                        "failure_diagnostics": {
+                            "attempted": True,
+                            "condition": {
+                                "mach": 1.7,
+                                "alpha_deg": 1.0,
+                                "mesh_level": "medium",
+                            },
+                            "groups_whose_exclusion_restored_solution": ["VO"],
+                            "variants": [{
+                                "excluded_semantic_group": "VO",
+                                "restored_finite_solution": True,
+                                "probe": {
+                                    "values": {
+                                        "CLtot": 0.056,
+                                        "CDtot": 0.007,
+                                    }
+                                },
+                            }],
+                        },
+                    }]
+                }
+            },
+        }
+        with TemporaryDirectory() as tmp:
+            report = Path(tmp) / "certificate.md"
+            write_certificate_report(report, certificate)
+            text = report.read_text(encoding="utf-8")
+        self.assertIn("Автоматическая локализация", text)
+        self.assertIn("| VO | конечное решение восстановлено |", text)
+        self.assertIn("Локализованные группы: `VO`", text)
+
     def test_raw_hash_detects_any_change(self):
         with TemporaryDirectory() as tmp:
             path = Path(tmp) / "master.vsp3"
@@ -1424,6 +1685,20 @@ class GeometryConvergenceAndTriTests(unittest.TestCase):
         self.assertAlmostEqual(0.25, cl["contraction_ratio"])
         self.assertIn("CLtot", result["oscillating_quantities"])
         self.assertIn("Осцилляция", " ".join(result["errors"]))
+
+    def test_mesh_convergence_ignores_sign_flip_below_significance_floor(self):
+        result = mesh_convergence(
+            self.probes([
+                (0.34694, 0.02372),
+                (0.30709, 0.01996),
+                (0.30718, 0.01881),
+            ]),
+            self.policy,
+        )
+        self.assertFalse(result["quantities"]["CLtot"]["oscillating"])
+        self.assertTrue(result["quantities"]["CLtot"]["converged"])
+        self.assertFalse(result["converged"])
+        self.assertFalse(result["quantities"]["CDtot"]["converged"])
 
     def test_mesh_convergence_does_not_veto_large_coarse_to_medium_change(self):
         result = mesh_convergence(

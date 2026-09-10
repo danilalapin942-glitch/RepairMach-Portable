@@ -30,7 +30,13 @@ from geometry_manifest import (
     sha256_payload,
     write_json,
 )
-from geometry_rules import effective_policy, finding, load_geometry_policy, semantic_audit
+from geometry_rules import (
+    component_base,
+    effective_policy,
+    finding,
+    load_geometry_policy,
+    semantic_audit,
+)
 from geometry_twins import (
     apply_model_actions,
     build_transformation_plan,
@@ -51,9 +57,26 @@ MACHLINE_TRI_EXPORT_SCHEMA = "repairmach.machline-tri-export/1.0"
 
 
 def _unique_run_dir(output_root: Path, project_name: str, model_stem: str) -> Path:
-    token = re.sub(r"[^A-Za-z0-9_.-]+", "_", model_stem).strip("._") or "model"
+    project_token = (
+        re.sub(r"[^A-Za-z0-9_.-]+", "_", project_name).strip("._") or "project"
+    )
+    model_token = (
+        re.sub(r"[^A-Za-z0-9_.-]+", "_", model_stem).strip("._") or "model"
+    )
+    identity = sha256_payload({"project": project_name, "model": model_stem})[:8]
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    base = output_root / f"{timestamp}_{project_name}_{token}"
+    base = output_root / (
+        f"{timestamp}_{project_token[:12]}_{model_token[:18]}_{identity}"
+    )
+    longest_internal = (
+        base / "probes" / "vspaero_lifting" / "M2p2_A5_to_face"
+        / "ultra_fine" / "model.case.1.quad.1.dat"
+    )
+    if os.name == "nt" and len(str(longest_internal.resolve())) >= 240:
+        raise ValueError(
+            "Каталог сертификации слишком глубокий для внутренних файлов "
+            "VSPAERO; выберите более короткий output_root"
+        )
     candidate = base
     counter = 2
     while candidate.exists():
@@ -675,6 +698,7 @@ def _run_one_vspaero_probe(
     mach: float | None = None,
     alpha_deg: float | None = None,
     engine_boundary: str | None = None,
+    diagnostic_ignore_fixed_tail: bool = False,
 ) -> dict:
     probe_dir.mkdir(parents=True, exist_ok=True)
     probe_model = probe_dir / "model.vsp3"
@@ -690,7 +714,7 @@ def _run_one_vspaero_probe(
     tail_scope = policy.get("scope", {}).get("horizontal_tail", {})
     tail_name = None
     tail_incidence = 0.0
-    if tail_scope.get("mode") == "fixed":
+    if tail_scope.get("mode") == "fixed" and not diagnostic_ignore_fixed_tail:
         tail_name = str(tail_scope.get("geometry_name", "")).strip() or None
         tail_incidence = float(tail_scope.get("incidence_deg", 0.0))
     thick_user_set = (
@@ -716,6 +740,12 @@ def _run_one_vspaero_probe(
         fuselage_user_set=thick_user_set,
         wing_user_set=int(policy["sets"]["thin_user_set"]),
         ncpu=int(settings.get("ncpu", 4)),
+        forward_gmres_convergence_factor=float(
+            settings.get("forward_gmres_convergence_factor", 1.0)
+        ),
+        wake_num_iter=int(settings.get("wake_num_iter", 8)),
+        num_wake_nodes=int(settings.get("num_wake_nodes", 24)),
+        wake_relax=float(settings.get("wake_relax", 0.8)),
         tail_geometry_name=tail_name,
         tail_incidence_deg=tail_incidence,
         engine_boundary=requested_boundary,
@@ -800,6 +830,11 @@ def _run_one_vspaero_probe(
                 allow_zero_mach_without_logged_residual=bool(
                     settings.get("allow_zero_mach_without_logged_residual", False)
                 ),
+                allow_zero_rhs_normalization_nan=bool(
+                    mode == "lifting"
+                    and abs(requested_alpha) <= 1.0e-12
+                    and abs(requested_beta) <= 1.0e-12
+                ),
             )
         except (OSError, ValueError, KeyError, TypeError) as exc:
             output_quality_error = str(exc)
@@ -810,6 +845,10 @@ def _run_one_vspaero_probe(
                 "max_log10_l2_residual": settings.get("max_log10_l2_residual"),
                 "errors": [output_quality_error],
             }
+    if output_quality.get("benign_zero_rhs_normalization_nan"):
+        health_errors = [item for item in health_errors if item != "nan_or_inf"]
+        if "zero_rhs_normalization_nan" not in health_warnings:
+            health_warnings.append("zero_rhs_normalization_nan")
     valid = (
         code in (0, 1)
         and set_report["valid"]
@@ -861,6 +900,17 @@ def _run_one_vspaero_probe(
             "beta_deg": requested_beta,
             "engine_boundary": requested_boundary,
         },
+        "numerical_controls": {
+            "forward_gmres_convergence_factor": float(
+                settings.get("forward_gmres_convergence_factor", 1.0)
+            ),
+            "wake_num_iter": int(settings.get("wake_num_iter", 8)),
+            "num_wake_nodes": int(settings.get("num_wake_nodes", 24)),
+            "wake_relax": float(settings.get("wake_relax", 0.8)),
+        },
+        "diagnostic_overrides": {
+            "ignore_fixed_tail": bool(diagnostic_ignore_fixed_tail),
+        },
         "model": str(model.resolve()),
         "model_sha256": sha256_file(model),
         "polar": str(polar.resolve()) if polar else None,
@@ -869,29 +919,170 @@ def _run_one_vspaero_probe(
     }
 
 
-def mesh_convergence(probes: list[dict], policy: dict) -> dict:
+def _run_vspaero_component_isolation(
+    *,
+    failed_probe: dict,
+    model: Path,
+    diagnostic_root: Path,
+    mode: str,
+    level: str,
+    reference: dict,
+    policy: dict,
+    executable: Path,
+    mach: float,
+    alpha_deg: float,
+    engine_boundary: str,
+) -> dict:
+    """Localize a non-finite lifting failure without modifying the MASTER.
+
+    Diagnostic twins are never eligible solver geometries.  Each run removes
+    one semantic group (except the main Wing) from the thin Set and repeats
+    only the failed condition.  A restored solution implicates that group or
+    its junctions; it does not authorize excluding it from production.
+    """
+    if mode != "lifting" or failed_probe.get("valid"):
+        return {"attempted": False, "reason": "not_an_invalid_lifting_probe"}
+    settings = policy.get("probes", {}).get("vspaero", {})
+    enabled = bool(
+        settings.get("failure_diagnostics", {}).get(
+            "component_group_isolation", False
+        )
+    )
+    if not enabled:
+        return {"attempted": False, "reason": "disabled_by_policy"}
+
+    thin_user_set = int(policy["sets"]["thin_user_set"])
+    set_key = f"IN_SET_{thin_user_set}"
+    groups: dict[str, list[dict]] = {}
+    for geom in failed_probe.get("set_validation", {}).get("geometries", []):
+        if not geom.get(set_key):
+            continue
+        base, _ = component_base(str(geom.get("NAME", "")), policy)
+        if policy.get("semantics", {}).get("roles", {}).get(base) != "thin":
+            continue
+        groups.setdefault(base, []).append(geom)
+
+    variants = []
+    for base in sorted(groups):
+        if base == "Wing":
+            continue
+        token = (re.sub(r"[^A-Za-z0-9]+", "_", base).strip("_") or "group")[:10]
+        variant_root = diagnostic_root / f"no_{token}"
+        output_model = variant_root / "model.vsp3"
+        actions = [
+            {
+                "action": "clear_sets",
+                "target_twins": ["diagnostic_isolation"],
+                "geom_id": str(item["ID"]),
+                "component": str(item["NAME"]),
+                "user_sets": [thin_user_set],
+            }
+            for item in groups[base]
+        ]
+        applied = apply_model_actions(
+            source_path=model,
+            output_path=output_model,
+            actions=actions,
+            twin_name="diagnostic_isolation",
+            vspscript_executable=executable,
+            work_dir=variant_root / "apply",
+            empty_thick_user_set=int(policy["sets"]["empty_thick_user_set"]),
+            timeout_seconds=float(settings.get("timeout_seconds", 600)),
+        )
+        diagnostic_probe = None
+        if applied.get("valid"):
+            diagnostic_probe = _run_one_vspaero_probe(
+                model=output_model,
+                probe_dir=variant_root / "probe",
+                mode=mode,
+                level=level,
+                reference=reference,
+                policy=policy,
+                vspscript_executable=executable,
+                mach=mach,
+                alpha_deg=alpha_deg,
+                engine_boundary=engine_boundary,
+                diagnostic_ignore_fixed_tail=(base == "GO"),
+            )
+        variants.append(
+            {
+                "excluded_semantic_group": base,
+                "excluded_components": [str(item["NAME"]) for item in groups[base]],
+                "apply": applied,
+                "probe": diagnostic_probe,
+                "restored_finite_solution": bool(
+                    diagnostic_probe and diagnostic_probe.get("valid")
+                ),
+            }
+        )
+    restored = [
+        item["excluded_semantic_group"]
+        for item in variants
+        if item["restored_finite_solution"]
+    ]
+    return {
+        "attempted": bool(variants),
+        "diagnostic_only": True,
+        "condition": {
+            "mach": mach,
+            "alpha_deg": alpha_deg,
+            "engine_boundary": engine_boundary,
+            "mesh_level": level,
+        },
+        "variants": variants,
+        "groups_whose_exclusion_restored_solution": restored,
+        "interpretation": (
+            "Указанные группы или их сопряжения вызывают нечисловой VLM-режим; "
+            "диагностическое исключение не разрешено переносить в расчётную модель"
+            if restored
+            else "Изоляция отдельных семантических групп не восстановила решение"
+        ),
+    }
+
+
+def mesh_convergence(
+    probes: list[dict],
+    policy: dict,
+    levels: tuple[str, str, str] = ("coarse", "medium", "fine"),
+) -> dict:
     by_level = {item["level"]: item for item in probes if item.get("valid")}
-    if any(level not in by_level for level in ("coarse", "medium", "fine")):
-        return {"valid": False, "converged": False, "errors": ["Не все три сетки дали валидный результат"]}
+    if len(levels) != 3 or len(set(levels)) != 3:
+        raise ValueError("Для оценки сходимости нужны три разных уровня сетки")
+    if any(level not in by_level for level in levels):
+        return {
+            "valid": False,
+            "converged": False,
+            "level_sequence": list(levels),
+            "errors": ["Не все три сетки дали валидный результат"],
+        }
+    low_name, middle_name, high_name = levels
     floor = float(policy["convergence"]["absolute_floor"])
     tolerance = float(policy["convergence"]["relative_tolerance"])
     absolute_tolerances = policy["convergence"].get("absolute_tolerances", {})
+    oscillation_fraction = float(
+        policy["convergence"].get("oscillation_significance_fraction", 0.10)
+    )
     quantities = {}
     converged = True
     oscillating_quantities: list[str] = []
     for key in policy["convergence"]["quantities"]:
-        coarse = float(by_level["coarse"]["values"][key])
-        medium = float(by_level["medium"]["values"][key])
-        fine = float(by_level["fine"]["values"][key])
+        coarse = float(by_level[low_name]["values"][key])
+        medium = float(by_level[middle_name]["values"][key])
+        fine = float(by_level[high_name]["values"][key])
         coarse_medium_delta = medium - coarse
         medium_fine_delta = fine - medium
         cm_absolute = abs(coarse_medium_delta)
         mf_absolute = abs(medium_fine_delta)
         cm = cm_absolute / max(abs(medium), abs(coarse), floor)
         mf = mf_absolute / max(abs(fine), abs(medium), floor)
+        absolute_tolerance = float(absolute_tolerances.get(key, 0.0))
+        oscillation_significance = max(
+            floor,
+            absolute_tolerance * oscillation_fraction,
+        )
         oscillating = bool(
-            cm_absolute > floor
-            and mf_absolute > floor
+            cm_absolute > oscillation_significance
+            and mf_absolute > oscillation_significance
             and coarse_medium_delta * medium_fine_delta < 0.0
         )
         monotonic = not oscillating
@@ -903,7 +1094,6 @@ def mesh_convergence(probes: list[dict], policy: dict) -> dict:
             # There is no meaningful denominator; keep JSON finite and make
             # the undefined ratio explicit rather than emitting infinity.
             contraction_ratio = None
-        absolute_tolerance = float(absolute_tolerances.get(key, 0.0))
         local_ok = (
             all(math.isfinite(value) for value in (coarse, medium, fine, cm, mf, mf_absolute))
             and not oscillating
@@ -912,15 +1102,18 @@ def mesh_convergence(probes: list[dict], policy: dict) -> dict:
         if oscillating:
             oscillating_quantities.append(key)
         quantities[key] = {
-            "coarse": coarse,
-            "medium": medium,
-            "fine": fine,
+            low_name: coarse,
+            middle_name: medium,
+            high_name: fine,
+            "level_sequence": list(levels),
+            "comparison_levels": [middle_name, high_name],
             "coarse_medium_delta": coarse_medium_delta,
             "medium_fine_delta": medium_fine_delta,
             "coarse_medium_relative": cm,
             "medium_fine_relative": mf,
             "medium_fine_absolute": mf_absolute,
             "absolute_tolerance": absolute_tolerance,
+            "oscillation_significance": oscillation_significance,
             "monotonic": monotonic,
             "oscillating": oscillating,
             "contraction_ratio": contraction_ratio,
@@ -941,6 +1134,9 @@ def mesh_convergence(probes: list[dict], policy: dict) -> dict:
     return {
         "valid": True,
         "converged": converged,
+        "level_sequence": list(levels),
+        "comparison_levels": [middle_name, high_name],
+        "adaptive": high_name != "fine",
         "monotonic": not oscillating_quantities,
         "oscillating": bool(oscillating_quantities),
         "oscillating_quantities": oscillating_quantities,
@@ -990,6 +1186,7 @@ def _run_vspaero_ladder(
             "convergence": {"valid": False, "converged": False, "errors": errors},
         }
     probes = []
+    failure_diagnostics = None
     for level in ("coarse", "medium", "fine"):
         probe = _run_one_vspaero_probe(
             model=Path(meshes[level]["path"]),
@@ -1008,8 +1205,188 @@ def _run_vspaero_ladder(
         # solver point.  Stop this ladder immediately instead of spending the
         # remaining timeout budget on evidence that cannot make it pass.
         if not probe.get("valid"):
+            failure_diagnostics = _run_vspaero_component_isolation(
+                failed_probe=probe,
+                model=Path(meshes[level]["path"]),
+                diagnostic_root=run_dir / "iso" / condition_id / level,
+                mode=mode,
+                level=level,
+                reference=reference,
+                policy=policy,
+                executable=executable,
+                mach=mach,
+                alpha_deg=alpha,
+                engine_boundary=boundary,
+            )
             break
     convergence = mesh_convergence(probes, policy)
+    initial_convergence = deepcopy(convergence)
+    adaptive = policy.get("convergence", {}).get("adaptive_refinement", {})
+    retry_level = str(adaptive.get("level", "extra_fine"))
+    failed_relative_changes = [
+        float(item.get("medium_fine_relative", math.inf))
+        for item in convergence.get("quantities", {}).values()
+        if not item.get("converged") and not item.get("oscillating")
+    ]
+    oscillating_items = [
+        item
+        for item in convergence.get("quantities", {}).values()
+        if item.get("oscillating")
+    ]
+    # A sign reversal remains a failed three-grid result. It may be resolved
+    # by the verification-only ExtraFine level when the latest oscillating
+    # step is already inside that quantity's absolute tolerance. This gathers
+    # more evidence without accepting the point or relaxing either limit.
+    recoverable_oscillation = bool(oscillating_items) and all(
+        float(item.get("absolute_tolerance", 0.0)) > 0.0
+        and float(item.get("medium_fine_absolute", math.inf))
+        <= float(item.get("absolute_tolerance", 0.0))
+        for item in oscillating_items
+    )
+    retry_limit = float(adaptive.get("max_initial_relative_for_retry", 0.10))
+    should_retry = bool(
+        adaptive.get("enabled", False)
+        and convergence.get("valid")
+        and not convergence.get("converged")
+        and (not convergence.get("oscillating") or recoverable_oscillation)
+        and failed_relative_changes
+        and max(failed_relative_changes) <= retry_limit
+    )
+    if should_retry:
+        retry_mesh = meshes.get(retry_level, {})
+        retry_mesh_valid = bool(
+            retry_mesh.get("valid")
+            and retry_mesh.get("mesh_verification", {}).get("valid")
+        )
+        if retry_mesh_valid:
+            retry_probe = _run_one_vspaero_probe(
+                model=Path(retry_mesh["path"]),
+                probe_dir=(
+                    run_dir / "probes" / f"vspaero_{mode}" / condition_id / retry_level
+                ),
+                mode=mode,
+                level=retry_level,
+                reference=reference,
+                policy=policy,
+                vspscript_executable=executable,
+                mach=mach,
+                alpha_deg=alpha,
+                engine_boundary=boundary,
+            )
+            probes.append(retry_probe)
+            if retry_probe.get("valid"):
+                convergence = mesh_convergence(
+                    probes,
+                    policy,
+                    levels=("medium", "fine", retry_level),
+                )
+            else:
+                convergence = {
+                    "valid": False,
+                    "converged": False,
+                    "level_sequence": ["medium", "fine", retry_level],
+                    "errors": ["Адаптивный ExtraFine-уровень не дал валидный результат"],
+                }
+        else:
+            convergence = {
+                "valid": False,
+                "converged": False,
+                "level_sequence": ["medium", "fine", retry_level],
+                "errors": ["Адаптивный ExtraFine-уровень отсутствует или не прошёл проверку Tess_*"],
+            }
+        convergence["adaptive_refinement_attempted"] = True
+        convergence["adaptive_recoverable_oscillation"] = recoverable_oscillation
+        convergence["initial_convergence"] = initial_convergence
+    else:
+        convergence["adaptive_refinement_attempted"] = False
+        convergence["adaptive_recoverable_oscillation"] = recoverable_oscillation
+
+    # If ExtraFine brought every latest change inside the unchanged numerical
+    # limits but the three-level direction still oscillates, one final
+    # verification level may arbitrate the sequence.  The result is evaluated
+    # on Fine/ExtraFine/UltraFine; Fine remains the production mesh.
+    first_adaptive_convergence = deepcopy(convergence)
+    resolution_level = str(
+        adaptive.get("oscillation_resolution_level", "ultra_fine")
+    )
+    unresolved = [
+        item
+        for item in convergence.get("quantities", {}).values()
+        if not item.get("converged")
+    ]
+    unresolved_inside_limits = bool(unresolved) and all(
+        item.get("oscillating")
+        and (
+            float(item.get("medium_fine_relative", math.inf))
+            <= float(convergence.get("relative_tolerance", math.inf))
+            or (
+                float(item.get("absolute_tolerance", 0.0)) > 0.0
+                and float(item.get("medium_fine_absolute", math.inf))
+                <= float(item.get("absolute_tolerance", 0.0))
+            )
+        )
+        for item in unresolved
+    )
+    should_resolve_oscillation = bool(
+        convergence.get("adaptive_refinement_attempted")
+        and convergence.get("valid")
+        and not convergence.get("converged")
+        and convergence.get("oscillating")
+        and unresolved_inside_limits
+        and resolution_level != retry_level
+    )
+    if should_resolve_oscillation:
+        resolution_mesh = meshes.get(resolution_level, {})
+        resolution_mesh_valid = bool(
+            resolution_mesh.get("valid")
+            and resolution_mesh.get("mesh_verification", {}).get("valid")
+        )
+        if resolution_mesh_valid:
+            resolution_probe = _run_one_vspaero_probe(
+                model=Path(resolution_mesh["path"]),
+                probe_dir=(
+                    run_dir
+                    / "probes"
+                    / f"vspaero_{mode}"
+                    / condition_id
+                    / resolution_level
+                ),
+                mode=mode,
+                level=resolution_level,
+                reference=reference,
+                policy=policy,
+                vspscript_executable=executable,
+                mach=mach,
+                alpha_deg=alpha,
+                engine_boundary=boundary,
+            )
+            probes.append(resolution_probe)
+            if resolution_probe.get("valid"):
+                convergence = mesh_convergence(
+                    probes,
+                    policy,
+                    levels=("fine", retry_level, resolution_level),
+                )
+            else:
+                convergence = {
+                    "valid": False,
+                    "converged": False,
+                    "level_sequence": ["fine", retry_level, resolution_level],
+                    "errors": ["Арбитражный UltraFine-уровень не дал валидный результат"],
+                }
+        else:
+            convergence = {
+                "valid": False,
+                "converged": False,
+                "level_sequence": ["fine", retry_level, resolution_level],
+                "errors": ["Арбитражный UltraFine-уровень отсутствует или не прошёл проверку Tess_*"],
+            }
+        convergence["oscillation_resolution_attempted"] = True
+        convergence["oscillation_resolution_level"] = resolution_level
+        convergence["first_adaptive_convergence"] = first_adaptive_convergence
+        convergence["initial_convergence"] = initial_convergence
+    else:
+        convergence["oscillation_resolution_attempted"] = False
     return {
         "mode": mode,
         "id": condition_id,
@@ -1021,6 +1398,7 @@ def _run_vspaero_ladder(
         "converged": convergence["converged"],
         "probes": probes,
         "convergence": convergence,
+        "failure_diagnostics": failure_diagnostics,
     }
 
 
@@ -1559,7 +1937,13 @@ def certify_geometry(
                             "vspaero_mixed": "vm",
                             "vspaero_lifting": "vl",
                             "machline": "ml",
-                        }[twin_name] + level_name[0])
+                        }[twin_name] + {
+                            "coarse": "c",
+                            "medium": "m",
+                            "fine": "f",
+                            "extra_fine": "x",
+                            "ultra_fine": "u",
+                        }.get(level_name, level_name[:1]))
                     ),
                     empty_thick_user_set=(
                         int(policy["sets"]["empty_thick_user_set"])
@@ -1575,8 +1959,15 @@ def certify_geometry(
                     "vspaero_lifting": "vl",
                     "machline": "ml",
                 }[twin_name]
+                level_token = {
+                    "coarse": "c",
+                    "medium": "m",
+                    "fine": "f",
+                    "extra_fine": "x",
+                    "ultra_fine": "u",
+                }.get(level_name, level_name[:1])
                 mesh_inventory_path = (
-                    run_dir / "mesh_diag" / f"{twin_token}_{level_name[0]}" / "inventory.json"
+                    run_dir / "mesh_diag" / f"{twin_token}_{level_token}" / "inventory.json"
                 )
                 mesh_verification = {
                     "valid": False,

@@ -474,7 +474,7 @@ def write_certificate_report(path: Path, certificate: dict) -> None:
     lines.extend(["", "## Преобразования", ""])
     actions = certificate.get("transformations", {}).get("actions", [])
     if not actions:
-        lines.append("Преобразования геометрии не потребовались (`PASS_NATIVE`).")
+        lines.append("Преобразования геометрии не потребовались.")
     else:
         for action in actions:
             lines.append(
@@ -505,6 +505,55 @@ def write_certificate_report(path: Path, certificate: dict) -> None:
             )
     else:
         lines.append("Замечаний нет.")
+
+    failure_diagnostics = []
+    probes = certificate.get("probes", {})
+    if isinstance(probes, dict):
+        for mode_name, qualification in probes.items():
+            if not isinstance(qualification, dict):
+                continue
+            for anchor in qualification.get("anchors", []):
+                diagnostics = anchor.get("failure_diagnostics")
+                if isinstance(diagnostics, dict) and diagnostics.get("attempted"):
+                    failure_diagnostics.append((mode_name, anchor, diagnostics))
+    if failure_diagnostics:
+        lines.extend([
+            "",
+            "## Автоматическая локализация нечислового отказа",
+            "",
+            "Диагностические двойники не являются допущенной расчётной геометрией.",
+            "",
+            "| Постановка | M | alpha | Сетка | Исключённая группа | Результат | CLtot | CDtot |",
+            "|---|---:|---:|---|---|---|---:|---:|",
+        ])
+        for mode_name, anchor, diagnostics in failure_diagnostics:
+            condition = diagnostics.get("condition", {})
+            for variant in diagnostics.get("variants", []):
+                probe = variant.get("probe") or {}
+                values = probe.get("values") or {}
+                restored = bool(variant.get("restored_finite_solution"))
+                lines.append(
+                    f"| {mode_name} | {condition.get('mach', anchor.get('mach'))} | "
+                    f"{condition.get('alpha_deg', anchor.get('alpha_deg'))} | "
+                    f"{condition.get('mesh_level', '')} | "
+                    f"{variant.get('excluded_semantic_group', '')} | "
+                    f"{'конечное решение восстановлено' if restored else 'отказ сохранился'} | "
+                    f"{values.get('CLtot', '')} | {values.get('CDtot', '')} |"
+                )
+        restored_groups = sorted({
+            str(group)
+            for _mode_name, _anchor, diagnostics in failure_diagnostics
+            for group in diagnostics.get(
+                "groups_whose_exclusion_restored_solution", []
+            )
+        })
+        if restored_groups:
+            lines.extend([
+                "",
+                "Локализованные группы: "
+                + ", ".join(f"`{group}`" for group in restored_groups)
+                + ". Следует исправить их форму, Sets или сопряжения в MASTER и выпустить новый сертификат.",
+            ])
     lines.extend([
         "",
         "## Артефакты",

@@ -196,8 +196,17 @@ def validate_geometry_policy(policy: dict) -> None:
         raise ValueError("Минимальная законцовка должна быть больше порога нулевой хорды")
 
     levels = policy.get("mesh_levels", {})
-    if list(levels) != ["coarse", "medium", "fine"]:
-        raise ValueError("mesh_levels должны быть заданы в порядке coarse, medium, fine")
+    level_names = list(levels)
+    allowed_level_orders = [
+        ["coarse", "medium", "fine"],
+        ["coarse", "medium", "fine", "extra_fine"],
+        ["coarse", "medium", "fine", "extra_fine", "ultra_fine"],
+    ]
+    if level_names not in allowed_level_orders:
+        raise ValueError(
+            "mesh_levels должны быть заданы в порядке coarse, medium, fine "
+            "с необязательными extra_fine и ultra_fine"
+        )
     previous = None
     for level, values in levels.items():
         if not isinstance(values, dict):
@@ -225,6 +234,32 @@ def validate_geometry_policy(policy: dict) -> None:
     tolerance = float(convergence.get("relative_tolerance", -1.0))
     if not 0.0 < tolerance < 1.0:
         raise ValueError("Допуск сеточной сходимости должен лежать между 0 и 1")
+    oscillation_fraction = float(
+        convergence.get("oscillation_significance_fraction", 0.10)
+    )
+    if not 0.0 < oscillation_fraction <= 1.0:
+        raise ValueError(
+            "Доля значимости осцилляции должна лежать между 0 и 1"
+        )
+    adaptive = convergence.get("adaptive_refinement", {})
+    if adaptive:
+        if not isinstance(adaptive.get("enabled", False), bool):
+            raise ValueError("adaptive_refinement.enabled должен быть логическим")
+        adaptive_level = str(adaptive.get("level", "extra_fine"))
+        if adaptive.get("enabled") and adaptive_level not in levels:
+            raise ValueError("Адаптивный уровень сетки отсутствует в mesh_levels")
+        resolution_level = str(
+            adaptive.get("oscillation_resolution_level", "ultra_fine")
+        )
+        if adaptive.get("enabled") and resolution_level not in levels:
+            raise ValueError("Арбитражный уровень осцилляции отсутствует в mesh_levels")
+        if adaptive.get("enabled") and resolution_level == adaptive_level:
+            raise ValueError("Адаптивный и арбитражный уровни должны различаться")
+        retry_limit = float(adaptive.get("max_initial_relative_for_retry", -1.0))
+        if not tolerance < retry_limit < 1.0:
+            raise ValueError(
+                "Порог адаптивного уточнения должен быть больше основного допуска и меньше 1"
+            )
 
     probe = policy.get("probes", {}).get("vspaero", {})
     probe_mach = float(probe.get("mach", math.nan))
