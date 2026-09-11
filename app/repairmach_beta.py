@@ -2605,6 +2605,23 @@ def geometry_certification_workflow(scenario: dict | None = None) -> None:
                 "нет покомпонентного покрытия"
             )
     print(f"Блокирующих  : {len(blockers)}")
+    corrective_plan = certificate.get("corrective_action_plan", {})
+    corrective_items = (
+        corrective_plan.get("items", [])
+        if isinstance(corrective_plan, dict) else []
+    )
+    if corrective_items:
+        print(
+            f"План действий : {len(corrective_items)} пунктов; "
+            f"статус {corrective_plan.get('status')}"
+        )
+        for item in corrective_items[:3]:
+            print(
+                f"  {item.get('id')} [{item.get('owner')}] "
+                f"{item.get('component') or 'вся модель'}: {item.get('action')}"
+            )
+        if len(corrective_items) > 3:
+            print(f"  ... ещё {len(corrective_items) - 3}; полный план находится в отчёте")
     print(f"Сертификат   : {result['certificate_path']}")
     print(f"Отчёт        : {result['report_path']}")
     print(f"Последний ID : {latest_path}")

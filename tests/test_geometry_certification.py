@@ -1416,6 +1416,16 @@ class GeometryManifestAndDeltaTests(unittest.TestCase):
             self.assertEqual("FAIL", result["certificate"]["verdict"])
             self.assertTrue(result["certificate"]["flags"]["master_unchanged"])
             self.assertTrue(result["certificate_path"].is_file())
+            corrective_plan = result["certificate"]["corrective_action_plan"]
+            self.assertEqual("blocked", corrective_plan["status"])
+            self.assertTrue(corrective_plan["items"])
+            self.assertTrue(
+                (result["run_directory"] / "corrective_action_plan.json").is_file()
+            )
+            self.assertIn(
+                "corrective_action_plan.json",
+                [item["relative_path"] for item in result["certificate"]["evidence_files"]],
+            )
             self.assertFalse((result["run_directory"] / ".certification.lock").exists())
 
     def test_machline_scoped_tri_blocker_does_not_revoke_qualified_vspaero(self):

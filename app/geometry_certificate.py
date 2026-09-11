@@ -10,6 +10,7 @@ from datetime import datetime
 from pathlib import Path
 
 from geometry_manifest import canonical_vsp3_sha256, sha256_file, sha256_payload, write_json
+from geometry_remediation import corrective_action_plan_errors
 from geometry_rules import VERDICTS
 
 
@@ -236,6 +237,10 @@ def verify_certificate(
     global_blockers = [item for item in findings if _finding_blocks_backend(item, None)]
     if global_blockers:
         errors.append("Сертификат содержит глобальные блокирующие замечания")
+
+    corrective_plan = certificate.get("corrective_action_plan")
+    if corrective_plan is not None:
+        errors.extend(corrective_action_plan_errors(corrective_plan))
 
     backends = certificate.get("backends", {})
     if not isinstance(backends, dict):
@@ -660,6 +665,51 @@ def write_certificate_report(path: Path, certificate: dict) -> None:
     else:
         lines.append("Замечаний нет.")
 
+    corrective_plan = certificate.get("corrective_action_plan", {})
+    if isinstance(corrective_plan, dict) and corrective_plan.get("schema"):
+        summary = corrective_plan.get("summary", {})
+        minimum_retest = corrective_plan.get("minimum_retest", {})
+        backend_action_free = corrective_plan.get("backend_action_free", {})
+        lines.extend([
+            "",
+            "## План дальнейших действий",
+            "",
+            f"- Состояние: **{corrective_plan.get('status', '')}**",
+            f"- Можно выпускать расчёт без дополнительных действий: "
+            f"**{'да' if corrective_plan.get('calculation_release_ready') else 'нет'}**",
+            f"- Обязательных действий: `{summary.get('required_count', 0)}`; "
+            f"блокирующих: `{summary.get('blocker_count', 0)}`; "
+            f"автоматизируемых: `{summary.get('automatic_action_count', 0)}`",
+            f"- Минимально повторить этапы: `{', '.join(minimum_retest.get('stages', [])) or 'не требуется'}`",
+            f"- Повторно проверить backends: `{', '.join(minimum_retest.get('backends', [])) or 'не требуется'}`",
+            "- Ветви без незакрытых действий: `"
+            + ", ".join(
+                f"{name}={'да' if ready else 'нет'}"
+                for name, ready in backend_action_free.items()
+            )
+            + "`",
+            f"- Новый сертификат геометрии: "
+            f"**{'да' if minimum_retest.get('new_geometry_certificate_required') else 'нет'}**",
+            "",
+        ])
+        items = corrective_plan.get("items", [])
+        if items:
+            lines.extend([
+                "| Приоритет | ID | Владелец | Компонент | Причина | Маршрут | Действие | Минимальный повтор |",
+                "|---:|---|---|---|---|---|---|---|",
+            ])
+            for item in items:
+                action_text = str(item.get("action", "")).replace("|", "\\|")
+                lines.append(
+                    f"| {item.get('priority', '')} | `{item.get('id', '')}` | "
+                    f"{item.get('owner', '')} | {item.get('component') or ''} | "
+                    f"`{item.get('trigger', {}).get('code', '')}` | "
+                    f"`{item.get('action_code', '')}` | {action_text} | "
+                    f"{', '.join(item.get('stages', []))} |"
+                )
+        else:
+            lines.append("Дополнительные действия не требуются.")
+
     failure_diagnostics = []
     probes = certificate.get("probes", {})
     if isinstance(probes, dict):
@@ -787,6 +837,7 @@ def write_certificate_report(path: Path, certificate: dict) -> None:
         f"- Исходная диагностика: `{certificate.get('artifacts', {}).get('native_diagnostics')}`",
         f"- План: `{certificate.get('artifacts', {}).get('transformation_plan')}`",
         f"- Отклонения: `{certificate.get('artifacts', {}).get('geometry_deltas')}`",
+        f"- План дальнейших действий: `{certificate.get('artifacts', {}).get('corrective_action_plan')}`",
         "",
     ])
     path.parent.mkdir(parents=True, exist_ok=True)

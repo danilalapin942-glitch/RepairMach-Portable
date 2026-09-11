@@ -31,6 +31,7 @@ from geometry_manifest import (
     sha256_payload,
     write_json,
 )
+from geometry_remediation import build_corrective_action_plan
 from geometry_rules import (
     component_base,
     effective_policy,
@@ -3615,6 +3616,13 @@ def certify_geometry(
                 base_drag_required
             ),
         )
+        corrective_action_plan = build_corrective_action_plan(
+            findings=findings,
+            replacement_contract=replacement_contract,
+            verdict=verdict,
+        )
+        corrective_action_plan_path = run_dir / "corrective_action_plan.json"
+        write_json(corrective_action_plan_path, corrective_action_plan)
 
         payload = {
             "schema": "repairmach.geometry-certificate/1.1",
@@ -3652,6 +3660,7 @@ def certify_geometry(
             },
             "software": _software_manifest(locals().get("inventory", {}), executables),
             "findings": findings,
+            "corrective_action_plan": corrective_action_plan,
             "transformations": {"actions": transformations},
             "twins": certificate_twins,
             "mesh_levels": mesh_records,
@@ -3796,6 +3805,7 @@ def certify_geometry(
                 "transformation_plan": str(plan_path.resolve()),
                 "transformation_log": str(transformation_log.resolve()),
                 "geometry_deltas": str(delta_path.resolve()),
+                "corrective_action_plan": str(corrective_action_plan_path.resolve()),
             },
             "error": error_message,
         }
