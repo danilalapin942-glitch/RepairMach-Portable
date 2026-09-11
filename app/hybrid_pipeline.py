@@ -173,6 +173,15 @@ def build_hybrid_series(
                 parasite_source = candidate["source"]
 
         semi_terms = semiempirical_contributions(policy, mach)
+        if (
+            ml is not None
+            and ml.get("base_drag_replacement_required")
+            and not any(item.get("id") == "base_drag" for item in semi_terms)
+        ):
+            row_errors.append(
+                "сертифицированная сетка MachLine требует активное "
+                "полуэмпирическое слагаемое base_drag"
+            )
         semi_total = sum(float(item["cd"]) for item in semi_terms)
         total_cd = None
         if pressure_wave is not None and not row_errors:
@@ -1254,7 +1263,18 @@ def _load_machline_points(paths: list[Path], policy: dict) -> tuple[list[dict], 
                 )
             sources.append(("machline_manifest", run_manifest_path))
         geometry = str(report.get("input", {}).get("geometry", {}).get("file", ""))
-        geometry_path = _resolve_report_geometry(path, geometry)
+        manifest_geometry = (
+            run_manifest.get("geometry", {}).get("path")
+            if isinstance(run_manifest, dict)
+            and isinstance(run_manifest.get("geometry"), dict)
+            else None
+        )
+        geometry_path = (
+            _resolve_manifest_output(run_manifest_path.parent, manifest_geometry)
+            if manifest_geometry else _resolve_report_geometry(path, geometry)
+        )
+        if geometry_path is not None and not geometry_path.is_file():
+            geometry_path = None
         geometry_sha256 = file_sha256(geometry_path) if geometry_path is not None else None
         if pattern != "*" and not fnmatch.fnmatch(Path(geometry).name.lower(), pattern.lower()):
             continue
@@ -1269,6 +1289,74 @@ def _load_machline_points(paths: list[Path], policy: dict) -> tuple[list[dict], 
         if residual_norm is not None and residual_norm > residual_limit:
             continue
         axes = machline_wind_axes(report)
+        base_drag_replacement_required = False
+        force_output_kind = "raw_machline_total_forces"
+        if run_manifest is not None and isinstance(run_manifest.get("force_output"), dict):
+            force_output = run_manifest["force_output"]
+            if force_output.get("kind") != "masked_thick_body_pressure_wave":
+                raise ValueError(f"Неизвестный вид маскированных сил: {path.name}")
+            masked_value = _manifest_output_value(run_manifest, "masked_force")
+            mask_value = _manifest_output_value(run_manifest, "force_mask")
+            masked_path = (
+                _resolve_manifest_output(run_manifest_path.parent, masked_value)
+                if masked_value else None
+            )
+            mask_path = (
+                _resolve_manifest_output(run_manifest_path.parent, mask_value)
+                if mask_value else None
+            )
+            if masked_path is None or not masked_path.is_file():
+                raise ValueError(f"Манифест не содержит masked_force: {path.name}")
+            if mask_path is None or not mask_path.is_file():
+                raise ValueError(f"Манифест не содержит force_mask: {path.name}")
+            if (
+                _manifest_output_sha256(run_manifest, "masked_force") != file_sha256(masked_path)
+                or _manifest_output_sha256(run_manifest, "force_mask") != file_sha256(mask_path)
+            ):
+                raise ValueError(f"Нарушен hash маскированных сил: {path.name}")
+            mask_record = json.loads(mask_path.read_text(encoding="utf-8"))
+            if (
+                mask_record.get("schema") != "repairmach.machline-force-mask/1.0"
+                or mask_record.get("certified_tri_sha256") != geometry_sha256
+            ):
+                raise ValueError(f"Force mask не соответствует TRI: {path.name}")
+            masked_record = json.loads(masked_path.read_text(encoding="utf-8"))
+            if masked_record.get("schema") != "repairmach.machline-masked-force/1.0":
+                raise ValueError(f"Неизвестная схема masked_force: {path.name}")
+            inputs = masked_record.get("inputs", {})
+            result = masked_record.get("result", {})
+            wind = result.get("masked_wind_axes", {})
+            mesh_axes = result.get("masked_mesh_axes", {})
+            if (
+                inputs.get("tri", {}).get("sha256") != geometry_sha256
+                or inputs.get("report", {}).get("sha256") != file_sha256(path)
+                or inputs.get("force_mask", {}).get("sha256") != file_sha256(mask_path)
+                or result.get("alignment", {}).get("verified") is not True
+            ):
+                raise ValueError(f"Masked force не связан с report/TRI/mask: {path.name}")
+            values = {
+                "cd": _finite_or_none(wind.get("cd")),
+                "cl": _finite_or_none(wind.get("cl")),
+                "cy": _finite_or_none(mesh_axes.get("Cy")),
+                "cx": _finite_or_none(mesh_axes.get("Cx")),
+                "cz": _finite_or_none(mesh_axes.get("Cz")),
+            }
+            if any(value is None for value in values.values()):
+                raise ValueError(f"Masked force содержит нечисловой коэффициент: {path.name}")
+            conditions = run_manifest.get("conditions", {})
+            axes = {
+                "mach": float(conditions.get("mach")),
+                "alpha_deg": float(conditions.get("alpha_deg")),
+                **values,
+            }
+            base_drag_replacement_required = bool(
+                force_output.get("base_drag_replacement_required")
+            )
+            force_output_kind = "masked_thick_body_pressure_wave"
+            sources.extend([
+                ("machline_masked_force", masked_path),
+                ("machline_force_mask", mask_path),
+            ])
         if run_manifest is not None:
             declared_geometry_hash = _normalise_sha256(
                 run_manifest.get("geometry", {}).get("sha256")
@@ -1316,6 +1404,8 @@ def _load_machline_points(paths: list[Path], policy: dict) -> tuple[list[dict], 
                 "producer_quality_valid": producer_quality_valid,
                 "producer_status": producer_status,
                 "solver_sha256": solver_sha256,
+                "force_output_kind": force_output_kind,
+                "base_drag_replacement_required": base_drag_replacement_required,
             }
         )
         sources.append(("machline_report", path))

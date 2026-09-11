@@ -157,11 +157,18 @@ def validate_geometry_policy(policy: dict) -> None:
             )
 
     sets = policy.get("sets", {})
-    for key in ("thick_user_set", "thin_user_set", "empty_thick_user_set"):
+    for key in (
+        "thick_user_set",
+        "thin_user_set",
+        "empty_thick_user_set",
+        "machline_export_user_set",
+    ):
         if not isinstance(sets.get(key), int) or sets[key] < 0:
             raise ValueError(f"Некорректный номер набора {key}")
-    if sets["thick_user_set"] == sets["thin_user_set"]:
-        raise ValueError("Толстые и тонкие поверхности не могут использовать один Set")
+    if len({sets[key] for key in (
+        "thick_user_set", "thin_user_set", "empty_thick_user_set", "machline_export_user_set"
+    )}) != 4:
+        raise ValueError("Служебные и физические OpenVSP Sets должны иметь разные номера")
 
     scope = policy.get("scope", {})
     intervals = scope.get("mach_intervals", [])
@@ -289,6 +296,48 @@ def validate_geometry_policy(policy: dict) -> None:
         raise ValueError(
             "probes.vspaero.max_log10_l2_residual должен быть конечным числом"
         )
+    try:
+        max_log10_max_residual = float(probe["max_log10_max_residual"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError(
+            "probes.vspaero.max_log10_max_residual должен быть конечным числом"
+        ) from exc
+    if not math.isfinite(max_log10_max_residual):
+        raise ValueError(
+            "probes.vspaero.max_log10_max_residual должен быть конечным числом"
+        )
+    recovery = probe.get("numerical_recovery", {})
+    if not isinstance(recovery.get("enabled", False), bool):
+        raise ValueError("probes.vspaero.numerical_recovery.enabled должен быть логическим")
+    attempts = recovery.get("attempts", 0)
+    if isinstance(attempts, bool) or not isinstance(attempts, int) or attempts < 2:
+        raise ValueError("numerical_recovery.attempts должен быть целым числом >= 2")
+    repeat_tolerance = float(recovery.get("relative_tolerance", -1.0))
+    if not 0.0 < repeat_tolerance < tolerance:
+        raise ValueError(
+            "Допуск повторяемости numerical_recovery должен быть положительным "
+            "и строже допуска сеточной сходимости"
+        )
+    recovery_absolute = recovery.get("absolute_tolerances", {})
+    for quantity in convergence.get("quantities", []):
+        value = float(recovery_absolute.get(quantity, -1.0))
+        if not math.isfinite(value) or value <= 0.0:
+            raise ValueError(
+                f"numerical_recovery.absolute_tolerances.{quantity} должен быть положительным"
+            )
+    recovery_controls = recovery.get("controls", {})
+    for key in ("ncpu", "wake_num_iter", "num_wake_nodes"):
+        value = recovery_controls.get(key)
+        if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+            raise ValueError(f"numerical_recovery.controls.{key} должен быть целым > 0")
+    gmres_factor = float(recovery_controls.get("forward_gmres_convergence_factor", -1.0))
+    if not math.isfinite(gmres_factor) or gmres_factor <= 0.0:
+        raise ValueError(
+            "numerical_recovery.controls.forward_gmres_convergence_factor должен быть положительным"
+        )
+    wake_relax = float(recovery_controls.get("wake_relax", -1.0))
+    if not 0.0 < wake_relax <= 1.0:
+        raise ValueError("numerical_recovery.controls.wake_relax должен лежать в (0; 1]")
     if not any(float(lo) <= probe_mach <= float(hi) for lo, hi in intervals):
         raise ValueError("Контрольный Mach VSPAERO вне области сертификата")
     if not alpha_lo <= probe_alpha <= alpha_hi:
@@ -319,6 +368,81 @@ def validate_geometry_policy(policy: dict) -> None:
                 if key in seen:
                     raise ValueError(f"Профиль {name} содержит повторную опорную точку {key}")
                 seen.add(key)
+
+    machline = policy.get("machline", {})
+    max_changed_panels = machline.get("max_changed_panels")
+    if (
+        isinstance(max_changed_panels, bool)
+        or not isinstance(max_changed_panels, int)
+        or max_changed_panels < 0
+    ):
+        raise ValueError("machline.max_changed_panels должен быть неотрицательным целым")
+    max_changed_fraction = float(machline.get("max_changed_fraction", -1.0))
+    if not 0.0 <= max_changed_fraction <= 1.0:
+        raise ValueError("machline.max_changed_fraction должен лежать от 0 до 1")
+    for key in (
+        "require_final_bad_zero",
+        "require_no_good_panel_regression",
+        "require_watertight",
+        "automatic_vertex_repair",
+    ):
+        if not isinstance(machline.get(key), bool):
+            raise ValueError(f"machline.{key} должен быть логическим")
+    if machline.get("automatic_vertex_repair"):
+        raise ValueError(
+            "Автоматическое абсолютное смещение вершин MachLine запрещено методикой"
+        )
+    qualification = machline.get("qualification", {})
+    if not isinstance(qualification.get("enabled"), bool):
+        raise ValueError("machline.qualification.enabled должен быть логическим")
+    for key in ("timeout_seconds", "tolerance", "control_point_offset"):
+        value = float(qualification.get(key, -1.0))
+        if not math.isfinite(value) or value <= 0.0:
+            raise ValueError(f"machline.qualification.{key} должен быть положительным")
+    for key in ("max_iterations_cap", "iteration_margin", "ncpu"):
+        value = qualification.get(key)
+        if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+            raise ValueError(f"machline.qualification.{key} должен быть целым > 0")
+    for key in ("max_residual_norm", "max_residual_max", "max_abs_lateral_force"):
+        value = float(qualification.get(key, -1.0))
+        if not math.isfinite(value) or value <= 0.0:
+            raise ValueError(f"machline.qualification.{key} должен быть положительным")
+    surrogate = machline.get("solver_surrogate", {})
+    if not isinstance(surrogate.get("masked_force_postprocessor_available"), bool):
+        raise ValueError(
+            "machline.solver_surrogate.masked_force_postprocessor_available должен быть логическим"
+        )
+    closure = surrogate.get("downstream_axial_closure", {})
+    if not isinstance(closure.get("enabled"), bool):
+        raise ValueError("downstream_axial_closure.enabled должен быть логическим")
+    prefixes = closure.get("component_name_prefixes")
+    if (
+        not isinstance(prefixes, list)
+        or not prefixes
+        or any(not isinstance(value, str) or not value.strip() for value in prefixes)
+    ):
+        raise ValueError("downstream_axial_closure.component_name_prefixes некорректен")
+    for key in (
+        "plane_tolerance_cref",
+        "max_extension_over_cref",
+        "max_removed_area_over_sref",
+    ):
+        value = float(closure.get(key, -1.0))
+        if not math.isfinite(value) or value <= 0.0:
+            raise ValueError(f"Некорректный предел downstream_axial_closure.{key}")
+    axial_normal_min = float(closure.get("axial_normal_min", -1.0))
+    if not 0.0 < axial_normal_min <= 1.0:
+        raise ValueError("downstream_axial_closure.axial_normal_min должен лежать от 0 до 1")
+    safety_angle = float(closure.get("safety_angle_deg", -1.0))
+    if not 0.0 <= safety_angle < 90.0:
+        raise ValueError("downstream_axial_closure.safety_angle_deg некорректен")
+    minimum_boundary = closure.get("min_boundary_edges")
+    if (
+        isinstance(minimum_boundary, bool)
+        or not isinstance(minimum_boundary, int)
+        or minimum_boundary < 3
+    ):
+        raise ValueError("downstream_axial_closure.min_boundary_edges должен быть целым >= 3")
 
 
 def effective_policy(base: dict, overrides: dict | None = None) -> dict:

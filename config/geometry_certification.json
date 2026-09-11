@@ -17,7 +17,8 @@
   "sets": {
     "thick_user_set": 1,
     "thin_user_set": 2,
-    "empty_thick_user_set": 3
+    "empty_thick_user_set": 3,
+    "machline_export_user_set": 4
   },
   "scope": {
     "mach_intervals": [[0.0, 0.8], [1.2, 2.2]],
@@ -154,6 +155,23 @@
       "timeout_seconds": 600,
       "ncpu": 4,
       "max_log10_l2_residual": -0.3,
+      "max_log10_max_residual": 0.0,
+      "numerical_recovery": {
+        "enabled": true,
+        "attempts": 2,
+        "relative_tolerance": 0.005,
+        "absolute_tolerances": {
+          "CLtot": 0.001,
+          "CDtot": 0.0001
+        },
+        "controls": {
+          "ncpu": 1,
+          "forward_gmres_convergence_factor": 0.25,
+          "wake_num_iter": 16,
+          "num_wake_nodes": 24,
+          "wake_relax": 0.5
+        }
+      },
       "allow_zero_mach_without_logged_residual": true,
       "fallback_to_lifting": true,
       "failure_diagnostics": {
@@ -166,7 +184,33 @@
     "max_changed_fraction": 0.005,
     "require_final_bad_zero": true,
     "require_no_good_panel_regression": true,
-    "automatic_vertex_repair": false
+    "require_watertight": true,
+    "automatic_vertex_repair": false,
+    "qualification": {
+      "enabled": true,
+      "timeout_seconds": 1800,
+      "ncpu": 4,
+      "tolerance": 1e-10,
+      "control_point_offset": 0.001,
+      "max_iterations_cap": 25000,
+      "iteration_margin": 100,
+      "max_residual_norm": 0.05,
+      "max_residual_max": 0.01,
+      "max_abs_lateral_force": 0.005
+    },
+    "solver_surrogate": {
+      "masked_force_postprocessor_available": true,
+      "downstream_axial_closure": {
+        "enabled": true,
+        "component_name_prefixes": ["Fuselage", "Gondola"],
+        "plane_tolerance_cref": 0.0000001,
+        "axial_normal_min": 0.995,
+        "safety_angle_deg": 2.0,
+        "max_extension_over_cref": 0.5,
+        "max_removed_area_over_sref": 0.05,
+        "min_boundary_edges": 8
+      }
+    }
   },
   "eligible_scenarios": [
     "quick_assessment",

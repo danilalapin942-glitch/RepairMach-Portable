@@ -21,6 +21,20 @@
     "machline_geometry_glob": "*",
     "semiempirical_terms": [
       {
+        "id": "base_drag",
+        "label": "Донное сопротивление вместо численного кормового замыкания",
+        "enabled": false,
+        "provenance": "Задать до слепого расчёта по независимой полуэмпирической методике донного сопротивления",
+        "applicability": {
+          "mach_min": 1.0,
+          "mach_max": 3.0
+        },
+        "model": {
+          "type": "constant",
+          "value": 0.0
+        }
+      },
+      {
         "id": "external_details",
         "label": "Антенны, щели и выступающие элементы",
         "enabled": false,

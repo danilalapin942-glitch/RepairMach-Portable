@@ -260,11 +260,14 @@ def _orient_faces(faces: list[tuple[int, int, int]]) -> tuple[list[tuple[int, in
     return oriented, sum(bool(value) for value in parity), conflicts // 2
 
 
-def repair(mesh: TriMesh) -> tuple[TriMesh, dict]:
+def repair(mesh: TriMesh, *, merge_duplicate_vertices: bool = True) -> tuple[TriMesh, dict]:
     diagonal = _bbox_diagonal(mesh.vertices)
     merge_tolerance = max(diagonal * 1.0e-10, 1.0e-12)
     area_sq_tolerance = max((diagonal * diagonal * 1.0e-14) ** 2, 1.0e-30)
-    vertex_remap, merged_vertices = _duplicate_vertex_map(mesh.vertices, merge_tolerance)
+    if merge_duplicate_vertices:
+        vertex_remap, merged_vertices = _duplicate_vertex_map(mesh.vertices, merge_tolerance)
+    else:
+        vertex_remap, merged_vertices = list(range(len(mesh.vertices))), 0
 
     accepted_faces = []
     accepted_components = []
@@ -294,6 +297,7 @@ def repair(mesh: TriMesh) -> tuple[TriMesh, dict]:
     repaired = TriMesh(compact_vertices, compact_faces, accepted_components)
     summary = {
         "merged_duplicate_vertices": merged_vertices,
+        "duplicate_vertex_merge_enabled": merge_duplicate_vertices,
         "removed_invalid_faces": removed_invalid,
         "removed_degenerate_faces": removed_degenerate,
         "removed_duplicate_faces": removed_duplicate,

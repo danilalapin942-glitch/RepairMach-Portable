@@ -124,6 +124,33 @@ class AeroHybridTests(unittest.TestCase):
         self.assertTrue(report["valid"])
         self.assertEqual(2, report["actual_points"])
 
+    def test_vspaero_output_gate_rejects_large_local_residual(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            polar = root / "run.polar"
+            log = root / "run.log"
+            polar.write_text(POLAR, encoding="utf-8")
+            log.write_text(
+                "Solving... Mach: 0.800000 ... Alpha: 0.000000 ... Beta: 0\n"
+                " 8 0.80000 0.00000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.2 0.2 1\n"
+                "Solving... Mach: 0.800000 ... Alpha: 2.000000 ... Beta: 0\n"
+                " 8 0.80000 2.00000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.1 -0.3 1\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "максимальной локальной невязки"):
+                validate_vspaero_run_outputs(
+                    polar,
+                    log,
+                    mach_start=0.8,
+                    mach_end=0.8,
+                    mach_points=1,
+                    alpha_start=0.0,
+                    alpha_end=2.0,
+                    alpha_points=2,
+                    max_log10_l2_residual=-1.0,
+                    max_log10_max_residual=0.0,
+                )
+
     def test_vspaero_output_gate_rejects_missing_convergence_record(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)

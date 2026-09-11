@@ -471,6 +471,93 @@ def write_certificate_report(path: Path, certificate: dict) -> None:
             f"| {name} | {'да' if item.get('eligible') else 'нет'} | {item.get('mode', '')} | "
             f"{item.get('qualified_scope', {}).get('coverage_kind', 'none')} |"
         )
+    tri = certificate.get("tri", {})
+    if isinstance(tri, dict) and tri.get("requested"):
+        final = tri.get("final", {})
+        audit_final = tri.get("audit_final", {})
+        lines.extend([
+            "",
+            "## Численный двойник MachLine",
+            "",
+            "Полная составная сетка используется для аудита всей геометрии. "
+            "В решатель передаётся только водонепроницаемая толстотельная часть; "
+            "тонкие Wing/GO/VO остаются в контуре VSPAERO.",
+            "",
+            f"- Геометрический допуск: **{'да' if tri.get('geometry_eligible') else 'нет'}**",
+            f"- Маскированное давление/волна для гибрида: **{'да' if tri.get('hybrid_pressure_wave_eligible') else 'нет'}**",
+            f"- Самостоятельная полная сила без донной поправки: **{'да' if tri.get('standalone_total_force_eligible') else 'нет'}**",
+            f"- Полная аудиторская сетка: `{audit_final.get('faces', 0)}` панелей",
+            f"- Сетка решателя: `{final.get('faces', 0)}` панелей; "
+            f"watertight=`{final.get('watertight')}`",
+            f"- Ограниченный ремонт: `{tri.get('repair_count', 0)}` из "
+            f"`{tri.get('repair_budget', 0)}` разрешённых панелей",
+        ])
+        closure_records = (
+            tri.get("repairs", {}).get("downstream_axial_closure", {}).get("closures", [])
+        )
+        if closure_records:
+            lines.extend([
+                "",
+                "### Численное кормовое замыкание",
+                "",
+                "| Исходный компонент | Удалено панелей | Площадь/Sref | Длина/cref | Новый компонент |",
+                "|---|---:|---:|---:|---:|",
+            ])
+            for closure in closure_records:
+                lines.append(
+                    f"| {closure.get('source_component_name', '')} | "
+                    f"{closure.get('removed_cap_faces', 0)} | "
+                    f"{100.0 * float(closure.get('removed_cap_area_over_sref', 0.0)):.3f}% | "
+                    f"{float(closure.get('extension_over_cref', 0.0)):.4f} | "
+                    f"{closure.get('surrogate_component_id', '')} |"
+                )
+            lines.extend([
+                "",
+                "Служебный компонент участвует в решении потенциала, но исключается "
+                "из покомпонентной суммы сил. Донное сопротивление должно добавляться "
+                "отдельным полуэмпирическим слагаемым.",
+            ])
+        scans = tri.get("mach_scans", [])
+        if scans:
+            lines.extend([
+                "",
+                "### Геометрический Mach-критерий",
+                "",
+                "| M | alpha, град | Недопустимых панелей | Минимальный запас |",
+                "|---:|---:|---:|---:|",
+            ])
+            for scan in scans:
+                margin = scan.get("maximum_margin")
+                lines.append(
+                    f"| {scan.get('mach', '')} | {scan.get('alpha_deg', '')} | "
+                    f"{scan.get('bad_panels', '')} | "
+                    f"{'' if margin is None else f'{float(margin):.6g}'} |"
+                )
+        qualification = tri.get("machline_qualification", {})
+        qualification_probes = qualification.get("probes", []) if isinstance(qualification, dict) else []
+        if qualification_probes:
+            limits = qualification.get("limits", {})
+            lines.extend([
+                "",
+                "### Реальные пробы MachLine",
+                "",
+                f"Допуски: residual.norm ≤ `{limits.get('residual_norm')}`, "
+                f"residual.max ≤ `{limits.get('residual_max')}`, "
+                f"|CYspan| ≤ `{limits.get('abs_lateral_force')}`.",
+                "",
+                "| M | alpha, град | Результат | Итерации | residual.norm | residual.max | Cx pressure/wave | Cy pressure/wave | CYspan |",
+                "|---:|---:|---|---:|---:|---:|---:|---:|---:|",
+            ])
+            for probe in qualification_probes:
+                wind = probe.get("masked_wind_axes", {})
+                lines.append(
+                    f"| {probe.get('mach', '')} | {probe.get('alpha_deg', '')} | "
+                    f"{'PASS' if probe.get('valid') else 'FAIL'} | "
+                    f"{probe.get('iterations', '')} | "
+                    f"{probe.get('residual_norm', '')} | {probe.get('residual_max', '')} | "
+                    f"{wind.get('cd', '')} | {wind.get('cl', '')} | "
+                    f"{wind.get('cy_span', '')} |"
+                )
     lines.extend(["", "## Преобразования", ""])
     actions = certificate.get("transformations", {}).get("actions", [])
     if not actions:
@@ -589,6 +676,41 @@ def write_certificate_report(path: Path, certificate: dict) -> None:
                 f"{', '.join(convergence.get('level_sequence', []))} | "
                 f"{'' if cl_change is None else f'{100.0 * float(cl_change):.3f}%'} | "
                 f"{'' if cd_change is None else f'{100.0 * float(cd_change):.3f}%'} |"
+            )
+    recovered_probes = []
+    if isinstance(probes, dict):
+        for mode_name, qualification in probes.items():
+            if not isinstance(qualification, dict):
+                continue
+            for anchor in qualification.get("anchors", []):
+                for probe in anchor.get("probes", []):
+                    recovery = probe.get("numerical_recovery", {})
+                    if isinstance(recovery, dict) and recovery.get("attempted"):
+                        recovered_probes.append((mode_name, anchor, probe, recovery))
+    if recovered_probes:
+        lines.extend([
+            "",
+            "## Усиленное подтверждение численной повторяемости VSPAERO",
+            "",
+            "Исходный прогон с неприемлемой локальной невязкой сохранён как "
+            "отклонённое доказательство. Сертификатор выполнил два независимых "
+            "однопоточных повтора с усиленными настройками и не менял допуск "
+            "сеточной сходимости.",
+            "",
+            "| Постановка | M | alpha | Сетка | Повторов | Повторяемость | CL, расхождение | CD, расхождение |",
+            "|---|---:|---:|---|---:|---|---:|---:|",
+        ])
+        for mode_name, anchor, probe, recovery in recovered_probes:
+            repeatability = recovery.get("repeatability", {})
+            quantities = repeatability.get("quantities", {})
+            cl_change = quantities.get("CLtot", {}).get("relative_delta")
+            cd_change = quantities.get("CDtot", {}).get("relative_delta")
+            lines.append(
+                f"| {mode_name} | {anchor.get('mach')} | {anchor.get('alpha_deg')} | "
+                f"{probe.get('level', '')} | {len(recovery.get('repeat_probes', []))} | "
+                f"{'подтверждена' if recovery.get('valid') else 'не подтверждена'} | "
+                f"{'' if cl_change is None else f'{100.0 * float(cl_change):.4f}%'} | "
+                f"{'' if cd_change is None else f'{100.0 * float(cd_change):.4f}%'} |"
             )
     lines.extend([
         "",

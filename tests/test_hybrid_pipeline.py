@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "app"))
 from hybrid_pipeline import (
     POLICY_SCHEMA,
     REQUEST_SCHEMA,
+    _load_machline_points,
     _load_parasite_points,
     _load_vspaero_source,
     _validate_certified_parasite_lineage,
@@ -25,6 +26,7 @@ from hybrid_pipeline import (
 from geometry_certificate import CERTIFICATE_SCHEMA, seal_certificate
 from geometry_manifest import sha256_payload
 from openvsp_runner import generate_parasite_drag_script
+from tri_mesh import TriMesh, write_tri
 
 
 SCENARIO_ID = "hybrid_request"
@@ -1124,6 +1126,64 @@ class HybridPipelineTests(unittest.TestCase):
         test_policy["drag"]["semiempirical_terms"][0]["applicability"]["mach_min"] = 0.7
         with self.assertRaisesRegex(ValueError, "экстраполяция запрещена"):
             semiempirical_contributions(test_policy, 0.75)
+
+    def test_hybrid_consumes_sealed_masked_machline_force(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "machline.exe").write_bytes(b"solver")
+            tri = root / "certified_mesh.tri"
+            write_tri(
+                tri,
+                TriMesh(
+                    [(0, 0, 0), (1, 0, 0), (0, 1, 0), (0, 0, 1)],
+                    [(0, 1, 2), (0, 3, 1)],
+                    [1, 2],
+                ),
+            )
+            results = root / "results"
+            results.mkdir()
+            report = results / "case_report.json"
+            write_machline(report, 1.2, 0.0, -0.5, geometry=str(tri))
+            mask = root / "force_integration_mask.json"
+            mask.write_text(json.dumps({
+                "schema": "repairmach.machline-force-mask/1.0",
+                "certified_tri_sha256": file_sha256(tri),
+            }), encoding="utf-8")
+            masked = results / "case_report_masked_force.json"
+            masked.write_text(json.dumps({
+                "schema": "repairmach.machline-masked-force/1.0",
+                "inputs": {
+                    "tri": {"sha256": file_sha256(tri)},
+                    "report": {"sha256": file_sha256(report)},
+                    "force_mask": {"sha256": file_sha256(mask)},
+                },
+                "result": {
+                    "alignment": {"verified": True},
+                    "masked_mesh_axes": {"Cx": 0.041, "Cy": 0.0, "Cz": 0.003},
+                    "masked_wind_axes": {"cd": 0.041, "cl": 0.003, "cy_span": 0.0},
+                },
+            }), encoding="utf-8")
+            manifest_path = results / "case_report_manifest.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["force_output"] = {
+                "kind": "masked_thick_body_pressure_wave",
+                "base_drag_replacement_required": True,
+            }
+            manifest["outputs"].update({
+                "masked_force": str(masked),
+                "force_mask": str(mask),
+            })
+            manifest["output_sha256"].update({
+                "masked_force": file_sha256(masked),
+                "force_mask": file_sha256(mask),
+            })
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            points, sources = _load_machline_points([report], policy())
+        self.assertEqual(1, len(points))
+        self.assertAlmostEqual(0.041, points[0]["cd"])
+        self.assertEqual("masked_thick_body_pressure_wave", points[0]["force_output_kind"])
+        self.assertTrue(points[0]["base_drag_replacement_required"])
+        self.assertIn("machline_masked_force", [kind for kind, _ in sources])
 
     def test_xlsx_external_link_scan(self):
         with TemporaryDirectory() as temp:

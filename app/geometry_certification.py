@@ -14,6 +14,7 @@ import os
 import platform
 import re
 import shutil
+import subprocess
 import sys
 import time
 from copy import deepcopy
@@ -45,6 +46,15 @@ from geometry_twins import (
     verify_mesh_inventory,
     verify_plan,
 )
+from machline_geometry import (
+    COORDINATE_CONVENTION,
+    combine_meshes,
+    nascart_freestream,
+    prepare_machline_geometry,
+    read_vspgeom_thin,
+    scan_scope,
+)
+from machline_postprocess import masked_force_coefficients, write_masked_force_record
 from mach_repair import scan_mach_criterion, summarize_scan
 from openvsp_runner import run_vspscript
 from tri_mesh import TriMesh, diagnose as diagnose_tri
@@ -256,16 +266,51 @@ def _machline_export_record_errors(record: dict | None, tri_path: Path | None, p
     if export.get("format") != "OpenVSP_EXPORT_NASCART":
         errors.append("TRI создан не подтверждённым экспортёром OpenVSP NASCART")
     expected_sets = {
-        "thick_user_set": int(policy["sets"]["thick_user_set"]),
-        "thick_api_set": int(policy["sets"]["thick_user_set"]) + 3,
-        "thin_user_set": int(policy["sets"]["thin_user_set"]),
-        "thin_api_set": int(policy["sets"]["thin_user_set"]) + 3,
+        "source_thick_user_set": int(policy["sets"]["thick_user_set"]),
+        "source_thick_api_set": int(policy["sets"]["thick_user_set"]) + 3,
+        "source_thin_user_set": int(policy["sets"]["thin_user_set"]),
+        "source_thin_api_set": int(policy["sets"]["thin_user_set"]) + 3,
+        "union_user_set": int(policy["sets"]["machline_export_user_set"]),
+        "union_api_set": int(policy["sets"]["machline_export_user_set"]) + 3,
     }
     for key, expected in expected_sets.items():
         if export.get(key) != expected:
             errors.append(f"экспорт TRI выполнен с неверным {key}")
     if export.get("include_subsurfaces") is not True:
         errors.append("запись экспорта TRI не фиксирует включение подсекций")
+    if export.get("thin_export_set") != "SET_NONE":
+        errors.append("NASCART-экспорт толстых поверхностей должен использовать SET_NONE для thin")
+    if export.get("mesh_representation") != "NASCART_thick_plus_VSPGeom_VLM_thin":
+        errors.append("MachLine TRI не подтверждает раздельное thick/thin представление")
+    component_map = export.get("component_map")
+    if not isinstance(component_map, dict) or not component_map:
+        errors.append("экспорт TRI не содержит покомпонентный NASCART-паспорт")
+    key_path = Path(str(export.get("key_path", "")))
+    if not key_path.is_file():
+        errors.append("NASCART .key с именами компонентов отсутствует")
+    elif export.get("key_sha256") != sha256_file(key_path):
+        errors.append("хэш NASCART .key не совпадает")
+    union_names = export.get("union_geometry_names")
+    if not isinstance(union_names, list) or not union_names:
+        errors.append("экспорт TRI не фиксирует состав полного union-набора")
+    if export.get("coordinate_convention") != COORDINATE_CONVENTION:
+        errors.append("экспорт TRI не фиксирует подтверждённое преобразование координат")
+    component_roles = export.get("component_roles")
+    if (
+        not isinstance(component_roles, dict)
+        or "thick" not in component_roles.values()
+        or "thin" not in component_roles.values()
+    ):
+        errors.append("экспорт TRI не содержит роли thick/thin для компонентов")
+    for path_key, hash_key, label in (
+        ("thin_path", "thin_sha256", "VSPGeom тонких поверхностей"),
+        ("thin_key_path", "thin_key_sha256", "VSPGeom .vkey"),
+    ):
+        artifact = Path(str(export.get(path_key, "")))
+        if not artifact.is_file():
+            errors.append(f"{label} отсутствует")
+        elif export.get(hash_key) != sha256_file(artifact):
+            errors.append(f"хэш {label} не совпадает")
     export_path = Path(str(export.get("path", "")))
     if tri_path is None or not export_path.is_file():
         errors.append("автоматически экспортированный TRI отсутствует")
@@ -325,6 +370,324 @@ def _read_openvsp_nascart(path: Path) -> TriMesh:
     return TriMesh(vertices, faces, components)
 
 
+def _read_openvsp_nascart_key(path: Path) -> dict[int, str]:
+    """Read the component-number mapping emitted beside a NASCART export."""
+    if not path.is_file():
+        raise ValueError("OpenVSP не создал NASCART .key с именами компонентов")
+    mapping: dict[int, str] = {}
+    for line_number, raw in enumerate(
+        path.read_text(encoding="utf-8", errors="replace").splitlines(), start=1
+    ):
+        line = raw.strip()
+        if not line or line.lower().startswith("color name"):
+            continue
+        match = re.match(r"^([+-]?\d+(?:\.0+)?)\s+(.+?)\s+([+-]?\d+)\s*$", line)
+        if not match:
+            continue
+        component_value = float(match.group(1))
+        if not component_value.is_integer():
+            raise ValueError(f"Некорректный номер компонента в .key, строка {line_number}")
+        component = int(component_value)
+        name = match.group(2).strip()
+        if component <= 0 or not name or component in mapping:
+            raise ValueError(f"Некорректная или повторная запись .key, строка {line_number}")
+        mapping[component] = name
+    if not mapping:
+        raise ValueError("NASCART .key не содержит компонентов")
+    return mapping
+
+
+def _mesh_component_subset(mesh: TriMesh, component_ids: set[int]) -> TriMesh:
+    faces = []
+    components = []
+    for index, face in enumerate(mesh.faces):
+        component = mesh.components[index] if index < len(mesh.components) else 1
+        if component in component_ids:
+            faces.append(face)
+            components.append(component)
+    used = sorted({vertex for face in faces for vertex in face})
+    remap = {old: new for new, old in enumerate(used)}
+    return TriMesh(
+        [mesh.vertices[index] for index in used],
+        [tuple(remap[index] for index in face) for face in faces],
+        components,
+    )
+
+
+def _run_machline_geometry_qualification(
+    *,
+    executable: Path | None,
+    mesh_path: Path,
+    mesh: TriMesh,
+    run_dir: Path,
+    scope: dict,
+    reference: dict,
+    force_mask_path: Path,
+    force_contract: dict,
+    policy: dict,
+) -> dict:
+    """Probe the certified thick-body TRI at the supersonic envelope corners.
+
+    The thin VLM plates are audited by the composite geometry but deliberately
+    stay outside this solve.  MachLine's open-surface Neumann solution can have
+    a small algebraic residual while producing a strongly asymmetric force
+    field.  The production probe therefore solves only the watertight thick
+    body and validates a component-masked per-panel force reconstruction.
+    """
+    settings = policy.get("qualification", {})
+    if not settings.get("enabled", True):
+        return {"requested": False, "valid": False, "status": "disabled", "probes": []}
+    if executable is None or not executable.is_file():
+        return {
+            "requested": True,
+            "valid": False,
+            "status": "missing_executable",
+            "probes": [],
+            "errors": ["machline.exe отсутствует"],
+        }
+    if not force_mask_path.is_file():
+        return {
+            "requested": True,
+            "valid": False,
+            "status": "missing_force_mask",
+            "probes": [],
+            "errors": ["запечатанная маска сил отсутствует"],
+        }
+    mach_values = sorted({
+        float(value)
+        for lo, hi in scope.get("mach_intervals", [])
+        for value in (lo, hi)
+        if float(value) > 1.0
+    })
+    alpha_values = sorted({
+        float(value) for value in scope.get("alpha_deg", [0.0, 0.0])
+    })
+    if not mach_values or not alpha_values:
+        return {
+            "requested": True,
+            "valid": False,
+            "status": "no_supersonic_scope",
+            "probes": [],
+            "errors": ["область не содержит сверхзвуковых угловых точек"],
+        }
+    beta = float(scope.get("beta_deg", 0.0))
+    if abs(beta) > 1.0e-12:
+        return {
+            "requested": True,
+            "valid": False,
+            "status": "unsupported_beta",
+            "probes": [],
+            "errors": ["первая версия MachLine-квалификации поддерживает beta=0"],
+        }
+
+    probe_dir = run_dir / "machline" / "solver_probes"
+    probe_dir.mkdir(parents=True, exist_ok=True)
+    area = float(reference.get("area", 0.0))
+    length = float(reference.get("cref", reference.get("length", 0.0)))
+    cg_source = reference.get("CG", reference.get("center", [0.0, 0.0, 0.0]))
+    if (
+        area <= 0.0
+        or length <= 0.0
+        or not isinstance(cg_source, (list, tuple))
+        or len(cg_source) != 3
+    ):
+        return {
+            "requested": True,
+            "valid": False,
+            "status": "invalid_reference",
+            "probes": [],
+            "errors": ["для MachLine нужны положительные Sref/cref и CG X Y Z"],
+        }
+    cg = [float(cg_source[0]), float(cg_source[2]), -float(cg_source[1])]
+    maximum_iterations = min(
+        int(settings.get("max_iterations_cap", 25000)),
+        max(1000, len(mesh.vertices) + int(settings.get("iteration_margin", 100))),
+    )
+    timeout = float(settings.get("timeout_seconds", 1800))
+    residual_norm_limit = float(settings.get("max_residual_norm", 0.05))
+    residual_max_limit = float(settings.get("max_residual_max", 0.01))
+    lateral_limit = float(settings.get("max_abs_lateral_force", 0.005))
+    records = []
+    errors = []
+    mesh_relative = mesh_path.resolve().relative_to(run_dir.resolve()).as_posix()
+    include_ids = [int(value) for value in force_contract.get("include_component_ids", [])]
+    exclude_ids = [int(value) for value in force_contract.get("exclude_component_ids", [])]
+
+    for mach in mach_values:
+        for alpha in alpha_values:
+            token = f"M{mach:g}_A{alpha:g}".replace("-", "m").replace(".", "p")
+            input_path = probe_dir / f"{token}.json"
+            log_path = probe_dir / f"{token}.log"
+            report_path = probe_dir / f"{token}_report.json"
+            body_path = probe_dir / f"{token}_body.vtk"
+            masked_path = probe_dir / f"{token}_masked_force.json"
+            input_relative = input_path.resolve().relative_to(run_dir.resolve()).as_posix()
+            report_relative = report_path.resolve().relative_to(run_dir.resolve()).as_posix()
+            body_relative = body_path.resolve().relative_to(run_dir.resolve()).as_posix()
+            direction = nascart_freestream(alpha, beta)
+            payload = {
+                "flow": {
+                    "freestream_velocity": [100.0 * value for value in direction],
+                    "gamma": 1.4,
+                    "freestream_mach_number": mach,
+                },
+                "geometry": {
+                    "file": mesh_relative,
+                    "spanwise_axis": "+z",
+                    "wake_model": {"wake_present": False, "append_wake": False},
+                    "reference": {"area": area, "length": length, "CG": cg},
+                },
+                "solver": {
+                    "formulation": "neumann-doublet-only-mass-flux",
+                    "matrix_solver": "GMRES",
+                    "preconditioner": "DIAG",
+                    "tolerance": float(settings.get("tolerance", 1.0e-10)),
+                    "max_iterations": maximum_iterations,
+                    "control_point_offset": float(settings.get("control_point_offset", 0.001)),
+                },
+                "post_processing": {
+                    "pressure_rules": {"isentropic": True},
+                    "pressure_for_forces": "isentropic",
+                },
+                "output": {
+                    "body_file": body_relative,
+                    "wake_file": "none",
+                    "control_point_file": "none",
+                    "report_file": report_relative,
+                },
+            }
+            write_json(input_path, payload)
+            started = time.monotonic()
+            try:
+                process = subprocess.run(
+                    [str(executable.resolve())],
+                    input=input_relative + "\n",
+                    text=True,
+                    cwd=str(run_dir.resolve()),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    timeout=timeout,
+                    env={**os.environ, "OMP_NUM_THREADS": str(settings.get("ncpu", 4))},
+                )
+                output = process.stdout or ""
+                log_path.write_text(output, encoding="utf-8", errors="ignore")
+                record = {
+                    "mach": mach,
+                    "alpha_deg": alpha,
+                    "input": str(input_path.resolve()),
+                    "input_sha256": sha256_file(input_path),
+                    "log": str(log_path.resolve()),
+                    "log_sha256": sha256_file(log_path),
+                    "return_code": process.returncode,
+                    "runtime_seconds": time.monotonic() - started,
+                    "max_iterations": maximum_iterations,
+                    "valid": False,
+                    "errors": [],
+                }
+                if process.returncode != 0:
+                    record["errors"].append(f"MachLine return code {process.returncode}")
+                if not report_path.is_file() or not body_path.is_file():
+                    record["errors"].append("MachLine не создал report/body VTK")
+                else:
+                    report = json.loads(report_path.read_text(encoding="utf-8"))
+                    solver = report.get("solver_results", {})
+                    residual = solver.get("residual", {})
+                    status_code = int(solver.get("solver_status_code", -1))
+                    residual_norm = float(residual.get("norm", math.nan))
+                    residual_max = float(residual.get("max", math.nan))
+                    if status_code != 0:
+                        record["errors"].append(f"solver_status_code={status_code}")
+                    if not math.isfinite(residual_norm) or residual_norm > residual_norm_limit:
+                        record["errors"].append(
+                            f"residual.norm={residual_norm:g} > {residual_norm_limit:g}"
+                        )
+                    if not math.isfinite(residual_max) or residual_max > residual_max_limit:
+                        record["errors"].append(
+                            f"residual.max={residual_max:g} > {residual_max_limit:g}"
+                        )
+                    if not re.search(r"Found\s+0\s+superinclined panels", output):
+                        record["errors"].append("журнал не подтверждает 0 superinclined panels")
+                    masked = masked_force_coefficients(
+                        mesh=mesh,
+                        body_vtk_path=body_path,
+                        reference_area=area,
+                        include_component_ids=include_ids,
+                        exclude_component_ids=exclude_ids,
+                        report_total_forces=report.get("total_forces", {}),
+                        freestream_velocity=payload["flow"]["freestream_velocity"],
+                        spanwise_axis="+z",
+                    )
+                    lateral = abs(float(masked["masked_wind_axes"]["cy_span"]))
+                    if lateral > lateral_limit:
+                        record["errors"].append(
+                            f"симметричный beta=0 дал |CYspan|={lateral:g} > {lateral_limit:g}"
+                        )
+                    write_masked_force_record(
+                        masked_path,
+                        mesh_path=mesh_path,
+                        body_vtk_path=body_path,
+                        report_path=report_path,
+                        force_mask_path=force_mask_path,
+                        result=masked,
+                    )
+                    record.update({
+                        "report": str(report_path.resolve()),
+                        "report_sha256": sha256_file(report_path),
+                        "body_vtk": str(body_path.resolve()),
+                        "body_vtk_sha256": sha256_file(body_path),
+                        "solver_status_code": status_code,
+                        "iterations": solver.get("iterations"),
+                        "residual_norm": residual_norm,
+                        "residual_max": residual_max,
+                        "masked_force": str(masked_path.resolve()),
+                        "masked_force_sha256": sha256_file(masked_path),
+                        "masked_wind_axes": masked["masked_wind_axes"],
+                    })
+                record["valid"] = not record["errors"]
+            except subprocess.TimeoutExpired:
+                record = {
+                    "mach": mach,
+                    "alpha_deg": alpha,
+                    "valid": False,
+                    "errors": [f"MachLine timeout {timeout:g} s"],
+                    "runtime_seconds": time.monotonic() - started,
+                }
+            except Exception as exc:
+                record = {
+                    "mach": mach,
+                    "alpha_deg": alpha,
+                    "valid": False,
+                    "errors": [str(exc)],
+                    "runtime_seconds": time.monotonic() - started,
+                }
+            records.append(record)
+            if not record["valid"]:
+                errors.extend(
+                    f"M={mach:g}, alpha={alpha:g}: {message}"
+                    for message in record["errors"]
+                )
+
+    result = {
+        "requested": True,
+        "valid": not errors and len(records) == len(mach_values) * len(alpha_values),
+        "status": "passed" if not errors else "failed",
+        "formulation": "neumann-doublet-only-mass-flux",
+        "matrix_solver": "GMRES",
+        "mesh_role": "watertight_thick_body_with_tagged_numerical_closure",
+        "thin_surface_contract": "audited_by_composite_mesh_solved_by_vspaero",
+        "force_output": "component_masked_pressure_wave_without_base_drag",
+        "limits": {
+            "residual_norm": residual_norm_limit,
+            "residual_max": residual_max_limit,
+            "abs_lateral_force": lateral_limit,
+        },
+        "probes": records,
+        "errors": errors,
+    }
+    write_json(probe_dir / "qualification.json", result)
+    return result
+
+
 def _export_machline_tri(
     *,
     solver_twin_record: dict,
@@ -344,6 +707,10 @@ def _export_machline_tri(
     export_dir.mkdir(parents=True, exist_ok=True)
     source_path = Path(str(solver_twin_record.get("path", "")))
     raw_path = export_dir / "openvsp_nascart_raw.tri"
+    key_path = raw_path.with_suffix(".key")
+    local_model_path = export_dir / "openvsp_thin_model.vsp3"
+    thin_path = local_model_path.with_suffix(".vspgeom")
+    thin_key_path = local_model_path.with_suffix(".vkey")
     output_path = export_dir / "machline_fine_export.tri"
     script_path = export_dir / "export_machline_tri.vspscript"
     log_path = export_dir / "export_machline_tri.log"
@@ -352,6 +719,9 @@ def _export_machline_tri(
     thin_user_set = int(policy["sets"]["thin_user_set"])
     thick_api_set = thick_user_set + 3
     thin_api_set = thin_user_set + 3
+    empty_thick_api_set = int(policy["sets"]["empty_thick_user_set"]) + 3
+    union_user_set = int(policy["sets"]["machline_export_user_set"])
+    union_api_set = union_user_set + 3
     source_before = sha256_file(source_path) if source_path.is_file() else None
     bindings = deepcopy(certification_bindings)
     legacy_hint = None
@@ -364,6 +734,10 @@ def _export_machline_tri(
         }
     errors: list[str] = []
     return_code = None
+    component_map: dict[int, str] = {}
+    component_face_counts: dict[int, int] = {}
+    component_roles: dict[int, str] = {}
+    union_geometry_names: list[str] = []
     if not source_path.is_file():
         errors.append("Fine-двойник MachLine отсутствует")
     required_bindings = (
@@ -379,13 +753,36 @@ def _export_machline_tri(
     if source_before and bindings.get("fine_twin_sha256") != source_before:
         errors.append("Fine-двойник экспорта не совпадает с запечатанным mesh record")
     if not errors:
+        shutil.copy2(source_path, local_model_path)
         script_text = f'''void main()
 {{
     ClearVSPModel();
-    ReadVSPFile( "{_vsp_script_path(source_path)}" );
+    ReadVSPFile( "{_vsp_script_path(local_model_path)}" );
     Update();
-    string export_id = ExportFile( "{_vsp_script_path(raw_path)}", {thick_api_set}, EXPORT_NASCART, 1, {thin_api_set} );
+    array<string> all_geoms = FindGeoms();
+    int union_count = 0;
+    for ( int gi = 0; gi < int(all_geoms.length()); gi++ )
+    {{
+        bool selected = GetSetFlag( all_geoms[gi], {thick_api_set} ) || GetSetFlag( all_geoms[gi], {thin_api_set} );
+        SetSetFlag( all_geoms[gi], {union_api_set}, selected );
+        if ( selected )
+        {{
+            union_count++;
+            Print( "REPAIRMACH_MACHLINE_UNION_GEOM=" + GetGeomName( all_geoms[gi] ) );
+        }}
+    }}
+    SetSetName( {union_api_set}, "RM_CERT_MACHLINE_ALL" );
+    Print( "REPAIRMACH_MACHLINE_UNION_COUNT=" + union_count );
+    string export_id = ExportFile( "{_vsp_script_path(raw_path)}", {thick_api_set}, EXPORT_NASCART, 1, SET_NONE );
     Print( "REPAIRMACH_MACHLINE_TRI_EXPORT_ID=" + export_id );
+    string compute_name = "VSPAEROComputeGeometry";
+    SetAnalysisInputDefaults( compute_name );
+    array<int> empty_thick_input(1, {empty_thick_api_set});
+    array<int> thin_input(1, {thin_api_set});
+    SetIntAnalysisInput( compute_name, "GeomSet", empty_thick_input );
+    SetIntAnalysisInput( compute_name, "ThinGeomSet", thin_input );
+    string compute_id = ExecAnalysis( compute_name );
+    Print( "REPAIRMACH_MACHLINE_THIN_COMPUTE_ID=" + compute_id );
     Print( "REPAIRMACH_MACHLINE_TRI_EXPORT_OK=1" );
     while ( GetNumTotalErrors() > 0 )
     {{
@@ -404,12 +801,52 @@ def _export_machline_tri(
                 timeout_seconds=float(policy["probes"]["openvsp_load"].get("timeout_seconds", 180)),
             )
             log_text = log_path.read_text(encoding="utf-8", errors="replace") if log_path.is_file() else ""
+            union_geometry_names = [
+                item.strip()
+                for item in re.findall(r"REPAIRMACH_MACHLINE_UNION_GEOM=([^\r\n]+)", log_text)
+                if item.strip()
+            ]
             if return_code not in (0, 1) or "REPAIRMACH_MACHLINE_TRI_EXPORT_OK=1" not in log_text:
                 errors.append("OpenVSP не подтвердил NASCART-экспорт TRI")
             elif not raw_path.is_file():
                 errors.append("OpenVSP подтвердил экспорт, но TRI-файл отсутствует")
             else:
-                write_tri(output_path, _read_openvsp_nascart(raw_path))
+                thick_mesh = _read_openvsp_nascart(raw_path)
+                thick_names = _read_openvsp_nascart_key(key_path)
+                unknown_components = sorted(set(thick_mesh.components) - set(thick_names))
+                if unknown_components:
+                    raise ValueError(
+                        "NASCART TRI содержит компоненты без записей .key: "
+                        + ", ".join(str(value) for value in unknown_components)
+                    )
+                component_offset = max(thick_names or {0: ""})
+                thin_mesh, thin_names = read_vspgeom_thin(
+                    thin_path,
+                    thin_key_path,
+                    component_offset=component_offset,
+                )
+                component_map = {**thick_names, **thin_names}
+                missing_geometries = [
+                    name for name in union_geometry_names
+                    if not any(
+                        component_name == name
+                        or component_name.startswith(name + "_")
+                        for component_name in component_map.values()
+                    )
+                ]
+                if missing_geometries:
+                    raise ValueError(
+                        "NASCART-экспорт потерял выбранные геометрии: "
+                        + ", ".join(missing_geometries)
+                    )
+                exported_mesh = combine_meshes([thick_mesh, thin_mesh])
+                component_roles = {
+                    **{component: "thick" for component in thick_names},
+                    **{component: "thin" for component in thin_names},
+                }
+                for component in exported_mesh.components:
+                    component_face_counts[component] = component_face_counts.get(component, 0) + 1
+                write_tri(output_path, exported_mesh)
         except Exception as exc:
             errors.append(f"сбой автоматического экспорта TRI: {exc}")
     source_after = sha256_file(source_path) if source_path.is_file() else None
@@ -433,13 +870,30 @@ def _export_machline_tri(
         "source_unchanged": source_unchanged,
         "export": {
             "format": "OpenVSP_EXPORT_NASCART",
-            "thick_user_set": thick_user_set,
-            "thick_api_set": thick_api_set,
-            "thin_user_set": thin_user_set,
-            "thin_api_set": thin_api_set,
+            "source_thick_user_set": thick_user_set,
+            "source_thick_api_set": thick_api_set,
+            "source_thin_user_set": thin_user_set,
+            "source_thin_api_set": thin_api_set,
+            "union_user_set": union_user_set,
+            "union_api_set": union_api_set,
+            "thin_export_set": "SET_NONE",
             "include_subsurfaces": True,
+            "coordinate_convention": COORDINATE_CONVENTION,
+            "mesh_representation": "NASCART_thick_plus_VSPGeom_VLM_thin",
             "raw_path": str(raw_path.resolve()),
             "raw_sha256": sha256_file(raw_path) if raw_path.is_file() else None,
+            "key_path": str(key_path.resolve()),
+            "key_sha256": sha256_file(key_path) if key_path.is_file() else None,
+            "thin_path": str(thin_path.resolve()),
+            "thin_sha256": sha256_file(thin_path) if thin_path.is_file() else None,
+            "thin_key_path": str(thin_key_path.resolve()),
+            "thin_key_sha256": sha256_file(thin_key_path) if thin_key_path.is_file() else None,
+            "component_map": {str(key): value for key, value in sorted(component_map.items())},
+            "component_roles": {str(key): value for key, value in sorted(component_roles.items())},
+            "component_face_counts": {
+                str(key): value for key, value in sorted(component_face_counts.items())
+            },
+            "union_geometry_names": union_geometry_names,
             "path": str(output_path.resolve()),
             "sha256": sha256_file(output_path) if output_path.is_file() else None,
         },
@@ -468,6 +922,8 @@ def _tri_certification(
     scope: dict,
     *,
     export_record: dict | None = None,
+    reference: dict | None = None,
+    machline_executable: Path | None = None,
 ) -> tuple[dict, list[dict]]:
     if tri_path is None:
         if export_record is not None:
@@ -522,16 +978,7 @@ def _tri_certification(
             "export_record": export_record,
         }, findings
     write_json(tri_dir / "native_diagnostics.json", initial)
-    blockers = (
-        initial["invalid_index_faces"]
-        + initial["nonmanifold_edges"]
-        + initial["repeated_vertex_faces"]
-    )
-    repair_count = (
-        initial["degenerate_faces"] + initial["duplicate_faces"]
-        + initial["duplicate_vertices"] + initial["unreferenced_vertices"]
-        + initial["inconsistent_orientation_edges"]
-    )
+    blockers = initial["invalid_index_faces"] + initial["repeated_vertex_faces"]
     max_count = min(
         int(policy["machline"]["max_changed_panels"]),
         max(0, math.floor(float(policy["machline"]["max_changed_fraction"]) * max(1, initial["faces"]))),
@@ -539,7 +986,7 @@ def _tri_certification(
     if blockers:
         findings.append(finding(
             "GEO-TRI-001", "BLOCKER",
-            "TRI содержит invalid-index, repeated-index или nonmanifold дефекты",
+            "TRI содержит invalid-index или repeated-index дефекты",
             scope="machline", evidence={"diagnostics": initial},
         ))
         return {
@@ -547,56 +994,234 @@ def _tri_certification(
             "source": str(source_copy), "source_sha256": sha256_file(source_copy),
             "initial": initial, "repair_budget": max_count, "export_record": export_record,
         }, findings
-    if repair_count > max_count:
+
+    component_map = {
+        int(key): str(value)
+        for key, value in (export_record or {}).get("export", {}).get("component_map", {}).items()
+    }
+    prepared, preparation_log = prepare_machline_geometry(
+        mesh,
+        scope=scope,
+        component_names=component_map,
+        policy=policy["machline"],
+        reference=reference or {"area": 1.0, "cref": 1.0},
+    )
+    duplicate_log = preparation_log.get("duplicate_skin_repair", {})
+    repair_logs = [
+        preparation_log.get("generic_repair", {}),
+        preparation_log.get("final_repair", {}),
+    ]
+    repair_count = int(duplicate_log.get("removed_faces", 0))
+    for repair_log in repair_logs:
+        repair_count += sum(int(repair_log.get(key, 0)) for key in (
+            "removed_invalid_faces",
+            "removed_degenerate_faces",
+            "removed_duplicate_faces",
+            "flipped_faces_for_consistency",
+        ))
+    repair_budget_ok = repair_count <= max_count
+    if not repair_budget_ok:
         findings.append(finding(
             "GEO-TRI-002", "BLOCKER", "Безопасный TRI-ремонт превышает бюджет",
             scope="machline", evidence={"required": repair_count, "limit": max_count},
         ))
-        return {
-            "requested": True, "eligible": False, "status": "repair_budget_exceeded",
-            "source": str(source_copy), "initial": initial, "repair_budget": max_count,
-            "export_record": export_record,
-        }, findings
 
-    repaired, repair_log = repair_tri(mesh)
+    audit_path = tri_dir / "certified_audit_mesh.tri"
+    write_tri(audit_path, prepared)
+    audit_final = diagnose_tri(prepared)
+    write_json(tri_dir / "audit_diagnostics.json", audit_final)
+    write_json(tri_dir / "preparation_log.json", preparation_log)
+    component_roles = {
+        int(key): str(value)
+        for key, value in (export_record or {}).get("export", {}).get("component_roles", {}).items()
+    }
+    closure = preparation_log.get("downstream_axial_closure", {})
+    for component in closure.get("surrogate_component_ids", []):
+        component_map[int(component)] = "RM_NUMERICAL_AFT_CLOSURE"
+    thick_component_ids = {
+        component for component, role in component_roles.items() if role == "thick"
+    }
+    surrogate_component_ids = {
+        int(value) for value in closure.get("surrogate_component_ids", [])
+    }
+    solver_component_ids = thick_component_ids | surrogate_component_ids
+    solver_mesh = _mesh_component_subset(prepared, solver_component_ids)
     final_path = tri_dir / "certified_mesh.tri"
-    write_tri(final_path, repaired)
-    final = diagnose_tri(repaired)
+    write_tri(final_path, solver_mesh)
+    final = diagnose_tri(solver_mesh)
     write_json(tri_dir / "final_diagnostics.json", final)
-    write_json(tri_dir / "repair_log.json", repair_log)
-    topology_ok = final["machline_safe_topology"]
-    mach_scans = []
-    mach_ok = True
-    mandatory_mach = sorted({
-        value for lo, hi in scope["mach_intervals"] for value in (lo, hi) if value > 1.0
+    thick_watertight = bool(
+        final["machline_safe_topology"] and final["watertight"]
+    )
+    topology_contract = {
+        "audit_mesh": str(audit_path.resolve()),
+        "audit_mesh_safe_topology": audit_final["machline_safe_topology"],
+        "audit_mesh_boundary_edges": audit_final["boundary_edges"],
+        "thin_component_ids": sorted(
+            component for component, role in component_roles.items() if role == "thin"
+        ),
+        "physical_thick_component_ids": sorted(thick_component_ids),
+        "surrogate_component_ids": sorted(surrogate_component_ids),
+        "solver_component_ids": sorted(solver_component_ids),
+        "solver_mesh_diagnostics": final,
+        "intentional_open_boundaries_allowed_only_on_thin_components": True,
+        "solver_mesh_is_watertight_thick_body": thick_watertight,
+        "thin_surfaces_audited_but_not_solved_by_machline": True,
+    }
+    write_json(tri_dir / "topology_contract.json", topology_contract)
+    topology_ok = bool(
+        audit_final["machline_safe_topology"]
+        and final["machline_safe_topology"]
+        and thick_watertight
+    )
+    if not topology_ok:
+        findings.append(finding(
+            "GEO-TRI-003", "BLOCKER",
+            "После ограниченного ремонта TRI не удовлетворяет топологии MachLine",
+            scope="machline", evidence={
+                "audit_diagnostics": audit_final,
+                "solver_diagnostics": final,
+            },
+        ))
+
+    mach_scans = scan_scope(prepared, scope, component_map)
+    mach_ok = all(not scan["bad_panels"] for scan in mach_scans)
+    write_json(tri_dir / "mach_criterion.json", {
+        "coordinate_convention": COORDINATE_CONVENTION,
+        "scope": scope,
+        "scans": mach_scans,
     })
-    for mach in mandatory_mach:
-        scan = summarize_scan(scan_mach_criterion(repaired, mach))
-        scan["mach"] = mach
-        mach_scans.append(scan)
-        if scan["bad_panels"]:
-            mach_ok = False
-    write_json(tri_dir / "mach_criterion.json", {"scans": mach_scans})
     if not mach_ok:
         findings.append(finding(
             "GEO-MACH-001", "BLOCKER",
-            "MachLine-критерий не выполнен; автоматическое абсолютное смещение вершин запрещено",
+            "MachLine-критерий не выполнен во всём диапазоне Mach и alpha; "
+            "автоматическое абсолютное смещение вершин запрещено",
             scope="machline", evidence={"scans": mach_scans},
         ))
+
+    force_contract = {
+        "required": True,
+        "include_component_ids": sorted(thick_component_ids),
+        "exclude_component_ids": sorted(surrogate_component_ids),
+        "base_drag_replacement_required": bool(closure.get("accepted")),
+        "thin_component_ids_delegated_to_vspaero": topology_contract["thin_component_ids"],
+        "output_kind": "masked_thick_body_pressure_wave",
+    }
+    force_mask_path = tri_dir / "force_integration_mask.json"
+    write_json(force_mask_path, {
+        "schema": "repairmach.machline-force-mask/1.0",
+        "certified_tri": str(final_path.resolve()),
+        "certified_tri_sha256": sha256_file(final_path),
+        "audit_tri": str(audit_path.resolve()),
+        "audit_tri_sha256": sha256_file(audit_path),
+        "coordinate_convention": COORDINATE_CONVENTION,
+        **force_contract,
+    })
+    if closure.get("accepted"):
+        findings.append(finding(
+            "GEO-MACH-SURROGATE-001", "INFO",
+            "Плоский кормовой срез заменён ограниченным численным замыканием; "
+            "MASTER и физические панели перед срезом не изменены",
+            scope="machline", evidence={"closures": closure.get("closures", [])},
+        ))
+
+    geometry_eligible = bool(topology_ok and mach_ok and repair_budget_ok)
+    qualification = {
+        "requested": False,
+        "valid": False,
+        "status": "geometry_not_eligible",
+        "probes": [],
+    }
+    if geometry_eligible:
+        qualification = _run_machline_geometry_qualification(
+            executable=machline_executable,
+            mesh_path=final_path,
+            mesh=solver_mesh,
+            run_dir=run_dir,
+            scope=scope,
+            reference=reference or {"area": 1.0, "cref": 1.0, "CG": [0.0, 0.0, 0.0]},
+            force_mask_path=force_mask_path,
+            force_contract=force_contract,
+            policy=policy["machline"],
+        )
+    masked_output_available = bool(
+        policy["machline"].get("solver_surrogate", {})
+        .get("masked_force_postprocessor_available", False)
+    )
+    force_contract_ok = bool(masked_output_available and qualification.get("valid"))
+    if not masked_output_available:
+        findings.append(finding(
+            "GEO-MACH-SURROGATE-002", "BLOCKER",
+            "Допуск сил закрыт: автоматический покомпонентный постпроцессор отключён",
+            scope="machline", evidence={
+                "force_mask": str(force_mask_path.resolve()),
+                "contract": force_contract,
+            },
+        ))
+    elif not qualification.get("valid"):
+        findings.append(finding(
+            "GEO-MACH-SOLVER-001", "BLOCKER",
+            "Подготовленная толстотельная сетка не прошла реальные угловые "
+            "пробы MachLine и проверку маскированных сил",
+            scope="machline", evidence={
+                "status": qualification.get("status"),
+                "errors": qualification.get("errors", []),
+            },
+        ))
+    else:
+        findings.append(finding(
+            "GEO-MACH-SOLVER-002", "INFO",
+            "Толстотельный двойник прошёл реальные угловые пробы MachLine, "
+            "контроль невязки, симметрии и покомпонентной маски сил",
+            scope="machline", evidence={
+                "probe_count": len(qualification.get("probes", [])),
+                "limits": qualification.get("limits", {}),
+            },
+        ))
+
+    eligible = bool(geometry_eligible and force_contract_ok)
+    if eligible:
+        status = "passed"
+    elif not repair_budget_ok:
+        status = "repair_budget_exceeded"
+    elif geometry_eligible and not force_contract_ok:
+        status = (
+            "solver_qualification_failed"
+            if masked_output_available
+            else "prepared_requires_masked_force_integration"
+        )
+    else:
+        status = "failed"
     return {
         "requested": True,
-        "eligible": bool(topology_ok and mach_ok),
-        "status": "passed" if topology_ok and mach_ok else "failed",
+        "eligible": eligible,
+        "geometry_eligible": geometry_eligible,
+        "force_output_eligible": force_contract_ok,
+        "standalone_total_force_eligible": bool(
+            force_contract_ok and not force_contract["base_drag_replacement_required"]
+        ),
+        "hybrid_pressure_wave_eligible": force_contract_ok,
+        "status": status,
         "source": str(source_copy.resolve()),
         "source_sha256": sha256_file(source_copy),
         "certified_tri": str(final_path.resolve()),
         "certified_tri_sha256": sha256_file(final_path),
+        "audit_tri": str(audit_path.resolve()),
+        "audit_tri_sha256": sha256_file(audit_path),
         "initial": initial,
         "final": final,
-        "repairs": repair_log,
+        "audit_final": audit_final,
+        "repairs": preparation_log,
         "repair_budget": max_count,
+        "repair_count": repair_count,
         "mach_scans": mach_scans,
         "good_panels_degraded": 0,
+        "coordinate_convention": COORDINATE_CONVENTION,
+        "topology_contract": topology_contract,
+        "force_integration_mask": (
+            str(force_mask_path.resolve()) if force_mask_path.is_file() else None
+        ),
+        "machline_qualification": qualification,
         "export_record": export_record,
     }, findings
 
@@ -699,6 +1324,7 @@ def _run_one_vspaero_probe(
     alpha_deg: float | None = None,
     engine_boundary: str | None = None,
     diagnostic_ignore_fixed_tail: bool = False,
+    numerical_overrides: dict | None = None,
 ) -> dict:
     probe_dir.mkdir(parents=True, exist_ok=True)
     probe_model = probe_dir / "model.vsp3"
@@ -706,7 +1332,22 @@ def _run_one_vspaero_probe(
     script = probe_dir / "probe.vspscript"
     results_csv = probe_dir / "probe.csv"
     log = probe_dir / "probe.log"
-    settings = policy["probes"]["vspaero"]
+    settings = deepcopy(policy["probes"]["vspaero"])
+    if numerical_overrides:
+        allowed_controls = {
+            "ncpu",
+            "forward_gmres_convergence_factor",
+            "wake_num_iter",
+            "num_wake_nodes",
+            "wake_relax",
+        }
+        unknown_controls = sorted(set(numerical_overrides) - allowed_controls)
+        if unknown_controls:
+            raise ValueError(
+                "Неизвестные численные настройки VSPAERO: "
+                + ", ".join(unknown_controls)
+            )
+        settings.update(numerical_overrides)
     requested_mach = float(settings["mach"] if mach is None else mach)
     requested_alpha = float(settings["alpha_deg"] if alpha_deg is None else alpha_deg)
     requested_beta = float(policy["scope"].get("beta_deg", 0.0))
@@ -813,6 +1454,7 @@ def _run_one_vspaero_probe(
         "errors": ["Строгая проверка результата VSPAERO не выполнялась"],
     }
     output_quality_error = None
+    output_quality_failure_kind = None
     if polar is not None and results_csv.is_file():
         try:
             output_quality = validate_vspaero_run_outputs(
@@ -827,6 +1469,11 @@ def _run_one_vspaero_probe(
                 max_log10_l2_residual=float(
                     settings["max_log10_l2_residual"]
                 ),
+                max_log10_max_residual=(
+                    float(settings["max_log10_max_residual"])
+                    if settings.get("max_log10_max_residual") is not None
+                    else None
+                ),
                 allow_zero_mach_without_logged_residual=bool(
                     settings.get("allow_zero_mach_without_logged_residual", False)
                 ),
@@ -838,11 +1485,14 @@ def _run_one_vspaero_probe(
             )
         except (OSError, ValueError, KeyError, TypeError) as exc:
             output_quality_error = str(exc)
+            if "невязк" in output_quality_error.lower():
+                output_quality_failure_kind = "residual"
             output_quality = {
                 "valid": False,
                 "expected_points": 1,
                 "actual_points": len(rows),
                 "max_log10_l2_residual": settings.get("max_log10_l2_residual"),
+                "max_log10_max_residual": settings.get("max_log10_max_residual"),
                 "errors": [output_quality_error],
             }
     if output_quality.get("benign_zero_rhs_normalization_nan"):
@@ -892,6 +1542,7 @@ def _run_one_vspaero_probe(
         "condition_errors": condition_errors,
         "output_quality": output_quality,
         "output_quality_error": output_quality_error,
+        "output_quality_failure_kind": output_quality_failure_kind,
         "finite_rows": len(finite_rows),
         "values": values,
         "requested_condition": {
@@ -901,6 +1552,7 @@ def _run_one_vspaero_probe(
             "engine_boundary": requested_boundary,
         },
         "numerical_controls": {
+            "ncpu": int(settings.get("ncpu", 4)),
             "forward_gmres_convergence_factor": float(
                 settings.get("forward_gmres_convergence_factor", 1.0)
             ),
@@ -1326,14 +1978,14 @@ def _run_vspaero_ladder(
     probes = []
     failure_diagnostics = None
     for level in ("coarse", "medium", "fine"):
-        probe = _run_one_vspaero_probe(
+        probe = _run_vspaero_probe_with_recovery(
             model=Path(meshes[level]["path"]),
             probe_dir=run_dir / "probes" / f"vspaero_{mode}" / condition_id / level,
             mode=mode,
             level=level,
             reference=reference,
             policy=policy,
-            vspscript_executable=executable,
+            executable=executable,
             mach=mach,
             alpha_deg=alpha,
             engine_boundary=boundary,
@@ -1398,7 +2050,7 @@ def _run_vspaero_ladder(
             and retry_mesh.get("mesh_verification", {}).get("valid")
         )
         if retry_mesh_valid:
-            retry_probe = _run_one_vspaero_probe(
+            retry_probe = _run_vspaero_probe_with_recovery(
                 model=Path(retry_mesh["path"]),
                 probe_dir=(
                     run_dir / "probes" / f"vspaero_{mode}" / condition_id / retry_level
@@ -1407,7 +2059,7 @@ def _run_vspaero_ladder(
                 level=retry_level,
                 reference=reference,
                 policy=policy,
-                vspscript_executable=executable,
+                executable=executable,
                 mach=mach,
                 alpha_deg=alpha,
                 engine_boundary=boundary,
@@ -1468,7 +2120,7 @@ def _run_vspaero_ladder(
         if plateau.get("valid"):
             for level_name in plateau["levels"][:-1]:
                 mesh_record = plateau["meshes"][level_name]
-                local_probe = _run_one_vspaero_probe(
+                local_probe = _run_vspaero_probe_with_recovery(
                     model=Path(mesh_record["path"]),
                     probe_dir=(
                         run_dir
@@ -1481,7 +2133,7 @@ def _run_vspaero_ladder(
                     level=level_name,
                     reference=reference,
                     policy=policy,
-                    vspscript_executable=executable,
+                    executable=executable,
                     mach=mach,
                     alpha_deg=alpha,
                     engine_boundary=boundary,
@@ -1562,7 +2214,7 @@ def _run_vspaero_ladder(
             and resolution_mesh.get("mesh_verification", {}).get("valid")
         )
         if resolution_mesh_valid:
-            resolution_probe = _run_one_vspaero_probe(
+            resolution_probe = _run_vspaero_probe_with_recovery(
                 model=Path(resolution_mesh["path"]),
                 probe_dir=(
                     run_dir
@@ -1575,7 +2227,7 @@ def _run_vspaero_ladder(
                 level=resolution_level,
                 reference=reference,
                 policy=policy,
-                vspscript_executable=executable,
+                executable=executable,
                 mach=mach,
                 alpha_deg=alpha,
                 engine_boundary=boundary,
@@ -1760,6 +2412,179 @@ def _backend_eligible(
         and verdict != "FAIL"
         and not blockers
     )
+
+
+def _is_residual_quality_failure(probe: dict) -> bool:
+    """Identify a numerically poor solve whose geometry/setup still passed."""
+    set_report = probe.get("set_validation", {})
+    return bool(
+        not probe.get("valid")
+        and probe.get("output_quality_failure_kind") == "residual"
+        and probe.get("finite_rows") == 1
+        and not probe.get("health_errors")
+        and not probe.get("condition_errors")
+        and set_report.get("valid")
+        and set_report.get("calculation_complete")
+    )
+
+
+def _probe_repeatability(probes: list[dict], policy: dict) -> dict:
+    """Require independent stabilized repeats to agree without relaxing limits."""
+    settings = (
+        policy.get("probes", {})
+        .get("vspaero", {})
+        .get("numerical_recovery", {})
+    )
+    relative_tolerance = float(settings.get("relative_tolerance", 0.005))
+    floor = float(policy.get("convergence", {}).get("absolute_floor", 1.0e-6))
+    absolute_tolerances = settings.get("absolute_tolerances", {})
+    quantities = {}
+    valid = len(probes) >= 2 and all(item.get("valid") for item in probes)
+    if valid:
+        first, second = probes[-2:]
+        for key in policy["convergence"]["quantities"]:
+            value_a = float(first["values"][key])
+            value_b = float(second["values"][key])
+            absolute = abs(value_b - value_a)
+            relative = absolute / max(abs(value_a), abs(value_b), floor)
+            absolute_tolerance = float(absolute_tolerances.get(key, 0.0))
+            quantity_valid = bool(
+                math.isfinite(relative)
+                and (
+                    relative <= relative_tolerance
+                    or (absolute_tolerance > 0.0 and absolute <= absolute_tolerance)
+                )
+            )
+            quantities[key] = {
+                "first": value_a,
+                "second": value_b,
+                "absolute_delta": absolute,
+                "relative_delta": relative,
+                "relative_tolerance": relative_tolerance,
+                "absolute_tolerance": absolute_tolerance,
+                "valid": quantity_valid,
+            }
+            valid = valid and quantity_valid
+    return {
+        "valid": bool(valid),
+        "attempts": len(probes),
+        "quantities": quantities,
+        "errors": [] if valid else ["Усиленные повторы VSPAERO не подтвердили воспроизводимость"],
+    }
+
+
+def _recover_vspaero_residual_failure(
+    *,
+    failed_probe: dict,
+    model: Path,
+    probe_root: Path,
+    mode: str,
+    level: str,
+    reference: dict,
+    policy: dict,
+    executable: Path,
+    mach: float,
+    alpha_deg: float,
+    engine_boundary: str,
+) -> dict:
+    """Repeat one residual-only failure using deterministic stricter controls."""
+    settings = (
+        policy.get("probes", {})
+        .get("vspaero", {})
+        .get("numerical_recovery", {})
+    )
+    record = {
+        "attempted": False,
+        "valid": False,
+        "reason": "residual_quality_failure",
+        "rejected_probe": deepcopy(failed_probe),
+        "repeat_probes": [],
+        "repeatability": {"valid": False, "errors": ["Повторы не выполнялись"]},
+    }
+    if not settings.get("enabled", False) or not _is_residual_quality_failure(failed_probe):
+        return record
+    controls = deepcopy(settings.get("controls", {}))
+    attempts = max(2, int(settings.get("attempts", 2)))
+    record["attempted"] = True
+    record["controls"] = controls
+    for attempt in range(1, attempts + 1):
+        repeat_level = f"{level}_stable_repeat_{attempt}"
+        probe = _run_one_vspaero_probe(
+            model=model,
+            probe_dir=probe_root / repeat_level,
+            mode=mode,
+            level=repeat_level,
+            reference=reference,
+            policy=policy,
+            vspscript_executable=executable,
+            mach=mach,
+            alpha_deg=alpha_deg,
+            engine_boundary=engine_boundary,
+            numerical_overrides=controls,
+        )
+        record["repeat_probes"].append(probe)
+        if not probe.get("valid"):
+            break
+    record["repeatability"] = _probe_repeatability(record["repeat_probes"], policy)
+    record["valid"] = bool(record["repeatability"].get("valid"))
+    if not record["valid"]:
+        return record
+    selected = deepcopy(record["repeat_probes"][-1])
+    selected["level"] = level
+    selected["numerical_recovery"] = record
+    record["selected_probe"] = {
+        "level": level,
+        "source_repeat_level": record["repeat_probes"][-1].get("level"),
+        "values": deepcopy(selected.get("values")),
+    }
+    return {**record, "selected": selected}
+
+
+def _run_vspaero_probe_with_recovery(
+    *,
+    model: Path,
+    probe_dir: Path,
+    mode: str,
+    level: str,
+    reference: dict,
+    policy: dict,
+    executable: Path,
+    mach: float,
+    alpha_deg: float,
+    engine_boundary: str,
+) -> dict:
+    """Run any qualification level through the same residual recovery gate."""
+    probe = _run_one_vspaero_probe(
+        model=model,
+        probe_dir=probe_dir,
+        mode=mode,
+        level=level,
+        reference=reference,
+        policy=policy,
+        vspscript_executable=executable,
+        mach=mach,
+        alpha_deg=alpha_deg,
+        engine_boundary=engine_boundary,
+    )
+    if not _is_residual_quality_failure(probe):
+        return probe
+    recovery = _recover_vspaero_residual_failure(
+        failed_probe=probe,
+        model=model,
+        probe_root=probe_dir / "numerical_recovery",
+        mode=mode,
+        level=level,
+        reference=reference,
+        policy=policy,
+        executable=executable,
+        mach=mach,
+        alpha_deg=alpha_deg,
+        engine_boundary=engine_boundary,
+    )
+    if recovery.get("valid"):
+        return recovery["selected"]
+    probe["numerical_recovery"] = recovery
+    return probe
 
 
 def _qualified_scope(
@@ -2284,6 +3109,8 @@ def certify_geometry(
                 policy,
                 scope,
                 export_record=machline_export_record,
+                reference=reference,
+                machline_executable=machline_executable,
             )
         else:
             tri_result, tri_findings = _tri_certification(None, run_dir, policy, scope)
@@ -2636,7 +3463,7 @@ def certify_geometry(
                 },
                 "machline": {
                     "eligible": machline_eligible,
-                    "mode": "certified_tri" if machline_eligible else None,
+                    "mode": "certified_thick_body_pressure_wave" if machline_eligible else None,
                     "solver_geometry": {
                         "path": tri_result.get("certified_tri"),
                         "relative_path": _certificate_relative_path(
@@ -2660,9 +3487,45 @@ def certify_geometry(
                             (tri_result.get("export_record") or {}).get("record_fingerprint")
                         ),
                     },
+                    "audit_geometry": {
+                        "path": tri_result.get("audit_tri"),
+                        "relative_path": _certificate_relative_path(
+                            run_dir, tri_result.get("audit_tri")
+                        ),
+                        "sha256": tri_result.get("audit_tri_sha256"),
+                    },
+                    "force_integration_mask": {
+                        "path": tri_result.get("force_integration_mask"),
+                        "relative_path": _certificate_relative_path(
+                            run_dir, tri_result.get("force_integration_mask")
+                        ),
+                        "sha256": (
+                            sha256_file(Path(tri_result["force_integration_mask"]))
+                            if tri_result.get("force_integration_mask")
+                            and Path(tri_result["force_integration_mask"]).is_file()
+                            else None
+                        ),
+                    },
+                    "output_contract": {
+                        "hybrid_pressure_wave_eligible": tri_result.get(
+                            "hybrid_pressure_wave_eligible", False
+                        ),
+                        "standalone_total_force_eligible": tri_result.get(
+                            "standalone_total_force_eligible", False
+                        ),
+                        "base_drag_replacement_required": bool(
+                            tri_result.get("repairs", {})
+                            .get("downstream_axial_closure", {})
+                            .get("accepted")
+                        ),
+                        "thin_surfaces_delegated_to_vspaero": True,
+                    },
+                    "qualification": tri_result.get("machline_qualification"),
                     "qualified_scope": {
-                        "coverage_kind": "geometry_only" if machline_eligible else "none",
+                        "coverage_kind": "solver_envelope" if machline_eligible else "none",
                         "mach_intervals": deepcopy(scope["mach_intervals"]) if machline_eligible else [],
+                        "alpha_deg": deepcopy(scope["alpha_deg"]) if machline_eligible else [],
+                        "beta_deg": scope.get("beta_deg") if machline_eligible else None,
                     },
                     "blockers": machline_blockers,
                 },

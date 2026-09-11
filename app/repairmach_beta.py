@@ -18,6 +18,8 @@ if str(APP_DIR) not in sys.path:
 
 from tri_mesh import diagnose, format_diagnostics, read_tri, repair, write_tri
 from mach_repair import repair_mach_criterion, scan_mach_criterion, summarize_scan, write_scan_csv
+from machline_geometry import nascart_freestream
+from machline_postprocess import masked_force_coefficients, write_masked_force_record
 from aero_hybrid import (
     load_machline_report,
     machline_wind_axes,
@@ -665,6 +667,56 @@ def import_tri() -> None:
     tri_diagnostics_workflow(dst, project, offer_repair=True)
 
 
+def certified_machline_force_contract(tri_path: Path) -> tuple[dict, Path] | None:
+    """Validate the force mask adjacent to a certified MachLine TRI.
+
+    No mask means a legacy, uncertified TRI.  A present mask is fail-closed:
+    stale or incomplete certification evidence must never become a legacy run.
+    """
+    mask_path = tri_path.parent / "force_integration_mask.json"
+    if not mask_path.is_file():
+        return None
+    payload = json.loads(mask_path.read_text(encoding="utf-8"))
+    if payload.get("schema") != "repairmach.machline-force-mask/1.0":
+        raise ValueError("Рядом с TRI найден файл маски неизвестной версии")
+    expected_hash = str(payload.get("certified_tri_sha256") or "")
+    if not expected_hash or geometry_sha256(tri_path) != expected_hash:
+        raise ValueError("Маска сил не соответствует выбранному certified_mesh.tri")
+    include = {int(value) for value in payload.get("include_component_ids", [])}
+    exclude = {int(value) for value in payload.get("exclude_component_ids", [])}
+    if not include or include & exclude:
+        raise ValueError("Маска сил пуста или содержит пересекающиеся компоненты")
+    components = set(read_tri(tri_path).components)
+    if include | exclude != components:
+        raise ValueError("Маска сил не классифицирует все компоненты certified_mesh.tri")
+    if payload.get("output_kind") != "masked_thick_body_pressure_wave":
+        raise ValueError("Сертификат не разрешает требуемый вид результата MachLine")
+    return payload, mask_path
+
+
+def _resolve_machline_path(value: object, working_dir: Path) -> Path:
+    path = Path(str(value or ""))
+    if not path.is_absolute():
+        path = (working_dir / path).resolve()
+    return path
+
+
+def _nascart_conditions(report: dict) -> dict[str, float]:
+    velocity = [float(value) for value in report["input"]["flow"]["freestream_velocity"]]
+    if len(velocity) != 3 or not all(math.isfinite(value) for value in velocity):
+        raise ValueError("Некорректный freestream_velocity сертифицированного MachLine")
+    speed = math.sqrt(sum(value * value for value in velocity))
+    if speed <= 0.0:
+        raise ValueError("Нулевая скорость сертифицированного MachLine")
+    return {
+        "mach": float(report["input"]["flow"]["freestream_mach_number"]),
+        "alpha_deg": math.degrees(math.atan2(velocity[1], velocity[0])),
+        "beta_deg": math.degrees(
+            math.asin(max(-1.0, min(1.0, -velocity[2] / speed)))
+        ),
+    }
+
+
 def build_machline_json() -> None:
     settings = load_settings()
     project = default_project_path()
@@ -679,10 +731,31 @@ def build_machline_json() -> None:
     tri = Path(tri_text)
     if not tri.is_absolute():
         tri = project / tri
+    tri = tri.resolve()
+    if not tri.is_file():
+        print(f"TRI не найден: {tri}")
+        return
+    try:
+        certified_contract = certified_machline_force_contract(tri)
+    except Exception as exc:
+        print(f"Сертифицированный TRI отклонён: {exc}")
+        return
 
     case = input("Имя расчёта, например MIG_full_M15_a0: ").strip()
     if not case:
         case = tri.stem.replace("_ready", "")
+    if certified_contract:
+        case_token = "".join(
+            char if char.isalnum() or char in "_-" else "_" for char in case
+        )[:80] or "case"
+        staged_dir = project / "04_machline_input" / "certified" / case_token
+        staged_dir.mkdir(parents=True, exist_ok=True)
+        staged_tri = staged_dir / "certified_mesh.tri"
+        staged_mask = staged_dir / "force_integration_mask.json"
+        shutil.copy2(tri, staged_tri)
+        shutil.copy2(certified_contract[1], staged_mask)
+        tri = staged_tri.resolve()
+        certified_contract = certified_machline_force_contract(tri)
 
     mach = input(f"Mach, Enter = {settings['defaults']['mach']}: ").strip()
     alpha = input(f"alpha_deg, Enter = {settings['defaults']['alpha_deg']}: ").strip()
@@ -696,11 +769,22 @@ def build_machline_json() -> None:
     default_offset = settings["defaults"].get("control_point_offset", 1.0e-5)
     default_trefftz = settings["defaults"].get("trefftz_distance", 20.0)
     default_wake_angle = settings["defaults"].get("wake_shedding_angle", 169.0)
-    solver = input(f"Решатель, Enter = {default_solver}: ").strip() or default_solver
-    formulation = input(f"Формулировка, Enter = {default_formulation}: ").strip() or default_formulation
-    offset_text = input(f"control_point_offset, Enter = {default_offset:g}: ").strip()
-    wake_answer = input("Добавить след? [Y/n]: ").strip().lower()
-    wake_present = wake_answer in ("", "y", "yes", "д", "да")
+    if certified_contract:
+        solver = "GMRES"
+        formulation = "neumann-doublet-only-mass-flux"
+        control_offset = 0.001
+        wake_present = False
+        print(
+            "Распознан сертифицированный MachLine-двойник: "
+            "строгая постановка и маска сил включены автоматически."
+        )
+    else:
+        solver = input(f"Решатель, Enter = {default_solver}: ").strip() or default_solver
+        formulation = input(f"Формулировка, Enter = {default_formulation}: ").strip() or default_formulation
+        offset_text = input(f"control_point_offset, Enter = {default_offset:g}: ").strip()
+        wake_answer = input("Добавить след? [Y/n]: ").strip().lower()
+        wake_present = wake_answer in ("", "y", "yes", "д", "да")
+        control_offset = float(offset_text) if offset_text else float(default_offset)
     trefftz = default_trefftz
     wake_angle = default_wake_angle
     if wake_present:
@@ -708,12 +792,13 @@ def build_machline_json() -> None:
         angle_text = input(f"Wake shedding angle, Enter = {default_wake_angle:g}: ").strip()
         trefftz = float(trefftz_text) if trefftz_text else float(default_trefftz)
         wake_angle = float(angle_text) if angle_text else float(default_wake_angle)
-    control_offset = float(offset_text) if offset_text else float(default_offset)
 
     out_vtk = project / "05_machline_results" / "vtk" / f"{case}_body.vtk"
     out_wake = project / "05_machline_results" / "wake" / f"{case}_wake.vtk"
     out_cp = project / "05_machline_results" / "control_points" / f"{case}_control_points.vtk"
     out_report = project / "05_machline_results" / "reports" / f"{case}_report.json"
+    for output in (out_vtk, out_wake, out_cp, out_report):
+        output.parent.mkdir(parents=True, exist_ok=True)
 
     ref = {}
     project_cfg_path = project / "project_config.json"
@@ -746,6 +831,9 @@ def build_machline_json() -> None:
     if area <= 0.0 or length <= 0.0:
         raise ValueError("Опорные площадь и длина должны быть положительными")
     ref = {"area": area, "length": length, "CG": cg}
+    if certified_contract:
+        # OpenVSP XYZ -> NASCART X,Z,-Y.
+        ref["CG"] = [cg[0], cg[2], -cg[1]]
 
     wake_model = {
         "wake_present": wake_present,
@@ -759,13 +847,19 @@ def build_machline_json() -> None:
 
     ml = {
         "flow": {
-            "freestream_velocity": freestream_vector(alpha, beta),
+            "freestream_velocity": (
+                [100.0 * value for value in nascart_freestream(alpha, beta)]
+                if certified_contract else freestream_vector(alpha, beta)
+            ),
             "gamma": 1.4,
             "freestream_mach_number": mach
         },
         "geometry": {
-            "file": str(tri).replace("\\", "/"),
-            "spanwise_axis": "+y",
+            "file": (
+                tri.relative_to(project.resolve()).as_posix()
+                if certified_contract else str(tri).replace("\\", "/")
+            ),
+            "spanwise_axis": "+z" if certified_contract else "+y",
             "wake_model": wake_model,
             "reference": ref
         },
@@ -781,16 +875,41 @@ def build_machline_json() -> None:
             "pressure_for_forces": "isentropic",
         },
         "output": {
-            "body_file": str(out_vtk).replace("\\", "/"),
-            "wake_file": str(out_wake).replace("\\", "/"),
-            "control_point_file": str(out_cp).replace("\\", "/"),
-            "report_file": str(out_report).replace("\\", "/")
+            "body_file": (
+                out_vtk.relative_to(project).as_posix()
+                if certified_contract else str(out_vtk).replace("\\", "/")
+            ),
+            "wake_file": (
+                "none" if certified_contract else str(out_wake).replace("\\", "/")
+            ),
+            "control_point_file": (
+                "none" if certified_contract else str(out_cp).replace("\\", "/")
+            ),
+            "report_file": (
+                out_report.relative_to(project).as_posix()
+                if certified_contract else str(out_report).replace("\\", "/")
+            )
         }
     }
 
     dst = project / "04_machline_input" / "json" / f"{case}.json"
     dst.parent.mkdir(parents=True, exist_ok=True)
     dst.write_text(json.dumps(ml, ensure_ascii=False, indent=2), encoding="utf-8")
+    if certified_contract:
+        contract, mask_path = certified_contract
+        save_report(dst.with_name(dst.stem + "_force_contract.json"), {
+            "schema": "repairmach.machline-input-contract/1.0",
+            "input": str(dst.resolve()),
+            "input_sha256": geometry_sha256(dst),
+            "tri": str(tri),
+            "tri_sha256": geometry_sha256(tri),
+            "force_mask": str(mask_path.resolve()),
+            "force_mask_sha256": geometry_sha256(mask_path),
+            "working_directory": str(project.resolve()),
+            "base_drag_replacement_required": bool(
+                contract.get("base_drag_replacement_required")
+            ),
+        })
     print(f"MachLine JSON создан: {dst}")
 
 
@@ -811,11 +930,26 @@ def run_machline() -> None:
     if not json_path.exists():
         print(f"JSON не найден: {json_path}")
         return
+    execution_cwd = cwd
+    input_contract_path = json_path.with_name(json_path.stem + "_force_contract.json")
+    if input_contract_path.is_file():
+        try:
+            input_contract = json.loads(input_contract_path.read_text(encoding="utf-8"))
+            if input_contract.get("schema") != "repairmach.machline-input-contract/1.0":
+                raise ValueError("неизвестная схема контракта")
+            if input_contract.get("input_sha256") != geometry_sha256(json_path):
+                raise ValueError("MachLine JSON изменён после построения контракта")
+            execution_cwd = Path(str(input_contract.get("working_directory", ""))).resolve()
+            if not execution_cwd.is_dir():
+                raise ValueError("рабочая папка сертифицированного запуска отсутствует")
+        except Exception as exc:
+            print(f"Сертифицированный запуск отклонён: {exc}")
+            return
 
     print("\nЗапускаем MachLine как двигатель...")
     print(f"EXE : {mach}")
     print(f"JSON: {json_path}")
-    print(f"CWD : {cwd}\n")
+    print(f"CWD : {execution_cwd}\n")
 
     log_dir = ROOT / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
@@ -828,7 +962,7 @@ def run_machline() -> None:
             [str(mach)],
             input=str(json_path) + "\n",
             text=True,
-            cwd=str(cwd),
+            cwd=str(execution_cwd),
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             timeout=None,
@@ -846,11 +980,10 @@ def run_machline() -> None:
             raise RuntimeError("В MachLine JSON не указан output.report_file")
         report_path = Path(report_value)
         if not report_path.is_absolute():
-            report_path = (cwd / report_path).resolve()
+            report_path = (execution_cwd / report_path).resolve()
         if not report_path.is_file():
             raise RuntimeError(f"MachLine не создал отчёт: {report_path}")
         report = load_machline_report(report_path)
-        axes = machline_wind_axes(report)
         status_code = int(report["solver_results"]["solver_status_code"])
         residual = report["solver_results"]["residual"]
         residual_norm = float(residual["norm"])
@@ -861,11 +994,57 @@ def run_machline() -> None:
         ):
             raise RuntimeError("MachLine report не прошёл контроль статуса и невязки")
         geometry_value = report.get("input", {}).get("geometry", {}).get("file")
-        geometry_path = Path(str(geometry_value or ""))
-        if not geometry_path.is_absolute():
-            geometry_path = (json_path.parent / geometry_path).resolve()
+        geometry_path = _resolve_machline_path(geometry_value, execution_cwd)
         if not geometry_path.is_file():
             raise RuntimeError("TRI из MachLine report отсутствует")
+        certified_contract = certified_machline_force_contract(geometry_path)
+        masked_record_path = None
+        masked = None
+        if certified_contract:
+            if residual_norm > 0.05 or residual_max > 0.01:
+                raise RuntimeError(
+                    "Сертифицированный MachLine не прошёл пределы невязки "
+                    "(norm <= 0.05, max <= 0.01)"
+                )
+            force_contract, force_mask_path = certified_contract
+            body_value = input_payload.get("output", {}).get("body_file")
+            body_path = _resolve_machline_path(body_value, execution_cwd)
+            if not body_path.is_file():
+                raise RuntimeError("MachLine не создал body VTK для маскированных сил")
+            mesh = read_tri(geometry_path)
+            reference = report.get("input", {}).get("geometry", {}).get("reference", {})
+            masked = masked_force_coefficients(
+                mesh=mesh,
+                body_vtk_path=body_path,
+                reference_area=float(reference.get("area", 0.0)),
+                include_component_ids=force_contract.get("include_component_ids", []),
+                exclude_component_ids=force_contract.get("exclude_component_ids", []),
+                report_total_forces=report.get("total_forces", {}),
+                freestream_velocity=report["input"]["flow"]["freestream_velocity"],
+                spanwise_axis="+z",
+            )
+            masked_record_path = report_path.with_name(
+                report_path.stem + "_masked_force.json"
+            )
+            write_masked_force_record(
+                masked_record_path,
+                mesh_path=geometry_path,
+                body_vtk_path=body_path,
+                report_path=report_path,
+                force_mask_path=force_mask_path,
+                result=masked,
+            )
+            conditions = _nascart_conditions(report)
+            axes = {
+                **conditions,
+                **masked["masked_wind_axes"],
+                **{
+                    key.lower(): value
+                    for key, value in masked["masked_mesh_axes"].items()
+                },
+            }
+        else:
+            axes = machline_wind_axes(report)
         manifest_path = report_path.with_name(report_path.stem + "_manifest.json")
         manifest = {
             "schema": "repairmach.machline-run/1.0",
@@ -886,6 +1065,7 @@ def run_machline() -> None:
             "conditions": {
                 "mach": axes["mach"],
                 "alpha_deg": axes["alpha_deg"],
+                "beta_deg": axes.get("beta_deg", 0.0),
             },
             "outputs": {
                 "report": str(report_path.resolve()),
@@ -900,10 +1080,44 @@ def run_machline() -> None:
                 "solver_status_code": status_code,
                 "residual_norm": residual_norm,
                 "residual_max": residual_max,
+                "certified_force_mask_applied": bool(certified_contract),
+                "force_mask_alignment_verified": bool(
+                    masked and masked.get("alignment", {}).get("verified")
+                ),
             },
         }
+        if masked and masked_record_path:
+            force_contract, force_mask_path = certified_contract
+            manifest["force_output"] = {
+                "kind": "masked_thick_body_pressure_wave",
+                "mesh_axes": masked["masked_mesh_axes"],
+                "wind_axes": masked["masked_wind_axes"],
+                "base_drag_replacement_required": bool(
+                    force_contract.get("base_drag_replacement_required")
+                ),
+                "thin_surfaces_delegated_to_vspaero": True,
+                "usable_as_standalone_total_force": not bool(
+                    force_contract.get("base_drag_replacement_required")
+                ),
+            }
+            manifest["outputs"]["masked_force"] = str(masked_record_path.resolve())
+            manifest["outputs"]["force_mask"] = str(force_mask_path.resolve())
+            manifest["output_sha256"]["masked_force"] = geometry_sha256(masked_record_path)
+            manifest["output_sha256"]["force_mask"] = geometry_sha256(force_mask_path)
         save_report(manifest_path, manifest)
         print(f"Манифест запуска: {manifest_path}")
+        if masked:
+            wind = masked["masked_wind_axes"]
+            print(
+                "Сертифицированные маскированные силы: "
+                f"CD={wind['cd']:.8g}; CL={wind['cl']:.8g}; "
+                f"CY={wind['cy_span']:.8g}"
+            )
+            if certified_contract[0].get("base_drag_replacement_required"):
+                print(
+                    "Важно: это вклад давления/волнового сопротивления толстого тела; "
+                    "донное сопротивление добавляет гибридная методика."
+                )
     except Exception as e:
         print(f"Ошибка запуска MachLine: {e}")
 
@@ -1593,6 +1807,13 @@ def run_standard_vspaero_study(scenario: dict | None = None) -> None:
         "errors": postprocess_errors,
         "status": "completed" if run_complete and derived_complete else "incomplete",
     }
+    if certified_contract:
+        mesh = read_tri(tri)
+        ml["solver"].update({
+            "preconditioner": "DIAG",
+            "tolerance": 1.0e-10,
+            "max_iterations": min(25000, max(1000, len(mesh.vertices) + 100)),
+        })
     save_report(cy_alpha_path, cy_alpha_report)
 
     study_manifest = {

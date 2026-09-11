@@ -131,6 +131,7 @@ def validate_vspaero_run_outputs(
     mach_tolerance: float = 1.0e-6,
     alpha_tolerance: float = 1.0e-5,
     max_log10_l2_residual: float = -0.3,
+    max_log10_max_residual: float | None = None,
     allow_zero_mach_without_logged_residual: bool = False,
     allow_zero_rhs_normalization_nan: bool = False,
 ) -> dict:
@@ -200,6 +201,17 @@ def validate_vspaero_run_outputs(
                 "Точка VSPAERO не прошла контроль невязки: "
                 f"M={mach:g}, alpha={alpha:g}, log10(L2)={float(residual):.4g}"
             )
+        maximum_residual = convergence["MaxRes"] if convergence is not None else None
+        if (
+            maximum_residual is not None
+            and max_log10_max_residual is not None
+            and maximum_residual > max_log10_max_residual
+        ):
+            raise ValueError(
+                "Точка VSPAERO не прошла контроль максимальной локальной невязки: "
+                f"M={mach:g}, alpha={alpha:g}, "
+                f"log10(MaxRes)={float(maximum_residual):.4g}"
+            )
         checked_point = {
             "Beta": float(row["Beta"]),
             "Mach": float(row["Mach"]),
@@ -244,6 +256,7 @@ def validate_vspaero_run_outputs(
         ),
         "benign_zero_rhs_normalization_nan": benign_zero_rhs_nan,
         "max_log10_l2_residual": max_log10_l2_residual,
+        "max_log10_max_residual": max_log10_max_residual,
         "points": checked,
     }
 

@@ -46,6 +46,7 @@ from geometry_rules import (
     validate_geometry_policy,
     validate_reference,
 )
+from machline_geometry import COORDINATE_CONVENTION
 from geometry_twins import (
     apply_model_actions,
     build_transformation_plan,
@@ -160,6 +161,13 @@ def machline_export_record(tri: Path, source_twin: Path, policy: dict) -> dict:
     """Minimal valid automatic-export lineage fixture."""
     thick_user = int(policy["sets"]["thick_user_set"])
     thin_user = int(policy["sets"]["thin_user_set"])
+    union_user = int(policy["sets"]["machline_export_user_set"])
+    key_path = tri.with_suffix(".key")
+    key_path.write_text("Color Name BCType\n1.0 Fuselage_S_Surf0 0\n", encoding="utf-8")
+    thin_path = tri.with_suffix(".vspgeom")
+    thin_key_path = tri.with_suffix(".vkey")
+    thin_path.write_text("fixture thin mesh", encoding="utf-8")
+    thin_key_path.write_text("fixture thin key", encoding="utf-8")
     return _seal_machline_export_record({
         "schema": MACHLINE_TRI_EXPORT_SCHEMA,
         "status": "passed",
@@ -180,11 +188,26 @@ def machline_export_record(tri: Path, source_twin: Path, policy: dict) -> dict:
         "source_unchanged": True,
         "export": {
             "format": "OpenVSP_EXPORT_NASCART",
-            "thick_user_set": thick_user,
-            "thick_api_set": thick_user + 3,
-            "thin_user_set": thin_user,
-            "thin_api_set": thin_user + 3,
+            "source_thick_user_set": thick_user,
+            "source_thick_api_set": thick_user + 3,
+            "source_thin_user_set": thin_user,
+            "source_thin_api_set": thin_user + 3,
+            "union_user_set": union_user,
+            "union_api_set": union_user + 3,
+            "thin_export_set": "SET_NONE",
             "include_subsurfaces": True,
+            "coordinate_convention": COORDINATE_CONVENTION,
+            "mesh_representation": "NASCART_thick_plus_VSPGeom_VLM_thin",
+            "key_path": str(key_path.resolve()),
+            "key_sha256": sha256_file(key_path),
+            "thin_path": str(thin_path.resolve()),
+            "thin_sha256": sha256_file(thin_path),
+            "thin_key_path": str(thin_key_path.resolve()),
+            "thin_key_sha256": sha256_file(thin_key_path),
+            "component_map": {"1": "Fuselage_S_Surf0", "2": "Wing_C"},
+            "component_roles": {"1": "thick", "2": "thin"},
+            "component_face_counts": {"1": 1, "2": 1},
+            "union_geometry_names": ["Fuselage", "Wing"],
             "path": str(tri.resolve()),
             "sha256": sha256_file(tri),
         },
@@ -218,6 +241,15 @@ class GeometryPolicyTests(unittest.TestCase):
             [8, 4],
             policy["convergence"]["adaptive_refinement"]
             ["local_span_plateau"]["backoff_offsets"],
+        )
+        self.assertEqual(0.0, policy["probes"]["vspaero"]["max_log10_max_residual"])
+        self.assertEqual(
+            2,
+            policy["probes"]["vspaero"]["numerical_recovery"]["attempts"],
+        )
+        self.assertEqual(
+            1,
+            policy["probes"]["vspaero"]["numerical_recovery"]["controls"]["ncpu"],
         )
         self.assertEqual({"Wing", "Fuselage", "GO", "VO", "Gondola"}, set(policy["semantics"]["roles"]))
 
@@ -840,6 +872,70 @@ class GeometryPlanTests(unittest.TestCase):
                 ["medium", "fine", "extra_fine"],
                 result["convergence"]["level_sequence"],
             )
+
+    def test_vspaero_ladder_recovers_residual_outlier_with_two_strict_repeats(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            meshes = {}
+            for level in ("coarse", "medium", "fine"):
+                model = root / f"{level}.vsp3"
+                model.write_text(level, encoding="utf-8")
+                meshes[level] = {
+                    "path": str(model),
+                    "valid": True,
+                    "mesh_verification": {"valid": True},
+                }
+            base_values = {
+                "coarse": {"CLtot": 0.18880, "CDtot": 0.02268},
+                "medium": {"CLtot": 0.19492, "CDtot": 0.02340},
+            }
+            repeat_values = [
+                {"CLtot": 0.1980662, "CDtot": 0.0237809},
+                {"CLtot": 0.1980663, "CDtot": 0.0237810},
+            ]
+            repeat_index = 0
+
+            def make_probe(**kwargs):
+                nonlocal repeat_index
+                level = kwargs["level"]
+                if level in base_values:
+                    return {"level": level, "valid": True, "values": base_values[level]}
+                if level == "fine":
+                    return {
+                        "level": level,
+                        "valid": False,
+                        "finite_rows": 1,
+                        "values": {"CLtot": 0.1964, "CDtot": 0.0418},
+                        "output_quality_failure_kind": "residual",
+                        "health_errors": [],
+                        "condition_errors": [],
+                        "set_validation": {"valid": True, "calculation_complete": True},
+                    }
+                values = repeat_values[repeat_index]
+                repeat_index += 1
+                return {"level": level, "valid": True, "values": values}
+
+            with patch(
+                "geometry_certification._run_one_vspaero_probe",
+                side_effect=make_probe,
+            ) as probe:
+                result = _run_vspaero_ladder(
+                    mode="lifting",
+                    meshes=meshes,
+                    run_dir=root,
+                    reference=reference(),
+                    policy=self.policy,
+                    executable=root / "vspscript.exe",
+                )
+
+            self.assertEqual(5, probe.call_count)
+            self.assertTrue(result["valid"])
+            self.assertTrue(result["converged"])
+            recovered = result["probes"][-1]["numerical_recovery"]
+            self.assertTrue(recovered["valid"])
+            self.assertEqual(2, len(recovered["repeat_probes"]))
+            self.assertFalse(recovered["rejected_probe"]["valid"])
+            self.assertEqual(1, recovered["controls"]["ncpu"])
 
     def test_vspaero_ladder_uses_extra_fine_to_resolve_sub_tolerance_oscillation(self):
         with TemporaryDirectory() as tmp:
@@ -1963,8 +2059,28 @@ class GeometryConvergenceAndTriTests(unittest.TestCase):
                     "3 1\n0 0 0\n1 0 0\n0 1 0\n1 2 3 7.0\n",
                     encoding="utf-8",
                 )
+                raw.with_suffix(".key").write_text(
+                    "Color Name BCType\n7.0 Fuselage_S_Surf0 0\n",
+                    encoding="utf-8",
+                )
+                thin = Path(log_path).parent / "openvsp_thin_model.vspgeom"
+                thin.write_text(
+                    "# vspgeom v3\n1\n3 1 0\n"
+                    "0 0 0\n1 0 0\n0 1 0\n"
+                    "1\n3 1 2 3\n1 1\n",
+                    encoding="utf-8",
+                )
+                thin.with_suffix(".vkey").write_text(
+                    "# VSPGEOM v3 Tag Key File\n"
+                    "# part#,geom#,surf#,gname,gid,thick,plate,copy#,geomcopy#\n"
+                    "1,1,0,Wing_C,WINGID,0,3,1,1\n",
+                    encoding="utf-8",
+                )
                 Path(log_path).write_text(
-                    "REPAIRMACH_MACHLINE_TRI_EXPORT_OK=1\n", encoding="utf-8"
+                    "REPAIRMACH_MACHLINE_UNION_GEOM=Fuselage\n"
+                    "REPAIRMACH_MACHLINE_UNION_GEOM=Wing\n"
+                    "REPAIRMACH_MACHLINE_TRI_EXPORT_OK=1\n",
+                    encoding="utf-8",
                 )
                 return 0
 
@@ -1996,8 +2112,12 @@ class GeometryConvergenceAndTriTests(unittest.TestCase):
             self.assertTrue(exported.is_file())
             self.assertNotEqual(sha256_file(legacy), sha256_file(exported))
             parsed = read_tri(exported)
-            self.assertEqual([(0, 1, 2)], parsed.faces)
-            self.assertEqual([7], parsed.components)
+            self.assertEqual(2, len(parsed.faces))
+            self.assertEqual([7, 8], parsed.components)
+            self.assertEqual(
+                "NASCART_thick_plus_VSPGeom_VLM_thin",
+                record["export"]["mesh_representation"],
+            )
 
     def test_tri_topology_blocker_prevents_any_repair(self):
         mesh = TriMesh([(0.0, 0.0, 0.0)], [], [])
@@ -2011,11 +2131,11 @@ class GeometryConvergenceAndTriTests(unittest.TestCase):
             lineage = machline_export_record(tri, twin, self.policy)
             with patch("geometry_certification.read_tri", return_value=mesh), \
                     patch("geometry_certification.diagnose_tri", return_value=initial), \
-                    patch("geometry_certification.repair_tri") as repair_mock:
+                    patch("geometry_certification.prepare_machline_geometry") as prepare_mock:
                 result, findings = _tri_certification(
                     tri, root / "run", self.policy, self.policy["scope"], export_record=lineage
                 )
-            repair_mock.assert_not_called()
+            prepare_mock.assert_not_called()
             self.assertEqual("blocked_topology", result["status"])
             self.assertEqual("GEO-TRI-001", findings[0]["code"])
 
@@ -2030,13 +2150,22 @@ class GeometryConvergenceAndTriTests(unittest.TestCase):
             tri.write_text("placeholder", encoding="utf-8")
             twin.write_bytes(b"sealed fine twin")
             lineage = machline_export_record(tri, twin, self.policy)
+            prepared_log = {
+                "duplicate_skin_repair": {"removed_faces": 6},
+                "generic_repair": {},
+                "downstream_axial_closure": {},
+                "final_repair": {},
+            }
             with patch("geometry_certification.read_tri", return_value=mesh), \
-                    patch("geometry_certification.diagnose_tri", return_value=initial), \
-                    patch("geometry_certification.repair_tri") as repair_mock:
+                    patch("geometry_certification.diagnose_tri", side_effect=[initial, initial, initial]), \
+                    patch(
+                        "geometry_certification.prepare_machline_geometry",
+                        return_value=(mesh, prepared_log),
+                    ), \
+                    patch("geometry_certification.scan_scope", return_value=[]):
                 result, findings = _tri_certification(
                     tri, root / "run", self.policy, self.policy["scope"], export_record=lineage
                 )
-            repair_mock.assert_not_called()
             self.assertEqual(5, result["repair_budget"])
             self.assertEqual("repair_budget_exceeded", result["status"])
             self.assertEqual("GEO-TRI-002", findings[0]["code"])
@@ -2056,21 +2185,37 @@ class GeometryConvergenceAndTriTests(unittest.TestCase):
             tri.write_text("placeholder", encoding="utf-8")
             twin.write_bytes(b"sealed fine twin")
             lineage = machline_export_record(tri, twin, self.policy)
+            prepared_log = {
+                "duplicate_skin_repair": {"removed_faces": 2},
+                "generic_repair": {},
+                "downstream_axial_closure": {},
+                "final_repair": {},
+            }
+            clean_scans = [
+                {"mach": mach, "alpha_deg": alpha, "bad_panels": 0}
+                for mach in (1.2, 2.2) for alpha in (0.0, 5.0)
+            ]
             with patch("geometry_certification.read_tri", return_value=mesh), \
-                    patch("geometry_certification.diagnose_tri", side_effect=[initial, final]), \
-                    patch("geometry_certification.repair_tri", return_value=(mesh, {"removed_duplicate_faces": 2})), \
-                    patch("geometry_certification.scan_mach_criterion", return_value=[]), \
+                    patch("geometry_certification.diagnose_tri", side_effect=[initial, final, final]), \
                     patch(
-                        "geometry_certification.summarize_scan",
-                        side_effect=lambda _scan: {"bad_panels": 0},
-                    ):
+                        "geometry_certification.prepare_machline_geometry",
+                        return_value=(mesh, prepared_log),
+                    ), \
+                    patch(
+                        "geometry_certification._run_machline_geometry_qualification",
+                        return_value={"requested": True, "valid": True, "status": "passed", "probes": []},
+                    ), \
+                    patch("geometry_certification.scan_scope", return_value=clean_scans):
                 result, findings = _tri_certification(
                     tri, root / "run", self.policy, self.policy["scope"], export_record=lineage
                 )
-            self.assertFalse(findings)
+            self.assertEqual(["GEO-MACH-SOLVER-002"], [item["code"] for item in findings])
             self.assertTrue(result["eligible"])
             self.assertEqual("passed", result["status"])
-            self.assertEqual([1.2, 2.2], [item["mach"] for item in result["mach_scans"]])
+            self.assertEqual(
+                [(1.2, 0.0), (1.2, 5.0), (2.2, 0.0), (2.2, 5.0)],
+                [(item["mach"], item["alpha_deg"]) for item in result["mach_scans"]],
+            )
             self.assertTrue(Path(result["certified_tri"]).is_file())
 
 
