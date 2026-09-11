@@ -88,6 +88,52 @@ class GeometryActionExecutorTests(unittest.TestCase):
         self.assertEqual("pending", pending["status"])
         self.assertEqual("complete", complete["status"])
 
+    def test_semiempirical_component_action_closes_only_for_every_point(self):
+        plan = build_corrective_action_plan(findings=[], replacement_contract={
+            "requirements": [{
+                "component": "VO",
+                "method": "semiempirical_component_pressure_wave_all_points",
+                "backend_capability_available": True,
+                "reason": "sealed_component_method_required_at_hybrid_build",
+            }]
+        }, verdict="PASS_WITH_DECLARED_EXCLUSIONS")
+        certificate = {"certificate_id": "RMC-SEMI", "corrective_action_plan": plan}
+        coverage = [
+            {
+                "component": "VO",
+                "satisfied_by": "semiempirical_component_pressure_wave",
+                "Mach": 1.2,
+                "alpha_deg": alpha,
+                "term_fingerprint": "a" * 64,
+                "method_id": "VO-METHOD",
+                "equation_version": "1",
+            }
+            for alpha in (0.0, 1.0)
+        ]
+        bundle = {
+            "status": "complete",
+            "rows": [
+                {"Mach": 1.2, "alpha_deg": 0.0},
+                {"Mach": 1.2, "alpha_deg": 1.0},
+            ],
+            "replacement_coverage": coverage,
+        }
+        result = resolve_hybrid_corrective_actions(
+            certificate,
+            bundle,
+            workbook_verification={
+                "build_status": "passed",
+                "external_links_detected": False,
+                "charts_use_internal_cells": True,
+            },
+        )
+        self.assertEqual("complete", result["status"])
+        self.assertTrue(result["items"][0]["evidence"]["all_points_bound"])
+
+        bundle["replacement_coverage"] = coverage[:-1]
+        pending = resolve_hybrid_corrective_actions(certificate, bundle)
+        self.assertEqual("pending", pending["status"])
+
 
 if __name__ == "__main__":
     unittest.main()

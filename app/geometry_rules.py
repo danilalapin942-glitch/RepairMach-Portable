@@ -31,6 +31,7 @@ DECLARED_EXCLUSION_BACKENDS = ("vspaero", "hybrid")
 DECLARED_EXCLUSION_REPLACEMENTS = {
     "machline_pressure_wave_all_points",
     "parasite_drag_subsonic",
+    "semiempirical_component_pressure_wave_all_points",
     "not_physical",
 }
 MESH_LEVEL_KEYS = (
@@ -154,6 +155,15 @@ def validate_geometry_policy(policy: dict) -> None:
         if "not_physical" in replacements and len(replacements) != 1:
             raise ValueError(
                 f"{label}.replacement_required: not_physical должен быть единственным значением"
+            )
+        if (
+            "semiempirical_component_pressure_wave_all_points" in replacements
+            and "machline_pressure_wave_all_points" in replacements
+        ):
+            raise ValueError(
+                f"{label}.replacement_required: "
+                "нельзя одновременно объявлять численное и полуэмпирическое "
+                "замещение одного pressure/wave-канала"
             )
 
     sets = policy.get("sets", {})

@@ -884,7 +884,7 @@ class HybridPipelineTests(unittest.TestCase):
             )
             report_dir = root / "machline"
             report_dir.mkdir()
-            for mach in (0.8, 1.2):
+            for mach in (1.2,):
                 for alpha in (0.0, 1.0):
                     write_machline(
                         report_dir / f"full_M{mach}_a{alpha}_report.json",
@@ -1277,6 +1277,234 @@ class HybridPipelineTests(unittest.TestCase):
         self.assertEqual("TEST-DETAILS-1", contribution["method_id"])
         self.assertAlmostEqual(0.000225, contribution["uncertainty_cd"])
         self.assertEqual(64, len(contribution["term_fingerprint"]))
+
+    def test_semiempirical_component_replacement_is_bound_to_every_output_point(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            test_policy = policy()
+            term = test_policy["drag"]["semiempirical_terms"][0]
+            term["replacement"] = {
+                "method": "semiempirical_component_pressure_wave_all_points",
+                "component": "VO",
+                "coverage_channels": ["pressure_wave"],
+                "alpha_dependence": "independent",
+            }
+            policy_path = root / "policy.json"
+            policy_path.write_text(json.dumps(test_policy), encoding="utf-8")
+            loaded = load_hybrid_policy(policy_path)
+            rows = []
+            for mach in (1.2,):
+                for alpha in (0.0, 1.0):
+                    rows.append({
+                        "Mach": mach,
+                        "alpha_deg": alpha,
+                        "semiempirical_terms": semiempirical_contributions(loaded, mach),
+                    })
+            bundle = {
+                "policy": loaded,
+                "rows": rows,
+                "sources": [],
+                "lineage": {"hybrid_policy": {
+                    "path": str(policy_path.resolve()),
+                    "sha256": file_sha256(policy_path),
+                    "policy_fingerprint": sha256_payload(loaded),
+                }},
+            }
+            validation = _validate_replacement_coverage(
+                "auto",
+                [{
+                    "component": "VO",
+                    "backends": ["vspaero", "hybrid"],
+                    "replacement_required": [
+                        "semiempirical_component_pressure_wave_all_points"
+                    ],
+                }],
+                bundle,
+                base=root,
+                certificate={},
+                certificate_path=root / "certificate.json",
+            )
+        self.assertTrue(validation["required"])
+        self.assertEqual(2, len(validation["coverage"]))
+        self.assertEqual(
+            {"semiempirical_component_pressure_wave"},
+            {item["satisfied_by"] for item in validation["coverage"]},
+        )
+        self.assertEqual(
+            {(1.2, 0.0), (1.2, 1.0)},
+            {(item["Mach"], item["alpha_deg"]) for item in validation["coverage"]},
+        )
+        self.assertTrue(all(item["term_fingerprint"] for item in validation["coverage"]))
+
+    def test_semiempirical_component_replacement_fails_closed_on_bad_contract(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            test_policy = policy()
+            term = test_policy["drag"]["semiempirical_terms"][0]
+            term["replacement"] = {
+                "method": "semiempirical_component_pressure_wave_all_points",
+                "component": "VO",
+                "coverage_channels": ["pressure_wave"],
+                "alpha_dependence": "independent",
+            }
+            policy_path = root / "policy.json"
+            policy_path.write_text(json.dumps(test_policy), encoding="utf-8")
+            loaded = load_hybrid_policy(policy_path)
+            bundle = {
+                "policy": loaded,
+                "rows": [{
+                    "Mach": 1.2,
+                    "alpha_deg": 0.0,
+                    "semiempirical_terms": semiempirical_contributions(loaded, 1.2),
+                }],
+                "sources": [],
+                "lineage": {"hybrid_policy": {
+                    "path": str(policy_path.resolve()),
+                    "sha256": file_sha256(policy_path),
+                    "policy_fingerprint": sha256_payload(loaded),
+                }},
+            }
+            exclusions = [{
+                "component": "VO",
+                "backends": ["vspaero", "hybrid"],
+                "replacement_required": [
+                    "semiempirical_component_pressure_wave_all_points"
+                ],
+            }]
+            with self.assertRaisesRegex(ValueError, "term_fingerprint"):
+                _validate_replacement_coverage(
+                    [{
+                        "component": "VO",
+                        "satisfied_by": "semiempirical_component_pressure_wave",
+                        "term_id": term["id"],
+                        "term_fingerprint": "f" * 64,
+                    }],
+                    exclusions,
+                    bundle,
+                    base=root,
+                    certificate={},
+                    certificate_path=root / "certificate.json",
+                )
+
+            bad_policy = policy()
+            bad_policy["drag"]["semiempirical_terms"][0]["replacement"] = {
+                "method": "semiempirical_component_pressure_wave_all_points",
+                "component": "VO",
+                "coverage_channels": ["total_component_drag"],
+                "alpha_dependence": "independent",
+            }
+            policy_path.write_text(json.dumps(bad_policy), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "coverage_channels"):
+                load_hybrid_policy(policy_path)
+
+    def test_sealed_hybrid_accepts_semiempirical_pressure_and_parasite_for_thin_exclusion(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            master = root / "master.vsp3"
+            lifting_twin = root / "vspaero_lifting.vsp3"
+            parasite_twin = root / "parasite_full_geometry.vsp3"
+            certified_tri = root / "certified.tri"
+            master.write_bytes(b"certified master")
+            lifting_twin.write_bytes(b"certified lifting twin without VO")
+            parasite_twin.write_bytes(b"certified parasite twin with VO")
+            certified_tri.write_bytes(b"certified thick-body MachLine TRI")
+            exclusion = {
+                "component": "VO",
+                "backends": ["vspaero", "hybrid"],
+                "reason": "thin surface delegated to a sealed pressure method",
+                "replacement_required": [
+                    "semiempirical_component_pressure_wave_all_points",
+                    "parasite_drag_subsonic",
+                ],
+            }
+            certificate_path = root / "certificate.json"
+            write_bound_geometry_certificate(
+                certificate_path,
+                master=master,
+                twin=lifting_twin,
+                exclusions=[exclusion],
+                certified_tri=certified_tri,
+                parasite_twin=parasite_twin,
+            )
+
+            polar = root / "full.polar"
+            write_polar(polar)
+            manifest = root / "vspaero_manifest.json"
+            write_vspaero_manifest(
+                manifest,
+                polar,
+                file_sha256(master),
+                solver_geometry_sha256=file_sha256(lifting_twin),
+                geometry_mode="lifting",
+            )
+            report_dir = root / "machline"
+            report_dir.mkdir()
+            for mach in (0.8, 1.2):
+                for alpha in (0.0, 1.0):
+                    write_machline(
+                        report_dir / f"full_M{mach}_a{alpha}_report.json",
+                        mach,
+                        alpha,
+                        0.02,
+                        geometry=str(certified_tri.resolve()),
+                    )
+            parasite_dir = root / "parasite"
+            parasite_dir.mkdir()
+            parasite = parasite_dir / "M08.csv"
+            write_parasite(parasite)
+            parasite_manifest = parasite_dir / "M08_manifest.json"
+            write_parasite_manifest(
+                parasite_manifest,
+                parasite,
+                source_vsp3=master,
+                solver_geometry=parasite_twin,
+            )
+
+            test_policy = policy()
+            test_policy["drag"]["semiempirical_terms"][0]["replacement"] = {
+                "method": "semiempirical_component_pressure_wave_all_points",
+                "component": "VO",
+                "coverage_channels": ["pressure_wave"],
+                "alpha_dependence": "independent",
+            }
+            policy_path = root / "policy.json"
+            policy_path.write_text(json.dumps(test_policy), encoding="utf-8")
+            request = root / "request.json"
+            request.write_text(json.dumps({
+                "schema": REQUEST_SCHEMA,
+                "policy": str(policy_path),
+                "vspaero_source": str(manifest),
+                "machline_reports_dir": str(report_dir),
+                "machline_report_glob": "*_report.json",
+                "parasite_results": [str(parasite_manifest)],
+                "geometry_certificate": str(certificate_path),
+                "scenario_id": SCENARIO_ID,
+                "scenario_sha256": SCENARIO_SHA256,
+                "replacement_coverage": "auto",
+            }), encoding="utf-8")
+            result = run_hybrid_request(
+                request,
+                output_dir=root / "output",
+                build_workbook=False,
+            )
+
+        self.assertEqual("complete", result["bundle"]["status"])
+        coverage = result["bundle"]["replacement_coverage"]
+        self.assertEqual(
+            {"semiempirical_component_pressure_wave", "parasite_drag"},
+            {item["satisfied_by"] for item in coverage},
+        )
+        self.assertEqual(
+            4,
+            len([
+                item for item in coverage
+                if item["satisfied_by"] == "semiempirical_component_pressure_wave"
+            ]),
+        )
+        self.assertTrue(any(
+            item["satisfied_by"] == "parasite_drag" and item.get("mach") == 0.8
+            for item in coverage
+        ))
 
     def test_semiempirical_source_file_hash_is_verified(self):
         with TemporaryDirectory() as temp:

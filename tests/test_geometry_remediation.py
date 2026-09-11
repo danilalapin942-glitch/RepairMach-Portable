@@ -64,6 +64,28 @@ class GeometryRemediationTests(unittest.TestCase):
         self.assertTrue(plan["minimum_retest"]["new_hybrid_package_required"])
         self.assertEqual([], corrective_action_plan_errors(plan))
 
+    def test_semiempirical_component_replacement_routes_to_automatic_hybrid_action(self):
+        plan = build_corrective_action_plan(
+            findings=[],
+            replacement_contract={"requirements": [{
+                "component": "VO",
+                "method": "semiempirical_component_pressure_wave_all_points",
+                "backend_capability_available": True,
+                "source_required_at_hybrid_build": True,
+                "reason": "sealed_component_method_required_at_hybrid_build",
+            }]},
+            verdict="PASS_WITH_DECLARED_EXCLUSIONS",
+        )
+        item = plan["items"][0]
+        self.assertEqual(
+            "BIND_SEMIEMPIRICAL_COMPONENT_PRESSURE_SERIES",
+            item["action_code"],
+        )
+        self.assertEqual("repairmach", item["owner"])
+        self.assertFalse(item["new_geometry_certificate_required"])
+        self.assertIn("seal_method_passport", item["allowed_automatic_actions"])
+        self.assertEqual([], corrective_action_plan_errors(plan))
+
     def test_localized_vspaero_failure_is_split_by_component(self):
         plan = build_corrective_action_plan(
             findings=[{

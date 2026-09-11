@@ -87,6 +87,37 @@ def resolve_hybrid_corrective_actions(
                 )
                 status = "completed" if terms_ok else "pending_method_passport"
                 evidence = {"applicable_points": len(applicable), "base_drag_present": terms_ok}
+            elif code == "BIND_SEMIEMPIRICAL_COMPONENT_PRESSURE_SERIES":
+                matched = [
+                    entry for entry in coverage
+                    if str(entry.get("component", "")).casefold() == component
+                    and entry.get("satisfied_by") == "semiempirical_component_pressure_wave"
+                ]
+                covered_points = {
+                    (float(entry["Mach"]), float(entry["alpha_deg"]))
+                    for entry in matched
+                    if entry.get("Mach") is not None and entry.get("alpha_deg") is not None
+                }
+                required_points = {
+                    (float(row["Mach"]), float(row["alpha_deg"])) for row in rows
+                }
+                points_ok = bool(required_points) and covered_points == required_points
+                passports_ok = bool(matched) and all(
+                    entry.get("term_fingerprint")
+                    and entry.get("method_id")
+                    and entry.get("equation_version")
+                    for entry in matched
+                )
+                status = (
+                    "completed"
+                    if points_ok and passports_ok
+                    else "pending_method_passport"
+                )
+                evidence = {
+                    "coverage_records": len(matched),
+                    "all_points_bound": points_ok,
+                    "passports_sealed": passports_ok,
+                }
             if status == "completed" and "rebuild_hybrid_workbook" in item.get("allowed_automatic_actions", []):
                 status = "completed" if workbook_ok else "pending_workbook"
                 evidence["workbook_verified"] = workbook_ok

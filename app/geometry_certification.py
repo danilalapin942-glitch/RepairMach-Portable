@@ -2523,6 +2523,14 @@ def _build_replacement_contract(
                     "component_present_in_certified_parasite_geometry"
                     if available else "component_absent_from_certified_parasite_geometry"
                 )
+            elif method == "semiempirical_component_pressure_wave_all_points":
+                # Geometry certification can approve the architecture of this
+                # replacement without claiming that a coefficient series has
+                # already been supplied.  The hybrid consumer later requires
+                # an active, component-bound term with a sealed method passport
+                # and verifies it at every requested condition.
+                available = True
+                reason = "sealed_component_method_required_at_hybrid_build"
             elif method == "not_physical":
                 available = True
                 reason = "explicit_not_physical_declaration"
@@ -2533,6 +2541,7 @@ def _build_replacement_contract(
                 "component": component,
                 "method": method,
                 "backend_capability_available": available,
+                "source_required_at_hybrid_build": method == "semiempirical_component_pressure_wave_all_points",
                 "reason": reason,
             })
     if base_drag_required:

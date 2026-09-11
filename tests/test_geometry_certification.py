@@ -278,6 +278,31 @@ class GeometryPolicyTests(unittest.TestCase):
             for item in contract["requirements"]
         ))
 
+    def test_replacement_contract_accepts_sealed_semiempirical_component_channel(self):
+        contract = _build_replacement_contract(
+            [{
+                "component": "VO",
+                "backends": ["vspaero", "hybrid"],
+                "replacement_required": [
+                    "semiempirical_component_pressure_wave_all_points",
+                    "parasite_drag_subsonic",
+                ],
+            }],
+            machline_eligible=True,
+            machline_components=["Fuselage"],
+            parasite_eligible=True,
+            parasite_components=["Fuselage", "VO"],
+            base_drag_required=False,
+        )
+        self.assertTrue(contract["backend_capabilities_complete"])
+        self.assertEqual([], contract["unavailable_requirements"])
+        requirement = contract["requirements"][0]
+        self.assertTrue(requirement["source_required_at_hybrid_build"])
+        self.assertEqual(
+            "sealed_component_method_required_at_hybrid_build",
+            requirement["reason"],
+        )
+
     def test_run_directory_is_short_and_keeps_identity_hash(self):
         with TemporaryDirectory() as tmp:
             path = _unique_run_dir(
@@ -371,6 +396,10 @@ class GeometryPolicyTests(unittest.TestCase):
             ({**valid, "replacement_required": [
                 "not_physical", "parasite_drag_subsonic"
             ]}, "единственным"),
+            ({**valid, "replacement_required": [
+                "semiempirical_component_pressure_wave_all_points",
+                "machline_pressure_wave_all_points",
+            ]}, "одного pressure/wave-канала"),
         ]
         for exclusion, message in invalid_variants:
             with self.subTest(exclusion=exclusion):
@@ -383,6 +412,18 @@ class GeometryPolicyTests(unittest.TestCase):
         policy["semantics"]["declared_exclusions"] = [valid, deepcopy(valid)]
         with self.assertRaisesRegex(ValueError, "более одного раза"):
             validate_geometry_policy(policy)
+
+        policy = load_geometry_policy(POLICY_PATH)
+        policy["semantics"]["declared_exclusions"] = [{
+            "component": "VO",
+            "backends": ["vspaero", "hybrid"],
+            "reason": "thin component replaced by independent engineering method",
+            "replacement_required": [
+                "semiempirical_component_pressure_wave_all_points",
+                "parasite_drag_subsonic",
+            ],
+        }]
+        validate_geometry_policy(policy)
 
     def test_reference_validation_rejects_nonpositive_and_nonfinite_values(self):
         findings = validate_reference({

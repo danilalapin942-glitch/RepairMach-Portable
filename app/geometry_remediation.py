@@ -494,6 +494,19 @@ def _route_replacement(requirement: dict) -> dict | None:
         automatic = ["bind_parasite_component_series", "rebuild_hybrid_workbook"]
         backends = ["parasite_drag", "hybrid"]
         stages = ["parasite_binding", "hybrid_assembly", "workbook"]
+    elif method == "semiempirical_component_pressure_wave_all_points":
+        action_code = "BIND_SEMIEMPIRICAL_COMPONENT_PRESSURE_SERIES"
+        action = (
+            "Автоматически вычислить и привязать покомпонентный pressure/wave-ряд "
+            "по заранее запечатанному полуэмпирическому паспорту для всех расчётных точек."
+        )
+        automatic = [
+            "calculate_semiempirical_component_pressure_wave",
+            "seal_method_passport",
+            "rebuild_hybrid_workbook",
+        ]
+        backends = ["hybrid"]
+        stages = ["hybrid_assembly", "workbook"]
     else:
         action_code = "SUPPLY_SUPPORTED_REPLACEMENT_METHOD"
         action = "Заменить неподдерживаемый способ замещения на проверяемый метод с запечатанным источником и паспортом неопределённости."

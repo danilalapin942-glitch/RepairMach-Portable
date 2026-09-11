@@ -47,6 +47,9 @@ REQUEST_SCHEMA = "repairmach.hybrid-request/1.0"
 POLICY_SCHEMA = "repairmach.hybrid-policy/1.0"
 RESULT_SCHEMA = "repairmach.hybrid-series/1.0"
 SEMIEMPIRICAL_TERM_SCHEMA = "repairmach.semiempirical-term/1.0"
+SEMIEMPIRICAL_COMPONENT_REPLACEMENT = (
+    "semiempirical_component_pressure_wave_all_points"
+)
 WORKBOOK_BUILDER = Path(__file__).with_name("hybrid_workbook.mjs")
 TRANSONIC_DEFAULT = (0.8, 1.2)
 VSPAERO_MAX_LOG10_L2_RESIDUAL = -0.3
@@ -204,8 +207,20 @@ def build_hybrid_series(
     )
     errors.extend(cy_alpha_errors)
 
+    policy_sources = []
+    policy_lineage = None
+    if policy_path is not None:
+        resolved_policy_path = Path(policy_path).resolve()
+        if not resolved_policy_path.is_file():
+            raise FileNotFoundError(f"Не найден файл гибридной политики: {resolved_policy_path}")
+        policy_sources.append(("hybrid_policy", resolved_policy_path))
+        policy_lineage = {
+            "path": str(resolved_policy_path),
+            "sha256": file_sha256(resolved_policy_path),
+            "policy_fingerprint": sha256_payload(policy),
+        }
     source_records = _unique_source_records(
-        full_sources + machline_sources + parasite_sources + thin_sources
+        full_sources + machline_sources + parasite_sources + thin_sources + policy_sources
     )
     complete_rows = sum(row["status"] == "complete" for row in output_rows)
     status = "complete" if output_rows and complete_rows == len(output_rows) and not cy_alpha_errors else "incomplete"
@@ -234,6 +249,7 @@ def build_hybrid_series(
             "thin_vspaero": thin_lineage,
             "machline": _machline_lineage(machline_points),
             "parasite_drag": parasite_lineage,
+            "hybrid_policy": policy_lineage,
         },
         "errors": errors,
         "warnings": warnings,
@@ -286,6 +302,7 @@ def semiempirical_contributions(policy: dict, mach: float) -> list[dict]:
                 "applicability_basis": term["certification"]["applicability_basis"],
                 "source": term["certification"]["source"],
                 "term_fingerprint": sha256_payload(term),
+                "replacement": term.get("replacement"),
             }
         )
     return result
@@ -787,6 +804,35 @@ def _validate_semiempirical_term(term: dict, *, policy_path: Path | None = None)
         numeric = float(value)
         if not math.isfinite(numeric) or numeric < 0.0:
             raise ValueError(f"Вклад {term.get('id')} должен быть конечным и неотрицательным")
+
+    replacement = term.get("replacement")
+    if replacement is not None:
+        if not isinstance(replacement, dict):
+            raise ValueError(f"replacement члена {term.get('id')} должен быть объектом")
+        if replacement.get("method") != SEMIEMPIRICAL_COMPONENT_REPLACEMENT:
+            raise ValueError(
+                f"Неизвестный способ покомпонентного замещения у члена {term.get('id')}"
+            )
+        component = replacement.get("component")
+        if (
+            not isinstance(component, str)
+            or not component.strip()
+            or component != component.strip()
+        ):
+            raise ValueError(
+                f"replacement члена {term.get('id')} требует точное имя component"
+            )
+        channels = replacement.get("coverage_channels")
+        if channels != ["pressure_wave"]:
+            raise ValueError(
+                f"replacement члена {term.get('id')} должен объявлять ровно "
+                "coverage_channels=['pressure_wave']"
+            )
+        if replacement.get("alpha_dependence") != "independent":
+            raise ValueError(
+                f"replacement члена {term.get('id')} должен явно объявлять "
+                "alpha_dependence='independent'"
+            )
 
     if not enabled:
         return
@@ -2920,6 +2966,8 @@ def _coverage_methods(item: dict) -> list[str]:
         "parasite_drag": "parasite_drag",
         "openvsp_parasitedrag": "parasite_drag",
         "openvsp_parasite_drag": "parasite_drag",
+        "semiempirical_component_pressure_wave_all_points": "semiempirical_component_pressure_wave",
+        "semiempirical_component_pressure_wave": "semiempirical_component_pressure_wave",
         "not_physical": "not_physical",
         "reference_only": "not_physical",
         "reference-only": "not_physical",
@@ -2931,6 +2979,194 @@ def _coverage_methods(item: dict) -> list[str]:
         if normalised and normalised not in result:
             result.append(normalised)
     return result
+
+
+def _declared_exclusion_methods(exclusion: dict) -> list[str]:
+    declared = exclusion.get("replacement_required", [])
+    if isinstance(declared, str):
+        declared = [declared]
+    return [str(item).strip().lower() for item in declared]
+
+
+def _semiempirical_component_terms(policy: dict, component: str) -> list[dict]:
+    result = []
+    for term in policy.get("drag", {}).get("semiempirical_terms", []):
+        replacement = term.get("replacement")
+        if (
+            term.get("enabled", True) is True
+            and isinstance(replacement, dict)
+            and replacement.get("method") == SEMIEMPIRICAL_COMPONENT_REPLACEMENT
+            and str(replacement.get("component", "")).casefold() == component.casefold()
+        ):
+            result.append(term)
+    return result
+
+
+def _validate_semiempirical_component_coverage(
+    *,
+    component: str,
+    entries: list[dict],
+    bundle: dict,
+) -> list[dict]:
+    """Prove one sealed component term is evaluated at every output point."""
+    methods = []
+    for entry in entries:
+        for method in _coverage_methods(entry):
+            if method not in methods:
+                methods.append(method)
+    if methods != ["semiempirical_component_pressure_wave"]:
+        raise ValueError(
+            f"replacement_coverage {component}: полуэмпирический pressure/wave-ряд нельзя "
+            "смешивать с другими методами"
+        )
+
+    terms = _semiempirical_component_terms(bundle.get("policy", {}), component)
+    if len(terms) != 1:
+        raise ValueError(
+            f"replacement_coverage {component}: требуется ровно один активный "
+            "покомпонентный полуэмпирический член, найдено {len(terms)}"
+        )
+    term = terms[0]
+    term_id = str(term["id"])
+    term_fingerprint = sha256_payload(term)
+    passport = term["certification"]
+    policy_lineage = bundle.get("lineage", {}).get("hybrid_policy")
+    if not isinstance(policy_lineage, dict):
+        raise ValueError(
+            f"replacement_coverage {component}: файл гибридной политики не запечатан"
+        )
+    policy_path = Path(str(policy_lineage.get("path", "")))
+    policy_sha256 = _normalise_sha256(policy_lineage.get("sha256"))
+    if (
+        policy_sha256 is None
+        or not policy_path.is_file()
+        or file_sha256(policy_path) != policy_sha256
+        or policy_lineage.get("policy_fingerprint") != sha256_payload(bundle.get("policy", {}))
+    ):
+        raise ValueError(
+            f"replacement_coverage {component}: нарушена целостность гибридной политики"
+        )
+
+    for entry in entries:
+        declared_id = entry.get("term_id")
+        declared_fingerprint = _normalise_sha256(entry.get("term_fingerprint"))
+        if declared_id is not None and str(declared_id) != term_id:
+            raise ValueError(
+                f"replacement_coverage {component}: term_id не совпадает с активной методикой"
+            )
+        if entry.get("term_fingerprint") is not None and declared_fingerprint != term_fingerprint:
+            raise ValueError(
+                f"replacement_coverage {component}: term_fingerprint не совпадает"
+            )
+
+    rows = list(bundle.get("rows", []))
+    if not rows:
+        raise ValueError(
+            f"replacement_coverage {component}: гибридный ряд не содержит расчётных точек"
+        )
+    result = []
+    for row in rows:
+        matches = [
+            item for item in row.get("semiempirical_terms", [])
+            if item.get("id") == term_id
+            and item.get("term_fingerprint") == term_fingerprint
+            and isinstance(item.get("replacement"), dict)
+            and str(item["replacement"].get("component", "")).casefold()
+            == component.casefold()
+        ]
+        if len(matches) != 1:
+            raise ValueError(
+                f"replacement_coverage {component}: покомпонентный член не покрывает "
+                f"M={row['Mach']:g}, alpha={row['alpha_deg']:g}"
+            )
+        contribution = matches[0]
+        result.append({
+            "component": component,
+            "classification": "physical_component",
+            "satisfied_by": "semiempirical_component_pressure_wave",
+            "coverage_channel": "pressure_wave",
+            "alpha_dependence": "independent",
+            "Mach": float(row["Mach"]),
+            "alpha_deg": float(row["alpha_deg"]),
+            "cd": float(contribution["cd"]),
+            "uncertainty_cd": float(contribution["uncertainty_cd"]),
+            "term_id": term_id,
+            "term_fingerprint": term_fingerprint,
+            "method_id": passport["method_id"],
+            "equation_version": passport["equation_version"],
+            "source_path": str(policy_path.resolve()),
+            "source_sha256": policy_sha256,
+        })
+    return result
+
+
+def _validate_parasite_component_coverage(
+    *,
+    component: str,
+    evidence: list[dict],
+    source_records: list[dict],
+    subsonic_rows: list[dict],
+    bundle: dict,
+    base: Path,
+    certificate: dict,
+    certificate_path: Path,
+) -> tuple[list[dict], dict]:
+    parasite_components = _certified_component_coverage(
+        certificate,
+        backend="parasite_drag",
+    )
+    if component.casefold() not in parasite_components:
+        raise ValueError(
+            f"replacement_coverage {component}: сертифицированный "
+            "Parasite Drag не содержит этот компонент"
+        )
+    if any(not row.get("sources", {}).get("parasite_drag") for row in subsonic_rows):
+        raise ValueError(
+            f"replacement_coverage {component}: Parasite Drag не покрывает все дозвуковые точки"
+        )
+    lineage = _validate_certified_parasite_lineage(
+        certificate_path,
+        certificate,
+        bundle,
+        subsonic_rows,
+    )
+    validated = _validate_coverage_evidence(
+        component=component,
+        method="parasite_drag",
+        evidence=evidence,
+        source_records=source_records,
+        base=base,
+    )
+    matching = bundle.get("policy", {}).get("matching", {})
+    mach_tol = float(matching.get("parasite_mach_tolerance", 1.0e-6))
+    for mach in sorted({float(row["Mach"]) for row in subsonic_rows}):
+        source_names = {
+            row.get("sources", {}).get("parasite_drag")
+            for row in subsonic_rows
+            if abs(float(row["Mach"]) - mach) <= mach_tol
+        }
+        candidates = [
+            item for item in validated
+            if item.get("mach") is not None
+            and abs(float(item["mach"]) - mach) <= mach_tol
+            and Path(item["source_path"]).name in source_names
+        ]
+        if not candidates:
+            raise ValueError(
+                f"replacement_coverage {component}/parasite_drag: "
+                f"нет запечатанного источника для дозвуковой точки M={mach:g}"
+            )
+    return ([
+        {
+            "component": component,
+            "classification": "physical_component",
+            "satisfied_by": "parasite_drag",
+            "source_path": item["source_path"],
+            "source_sha256": item["source_sha256"],
+            **({"mach": item["mach"]} if item.get("mach") is not None else {}),
+        }
+        for item in validated
+    ], lineage)
 
 
 def _coverage_evidence(item: dict, methods: list[str]) -> list[dict]:
@@ -3102,6 +3338,7 @@ def _validate_replacement_coverage(
     physical_lineage_validation = None
     for exclusion in relevant:
         component = str(exclusion.get("component", exclusion.get("role", ""))).strip()
+        declared_methods = _declared_exclusion_methods(exclusion)
         entries = by_component.get(component.casefold(), [])
         if not entries:
             raise ValueError(
@@ -3135,6 +3372,68 @@ def _validate_replacement_coverage(
                 "source_sha256": None,
             })
             continue
+
+        if SEMIEMPIRICAL_COMPONENT_REPLACEMENT in declared_methods:
+            allowed_declared = {
+                SEMIEMPIRICAL_COMPONENT_REPLACEMENT,
+                "parasite_drag_subsonic",
+            }
+            if (
+                set(declared_methods) - allowed_declared
+                or "machline_pressure_wave_all_points" in declared_methods
+            ):
+                raise ValueError(
+                    f"replacement_coverage {component}: полуэмпирический и численный "
+                    "pressure/wave-каналы нельзя смешивать"
+                )
+            if subsonic_rows and "parasite_drag_subsonic" not in declared_methods:
+                raise ValueError(
+                    f"replacement_coverage {component}: для дозвуковых точек вместе с "
+                    "полуэмпирическим pressure/wave требуется parasite_drag_subsonic"
+                )
+            allowed_actual = {"semiempirical_component_pressure_wave", "parasite_drag"}
+            if set(methods) - allowed_actual:
+                raise ValueError(
+                    f"replacement_coverage {component}: обнаружен неразрешённый метод"
+                )
+            semi_entries = [
+                entry for entry in entries
+                if "semiempirical_component_pressure_wave" in _coverage_methods(entry)
+            ]
+            result.extend(_validate_semiempirical_component_coverage(
+                component=component,
+                entries=semi_entries,
+                bundle=bundle,
+            ))
+            if subsonic_rows:
+                if "parasite_drag" not in methods:
+                    raise ValueError(
+                        f"replacement_coverage {component}: отсутствует обязательный "
+                        "метод parasite_drag"
+                    )
+                parasite_records, parasite_lineage = _validate_parasite_component_coverage(
+                    component=component,
+                    evidence=evidence,
+                    source_records=source_records,
+                    subsonic_rows=subsonic_rows,
+                    bundle=bundle,
+                    base=base,
+                    certificate=certificate,
+                    certificate_path=certificate_path,
+                )
+                result.extend(parasite_records)
+                if physical_lineage_validation is None:
+                    physical_lineage_validation = {
+                        "machline": None,
+                        "parasite_drag": parasite_lineage,
+                    }
+            continue
+
+        if "semiempirical_component_pressure_wave" in methods:
+            raise ValueError(
+                f"replacement_coverage {component}: полуэмпирический ряд не разрешён "
+                "полем replacement_required сертификата"
+            )
 
         required_methods = ["machline_pressure_wave"]
         if subsonic_rows:
@@ -3273,30 +3572,46 @@ def _automatic_replacement_coverage(exclusions: list[dict], bundle: dict) -> lis
     result = []
     for exclusion in exclusions:
         component = str(exclusion.get("component", exclusion.get("role", ""))).strip()
+        declared_methods = _declared_exclusion_methods(exclusion)
         if _not_physical_declaration_allowed(exclusion):
             result.append({
                 "component": component,
                 "satisfied_by": "not_physical",
             })
             continue
-        for row in rows:
-            candidates = [
-                item for item in machline_reports
-                if item.get("file_name") == row.get("sources", {}).get("machline")
-                and abs(float(item["Mach"]) - float(row["Mach"])) <= mach_tol
-                and abs(float(item["alpha_deg"]) - float(row["alpha_deg"])) <= alpha_tol
-            ]
-            if len(candidates) == 1:
-                report = candidates[0]
+        use_semiempirical_pressure = SEMIEMPIRICAL_COMPONENT_REPLACEMENT in declared_methods
+        if use_semiempirical_pressure:
+            terms = _semiempirical_component_terms(bundle.get("policy", {}), component)
+            if len(terms) == 1:
                 result.append({
                     "component": component,
-                    "satisfied_by": "machline_pressure_wave",
-                    "mach": float(row["Mach"]),
-                    "alpha_deg": float(row["alpha_deg"]),
-                    "source_path": report.get("path"),
-                    "source_sha256": report.get("sha256"),
+                    "satisfied_by": "semiempirical_component_pressure_wave",
+                    "term_id": terms[0]["id"],
+                    "term_fingerprint": sha256_payload(terms[0]),
                 })
-        for mach in sorted({float(row["Mach"]) for row in rows if float(row["Mach"]) < 1.0}):
+        else:
+            for row in rows:
+                candidates = [
+                    item for item in machline_reports
+                    if item.get("file_name") == row.get("sources", {}).get("machline")
+                    and abs(float(item["Mach"]) - float(row["Mach"])) <= mach_tol
+                    and abs(float(item["alpha_deg"]) - float(row["alpha_deg"])) <= alpha_tol
+                ]
+                if len(candidates) == 1:
+                    report = candidates[0]
+                    result.append({
+                        "component": component,
+                        "satisfied_by": "machline_pressure_wave",
+                        "mach": float(row["Mach"]),
+                        "alpha_deg": float(row["alpha_deg"]),
+                        "source_path": report.get("path"),
+                        "source_sha256": report.get("sha256"),
+                    })
+        for mach in sorted({
+            float(row["Mach"]) for row in rows
+            if float(row["Mach"]) < 1.0
+            and "parasite_drag_subsonic" in declared_methods
+        }):
             candidates = [
                 item for item in parasite_points
                 if abs(float(item["Mach"]) - mach) <= parasite_tol
