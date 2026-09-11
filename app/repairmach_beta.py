@@ -68,8 +68,10 @@ from hybrid_pipeline import (
     run_hybrid_request,
 )
 from geometry_certification import certify_geometry
+from geometry_action_executor import execute_safe_recertification
 from geometry_certificate import resolve_certificate_artifact, verify_certificate
 from geometry_manifest import sha256_payload
+from geometry_preflight import run_geometry_preflight
 
 
 def app_root() -> Path:
@@ -121,6 +123,7 @@ PROJECT_DIRS = [
     "09_parasite_drag/logs",
     "09_parasite_drag/runs",
     "10_blind_validation",
+    "11_geometry_preflight",
     "11_geometry_certification",
 ]
 
@@ -2281,6 +2284,29 @@ def prepare_blind_study_workflow() -> None:
     if not geometry.is_file() or geometry.suffix.lower() != ".vsp3":
         print(f"Не найдена модель VSP3: {geometry}")
         return
+    latest_certificate = None
+    latest_pointer = project / "11_geometry_certification" / "latest_certificate.json"
+    if latest_pointer.is_file():
+        try:
+            pointer = json.loads(latest_pointer.read_text(encoding="utf-8"))
+            candidate = Path(str(pointer.get("certificate_path", "")))
+            if candidate.is_file():
+                latest_certificate = candidate
+        except (OSError, ValueError, json.JSONDecodeError):
+            latest_certificate = None
+    certificate_prompt = "Путь к положительному certificate.json"
+    if latest_certificate is not None:
+        certificate_prompt += f", Enter = {latest_certificate}"
+    certificate_text = input(certificate_prompt + ": ").strip().strip('"')
+    certificate_path = Path(certificate_text) if certificate_text else latest_certificate
+    if certificate_path is None or not certificate_path.is_file():
+        print("Слепой расчёт не запускается без положительного сертификата геометрии.")
+        return
+    try:
+        certificate_payload = json.loads(certificate_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        print(f"Сертификат не прочитан: {exc}")
+        return
     tri_text = input("Полный путь к TRI для MachLine или Enter: ").strip().strip('"')
     additional_inputs = []
     if tri_text:
@@ -2297,6 +2323,17 @@ def prepare_blind_study_workflow() -> None:
         "vspaero_runner.py",
         "calculation_scenarios.py",
         "repairmach_beta.py",
+        "blind_study.py",
+        "geometry_certificate.py",
+        "geometry_certification.py",
+        "geometry_manifest.py",
+        "geometry_remediation.py",
+        "geometry_rules.py",
+        "geometry_twins.py",
+        "machline_geometry.py",
+        "geometry_preflight.py",
+        "geometry_action_executor.py",
+        "blind_readiness.py",
     ):
         method_source = APP_DIR / module_name
         if method_source.is_file():
@@ -2323,6 +2360,16 @@ def prepare_blind_study_workflow() -> None:
             "numerical_percent": 5.0,
             "total_mean_percent": 11.0,
         }),
+        "replacement_methods": [
+            {
+                "component": item.get("component"),
+                "method": item.get("method"),
+            }
+            for item in (
+                certificate_payload.get("backends", {}).get("hybrid", {})
+                .get("replacement_contract", {}).get("requirements", [])
+            )
+        ],
     }
 
     solver_paths = []
@@ -2338,6 +2385,10 @@ def prepare_blind_study_workflow() -> None:
         candidate = tools.get(key)
         if candidate and candidate.is_file():
             solver_paths.append((role, candidate))
+    runtime_executables = {
+        "openvsp": tools.get("vspscript"),
+        "vspaero": tools.get("vspaero"),
+    }
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     package_dir = project / "10_blind_validation" / f"{timestamp}_{scenario['id']}"
@@ -2354,6 +2405,9 @@ def prepare_blind_study_workflow() -> None:
             method_declaration=method_declaration,
             additional_inputs=additional_inputs,
             solver_paths=solver_paths,
+            geometry_certificate_path=certificate_path,
+            require_geometry_certificate=True,
+            runtime_executables=runtime_executables,
         )
         verification = verify_blind_package(manifest)
     except Exception as exc:
@@ -2366,6 +2420,7 @@ def prepare_blind_study_workflow() -> None:
     print(f"Манифест    : {manifest}")
     print(f"Отпечаток   : {verification['package_fingerprint']}")
     print(f"Целостность : {'OK' if verification['valid'] else 'ОШИБКА'}")
+    print("Сертификат  : проверен вместе со сценарием, MASTER и решателями")
     print("Эталонные данные пока подключать нельзя. Сначала выполните и запечатайте прогноз.")
 
 
@@ -2474,6 +2529,108 @@ def prepare_protocol_scenario(scenario: dict) -> None:
     print(f"Статус   : {manifest['status']}")
     print(f"Манифест : {output}")
     print("[!] Это протокол, а не выполненный аэродинамический расчёт.")
+
+
+def geometry_preflight_workflow(scenario: dict | None = None) -> None:
+    """Run the inexpensive G0--G3 gate before solver certification."""
+    settings = load_settings()
+    project = default_project_path()
+    project_config_path = project / "project_config.json"
+    if not project_config_path.is_file():
+        print("Проект или project_config.json не найден. Сначала создайте/выберите проект.")
+        return
+    openvsp_dir = find_openvsp_dir(settings.get("openvsp", {}).get("install_dir"))
+    tools = tool_paths(openvsp_dir)
+    if tools["vspscript"] is None or not tools["vspscript"].is_file():
+        print("OpenVSP/vspscript не найден. Сначала выполните проверку среды.")
+        return
+    print("\nБыстрый предполётный допуск геометрии G0–G3")
+    print("-" * 58)
+    print("VSPAERO и MachLine не запускаются; MASTER не изменяется.")
+    source_text = input("Полный путь к MASTER OpenVSP .vsp3: ").strip().strip('"')
+    source = Path(source_text) if source_text else Path()
+    if not source_text or not source.is_file() or source.suffix.lower() != ".vsp3":
+        print("Не найден корректный MASTER .vsp3.")
+        return
+    try:
+        project_payload = json.loads(project_config_path.read_text(encoding="utf-8"))
+        cert_config = project_payload.get("geometry_certification", {})
+        if not isinstance(cert_config, dict):
+            raise ValueError("project_config.geometry_certification должен быть объектом")
+        project_reference = load_project_reference(project, settings)
+        reference = {
+            "area": project_reference["area"],
+            "cref": project_reference["longitudinal_length"],
+            "bref": project_reference["lateral_length"],
+            "center": project_reference["center"],
+        }
+        result = run_geometry_preflight(
+            master_path=source,
+            output_root=project / "11_geometry_preflight",
+            project_name=project.name,
+            reference=reference,
+            policy_path=GEOMETRY_POLICY_PATH,
+            vspscript_executable=tools["vspscript"],
+            scope_override=cert_config.get("scope_override"),
+            policy_overrides=cert_config.get("policy_overrides") or {},
+        )
+    except Exception as exc:
+        print(f"[ОШИБКА] Предполётная проверка не выполнена: {exc}")
+        return
+    payload = result["preflight"]
+    save_report(project / "11_geometry_preflight" / "latest_preflight.json", {
+        "status": payload["status"],
+        "master_sha256": payload["master"]["sha256"],
+        "preflight_path": str(result["preflight_path"].resolve()),
+        "report_path": str(result["report_path"].resolve()),
+        "updated_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+    })
+    print("\nПредполётная проверка завершена")
+    print("-" * 58)
+    print(f"Статус       : {payload['status']}")
+    print(f"Компонентов  : {payload['summary']['component_count']}")
+    print(f"Блокирующих  : {payload['summary']['blocker_count']}")
+    print(f"Преобразований двойников: {payload['summary']['planned_twin_actions']}")
+    print(f"JSON         : {result['preflight_path']}")
+    print(f"Отчёт        : {result['report_path']}")
+    print(payload["next_step"])
+
+
+def geometry_corrective_action_workflow(scenario: dict | None = None) -> None:
+    """Execute only a fully automatic correction route as a fresh cert run."""
+    settings = load_settings()
+    project = default_project_path()
+    source_text = input("Путь к certificate.json с планом исправлений: ").strip().strip('"')
+    source = Path(source_text) if source_text else Path()
+    if not source_text or not source.is_file():
+        print("Сертификат не найден.")
+        return
+    openvsp_dir = find_openvsp_dir(settings.get("openvsp", {}).get("install_dir"))
+    openvsp_tools = tool_paths(openvsp_dir)
+    machline = find_machline(settings)
+    executables = {
+        "vspscript": openvsp_tools.get("vspscript"),
+        "vspaero": openvsp_tools.get("vspaero"),
+        "machline": machline if machline.is_file() else None,
+    }
+    try:
+        result = execute_safe_recertification(
+            certificate_path=source,
+            output_root=project / "11_geometry_certification",
+            executables=executables,
+        )
+    except Exception as exc:
+        print(f"[ОШИБКА] План исправлений не выполнен: {exc}")
+        return
+    print("\nБезопасная обработка плана завершена")
+    print("-" * 58)
+    print(f"Статус : {result['status']}")
+    print(f"Запись : {result['record_path']}")
+    record = result["record"]
+    if record.get("operator_action_ids"):
+        print("Нужен оператор: " + ", ".join(record["operator_action_ids"]))
+    if record.get("new_certificate"):
+        print(f"Новый сертификат: {record['new_certificate']['path']}")
 
 
 def geometry_certification_workflow(scenario: dict | None = None) -> None:
@@ -2657,8 +2814,12 @@ def run_calculation_scenario() -> None:
         diagnose_existing_tri()
     elif execution == "vspaero_study":
         run_standard_vspaero_study(scenario)
+    elif execution == "geometry_preflight":
+        geometry_preflight_workflow(scenario)
     elif execution == "geometry_certification":
         geometry_certification_workflow(scenario)
+    elif execution == "geometry_corrective_action":
+        geometry_corrective_action_workflow(scenario)
     else:
         prepare_protocol_scenario(scenario)
 

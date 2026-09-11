@@ -16,6 +16,11 @@ import math
 from pathlib import Path
 import shutil
 
+from blind_readiness import (
+    assess_blind_readiness,
+    verify_blind_readiness,
+)
+
 
 BLIND_SCHEMA = "repairmach.blind-study/1.0"
 PREDICTION_SCHEMA = "repairmach.blind-predictions/1.0"
@@ -44,6 +49,9 @@ def prepare_blind_package(
     method_declaration: dict,
     additional_inputs: list[tuple[str, Path]] | None = None,
     solver_paths: list[tuple[str, Path]] | None = None,
+    geometry_certificate_path: Path | None = None,
+    require_geometry_certificate: bool = False,
+    runtime_executables: dict[str, Path] | None = None,
 ) -> Path:
     """Copy and seal all pre-reference inputs of a blind study."""
     package_dir = Path(package_dir)
@@ -60,6 +68,27 @@ def prepare_blind_package(
     )
     if not preflight["valid"]:
         raise ValueError("Предрасчётная проверка не пройдена: " + "; ".join(preflight["errors"]))
+    readiness = None
+    if geometry_certificate_path is not None:
+        readiness = assess_blind_readiness(
+            geometry_path=geometry_path,
+            certificate_path=geometry_certificate_path,
+            selected_scenario=selected_scenario,
+            method_declaration=method_declaration,
+            additional_inputs=additional_inputs,
+            runtime_executables=runtime_executables,
+        )
+        if not readiness["valid"]:
+            raise ValueError(
+                "Единый допуск слепого расчёта не пройден: "
+                + "; ".join(readiness["errors"])
+            )
+    elif require_geometry_certificate:
+        raise ValueError("Для слепого расчёта обязателен положительный сертификат геометрии")
+    else:
+        preflight["warnings"].append(
+            "Сертификат геометрии не приложен: совместимый пакет 9.1 не является полным слепым допуском"
+        )
     package_dir.mkdir(parents=True, exist_ok=True)
     inputs_dir = package_dir / "inputs"
     inputs_dir.mkdir()
@@ -72,6 +101,8 @@ def prepare_blind_package(
         ("scenario_catalog", Path(scenario_catalog_path), "calculation_scenarios.json"),
         ("settings", Path(settings_path), "repairmach_settings.json"),
     ]
+    if geometry_certificate_path is not None:
+        sources.append(("geometry_certificate", Path(geometry_certificate_path), "geometry_certificate.json"))
     for role, source in additional_inputs or []:
         sources.append((str(role), Path(source), f"{_safe_name(role)}{Path(source).suffix.lower()}"))
 
@@ -84,6 +115,12 @@ def prepare_blind_package(
         destination = inputs_dir / frozen_name
         shutil.copy2(source, destination)
         frozen_inputs.append(_file_record(role, source, destination, package_dir))
+    if readiness is not None:
+        readiness_path = inputs_dir / "blind_readiness.json"
+        _write_json(readiness_path, readiness)
+        frozen_inputs.append(
+            _file_record("blind_readiness", readiness_path, readiness_path, package_dir)
+        )
 
     solvers = []
     for role, solver in solver_paths or []:
@@ -108,6 +145,7 @@ def prepare_blind_package(
         "scenario": deepcopy(selected_scenario),
         "method_declaration": deepcopy(method_declaration),
         "preflight": preflight,
+        "readiness": readiness,
         "inputs": frozen_inputs,
         "solvers": solvers,
         "blind_rules": {
@@ -115,6 +153,7 @@ def prepare_blind_package(
             "pointwise_tuning_after_seal": "prohibited",
             "method_change_after_seal": "requires_new_package",
             "reference_import_allowed_after": "predictions_sealed",
+            "geometry_certificate_required": bool(require_geometry_certificate),
         },
     }
     manifest["seal"] = _seal(manifest)
@@ -221,6 +260,43 @@ def verify_blind_package(manifest_path: Path) -> dict:
         errors.extend(_verify_file_record(record, Path(str(record.get("path", "")))))
     if payload.get("blind_rules", {}).get("reference_data_present") is not False:
         errors.append("В исходном пакете обнаружен признак эталонных данных")
+    readiness = payload.get("readiness")
+    certificate_required = bool(
+        payload.get("blind_rules", {}).get("geometry_certificate_required")
+    )
+    if readiness is not None:
+        errors.extend(verify_blind_readiness(readiness))
+        input_by_role = {
+            str(record.get("role")): record
+            for record in payload.get("inputs", [])
+            if isinstance(record, dict)
+        }
+        geometry_record = input_by_role.get("geometry", {})
+        certificate_record = input_by_role.get("geometry_certificate", {})
+        readiness_record = input_by_role.get("blind_readiness", {})
+        if geometry_record.get("sha256") != readiness.get("geometry", {}).get("sha256"):
+            errors.append("Единый допуск относится к другой геометрии пакета")
+        if certificate_record.get("sha256") != readiness.get("certificate", {}).get("sha256"):
+            errors.append("Единый допуск относится к другому сертификату пакета")
+        readiness_path = (
+            package_dir / str(readiness_record.get("relative_path", ""))
+        ).resolve()
+        readiness_file_valid = _is_relative_to(readiness_path, package_dir)
+        if readiness_file_valid and readiness_path.is_file():
+            try:
+                readiness_file_valid = _read_json(readiness_path) == readiness
+            except (OSError, json.JSONDecodeError):
+                readiness_file_valid = False
+        else:
+            readiness_file_valid = False
+        if not readiness_file_valid:
+            errors.append("Отдельный файл единого допуска отсутствует или не совпадает с манифестом")
+        if sha256_payload(payload.get("scenario", {})) != readiness.get("scenario", {}).get("sha256"):
+            errors.append("Единый допуск относится к другому сценарию пакета")
+        if sha256_payload(payload.get("method_declaration", {})) != readiness.get("method_declaration_sha256"):
+            errors.append("Единый допуск относится к другой декларации метода")
+    elif certificate_required:
+        errors.append("В обязательном слепом пакете отсутствует единый допуск")
     return {
         "valid": not errors,
         "state": payload.get("state"),

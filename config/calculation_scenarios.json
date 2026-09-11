@@ -229,6 +229,26 @@
         "certificate.json",
         "certificate.md"
       ]
+    },
+    {
+      "id": "vsp3_geometry_preflight",
+      "title": "Быстрый предполётный допуск VSP3",
+      "description": "Быстрая проверка G0–G3 до дорогих сеток: чтение MASTER, опоры, имена, Sets и запечатанный план преобразований; VSPAERO и MachLine не запускаются.",
+      "availability": "ready",
+      "execution": "geometry_preflight",
+      "quality_level": "screening",
+      "method_version": "RM91-GEOMETRY-PREFLIGHT-1",
+      "outputs": ["preflight.json", "preflight.md"]
+    },
+    {
+      "id": "vsp3_geometry_corrective_action",
+      "title": "Безопасный повтор действий сертификатора",
+      "description": "Читает машинный план исправлений. При операторских причинах останавливается; при полностью автоматических причинах запускает новую сертификацию из неизменного MASTER.",
+      "availability": "ready",
+      "execution": "geometry_corrective_action",
+      "quality_level": "verification",
+      "method_version": "RM91-GEOMETRY-ACTION-1",
+      "outputs": ["corrective_execution.json", "certificate.json"]
     }
   ]
 }

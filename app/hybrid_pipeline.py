@@ -37,6 +37,7 @@ from aero_hybrid import (
     validate_vspaero_run_outputs,
 )
 from validation_metrics import cy_alpha_per_degree, hybrid_cy_alpha_rm921_point
+from geometry_action_executor import resolve_hybrid_corrective_actions
 from geometry_certificate import verify_certificate
 from geometry_manifest import sha256_payload
 from vspaero_runner import parse_set_report
@@ -506,6 +507,9 @@ def run_hybrid_request(
             "size_bytes": certificate_path.stat().st_size,
             "sha256": file_sha256(certificate_path),
         })
+        bundle["corrective_action_execution"] = resolve_hybrid_corrective_actions(
+            certificate, bundle
+        )
     else:
         bundle["geometry_certificate"] = None
         bundle["replacement_coverage"] = []
@@ -540,6 +544,28 @@ def run_hybrid_request(
         )
         outputs["workbook"] = workbook_path
         outputs["workbook_verification"] = verification_path
+        if certificate_text:
+            workbook_verification = json.loads(
+                verification_path.read_text(encoding="utf-8")
+            )
+            bundle["corrective_action_execution"] = resolve_hybrid_corrective_actions(
+                certificate, bundle, workbook_verification=workbook_verification
+            )
+            outputs["json"].write_text(
+                json.dumps(bundle, ensure_ascii=False, indent=2, allow_nan=False),
+                encoding="utf-8",
+            )
+            execution_path = output / "corrective_action_execution.json"
+            execution_path.write_text(
+                json.dumps(
+                    bundle["corrective_action_execution"],
+                    ensure_ascii=False,
+                    indent=2,
+                    allow_nan=False,
+                ),
+                encoding="utf-8",
+            )
+            outputs["corrective_action_execution"] = execution_path
     return {"bundle": bundle, "outputs": outputs}
 
 

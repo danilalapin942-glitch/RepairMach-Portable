@@ -11,7 +11,13 @@ import math
 from pathlib import Path
 
 
-READY_EXECUTIONS = {"tri_diagnostics", "vspaero_study", "geometry_certification"}
+READY_EXECUTIONS = {
+    "tri_diagnostics",
+    "vspaero_study",
+    "geometry_preflight",
+    "geometry_certification",
+    "geometry_corrective_action",
+}
 POINT_EXECUTIONS = {"sweep", "independent_alpha", "independent_mach_alpha"}
 PROTOCOL_EXECUTIONS = {
     "mesh_convergence_protocol",
