@@ -31,6 +31,8 @@ def hybrid_bundle(*, zero_alpha_interval: bool = False) -> dict:
             induced = 0.0005 * alpha
             viscous = 0.010
             semi = 0.001
+            semi_uncertainty_fraction = 0.25
+            semi_uncertainty = semi * semi_uncertainty_fraction
             rows.append({
                 "Mach": mach,
                 "alpha_deg": alpha,
@@ -40,6 +42,8 @@ def hybrid_bundle(*, zero_alpha_interval: bool = False) -> dict:
                 "Cx_induced": induced,
                 "Cx_viscous": viscous,
                 "Cx_semiempirical": semi,
+                "Cx_semiempirical_uncertainty_rss": semi_uncertainty,
+                "Cx_semiempirical_uncertainty_worst_case": semi_uncertainty,
                 "Cx_total": pressure + induced + viscous + semi,
                 "status": "complete",
                 "quality": {"machline_residual_norm": 1.0e-5},
@@ -53,7 +57,19 @@ def hybrid_bundle(*, zero_alpha_interval: bool = False) -> dict:
                     "label": "Антенны и щели",
                     "cd": semi,
                     "model": "fixed",
+                    "evaluation": "constant",
                     "provenance": "independent method",
+                    "certification_schema": "repairmach.semiempirical-term/1.0",
+                    "method_id": "RM-DETAILS-TEST",
+                    "equation_version": "1.0",
+                    "uncertainty_fraction": semi_uncertainty_fraction,
+                    "uncertainty_cd": semi_uncertainty,
+                    "applicability_basis": "test applicability",
+                    "source": {
+                        "kind": "declared_engineering_method",
+                        "citation": "Test method declaration",
+                    },
+                    "term_fingerprint": "b" * 64,
                 }],
             })
         alpha_end = 0.0 if zero_alpha_interval else 1.0
@@ -90,6 +106,27 @@ def hybrid_bundle(*, zero_alpha_interval: bool = False) -> dict:
                 "pressure_wave_source": "MachLine_wind_axis_CD",
                 "induced_source": "VSPAERO_CDi",
                 "parasite_source": "OpenVSP_ParasiteDrag",
+                "semiempirical_terms": [{
+                    "id": "details",
+                    "label": "Антенны и щели",
+                    "enabled": True,
+                    "provenance": "independent method",
+                    "applicability": {"mach_min": 0.0, "mach_max": 2.5},
+                    "model": {"type": "constant", "value": 0.001},
+                    "certification": {
+                        "schema": "repairmach.semiempirical-term/1.0",
+                        "method_id": "RM-DETAILS-TEST",
+                        "equation_version": "1.0",
+                        "uncertainty_fraction": 0.25,
+                        "reference_independent": True,
+                        "pointwise_tuning": False,
+                        "applicability_basis": "test applicability",
+                        "source": {
+                            "kind": "declared_engineering_method",
+                            "citation": "Test method declaration",
+                        },
+                    },
+                }],
             },
             "lift": {"cy_alpha": {"method": "direct"}},
             "transonic_excluded": [0.9, 1.1],
@@ -191,6 +228,11 @@ class HybridWorkbookTests(unittest.TestCase):
                 )
                 self.assertIn("source-name.polar", cell_xml)
                 self.assertIn("a" * 64, cell_xml)
+                self.assertIn("repairmach.semiempirical-term/1.0", cell_xml)
+                self.assertIn("RM-DETAILS-TEST", cell_xml)
+                self.assertIn("Отпечаток члена", cell_xml)
+                self.assertIn("u полуэмп. RSS", cell_xml)
+                self.assertIn("b" * 64, cell_xml)
 
     @unittest.skipUnless(find_node_executable() and find_node_modules(), "artifact-tool runtime unavailable")
     def test_formula_error_blocks_atomic_publication(self):

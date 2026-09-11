@@ -23,7 +23,6 @@ import re
 import shutil
 import subprocess
 import sys
-import tempfile
 import zipfile
 
 APP_DIR = Path(__file__).resolve().parent
@@ -46,6 +45,7 @@ from vspaero_runner import parse_set_report
 REQUEST_SCHEMA = "repairmach.hybrid-request/1.0"
 POLICY_SCHEMA = "repairmach.hybrid-policy/1.0"
 RESULT_SCHEMA = "repairmach.hybrid-series/1.0"
+SEMIEMPIRICAL_TERM_SCHEMA = "repairmach.semiempirical-term/1.0"
 WORKBOOK_BUILDER = Path(__file__).with_name("hybrid_workbook.mjs")
 TRANSONIC_DEFAULT = (0.8, 1.2)
 VSPAERO_MAX_LOG10_L2_RESIDUAL = -0.3
@@ -62,37 +62,7 @@ def file_sha256(path: Path) -> str:
 
 def load_hybrid_policy(path: Path) -> dict:
     policy = json.loads(Path(path).read_text(encoding="utf-8"))
-    if policy.get("schema") != POLICY_SCHEMA:
-        raise ValueError("Неизвестная схема методики гибридного расчёта")
-    if policy.get("pointwise_tuning") is not False:
-        raise ValueError("Поточечная подстройка должна быть явно запрещена")
-    if policy.get("reference_independent") is not True:
-        raise ValueError("Методика должна быть явно независимой от эталонной кривой")
-    if not str(policy.get("method_version", "")).strip():
-        raise ValueError("Не указана версия гибридной методики")
-
-    matching = policy.get("matching", {})
-    for key in ("mach_tolerance", "alpha_tolerance", "parasite_mach_tolerance"):
-        value = float(matching.get(key, 0.0))
-        if not math.isfinite(value) or value <= 0.0:
-            raise ValueError(f"Параметр matching.{key} должен быть положительным")
-
-    drag = policy.get("drag", {})
-    if drag.get("pressure_wave_source") != "MachLine_wind_axis_CD":
-        raise ValueError("Поддерживается только давление/волновое сопротивление MachLine")
-    if drag.get("induced_source") not in ("VSPAERO_CDi", "none"):
-        raise ValueError("Неизвестный источник индуктивного сопротивления")
-    if drag.get("parasite_source") not in ("OpenVSP_ParasiteDrag", "none"):
-        raise ValueError("Неизвестный источник вязкого сопротивления")
-    for term in drag.get("semiempirical_terms", []):
-        _validate_semiempirical_term(term)
-
-    lift = policy.get("lift", {})
-    if lift.get("coefficient_source") != "VSPAERO_CLtot":
-        raise ValueError("Поддерживается только VSPAERO CLtot как источник Cy")
-    slope_method = lift.get("cy_alpha", {}).get("method", "direct")
-    if slope_method not in ("direct", "RM92.1-CYA-WINGBODY-3-working"):
-        raise ValueError("Неизвестная методика Cyα")
+    _validate_hybrid_policy(policy, policy_path=Path(path))
     return policy
 
 
@@ -103,9 +73,10 @@ def build_hybrid_series(
     parasite_result_paths: list[Path],
     policy: dict,
     thin_vspaero_source: Path | None = None,
+    policy_path: Path | None = None,
 ) -> dict:
     """Combine a VSPAERO study, MachLine reports and declared drag terms."""
-    _validate_loaded_policy(policy)
+    _validate_loaded_policy(policy, policy_path=policy_path)
     matching = policy["matching"]
     mach_tolerance = float(matching["mach_tolerance"])
     alpha_tolerance = float(matching["alpha_tolerance"])
@@ -183,6 +154,12 @@ def build_hybrid_series(
                 "полуэмпирическое слагаемое base_drag"
             )
         semi_total = sum(float(item["cd"]) for item in semi_terms)
+        semi_uncertainty_rss = math.sqrt(
+            sum(float(item["uncertainty_cd"]) ** 2 for item in semi_terms)
+        )
+        semi_uncertainty_worst_case = sum(
+            float(item["uncertainty_cd"]) for item in semi_terms
+        )
         total_cd = None
         if pressure_wave is not None and not row_errors:
             total_cd = pressure_wave + induced + parasite + semi_total
@@ -199,6 +176,8 @@ def build_hybrid_series(
                 "Cx_induced": induced,
                 "Cx_viscous": parasite,
                 "Cx_semiempirical": semi_total,
+                "Cx_semiempirical_uncertainty_rss": semi_uncertainty_rss,
+                "Cx_semiempirical_uncertainty_worst_case": semi_uncertainty_worst_case,
                 "Cx_total": total_cd,
                 "status": status,
                 "errors": row_errors,
@@ -294,6 +273,18 @@ def semiempirical_contributions(policy: dict, mach: float) -> list[dict]:
                 "model": model["type"],
                 "evaluation": interpolation,
                 "provenance": term["provenance"],
+                "certification_schema": term["certification"]["schema"],
+                "method_id": term["certification"]["method_id"],
+                "equation_version": term["certification"]["equation_version"],
+                "uncertainty_fraction": float(
+                    term["certification"]["uncertainty_fraction"]
+                ),
+                "uncertainty_cd": abs(value) * float(
+                    term["certification"]["uncertainty_fraction"]
+                ),
+                "applicability_basis": term["certification"]["applicability_basis"],
+                "source": term["certification"]["source"],
+                "term_fingerprint": sha256_payload(term),
             }
         )
     return result
@@ -309,7 +300,9 @@ def write_hybrid_outputs(bundle: dict, output_dir: Path) -> dict[str, Path]:
 
     point_headers = [
         "Mach", "alpha_deg", "Cy", "CY", "Cx_pressure_wave", "Cx_induced",
-        "Cx_viscous", "Cx_semiempirical", "Cx_total", "status",
+        "Cx_viscous", "Cx_semiempirical", "Cx_semiempirical_uncertainty_rss",
+        "Cx_semiempirical_uncertainty_worst_case", "semiempirical_terms_json",
+        "Cx_total", "status",
         "machline_residual_norm", "machline_residual_max", "vspaero_log10_l2",
     ]
     with csv_path.open("w", encoding="utf-8-sig", newline="") as handle:
@@ -322,6 +315,12 @@ def write_hybrid_outputs(bundle: dict, output_dir: Path) -> dict[str, Path]:
                     "machline_residual_norm": row["quality"].get("machline_residual_norm"),
                     "machline_residual_max": row["quality"].get("machline_residual_max"),
                     "vspaero_log10_l2": row["quality"].get("vspaero_log10_l2"),
+                    "semiempirical_terms_json": json.dumps(
+                        row.get("semiempirical_terms", []),
+                        ensure_ascii=False,
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    ),
                 }
             )
     cy_headers = [
@@ -372,6 +371,7 @@ def run_hybrid_request(
         parasite_result_paths=parasite_paths,
         policy=policy,
         thin_vspaero_source=thin_path,
+        policy_path=policy_path,
     )
     certificate_text = request.get("geometry_certificate")
     if certificate_text:
@@ -666,19 +666,77 @@ def latest_completed_vspaero_study(runs_dir: Path) -> Path | None:
     return max(candidates, key=lambda path: path.stat().st_mtime) if candidates else None
 
 
-def _validate_loaded_policy(policy: dict) -> None:
-    # Validate in-memory policies used by tests and callers exactly like files.
-    with tempfile.TemporaryDirectory(prefix="repairmach_policy_") as temp:
-        path = Path(temp) / "policy.json"
-        path.write_text(json.dumps(policy, ensure_ascii=False), encoding="utf-8")
-        load_hybrid_policy(path)
+def _validate_loaded_policy(policy: dict, *, policy_path: Path | None = None) -> None:
+    """Validate in-memory policies exactly like file-backed policies.
+
+    A caller that declares relative evidence files must also provide the policy
+    path.  This keeps those hashes verifiable without writing a temporary policy
+    into an unrelated directory.
+    """
+    _validate_hybrid_policy(policy, policy_path=policy_path)
 
 
-def _validate_semiempirical_term(term: dict) -> None:
+def _validate_hybrid_policy(policy: dict, *, policy_path: Path | None = None) -> None:
+    if policy.get("schema") != POLICY_SCHEMA:
+        raise ValueError("Неизвестная схема методики гибридного расчёта")
+    if policy.get("pointwise_tuning") is not False:
+        raise ValueError("Поточечная подстройка должна быть явно запрещена")
+    if policy.get("reference_independent") is not True:
+        raise ValueError("Методика должна быть явно независимой от эталонной кривой")
+    if not str(policy.get("method_version", "")).strip():
+        raise ValueError("Не указана версия гибридной методики")
+
+    matching = policy.get("matching", {})
+    for key in ("mach_tolerance", "alpha_tolerance", "parasite_mach_tolerance"):
+        value = float(matching.get(key, 0.0))
+        if not math.isfinite(value) or value <= 0.0:
+            raise ValueError(f"Параметр matching.{key} должен быть положительным")
+
+    drag = policy.get("drag", {})
+    if drag.get("pressure_wave_source") != "MachLine_wind_axis_CD":
+        raise ValueError("Поддерживается только давление/волновое сопротивление MachLine")
+    if drag.get("induced_source") not in ("VSPAERO_CDi", "none"):
+        raise ValueError("Неизвестный источник индуктивного сопротивления")
+    if drag.get("parasite_source") not in ("OpenVSP_ParasiteDrag", "none"):
+        raise ValueError("Неизвестный источник вязкого сопротивления")
+    semiempirical_terms = drag.get("semiempirical_terms", [])
+    term_ids = [str(term.get("id", "")).strip() for term in semiempirical_terms]
+    if len(set(term_ids)) != len(term_ids):
+        raise ValueError("Полуэмпирические члены должны иметь уникальные id")
+    for term in semiempirical_terms:
+        _validate_semiempirical_term(term, policy_path=policy_path)
+
+    lift = policy.get("lift", {})
+    if lift.get("coefficient_source") != "VSPAERO_CLtot":
+        raise ValueError("Поддерживается только VSPAERO CLtot как источник Cy")
+    slope_method = lift.get("cy_alpha", {}).get("method", "direct")
+    if slope_method not in ("direct", "RM92.1-CYA-WINGBODY-3-working"):
+        raise ValueError("Неизвестная методика Cyα")
+
+
+def _validate_semiempirical_term(term: dict, *, policy_path: Path | None = None) -> None:
     if not str(term.get("id", "")).strip() or not str(term.get("label", "")).strip():
         raise ValueError("Полуэмпирический член должен иметь id и label")
-    if term.get("enabled", True) and not str(term.get("provenance", "")).strip():
+    enabled = term.get("enabled", True) is True
+    if enabled and not str(term.get("provenance", "")).strip():
         raise ValueError(f"Для члена {term.get('id')} не указан источник методики")
+
+    applicability = term.get("applicability", {})
+    try:
+        mach_min = float(applicability["mach_min"])
+        mach_max = float(applicability["mach_max"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError(
+            f"Для члена {term.get('id')} нужен явный диапазон применимости Mach"
+        ) from exc
+    if (
+        not math.isfinite(mach_min)
+        or not math.isfinite(mach_max)
+        or mach_min < 0.0
+        or mach_max < mach_min
+    ):
+        raise ValueError(f"Некорректный диапазон Mach у члена {term.get('id')}")
+
     model = term.get("model", {})
     model_type = model.get("type")
     if model_type == "constant":
@@ -690,6 +748,12 @@ def _validate_semiempirical_term(term: dict) -> None:
         mach_values = [float(point[0]) for point in points]
         if len(set(mach_values)) != len(mach_values):
             raise ValueError(f"В таблице {term.get('id')} повторяются числа Mach")
+        if any(not math.isfinite(value) or value < 0.0 for value in mach_values):
+            raise ValueError(f"Некорректные числа Mach в таблице {term.get('id')}")
+        if min(mach_values) > mach_min or max(mach_values) < mach_max:
+            raise ValueError(
+                f"Таблица {term.get('id')} не покрывает заявленный диапазон применимости"
+            )
         values = [point[1] for point in points]
     else:
         raise ValueError(f"Неизвестная модель полуэмпирического члена {term.get('id')}")
@@ -697,6 +761,66 @@ def _validate_semiempirical_term(term: dict) -> None:
         numeric = float(value)
         if not math.isfinite(numeric) or numeric < 0.0:
             raise ValueError(f"Вклад {term.get('id')} должен быть конечным и неотрицательным")
+
+    if not enabled:
+        return
+
+    certification = term.get("certification")
+    if not isinstance(certification, dict):
+        raise ValueError(
+            f"Активный член {term.get('id')} не имеет проверяемого паспорта методики"
+        )
+    if certification.get("schema") != SEMIEMPIRICAL_TERM_SCHEMA:
+        raise ValueError(f"Неизвестная схема паспорта члена {term.get('id')}")
+    for field in ("method_id", "equation_version", "applicability_basis"):
+        if not str(certification.get(field, "")).strip():
+            raise ValueError(
+                f"В паспорте члена {term.get('id')} не заполнено поле {field}"
+            )
+    if certification.get("reference_independent") is not True:
+        raise ValueError(
+            f"Член {term.get('id')} должен быть независим от эталонной кривой"
+        )
+    if certification.get("pointwise_tuning") is not False:
+        raise ValueError(
+            f"Для члена {term.get('id')} должна быть запрещена поточечная подстройка"
+        )
+    uncertainty = _finite_or_none(certification.get("uncertainty_fraction"))
+    if uncertainty is None or not 0.0 <= uncertainty <= 1.0:
+        raise ValueError(
+            f"Для члена {term.get('id')} нужна относительная неопределённость от 0 до 1"
+        )
+
+    source = certification.get("source")
+    if not isinstance(source, dict):
+        raise ValueError(f"В паспорте члена {term.get('id')} отсутствует источник")
+    if source.get("kind") not in (
+        "published_method",
+        "validated_dataset",
+        "declared_engineering_method",
+    ):
+        raise ValueError(f"Неизвестный тип источника у члена {term.get('id')}")
+    if not str(source.get("citation", "")).strip():
+        raise ValueError(f"В паспорте члена {term.get('id')} нет ссылки на источник")
+
+    source_path_text = str(source.get("path", "")).strip()
+    source_sha256 = _normalise_sha256(source.get("sha256"))
+    if source_path_text or source.get("sha256") is not None:
+        if not source_path_text or source_sha256 is None:
+            raise ValueError(
+                f"Файл-источник члена {term.get('id')} должен иметь path и sha256"
+            )
+        source_path = Path(source_path_text)
+        if not source_path.is_absolute():
+            if policy_path is None:
+                raise ValueError(
+                    f"Относительный файл-источник члена {term.get('id')} нельзя проверить без policy_path"
+                )
+            source_path = Path(policy_path).resolve().parent / source_path
+        if not source_path.is_file():
+            raise ValueError(f"Не найден файл-источник члена {term.get('id')}: {source_path}")
+        if file_sha256(source_path) != source_sha256:
+            raise ValueError(f"Нарушен hash файла-источника члена {term.get('id')}")
 
 
 def _load_vspaero_source(
@@ -2806,6 +2930,38 @@ def _coverage_evidence(item: dict, methods: list[str]) -> list[dict]:
     return evidence
 
 
+def _certified_component_coverage(
+    certificate: dict,
+    *,
+    backend: str,
+    channel: str | None = None,
+) -> set[str]:
+    """Return exact component names represented by a certified backend.
+
+    Physical replacement is not proved merely because a solver report exists.
+    The certificate must also state that the solver geometry contains the
+    omitted OpenVSP component.  Missing legacy coverage is deliberately
+    treated as empty (fail closed).
+    """
+    item = certificate.get("backends", {}).get(backend, {})
+    if backend == "machline":
+        coverage = item.get("output_contract", {}).get("component_coverage", {})
+        if channel:
+            coverage = coverage.get(channel, {})
+    else:
+        coverage = item.get("component_coverage", {})
+    if not isinstance(coverage, dict) or coverage.get("complete") is not True:
+        return set()
+    components = coverage.get("components", [])
+    if not isinstance(components, list):
+        return set()
+    return {
+        str(component).strip().casefold()
+        for component in components
+        if str(component).strip()
+    }
+
+
 def _validate_coverage_evidence(
     *,
     component: str,
@@ -2963,6 +3119,27 @@ def _validate_replacement_coverage(
                 f"replacement_coverage {component}: отсутствуют обязательные методы "
                 + ", ".join(missing_methods)
             )
+
+        machline_components = _certified_component_coverage(
+            certificate,
+            backend="machline",
+            channel="pressure_wave",
+        )
+        if component.casefold() not in machline_components:
+            raise ValueError(
+                f"replacement_coverage {component}: сертифицированный MachLine "
+                "pressure/wave не содержит этот компонент"
+            )
+        if subsonic_rows:
+            parasite_components = _certified_component_coverage(
+                certificate,
+                backend="parasite_drag",
+            )
+            if component.casefold() not in parasite_components:
+                raise ValueError(
+                    f"replacement_coverage {component}: сертифицированный "
+                    "Parasite Drag не содержит этот компонент"
+                )
 
         if physical_lineage_validation is None:
             physical_lineage_validation = {

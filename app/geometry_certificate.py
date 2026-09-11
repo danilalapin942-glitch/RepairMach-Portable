@@ -260,6 +260,44 @@ def verify_certificate(
         and not vspaero_eligible
     ):
         errors.append("Backend hybrid не может быть пригоден без VSPAERO")
+    substitution_required = bool(
+        isinstance(flags, dict) and flags.get("hybrid_substitution_required")
+    )
+    if substitution_required:
+        replacement_contract = (
+            hybrid_item.get("replacement_contract", {})
+            if isinstance(hybrid_item, dict) else {}
+        )
+        if (
+            not isinstance(replacement_contract, dict)
+            or replacement_contract.get("schema")
+            != "repairmach.replacement-contract/1.0"
+            or replacement_contract.get("required") is not True
+            or not isinstance(replacement_contract.get("requirements"), list)
+            or not replacement_contract.get("requirements")
+        ):
+            errors.append(
+                "Требуемые гибридные замены не имеют проверяемого покомпонентного контракта"
+            )
+        if isinstance(hybrid_item, dict) and hybrid_item.get("eligible") is True:
+            errors.append(
+                "Backend hybrid не может быть безусловно пригоден при обязательных заменах"
+            )
+    machline_item = backends.get("machline", {})
+    base_drag_required = bool(
+        isinstance(machline_item, dict)
+        and machline_item.get("output_contract", {}).get(
+            "base_drag_replacement_required"
+        )
+    )
+    if (
+        base_drag_required
+        and isinstance(hybrid_item, dict)
+        and hybrid_item.get("eligible") is True
+    ):
+        errors.append(
+            "Backend hybrid ошибочно допущен без обязательного донного сопротивления"
+        )
 
     for backend_name, item in backends.items():
         if not isinstance(item, dict) or item.get("eligible") is not True:
@@ -471,6 +509,35 @@ def write_certificate_report(path: Path, certificate: dict) -> None:
             f"| {name} | {'да' if item.get('eligible') else 'нет'} | {item.get('mode', '')} | "
             f"{item.get('qualified_scope', {}).get('coverage_kind', 'none')} |"
         )
+    replacement_contract = (
+        certificate.get("backends", {}).get("hybrid", {})
+        .get("replacement_contract", {})
+    )
+    if isinstance(replacement_contract, dict) and replacement_contract.get("required"):
+        lines.extend([
+            "",
+            "## Контракт замещающих вкладов",
+            "",
+            "Сертификатор различает наличие расчётного файла и реальное "
+            "покомпонентное покрытие. Источник может заменить исключённую деталь "
+            "только когда эта деталь присутствует в запечатанной геометрии backend.",
+            "",
+            "| Компонент | Обязательный метод | Возможность backend | Основание |",
+            "|---|---|---:|---|",
+        ])
+        for requirement in replacement_contract.get("requirements", []):
+            lines.append(
+                f"| {requirement.get('component', '')} | "
+                f"{requirement.get('method', '')} | "
+                f"{'да' if requirement.get('backend_capability_available') else 'нет'} | "
+                f"{requirement.get('reason', '')} |"
+            )
+        if replacement_contract.get("unavailable_requirements"):
+            lines.extend([
+                "",
+                "Гибрид нельзя считать полным, пока отсутствующие покомпонентные "
+                "вклады не будут получены отдельным сертифицированным источником.",
+            ])
     tri = certificate.get("tri", {})
     if isinstance(tri, dict) and tri.get("requested"):
         final = tri.get("final", {})

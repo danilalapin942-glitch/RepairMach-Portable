@@ -414,6 +414,59 @@ def _mesh_component_subset(mesh: TriMesh, component_ids: set[int]) -> TriMesh:
     )
 
 
+def _component_geometry_coverage(
+    component_ids: set[int],
+    component_map: dict[int, str],
+    union_geometry_names: list[str],
+) -> dict:
+    """Map exported mesh component ids back to exact OpenVSP geometries.
+
+    OpenVSP adds surface suffixes such as ``_S_Surf0`` and ``_C`` to the
+    names written to NASCART/VSPGeom key files.  Replacement certification
+    must nevertheless remain component-aware: a solver output may replace an
+    omitted physical component only when that exact OpenVSP geometry is
+    represented by the solver mesh.  Unresolved or ambiguous ids are kept as
+    explicit evidence and make the coverage contract incomplete.
+    """
+    names = [str(name).strip() for name in union_geometry_names if str(name).strip()]
+    covered: set[str] = set()
+    resolved: dict[str, str] = {}
+    unresolved: list[dict] = []
+    ambiguous: list[dict] = []
+    for component_id in sorted(component_ids):
+        exported_name = str(component_map.get(component_id, "")).strip()
+        matches = [
+            name for name in names
+            if exported_name == name or exported_name.startswith(name + "_")
+        ]
+        if not matches:
+            unresolved.append({
+                "component_id": component_id,
+                "exported_name": exported_name or None,
+            })
+            continue
+        longest = max(len(name) for name in matches)
+        best = sorted(name for name in matches if len(name) == longest)
+        if len(best) != 1:
+            ambiguous.append({
+                "component_id": component_id,
+                "exported_name": exported_name,
+                "matches": best,
+            })
+            continue
+        resolved[str(component_id)] = best[0]
+        covered.add(best[0])
+    return {
+        "coverage_kind": "exact_openvsp_components",
+        "complete": bool(component_ids) and not unresolved and not ambiguous,
+        "components": sorted(covered, key=str.casefold),
+        "component_ids": sorted(component_ids),
+        "resolved_component_ids": resolved,
+        "unresolved_components": unresolved,
+        "ambiguous_components": ambiguous,
+    }
+
+
 def _run_machline_geometry_qualification(
     *,
     executable: Path | None,
@@ -1041,6 +1094,26 @@ def _tri_certification(
     thick_component_ids = {
         component for component, role in component_roles.items() if role == "thick"
     }
+    union_geometry_names = [
+        str(name)
+        for name in (export_record or {}).get("export", {}).get(
+            "union_geometry_names", []
+        )
+    ]
+    pressure_wave_coverage = _component_geometry_coverage(
+        thick_component_ids,
+        component_map,
+        union_geometry_names,
+    )
+    delegated_thin_coverage = _component_geometry_coverage(
+        {
+            component
+            for component, role in component_roles.items()
+            if role == "thin"
+        },
+        component_map,
+        union_geometry_names,
+    )
     surrogate_component_ids = {
         int(value) for value in closure.get("surrogate_component_ids", [])
     }
@@ -1067,6 +1140,8 @@ def _tri_certification(
         "intentional_open_boundaries_allowed_only_on_thin_components": True,
         "solver_mesh_is_watertight_thick_body": thick_watertight,
         "thin_surfaces_audited_but_not_solved_by_machline": True,
+        "pressure_wave_component_coverage": pressure_wave_coverage,
+        "delegated_thin_component_coverage": delegated_thin_coverage,
     }
     write_json(tri_dir / "topology_contract.json", topology_contract)
     topology_ok = bool(
@@ -1081,6 +1156,19 @@ def _tri_certification(
             scope="machline", evidence={
                 "audit_diagnostics": audit_final,
                 "solver_diagnostics": final,
+            },
+        ))
+    coverage_ok = bool(
+        pressure_wave_coverage["complete"]
+        and delegated_thin_coverage["complete"]
+    )
+    if not coverage_ok:
+        findings.append(finding(
+            "GEO-MACH-COVERAGE-001", "BLOCKER",
+            "Покомпонентное покрытие MachLine не удалось однозначно связать с OpenVSP",
+            scope="machline", evidence={
+                "pressure_wave": pressure_wave_coverage,
+                "delegated_thin": delegated_thin_coverage,
             },
         ))
 
@@ -1105,6 +1193,12 @@ def _tri_certification(
         "exclude_component_ids": sorted(surrogate_component_ids),
         "base_drag_replacement_required": bool(closure.get("accepted")),
         "thin_component_ids_delegated_to_vspaero": topology_contract["thin_component_ids"],
+        "pressure_wave_components": pressure_wave_coverage["components"],
+        "delegated_thin_components": delegated_thin_coverage["components"],
+        "component_coverage_complete": bool(
+            pressure_wave_coverage["complete"]
+            and delegated_thin_coverage["complete"]
+        ),
         "output_kind": "masked_thick_body_pressure_wave",
     }
     force_mask_path = tri_dir / "force_integration_mask.json"
@@ -1125,7 +1219,9 @@ def _tri_certification(
             scope="machline", evidence={"closures": closure.get("closures", [])},
         ))
 
-    geometry_eligible = bool(topology_ok and mach_ok and repair_budget_ok)
+    geometry_eligible = bool(
+        topology_ok and coverage_ok and mach_ok and repair_budget_ok
+    )
     qualification = {
         "requested": False,
         "valid": False,
@@ -1218,6 +1314,10 @@ def _tri_certification(
         "good_panels_degraded": 0,
         "coordinate_convention": COORDINATE_CONVENTION,
         "topology_contract": topology_contract,
+        "component_coverage": {
+            "pressure_wave": pressure_wave_coverage,
+            "delegated_to_vspaero": delegated_thin_coverage,
+        },
         "force_integration_mask": (
             str(force_mask_path.resolve()) if force_mask_path.is_file() else None
         ),
@@ -2381,6 +2481,81 @@ def _backend_exclusions(exclusions: list[dict], backend: str) -> list[dict]:
     return [deepcopy(item) for item in exclusions if _exclusion_applies(item, backend)]
 
 
+def _build_replacement_contract(
+    exclusions: list[dict],
+    *,
+    machline_eligible: bool,
+    machline_components: list[str],
+    parasite_eligible: bool,
+    parasite_components: list[str],
+    base_drag_required: bool,
+) -> dict:
+    """Describe which declared omissions can actually be replaced.
+
+    This is a geometry/backend capability contract, not a claim that a future
+    calculation has supplied every required point.  Producer manifests and
+    per-condition coverage are still checked by the hybrid consumer.
+    """
+    machline_names = {str(name).strip().casefold() for name in machline_components}
+    parasite_names = {str(name).strip().casefold() for name in parasite_components}
+    requirements = []
+    for exclusion in _backend_exclusions(exclusions, "vspaero"):
+        component = str(exclusion.get("component", exclusion.get("role", ""))).strip()
+        declared = exclusion.get("replacement_required", [])
+        if isinstance(declared, str):
+            declared = [declared]
+        for method in declared:
+            method = str(method).strip().lower()
+            if method == "machline_pressure_wave_all_points":
+                available = bool(
+                    machline_eligible and component.casefold() in machline_names
+                )
+                reason = (
+                    "component_present_in_certified_machline_pressure_mesh"
+                    if available else "component_absent_from_certified_machline_pressure_mesh"
+                )
+            elif method == "parasite_drag_subsonic":
+                available = bool(
+                    parasite_eligible and component.casefold() in parasite_names
+                )
+                reason = (
+                    "component_present_in_certified_parasite_geometry"
+                    if available else "component_absent_from_certified_parasite_geometry"
+                )
+            elif method == "not_physical":
+                available = True
+                reason = "explicit_not_physical_declaration"
+            else:
+                available = False
+                reason = "unsupported_replacement_method"
+            requirements.append({
+                "component": component,
+                "method": method,
+                "backend_capability_available": available,
+                "reason": reason,
+            })
+    if base_drag_required:
+        requirements.append({
+            "component": "RM_NUMERICAL_AFT_CLOSURE",
+            "method": "base_drag_semiempirical",
+            "backend_capability_available": True,
+            "source_required_at_hybrid_build": True,
+            "reason": "numerical_aft_closure_force_is_masked",
+        })
+    unavailable = [
+        item for item in requirements
+        if item.get("backend_capability_available") is not True
+    ]
+    return {
+        "schema": "repairmach.replacement-contract/1.0",
+        "required": bool(requirements),
+        "backend_capabilities_complete": not unavailable,
+        "sealed_sources_still_required": bool(requirements),
+        "requirements": requirements,
+        "unavailable_requirements": unavailable,
+    }
+
+
 def _is_backend_blocker(item: dict, backend: str) -> bool:
     if item.get("severity") != "BLOCKER":
         return False
@@ -3355,8 +3530,16 @@ def certify_geometry(
             run_complete=run_complete,
             verdict=verdict,
         )
+        base_drag_required = bool(
+            tri_result.get("repairs", {})
+            .get("downstream_axial_closure", {})
+            .get("accepted")
+        )
+        hybrid_replacements_required = bool(
+            vspaero_exclusions or base_drag_required
+        )
         hybrid_eligible = _backend_eligible(
-            local_eligible=not vspaero_exclusions,
+            local_eligible=not hybrid_replacements_required,
             blockers=hybrid_blockers,
             master_unchanged=master_unchanged,
             run_complete=run_complete,
@@ -3364,7 +3547,7 @@ def certify_geometry(
             dependency_eligible=vspaero_eligible,
         )
         hybrid_conditional = _backend_eligible(
-            local_eligible=bool(vspaero_exclusions),
+            local_eligible=hybrid_replacements_required,
             blockers=hybrid_blockers,
             master_unchanged=master_unchanged,
             run_complete=run_complete,
@@ -3394,7 +3577,9 @@ def certify_geometry(
         flags = {
             "solver_eligible": vspaero_eligible,
             "full_geometry_represented": bool(vspaero_eligible and selected_mode == "mixed" and not vspaero_exclusions),
-            "hybrid_substitution_required": bool(vspaero_eligible and vspaero_exclusions),
+            "hybrid_substitution_required": bool(
+                vspaero_eligible and hybrid_replacements_required
+            ),
             "master_unchanged": master_unchanged,
         }
         certificate_twins = deepcopy(twins)
@@ -3403,6 +3588,33 @@ def certify_geometry(
                 twin["relative_path"] = _certificate_relative_path(
                     run_dir, twin.get("path")
                 )
+        inventory_for_payload = locals().get("inventory", {})
+        inventory_component_names = sorted(
+            {
+                str(component.get("name"))
+                for component in inventory_for_payload.get("components", [])
+                if str(component.get("name", "")).strip()
+            },
+            key=str.casefold,
+        )
+        machline_component_coverage = (
+            tri_result.get("component_coverage", {})
+            .get("pressure_wave", {})
+            .get("components", [])
+        )
+        parasite_component_coverage = (
+            inventory_component_names if parasite_eligible else []
+        )
+        replacement_contract = _build_replacement_contract(
+            exclusions,
+            machline_eligible=machline_eligible,
+            machline_components=machline_component_coverage,
+            parasite_eligible=parasite_eligible,
+            parasite_components=parasite_component_coverage,
+            base_drag_required=bool(
+                base_drag_required
+            ),
+        )
 
         payload = {
             "schema": "repairmach.geometry-certificate/1.1",
@@ -3519,6 +3731,9 @@ def certify_geometry(
                             .get("accepted")
                         ),
                         "thin_surfaces_delegated_to_vspaero": True,
+                        "component_coverage": deepcopy(
+                            tri_result.get("component_coverage", {})
+                        ),
                     },
                     "qualification": tri_result.get("machline_qualification"),
                     "qualified_scope": {
@@ -3545,13 +3760,27 @@ def certify_geometry(
                     "qualified_scope": {
                         "coverage_kind": "geometry_only" if parasite_eligible else "none"
                     },
+                    "component_coverage": {
+                        "coverage_kind": (
+                            "exact_openvsp_components" if parasite_eligible else "none"
+                        ),
+                        "complete": parasite_eligible,
+                        "components": (
+                            inventory_component_names
+                            if parasite_eligible else []
+                        ),
+                    },
                     "blockers": parasite_blockers,
                 },
                 "hybrid": {
                     "eligible": hybrid_eligible,
                     "conditional": hybrid_conditional,
-                    "mode": "declared_replacements_required" if vspaero_exclusions else "direct_or_optional",
+                    "mode": (
+                        "declared_replacements_required"
+                        if hybrid_replacements_required else "direct_or_optional"
+                    ),
                     "qualified_scope": qualified_scope,
+                    "replacement_contract": replacement_contract,
                     "blockers": hybrid_blockers,
                 },
             },

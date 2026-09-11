@@ -19,6 +19,8 @@ from geometry_certificate import (
 )
 from geometry_certification import (
     MACHLINE_TRI_EXPORT_SCHEMA,
+    _component_geometry_coverage,
+    _build_replacement_contract,
     _export_machline_tri,
     _run_vspaero_ladder,
     _run_vspaero_component_isolation,
@@ -219,6 +221,63 @@ def machline_export_record(tri: Path, source_twin: Path, policy: dict) -> dict:
 
 
 class GeometryPolicyTests(unittest.TestCase):
+    def test_component_coverage_maps_only_exact_openvsp_geometries(self):
+        coverage = _component_geometry_coverage(
+            {1, 2},
+            {1: "Fuselage_S_Surf0", 2: "Gondola_left_S_Surf0"},
+            ["Fuselage", "Gondola_left", "Wing", "VO"],
+        )
+        self.assertTrue(coverage["complete"])
+        self.assertEqual(["Fuselage", "Gondola_left"], coverage["components"])
+        self.assertEqual({"1": "Fuselage", "2": "Gondola_left"}, coverage["resolved_component_ids"])
+
+    def test_component_coverage_keeps_unresolved_ids_as_blocking_evidence(self):
+        coverage = _component_geometry_coverage(
+            {7},
+            {7: "Unknown_S_Surf0"},
+            ["Fuselage", "Wing"],
+        )
+        self.assertFalse(coverage["complete"])
+        self.assertEqual([], coverage["components"])
+        self.assertEqual(7, coverage["unresolved_components"][0]["component_id"])
+
+    def test_replacement_contract_is_component_aware(self):
+        contract = _build_replacement_contract(
+            [
+                {
+                    "component": "Fuselage",
+                    "backends": ["vspaero", "hybrid"],
+                    "replacement_required": [
+                        "machline_pressure_wave_all_points",
+                        "parasite_drag_subsonic",
+                    ],
+                },
+                {
+                    "component": "VO",
+                    "backends": ["vspaero", "hybrid"],
+                    "replacement_required": [
+                        "machline_pressure_wave_all_points",
+                        "parasite_drag_subsonic",
+                    ],
+                },
+            ],
+            machline_eligible=True,
+            machline_components=["Fuselage"],
+            parasite_eligible=True,
+            parasite_components=["Fuselage", "Wing", "GO", "VO"],
+            base_drag_required=True,
+        )
+        unavailable = {
+            (item["component"], item["method"])
+            for item in contract["unavailable_requirements"]
+        }
+        self.assertEqual({("VO", "machline_pressure_wave_all_points")}, unavailable)
+        self.assertFalse(contract["backend_capabilities_complete"])
+        self.assertTrue(any(
+            item["method"] == "base_drag_semiempirical"
+            for item in contract["requirements"]
+        ))
+
     def test_run_directory_is_short_and_keeps_identity_hash(self):
         with TemporaryDirectory() as tmp:
             path = _unique_run_dir(
@@ -1186,6 +1245,37 @@ class GeometryPlanTests(unittest.TestCase):
 
 
 class GeometryManifestAndDeltaTests(unittest.TestCase):
+    def test_human_certificate_report_lists_component_replacement_contract(self):
+        certificate = {
+            "certificate_id": "RMC-REPLACEMENTS",
+            "method_version": "test",
+            "verdict": "PASS_WITH_DECLARED_EXCLUSIONS",
+            "flags": {"hybrid_substitution_required": True},
+            "master": {},
+            "qualification": {},
+            "backends": {
+                "hybrid": {
+                    "replacement_contract": {
+                        "required": True,
+                        "requirements": [{
+                            "component": "VO",
+                            "method": "machline_pressure_wave_all_points",
+                            "backend_capability_available": False,
+                            "reason": "component_absent_from_certified_machline_pressure_mesh",
+                        }],
+                        "unavailable_requirements": [{"component": "VO"}],
+                    },
+                },
+            },
+        }
+        with TemporaryDirectory() as tmp:
+            report = Path(tmp) / "certificate.md"
+            write_certificate_report(report, certificate)
+            text = report.read_text(encoding="utf-8")
+        self.assertIn("Контракт замещающих вкладов", text)
+        self.assertIn("| VO | machline_pressure_wave_all_points | нет |", text)
+        self.assertIn("Гибрид нельзя считать полным", text)
+
     def test_human_certificate_report_includes_component_isolation(self):
         certificate = {
             "certificate_id": "RMC-TEST",

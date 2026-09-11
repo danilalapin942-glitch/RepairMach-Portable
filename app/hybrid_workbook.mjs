@@ -481,44 +481,47 @@ try {
 setTitle(
   adhSheet,
   "Гибридные аэродинамические коэффициенты",
-  "Каждая строка хранит вклад решателя и полуэмпирики. Cx итог вычисляется формулой внутри книги.",
-  "P",
+  "Каждая строка хранит вклад решателя, полуэмпирики и её неопределённость. Cx итог вычисляется формулой внутри книги.",
+  "R",
 );
 const adhHeaders = [
   "M", "α, °", "Cy", "CY", "Cx давление/волна", "Cx индуктивное", "Cx вязкое",
-  "Cx полуэмп.", "Cx итог (Excel)", "Cx итог (JSON)", "Разность", "Статус",
-  "Невязка MachLine", "VSPAERO", "MachLine", "Parasite Drag",
+  "Cx полуэмп.", "u полуэмп. RSS", "u полуэмп. худш.", "Cx итог (Excel)",
+  "Cx итог (JSON)", "Разность", "Статус", "Невязка MachLine", "VSPAERO", "MachLine",
+  "Parasite Drag",
 ];
-adhSheet.getRange(`A4:P${4 + rows.length}`).values = [
+adhSheet.getRange(`A4:R${4 + rows.length}`).values = [
   adhHeaders,
   ...rows.map(row => [
     row.Mach, row.alpha_deg, row.Cy, row.CY, row.Cx_pressure_wave, row.Cx_induced,
-    row.Cx_viscous, row.Cx_semiempirical, null, row.Cx_total, null, row.status,
-    row.quality?.machline_residual_norm ?? null, row.sources?.vspaero ?? "",
-    row.sources?.machline ?? "", row.sources?.parasite_drag ?? "",
+    row.Cx_viscous, row.Cx_semiempirical,
+    row.Cx_semiempirical_uncertainty_rss ?? 0,
+    row.Cx_semiempirical_uncertainty_worst_case ?? 0,
+    null, row.Cx_total, null, row.status, row.quality?.machline_residual_norm ?? null,
+    row.sources?.vspaero ?? "", row.sources?.machline ?? "", row.sources?.parasite_drag ?? "",
   ]),
 ];
 const adhFirst = 5;
 const adhLast = Math.max(adhFirst, adhFirst + rows.length - 1);
 if (rows.length) {
-  adhSheet.getRange(`I${adhFirst}`).formulas = [[`=IF(E${adhFirst}="","",SUM(E${adhFirst}:H${adhFirst}))`]];
-  adhSheet.getRange(`I${adhFirst}:I${adhLast}`).fillDown();
-  adhSheet.getRange(`K${adhFirst}`).formulas = [[`=IF(OR(I${adhFirst}="",J${adhFirst}=""),"",I${adhFirst}-J${adhFirst})`]];
+  adhSheet.getRange(`K${adhFirst}`).formulas = [[`=IF(E${adhFirst}="","",SUM(E${adhFirst}:H${adhFirst}))`]];
   adhSheet.getRange(`K${adhFirst}:K${adhLast}`).fillDown();
-  styleBody(adhSheet.getRange(`A${adhFirst}:P${adhLast}`));
+  adhSheet.getRange(`M${adhFirst}`).formulas = [[`=IF(OR(K${adhFirst}="",L${adhFirst}=""),"",K${adhFirst}-L${adhFirst})`]];
+  adhSheet.getRange(`M${adhFirst}:M${adhLast}`).fillDown();
+  styleBody(adhSheet.getRange(`A${adhFirst}:R${adhLast}`));
   adhSheet.getRange(`A${adhFirst}:B${adhLast}`).format.numberFormat = "0.000";
-  adhSheet.getRange(`C${adhFirst}:K${adhLast}`).format.numberFormat = "0.000000";
-  adhSheet.getRange(`M${adhFirst}:M${adhLast}`).format.numberFormat = "0.00E+00";
-  styleStatus(adhSheet.getRange(`L${adhFirst}:L${adhLast}`));
+  adhSheet.getRange(`C${adhFirst}:M${adhLast}`).format.numberFormat = "0.000000";
+  adhSheet.getRange(`O${adhFirst}:O${adhLast}`).format.numberFormat = "0.00E+00";
+  styleStatus(adhSheet.getRange(`N${adhFirst}:N${adhLast}`));
 }
-styleHeader(adhSheet.getRange("A4:P4"));
+styleHeader(adhSheet.getRange("A4:R4"));
 adhSheet.freezePanes.freezeRows(4);
 adhSheet.getRange("A:B").format.columnWidth = 10;
-adhSheet.getRange("C:K").format.columnWidth = 16;
-adhSheet.getRange("L:L").format.columnWidth = 14;
-adhSheet.getRange("M:M").format.columnWidth = 18;
-adhSheet.getRange("N:P").format.columnWidth = 34;
-adhSheet.getRange(`N${adhFirst}:P${adhLast}`).format.wrapText = true;
+adhSheet.getRange("C:M").format.columnWidth = 16;
+adhSheet.getRange("N:N").format.columnWidth = 14;
+adhSheet.getRange("O:O").format.columnWidth = 18;
+adhSheet.getRange("P:R").format.columnWidth = 34;
+adhSheet.getRange(`P${adhFirst}:R${adhLast}`).format.wrapText = true;
 
 // Cy-alpha derivation with both direct and final values.
 setTitle(
@@ -660,29 +663,101 @@ if (machSummary.length) {
 setTitle(
   semiSheet,
   "Полуэмпирические добавки",
-  "Вклад применяется только в объявленной области Mach. Изменение таблицы методики требует нового слепого пакета.",
-  "G",
+  "Каждый активный вклад имеет проверяемый паспорт, область применимости и неопределённость. Изменение методики требует нового слепого пакета.",
+  "Q",
 );
+const policyTerms = bundle.policy?.drag?.semiempirical_terms ?? [];
+const contributionById = new Map();
+for (const row of rows) {
+  for (const term of row.semiempirical_terms ?? []) {
+    if (!contributionById.has(term.id)) contributionById.set(term.id, term);
+  }
+}
+const passportRows = policyTerms.map(term => {
+  const certification = term.certification ?? {};
+  const source = certification.source ?? {};
+  const contribution = contributionById.get(term.id) ?? {};
+  return [
+    term.id,
+    term.label,
+    term.enabled === true,
+    term.applicability?.mach_min ?? null,
+    term.applicability?.mach_max ?? null,
+    term.model?.type ?? "",
+    certification.schema ?? "",
+    certification.method_id ?? "",
+    certification.equation_version ?? "",
+    certification.uncertainty_fraction ?? null,
+    certification.reference_independent ?? null,
+    certification.pointwise_tuning ?? null,
+    source.kind ?? "",
+    source.citation ?? "",
+    source.path ?? "",
+    source.sha256 ?? "",
+    contribution.term_fingerprint ?? "не применялся в рассчитанных точках",
+  ];
+});
+const passportLast = 4 + Math.max(1, passportRows.length);
+semiSheet.getRange(`A4:Q${passportLast}`).values = [
+  [
+    "ID", "Элемент", "Включен", "M min", "M max", "Модель", "Схема паспорта",
+    "Method ID", "Версия уравнения", "u относит.", "Независим от эталона",
+    "Поточечная подстройка", "Тип источника", "Ссылка/описание", "Файл доказательства",
+    "SHA-256 доказательства", "Отпечаток члена",
+  ],
+  ...(passportRows.length ? passportRows : [[
+    "—", "Полуэмпирические члены не объявлены", false, null, null, "—", "—", "—", "—",
+    null, null, null, "—", "—", "—", "—", "—",
+  ]]),
+];
+styleHeader(semiSheet.getRange("A4:Q4"));
+styleBody(semiSheet.getRange(`A5:Q${passportLast}`));
+semiSheet.getRange(`D5:E${passportLast}`).format.numberFormat = "0.000";
+semiSheet.getRange(`J5:J${passportLast}`).format.numberFormat = "0.0%";
+
 const semiRows = [];
 for (const row of rows) {
   for (const term of row.semiempirical_terms ?? []) {
-    semiRows.push([row.Mach, row.alpha_deg, term.id, term.label, term.cd, term.model, term.provenance]);
+    semiRows.push([
+      row.Mach, row.alpha_deg, term.id, term.label, term.cd,
+      term.uncertainty_fraction ?? null, term.uncertainty_cd ?? null,
+      term.model, term.evaluation ?? "", term.method_id ?? "", term.term_fingerprint ?? "",
+    ]);
   }
 }
-semiSheet.getRange(`A4:G${4 + Math.max(1, semiRows.length)}`).values = [
-  ["M", "α, °", "ID", "Элемент", "ΔCx", "Модель", "Источник методики"],
-  ...(semiRows.length ? semiRows : [[null, null, "—", "Активные добавки отсутствуют", 0, "—", "config/hybrid_method.json"]]),
+const contributionHeaderRow = passportLast + 3;
+semiSheet.getRange(`A${contributionHeaderRow}:K${contributionHeaderRow}`).values = [[
+  "M", "α, °", "ID", "Элемент", "ΔCx", "u относит.", "u(ΔCx)", "Модель",
+  "Вычисление", "Method ID", "Отпечаток члена",
+]];
+const contributionLast = contributionHeaderRow + Math.max(1, semiRows.length);
+semiSheet.getRange(`A${contributionHeaderRow + 1}:K${contributionLast}`).values = [
+  ...(semiRows.length ? semiRows : [[
+    null, null, "—", "Активные добавки отсутствуют", 0, null, 0, "—", "—", "—", "—",
+  ]]),
 ];
-styleHeader(semiSheet.getRange("A4:G4"));
-styleBody(semiSheet.getRange(`A5:G${4 + Math.max(1, semiRows.length)}`));
-semiSheet.getRange(`A5:B${4 + Math.max(1, semiRows.length)}`).format.numberFormat = "0.000";
-semiSheet.getRange(`E5:E${4 + Math.max(1, semiRows.length)}`).format.numberFormat = "0.000000";
-semiSheet.getRange("A:B").format.columnWidth = 10;
-semiSheet.getRange("C:C").format.columnWidth = 22;
-semiSheet.getRange("D:D").format.columnWidth = 34;
-semiSheet.getRange("E:F").format.columnWidth = 16;
-semiSheet.getRange("G:G").format.columnWidth = 62;
-semiSheet.getRange("G:G").format.wrapText = true;
+styleHeader(semiSheet.getRange(`A${contributionHeaderRow}:K${contributionHeaderRow}`));
+styleBody(semiSheet.getRange(`A${contributionHeaderRow + 1}:K${contributionLast}`));
+semiSheet.getRange(`A${contributionHeaderRow + 1}:B${contributionLast}`).format.numberFormat = "0.000";
+semiSheet.getRange(`E${contributionHeaderRow + 1}:E${contributionLast}`).format.numberFormat = "0.000000";
+semiSheet.getRange(`F${contributionHeaderRow + 1}:F${contributionLast}`).format.numberFormat = "0.0%";
+semiSheet.getRange(`G${contributionHeaderRow + 1}:G${contributionLast}`).format.numberFormat = "0.000000";
+semiSheet.getRange("A:A").format.columnWidth = 18;
+semiSheet.getRange("B:B").format.columnWidth = 32;
+semiSheet.getRange("C:C").format.columnWidth = 12;
+semiSheet.getRange("D:E").format.columnWidth = 10;
+semiSheet.getRange("F:F").format.columnWidth = 16;
+semiSheet.getRange("G:G").format.columnWidth = 28;
+semiSheet.getRange("H:I").format.columnWidth = 20;
+semiSheet.getRange("J:J").format.columnWidth = 14;
+semiSheet.getRange("K:L").format.columnWidth = 20;
+semiSheet.getRange("M:M").format.columnWidth = 25;
+semiSheet.getRange("N:N").format.columnWidth = 38;
+semiSheet.getRange("O:O").format.columnWidth = 30;
+semiSheet.getRange("P:Q").format.columnWidth = 48;
+semiSheet.getRange(`A4:Q${contributionLast}`).format.verticalAlignment = "center";
+semiSheet.getRange(`B5:B${passportLast}`).format.wrapText = true;
+semiSheet.getRange(`N5:Q${passportLast}`).format.wrapText = true;
 semiSheet.freezePanes.freezeRows(4);
 
 // Source fingerprints make the workbook independently auditable.

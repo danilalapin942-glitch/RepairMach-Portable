@@ -12,10 +12,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "app"))
 from hybrid_pipeline import (
     POLICY_SCHEMA,
     REQUEST_SCHEMA,
+    SEMIEMPIRICAL_TERM_SCHEMA,
+    _certified_component_coverage,
     _load_machline_points,
     _load_parasite_points,
     _load_vspaero_source,
     _validate_certified_parasite_lineage,
+    _validate_replacement_coverage,
     build_hybrid_series,
     file_sha256,
     load_hybrid_policy,
@@ -75,6 +78,19 @@ def policy(*, cy_alpha_method="direct"):
                     "enabled": True,
                     "provenance": "independent handbook method",
                     "applicability": {"mach_min": 0.8, "mach_max": 1.2},
+                    "certification": {
+                        "schema": SEMIEMPIRICAL_TERM_SCHEMA,
+                        "method_id": "TEST-DETAILS-1",
+                        "equation_version": "1",
+                        "reference_independent": True,
+                        "pointwise_tuning": False,
+                        "uncertainty_fraction": 0.15,
+                        "applicability_basis": "Test fixture over M=0.8..1.2",
+                        "source": {
+                            "kind": "declared_engineering_method",
+                            "citation": "Synthetic independent test method",
+                        },
+                    },
                     "model": {
                         "type": "mach_table",
                         "points": [[0.8, 0.001], [1.2, 0.002]],
@@ -229,12 +245,34 @@ def write_bound_geometry_certificate(
             "qualified_scope": {"coverage_kind": "exact_points", "points": points},
         },
         "hybrid": {
-            "eligible": True,
+            "eligible": not bool(exclusions),
+            "conditional": bool(exclusions),
             "mode": "declared_sources_required" if exclusions else "optional",
             "blockers": [],
             "qualified_scope": {"coverage_kind": "exact_points", "points": points},
         },
     }
+    if exclusions:
+        requirements = []
+        for exclusion in exclusions:
+            declared = exclusion.get("replacement_required", [])
+            if isinstance(declared, str):
+                declared = [declared]
+            for method in declared:
+                requirements.append({
+                    "component": exclusion.get("component"),
+                    "method": method,
+                    "backend_capability_available": True,
+                    "reason": "fixture_backend_coverage",
+                })
+        backends["hybrid"]["replacement_contract"] = {
+            "schema": "repairmach.replacement-contract/1.0",
+            "required": True,
+            "backend_capabilities_complete": True,
+            "sealed_sources_still_required": True,
+            "requirements": requirements,
+            "unavailable_requirements": [],
+        }
     twins = {
         f"vspaero_{mode}": {
             "path": str(twin.resolve()),
@@ -262,6 +300,15 @@ def write_bound_geometry_certificate(
             "eligible": True,
             "mode": "certified_tri",
             "blockers": [],
+            "output_contract": {
+                "component_coverage": {
+                    "pressure_wave": {
+                        "coverage_kind": "exact_openvsp_components",
+                        "complete": True,
+                        "components": ["Fuselage"],
+                    },
+                },
+            },
             "solver_geometry": {
                 "path": str(certified_tri.resolve()),
                 "relative_path": relative(certified_tri),
@@ -293,6 +340,11 @@ def write_bound_geometry_certificate(
             "eligible": True,
             "mode": "full_geometry",
             "blockers": [],
+            "component_coverage": {
+                "coverage_kind": "exact_openvsp_components",
+                "complete": True,
+                "components": ["Fuselage", "Wing", "GO", "VO"],
+            },
             "geometry_set": 0,
             "reference_area": reference["area"],
             "solver_geometry": {
@@ -576,6 +628,82 @@ def validate_parasite_fixture(fixture: dict) -> dict:
 
 
 class HybridPipelineTests(unittest.TestCase):
+    def test_machline_pressure_coverage_excludes_delegated_thin_components(self):
+        certificate = {
+            "backends": {
+                "machline": {
+                    "output_contract": {
+                        "component_coverage": {
+                            "pressure_wave": {
+                                "complete": True,
+                                "components": ["Fuselage", "Gondola_left"],
+                            },
+                            "delegated_to_vspaero": {
+                                "complete": True,
+                                "components": ["Wing", "GO", "VO"],
+                            },
+                        },
+                    },
+                },
+            },
+        }
+        covered = _certified_component_coverage(
+            certificate,
+            backend="machline",
+            channel="pressure_wave",
+        )
+        self.assertEqual({"fuselage", "gondola_left"}, covered)
+        self.assertNotIn("vo", covered)
+
+    def test_missing_component_coverage_fails_closed(self):
+        self.assertEqual(
+            set(),
+            _certified_component_coverage(
+                {"backends": {"machline": {"output_contract": {}}}},
+                backend="machline",
+                channel="pressure_wave",
+            ),
+        )
+
+    def test_replacement_rejects_solver_that_does_not_contain_component(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            certificate = {
+                "backends": {
+                    "machline": {
+                        "output_contract": {
+                            "component_coverage": {
+                                "pressure_wave": {
+                                    "complete": True,
+                                    "components": ["Fuselage"],
+                                },
+                            },
+                        },
+                    },
+                },
+            }
+            with self.assertRaisesRegex(ValueError, "не содержит этот компонент"):
+                _validate_replacement_coverage(
+                    [{"component": "VO", "satisfied_by": "machline_pressure_wave"}],
+                    [{
+                        "component": "VO",
+                        "backends": ["vspaero", "hybrid"],
+                        "replacement_required": ["machline_pressure_wave_all_points"],
+                    }],
+                    {
+                        "rows": [{
+                            "Mach": 1.2,
+                            "alpha_deg": 0.0,
+                            "sources": {"machline": "M1p2_A0_report.json"},
+                        }],
+                        "sources": [],
+                        "policy": {"matching": {}},
+                    },
+                    base=root,
+                    certificate=certificate,
+                    certificate_path=root / "certificate.json",
+                )
+
     def test_vspaero_manifest_cannot_relabel_beta_tail_or_engine_boundary(self):
         with TemporaryDirectory() as temp:
             root = Path(temp)
@@ -686,6 +814,10 @@ class HybridPipelineTests(unittest.TestCase):
         self.assertEqual(4, result["summary"]["complete_points"])
         m08 = next(row for row in result["rows"] if row["Mach"] == 0.8 and row["alpha_deg"] == 0.0)
         self.assertAlmostEqual(0.02 + 0.005 + 0.007 + 0.001, m08["Cx_total"])
+        self.assertAlmostEqual(0.00015, m08["Cx_semiempirical_uncertainty_rss"])
+        self.assertAlmostEqual(
+            0.00015, m08["Cx_semiempirical_uncertainty_worst_case"]
+        )
         m12 = next(row for row in result["rows"] if row["Mach"] == 1.2 and row["alpha_deg"] == 0.0)
         self.assertAlmostEqual(0.03 + 0.006 + 0.002, m12["Cx_total"])
         self.assertAlmostEqual(0.06, result["cy_alpha"][0]["Cy_alpha_final_per_deg"])
@@ -719,9 +851,12 @@ class HybridPipelineTests(unittest.TestCase):
             output = root / "output"
             result = run_hybrid_request(request, output_dir=output, build_workbook=False)
             saved = json.loads(result["outputs"]["json"].read_text(encoding="utf-8"))
+            csv_text = result["outputs"]["points_csv"].read_text(encoding="utf-8-sig")
         self.assertEqual("complete", saved["status"])
         self.assertTrue(result["outputs"]["points_csv"].name.endswith(".csv"))
         self.assertTrue(result["outputs"]["cy_alpha_csv"].name.endswith(".csv"))
+        self.assertIn("semiempirical_terms_json", csv_text.splitlines()[0])
+        self.assertIn("TEST-DETAILS-1", csv_text)
 
     def test_sealed_hybrid_rejects_vspaero_manifest_from_another_master(self):
         with TemporaryDirectory() as temp:
@@ -1126,6 +1261,51 @@ class HybridPipelineTests(unittest.TestCase):
         test_policy["drag"]["semiempirical_terms"][0]["applicability"]["mach_min"] = 0.7
         with self.assertRaisesRegex(ValueError, "экстраполяция запрещена"):
             semiempirical_contributions(test_policy, 0.75)
+
+    def test_active_semiempirical_term_requires_certified_method_passport(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            test_policy = policy()
+            test_policy["drag"]["semiempirical_terms"][0].pop("certification")
+            policy_path = root / "policy.json"
+            policy_path.write_text(json.dumps(test_policy), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "проверяемого паспорта"):
+                load_hybrid_policy(policy_path)
+
+    def test_semiempirical_contribution_records_uncertainty_and_fingerprint(self):
+        contribution = semiempirical_contributions(policy(), 1.0)[0]
+        self.assertEqual("TEST-DETAILS-1", contribution["method_id"])
+        self.assertAlmostEqual(0.000225, contribution["uncertainty_cd"])
+        self.assertEqual(64, len(contribution["term_fingerprint"]))
+
+    def test_semiempirical_source_file_hash_is_verified(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "method.md"
+            source.write_text("independent method", encoding="utf-8")
+            test_policy = policy()
+            source_record = test_policy["drag"]["semiempirical_terms"][0][
+                "certification"
+            ]["source"]
+            source_record.update({"path": source.name, "sha256": file_sha256(source)})
+            policy_path = root / "policy.json"
+            policy_path.write_text(json.dumps(test_policy), encoding="utf-8")
+            loaded = load_hybrid_policy(policy_path)
+            self.assertEqual("details", loaded["drag"]["semiempirical_terms"][0]["id"])
+            polar = root / "full.polar"
+            write_polar(polar)
+            result = build_hybrid_series(
+                vspaero_source=polar,
+                machline_report_paths=[],
+                parasite_result_paths=[],
+                policy=loaded,
+                policy_path=policy_path,
+            )
+            self.assertEqual(4, result["summary"]["points"])
+
+            source.write_text("changed", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "Нарушен hash"):
+                load_hybrid_policy(policy_path)
 
     def test_hybrid_consumes_sealed_masked_machline_force(self):
         with TemporaryDirectory() as temp:

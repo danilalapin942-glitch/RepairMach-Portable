@@ -2308,7 +2308,7 @@ def prepare_blind_study_workflow() -> None:
     method_text = input(f"Версия методики, Enter = {method_default}: ").strip()
     method_declaration = {
         "method_version": method_text or method_default,
-        "hybrid_pipeline_version": "RM91-HYBRID-AUTO-1",
+        "hybrid_pipeline_version": "RM91-HYBRID-AUTO-2",
         "scenario_id": scenario["id"],
         "pointwise_tuning": False,
         "geometry_adjustment_after_seal": False,
@@ -2576,6 +2576,13 @@ def geometry_certification_workflow(scenario: dict | None = None) -> None:
     })
     flags = certificate.get("flags", {})
     blockers = [item for item in certificate.get("findings", []) if item.get("severity") == "BLOCKER"]
+    replacement_contract = (
+        certificate.get("backends", {}).get("hybrid", {})
+        .get("replacement_contract", {})
+    )
+    unavailable_replacements = replacement_contract.get(
+        "unavailable_requirements", []
+    ) if isinstance(replacement_contract, dict) else []
     print("\nСертификация завершена")
     print("-" * 58)
     print(f"Вердикт      : {certificate.get('verdict')}")
@@ -2583,6 +2590,20 @@ def geometry_certification_workflow(scenario: dict | None = None) -> None:
     print(f"MASTER цел   : {'да' if flags.get('master_unchanged') else 'НЕТ'}")
     print(f"Решатель     : {'допущен' if flags.get('solver_eligible') else 'не допущен'}")
     print(f"Гибрид нужен : {'да' if flags.get('hybrid_substitution_required') else 'нет'}")
+    if replacement_contract.get("required"):
+        print(
+            "Контракт замен: "
+            + (
+                "backend-покрытие полное; нужны запечатанные расчётные источники"
+                if not unavailable_replacements
+                else f"неполный ({len(unavailable_replacements)} отсутствующих вкладов)"
+            )
+        )
+        for item in unavailable_replacements:
+            print(
+                f"  - {item.get('component')}: {item.get('method')} — "
+                "нет покомпонентного покрытия"
+            )
     print(f"Блокирующих  : {len(blockers)}")
     print(f"Сертификат   : {result['certificate_path']}")
     print(f"Отчёт        : {result['report_path']}")

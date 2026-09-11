@@ -1,6 +1,6 @@
 {
   "schema": "repairmach.hybrid-policy/1.0",
-  "method_version": "RM91-HYBRID-AUTO-1",
+  "method_version": "RM91-HYBRID-AUTO-2",
   "reference_independent": true,
   "pointwise_tuning": false,
   "transonic_excluded": [0.8, 1.2],
@@ -29,6 +29,19 @@
           "mach_min": 1.0,
           "mach_max": 3.0
         },
+        "certification": {
+          "schema": "repairmach.semiempirical-term/1.0",
+          "method_id": "UNSET",
+          "equation_version": "UNSET",
+          "reference_independent": true,
+          "pointwise_tuning": false,
+          "uncertainty_fraction": null,
+          "applicability_basis": "Заполнить до включения члена",
+          "source": {
+            "kind": "declared_engineering_method",
+            "citation": "UNSET"
+          }
+        },
         "model": {
           "type": "constant",
           "value": 0.0
@@ -42,6 +55,19 @@
         "applicability": {
           "mach_min": 0.0,
           "mach_max": 3.0
+        },
+        "certification": {
+          "schema": "repairmach.semiempirical-term/1.0",
+          "method_id": "UNSET",
+          "equation_version": "UNSET",
+          "reference_independent": true,
+          "pointwise_tuning": false,
+          "uncertainty_fraction": null,
+          "applicability_basis": "Заполнить до включения члена",
+          "source": {
+            "kind": "declared_engineering_method",
+            "citation": "UNSET"
+          }
         },
         "model": {
           "type": "constant",
