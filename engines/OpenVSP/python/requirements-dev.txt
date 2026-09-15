@@ -1,0 +1,15 @@
+-e vsp_airfoils
+-e utilities
+-e degen_geom
+-e openvsp_config
+-e openvsp
+-e CHARM
+-e AvlPy
+-e pyPMARC
+pytest
+matplotlib
+sphinx
+
+# So the wheel target can build without reaching the network for its own build backend.
+setuptools
+wheel

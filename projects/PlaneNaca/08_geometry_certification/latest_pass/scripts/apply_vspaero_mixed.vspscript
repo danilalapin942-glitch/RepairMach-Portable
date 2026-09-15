@@ -1,0 +1,15 @@
+void main()
+{
+    ClearVSPModel();
+    ReadVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08/frozen_master.vsp3" );
+    Update();
+
+    Update();
+    WriteVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08/vspaero/mixed/model.vsp3", 0 );
+    Print( "REPAIRMACH_APPLY_OK=1" );
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }
+}

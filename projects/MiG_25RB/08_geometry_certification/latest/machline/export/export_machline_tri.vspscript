@@ -1,0 +1,14 @@
+void main()
+{
+    ClearVSPModel();
+    ReadVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_092023_MiG_25RB_final_MiG-25RB_VSPAero_v1/machline/fine/model.vsp3" );
+    Update();
+    string export_id = ExportFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_092023_MiG_25RB_final_MiG-25RB_VSPAero_v1/machline/export/openvsp_nascart_raw.tri", 4, EXPORT_NASCART, 1, 5 );
+    Print( "REPAIRMACH_MACHLINE_TRI_EXPORT_ID=" + export_id );
+    Print( "REPAIRMACH_MACHLINE_TRI_EXPORT_OK=1" );
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }
+}

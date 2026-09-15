@@ -1,0 +1,44 @@
+{
+  "schema": "repairmach.machline-tri-export/1.0",
+  "status": "passed",
+  "source_solver_twin": {
+    "role": "machline_fine",
+    "mesh_level": "fine",
+    "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_090229_MiG_29_final_RepairMach91_M160_M170\\machline\\fine\\model.vsp3",
+    "sha256": "ba84354eee699db3b402532d534895cdafee25826718db68aed6e51766ee5f9f",
+    "canonical_sha256": "5aa31abd52ebb0e3274ce4c25ca3be5a511c150868c5fdf4db7796eec99b83e2"
+  },
+  "certification_bindings": {
+    "master_sha256": "4caecd4a0015736a3506c88e57eead665a5a0051b7f1bcd01469cb43f16e974d",
+    "plan_sha256": "3b518e99b1f84ae54a46deb8d118286a38cd53b54f726c88d2bc9a65430c4410",
+    "base_twin_sha256": "b88a743d45571e85d8333edb128267c2bb640cb083e2fecf192f9c922f3e3994",
+    "fine_twin_sha256": "ba84354eee699db3b402532d534895cdafee25826718db68aed6e51766ee5f9f",
+    "fine_mesh_signature_sha256": "a8eb94e0d0597d036e99135dd760d776d32129a2aa9fa5acc6ca297acfc6867e"
+  },
+  "source_unchanged": true,
+  "export": {
+    "format": "OpenVSP_EXPORT_NASCART",
+    "thick_user_set": 1,
+    "thick_api_set": 4,
+    "thin_user_set": 2,
+    "thin_api_set": 5,
+    "include_subsurfaces": true,
+    "raw_path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_090229_MiG_29_final_RepairMach91_M160_M170\\machline\\export\\openvsp_nascart_raw.tri",
+    "raw_sha256": "000481cbc8ba4698a71312e8ee706b2f8b6c84fb5571fee3419ff23341212ad9",
+    "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_090229_MiG_29_final_RepairMach91_M160_M170\\machline\\export\\machline_fine_export.tri",
+    "sha256": "c244503b9a0e83bcb6f2514f6e7d0155650be05b2f1bcad54d6d8d95a57aa000"
+  },
+  "tool": {
+    "vspscript_executable": "C:\\OpenVSP-3.51.0-win64-Python3.13\\OpenVSP-3.51.0-win64\\vspscript.exe",
+    "vspscript_sha256": "79b238c97814e0dd74a6b49839710c8b17406b46d0616f5bd2bf1692a4264088",
+    "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_090229_MiG_29_final_RepairMach91_M160_M170\\machline\\export\\export_machline_tri.vspscript",
+    "script_sha256": "e1b91b205b3fb3369f8a67049aa0ae393dbf6aff0a4f8dcc218f2ded59760fc1",
+    "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_090229_MiG_29_final_RepairMach91_M160_M170\\machline\\export\\export_machline_tri.log",
+    "log_sha256": "02c463a05a8afc70650345b36723a128e31dff6b0cf2a9a5a11b8ee68ad288b7",
+    "return_code": 0
+  },
+  "legacy_tri_hint": null,
+  "errors": [],
+  "manifest_path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_090229_MiG_29_final_RepairMach91_M160_M170\\machline\\export\\export_manifest.json",
+  "record_fingerprint": "3e8b7bbf39528d06a8922e593a783882650084d3b4f3d37232a29f5f52c796cf"
+}

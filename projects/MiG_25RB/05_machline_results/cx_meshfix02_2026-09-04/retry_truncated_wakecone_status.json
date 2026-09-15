@@ -1,0 +1,18 @@
+﻿{
+    "updated_at":  "2026-09-05T07:56:21.7028399+03:00",
+    "pid":  36412,
+    "elapsed_seconds":  207.6921946,
+    "case":  "retry_truncated_wakecone_M1p20_A0",
+    "state":  "unreliable",
+    "exit_code":  0,
+    "solver_status_code":  0,
+    "started_at":  "2026-09-05T07:52:54.0116447+03:00",
+    "body_file":  "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\diagnostics\\retry_truncated_wakecone_M1p20_A0_body.vtk",
+    "excluded_force_components":  [
+                                      12,
+                                      13
+                                  ],
+    "residual_norm":  33.1422615290681,
+    "report":  "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\reports\\retry_truncated_wakecone_M1p20_A0_report.json",
+    "log":  "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\logs\\retry_truncated_wakecone_M1p20_A0.log"
+}

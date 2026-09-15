@@ -1,5 +1,21 @@
 # Third-party notices
 
+## OpenVSP / VSPAERO
+
+The portable package includes the unmodified official OpenVSP 3.51.3 Windows
+x64 distribution built for Python 3.13.
+
+- Project and source code: https://github.com/OpenVSP/OpenVSP
+- Official download: https://openvsp.org/download.php
+- Bundled license: `engines/OpenVSP/LICENSE`
+- Upstream changelog: `engines/OpenVSP/CHANGELOG.md`
+- Download archive SHA-256:
+  `BA885EBC592FEB57BCF7F8895662CE68A130797550296CFAB4B3E6AC93F59CEB`
+
+OpenVSP is distributed under the NASA Open Source Agreement (NOSA) 1.3. The
+bundled binaries have not been modified. The complete corresponding source is
+available from the project link above.
+
 ## MachLine
 
 MachLine is developed by USU Aero Lab and distributed under the MIT License.

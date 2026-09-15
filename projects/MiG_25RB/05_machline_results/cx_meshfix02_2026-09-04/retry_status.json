@@ -1,0 +1,12 @@
+﻿{
+    "updated_at":  "2026-09-04T23:17:03.8561195+03:00",
+    "started_at":  "2026-09-04T23:10:30.8907208+03:00",
+    "case":  "retry_gondola_only_M1p20_A0",
+    "report":  "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\reports\\retry_gondola_only_M1p20_A0_report.json",
+    "elapsed_seconds":  392.9663986,
+    "state":  "unreliable",
+    "log":  "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\logs\\retry_gondola_only_M1p20_A0.log",
+    "pid":  38368,
+    "exit_code":  0,
+    "residual_norm":  1107244.85473852
+}

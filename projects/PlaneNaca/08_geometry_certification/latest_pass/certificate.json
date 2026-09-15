@@ -1,0 +1,1021 @@
+{
+  "schema": "repairmach.geometry-certificate/1.0",
+  "method_version": "RM91-GEOMETRY-CERT-1",
+  "run_status": "complete",
+  "verdict": "PASS_WITH_DECLARED_EXCLUSIONS",
+  "flags": {
+    "solver_eligible": true,
+    "full_geometry_represented": false,
+    "hybrid_substitution_required": true,
+    "master_unchanged": true
+  },
+  "project": "Plane_Naca_final",
+  "master": {
+    "source_path": "C:\\RepairMach-Portable\\projects\\Plane_Naca\\06_vspaero_input\\models\\PlaneNaca_STABLE_M08.vsp3",
+    "snapshot_path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\frozen_master.vsp3",
+    "sha256_before": "5d8ecd50e765853043050e029d2c5571b593ead411fef9f81fa7f0e9567ddef7",
+    "sha256_after": "5d8ecd50e765853043050e029d2c5571b593ead411fef9f81fa7f0e9567ddef7",
+    "canonical_sha256": "6ad659f6f3aef90eaf83fc407be82b858e781e73c638bf2b90d1ceadf3f434e5",
+    "unchanged": true
+  },
+  "bindings": {
+    "policy_sha256": "61ca7c83761e8d8636980b0710afd444d03c380fa8d7c7b605435a20d81de838",
+    "reference_sha256": "867b5886724fa4b8dd45bb50bc2f428743e001c187daf0a8ba3c9e4276334ef0",
+    "scope_sha256": "df49d95fae4263dafe647cf4df2f603ab0605370a284f802544accef8dbb24d9",
+    "plan_sha256": "6a8e90aa703e1411db5794adfbc49e7acfc6782041a4990ae15b83d48033b38d"
+  },
+  "policy": {
+    "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\config\\geometry_certification.json",
+    "snapshot": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\policy_snapshot.json"
+  },
+  "reference": {
+    "area": 349.2723,
+    "cref": 14.38667,
+    "bref": 32.37,
+    "center": [
+      29.55,
+      0.0,
+      0.0
+    ]
+  },
+  "scope": {
+    "mach_intervals": [
+      [
+        0.0,
+        0.8
+      ],
+      [
+        1.2,
+        2.2
+      ]
+    ],
+    "alpha_deg": [
+      0.0,
+      5.0
+    ],
+    "beta_deg": 0.0,
+    "horizontal_tail": {
+      "mode": "fixed",
+      "geometry_name": "GO",
+      "incidence_deg": 0.0
+    }
+  },
+  "software": {
+    "repairmach": "9.1",
+    "python": "3.13.15",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "solvers": {
+      "openvsp": {
+        "version": "3.51.0",
+        "executable": "C:\\OpenVSP-3.51.0-win64-Python3.13\\OpenVSP-3.51.0-win64\\vspscript.exe",
+        "sha256": "79b238c97814e0dd74a6b49839710c8b17406b46d0616f5bd2bf1692a4264088"
+      },
+      "vspaero": {
+        "version": null,
+        "executable": "C:\\OpenVSP-3.51.0-win64-Python3.13\\OpenVSP-3.51.0-win64\\vspaero.exe",
+        "sha256": "324756878fa0af84bb0d9157ef0896139b636971360a67b3d5163e641988c1e7"
+      },
+      "machline": {
+        "version": null,
+        "executable": "C:\\RepairMach-Portable\\engines\\MachLine\\machline.exe",
+        "sha256": "9160f4cb0f9fd07d06ddc29c10baff09848e16df4a5437e851edd6a11c01480b"
+      }
+    }
+  },
+  "findings": [
+    {
+      "code": "GEO-VSP-001",
+      "severity": "WARNING",
+      "scope": "vspaero_mixed",
+      "message": "VSPAERO (mixed) сообщил диагностические особенности сетки; результаты допускаются только по конечности и сеточной сходимости",
+      "evidence": {
+        "probes": [
+          {
+            "level": "coarse",
+            "signals": [
+              "not_convex"
+            ],
+            "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_mixed\\coarse\\probe.log"
+          },
+          {
+            "level": "medium",
+            "signals": [
+              "not_convex"
+            ],
+            "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_mixed\\medium\\probe.log"
+          },
+          {
+            "level": "fine",
+            "signals": [
+              "not_convex",
+              "zero_magnitude"
+            ],
+            "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_mixed\\fine\\probe.log"
+          }
+        ]
+      }
+    },
+    {
+      "code": "GEO-VSP-002",
+      "severity": "WARNING",
+      "scope": "vspaero",
+      "message": "Смешанная постановка VSPAERO не прошла квалификацию; принят отдельный несущий двойник с явной гибридной заменой толстых тел",
+      "evidence": {}
+    }
+  ],
+  "transformations": {
+    "actions": []
+  },
+  "twins": {
+    "vspaero_mixed": {
+      "name": "vspaero_mixed",
+      "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\mixed\\model.vsp3",
+      "sha256": "b17459b186bc958f7bbdb31b7690168829d8f916d8fb4503ca0d39a4a268e31a",
+      "canonical_sha256": "4adbb1490d3bd6be37df1ae1d8ca40fa5733409451bca0223c7b0663e780c902",
+      "valid": true,
+      "return_code": 0,
+      "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\apply_vspaero_mixed.vspscript",
+      "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\apply_vspaero_mixed.log",
+      "errors": []
+    },
+    "vspaero_lifting": {
+      "name": "vspaero_lifting",
+      "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\lifting\\model.vsp3",
+      "sha256": "9992b443181ac828f7a904fe75d63ddf2ba49c7d2d82c471946b6c26915c4962",
+      "canonical_sha256": "ff50f8454fe5065b4ee15f4e0ae674aedbdf8cba63bd7b2ac7fbcb0e1cd66ea3",
+      "valid": true,
+      "return_code": 0,
+      "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\apply_vspaero_lifting.vspscript",
+      "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\apply_vspaero_lifting.log",
+      "errors": []
+    },
+    "machline": {
+      "name": "machline",
+      "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\machline\\source_model.vsp3",
+      "sha256": "1c6c5c49aed1f35f7d533d9e9bab4d00b54f9e77ee01925d990279ad74b47054",
+      "canonical_sha256": "917bc45818530da4471ee0a433a2d8c6f4998daee09fcdb1b19b43b4f7bdc82f",
+      "valid": true,
+      "return_code": 0,
+      "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\apply_machline.vspscript",
+      "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\apply_machline.log",
+      "errors": []
+    },
+    "parasite": {
+      "name": "parasite",
+      "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\parasite\\model.vsp3",
+      "sha256": "5d8ecd50e765853043050e029d2c5571b593ead411fef9f81fa7f0e9567ddef7",
+      "canonical_sha256": "6ad659f6f3aef90eaf83fc407be82b858e781e73c638bf2b90d1ceadf3f434e5",
+      "valid": true,
+      "return_code": null,
+      "script": null,
+      "log": null,
+      "errors": []
+    }
+  },
+  "mesh_levels": {
+    "vspaero_mixed": {
+      "coarse": {
+        "name": "vspaero_mixed",
+        "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\mixed\\coarse\\model.vsp3",
+        "sha256": "09a626b4e9c23932e40541ebc51873b123f908f12bafa160c5a7e45a2adb50cd",
+        "canonical_sha256": "a8e4e6cf9bd413042ca02747045f808fe3bbf992c2d61c698b5921ed700c98a4",
+        "valid": true,
+        "return_code": 0,
+        "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\vspaero_mixed\\coarse\\apply_vspaero_mixed.vspscript",
+        "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\vspaero_mixed\\coarse\\apply_vspaero_mixed.log",
+        "errors": [],
+        "level": "coarse",
+        "mesh_policy": {
+          "thin_tess_w": 33,
+          "thin_sect_tess_u": 6,
+          "thin_tess_u": 12,
+          "thick_tess_w": 21,
+          "thick_sect_tess_u": 6,
+          "thick_tess_u": 31
+        }
+      },
+      "medium": {
+        "name": "vspaero_mixed",
+        "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\mixed\\medium\\model.vsp3",
+        "sha256": "ad40be2b721998fe3e6b74eede37bb796ffa61fba6b6ff753e5a22f259be8fa0",
+        "canonical_sha256": "635d206f99e0a1ca2b543a0d580e3f748ee212e522480d801a21bccafabe9efa",
+        "valid": true,
+        "return_code": 0,
+        "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\vspaero_mixed\\medium\\apply_vspaero_mixed.vspscript",
+        "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\vspaero_mixed\\medium\\apply_vspaero_mixed.log",
+        "errors": [],
+        "level": "medium",
+        "mesh_policy": {
+          "thin_tess_w": 49,
+          "thin_sect_tess_u": 10,
+          "thin_tess_u": 16,
+          "thick_tess_w": 31,
+          "thick_sect_tess_u": 10,
+          "thick_tess_u": 45
+        }
+      },
+      "fine": {
+        "name": "vspaero_mixed",
+        "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\mixed\\fine\\model.vsp3",
+        "sha256": "1b42f7a4497bddf1086a14615b0e3ffc25117f2ff43b8e2d20759900a1fb9b16",
+        "canonical_sha256": "4fb76a0ae8479d14def38944605afbb2494dfd102779355ef56189f13f4d948f",
+        "valid": true,
+        "return_code": 0,
+        "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\vspaero_mixed\\fine\\apply_vspaero_mixed.vspscript",
+        "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\vspaero_mixed\\fine\\apply_vspaero_mixed.log",
+        "errors": [],
+        "level": "fine",
+        "mesh_policy": {
+          "thin_tess_w": 65,
+          "thin_sect_tess_u": 14,
+          "thin_tess_u": 20,
+          "thick_tess_w": 41,
+          "thick_sect_tess_u": 14,
+          "thick_tess_u": 61
+        }
+      }
+    },
+    "vspaero_lifting": {
+      "coarse": {
+        "name": "vspaero_lifting",
+        "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\lifting\\coarse\\model.vsp3",
+        "sha256": "98eb86b938cdd7b7b560720dd3bbab1e2696846f7dcf7744ae4e77dd89ede00f",
+        "canonical_sha256": "318641a4307c1cf65e434533c90a444001e37a30de4817e70a8e3be18af9d11e",
+        "valid": true,
+        "return_code": 0,
+        "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\vspaero_lifting\\coarse\\apply_vspaero_lifting.vspscript",
+        "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\vspaero_lifting\\coarse\\apply_vspaero_lifting.log",
+        "errors": [],
+        "level": "coarse",
+        "mesh_policy": {
+          "thin_tess_w": 33,
+          "thin_sect_tess_u": 6,
+          "thin_tess_u": 12,
+          "thick_tess_w": 21,
+          "thick_sect_tess_u": 6,
+          "thick_tess_u": 31
+        }
+      },
+      "medium": {
+        "name": "vspaero_lifting",
+        "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\lifting\\medium\\model.vsp3",
+        "sha256": "520454f04e727e555c3fea68b16d2d8767003a70b8286e5d090717058dd3542d",
+        "canonical_sha256": "2ad4d40989a83fc04937566ce6921dc7c6ca134df17fe3b7e2a873307a029264",
+        "valid": true,
+        "return_code": 0,
+        "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\vspaero_lifting\\medium\\apply_vspaero_lifting.vspscript",
+        "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\vspaero_lifting\\medium\\apply_vspaero_lifting.log",
+        "errors": [],
+        "level": "medium",
+        "mesh_policy": {
+          "thin_tess_w": 49,
+          "thin_sect_tess_u": 10,
+          "thin_tess_u": 16,
+          "thick_tess_w": 31,
+          "thick_sect_tess_u": 10,
+          "thick_tess_u": 45
+        }
+      },
+      "fine": {
+        "name": "vspaero_lifting",
+        "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\lifting\\fine\\model.vsp3",
+        "sha256": "b57cd432b99e8a59d03d0de6cae13c0d147504f99354b7c3995b9e37e6797905",
+        "canonical_sha256": "a0d13b0caa115301913f3374590fadeedadd5025652a4a71657d322b497ebf60",
+        "valid": true,
+        "return_code": 0,
+        "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\vspaero_lifting\\fine\\apply_vspaero_lifting.vspscript",
+        "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\vspaero_lifting\\fine\\apply_vspaero_lifting.log",
+        "errors": [],
+        "level": "fine",
+        "mesh_policy": {
+          "thin_tess_w": 65,
+          "thin_sect_tess_u": 14,
+          "thin_tess_u": 20,
+          "thick_tess_w": 41,
+          "thick_sect_tess_u": 14,
+          "thick_tess_u": 61
+        }
+      }
+    },
+    "machline": {
+      "coarse": {
+        "name": "machline",
+        "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\machline\\coarse\\model.vsp3",
+        "sha256": "66a1ea505a0d3c069035a41032e72f5837e4f662635a58d3fc237fb18ce67fb9",
+        "canonical_sha256": "9dd58c8b88d9414483ee856e3842aec68ba59375a8803eb00bddb59dbef17564",
+        "valid": true,
+        "return_code": 0,
+        "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\machline\\coarse\\apply_machline.vspscript",
+        "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\machline\\coarse\\apply_machline.log",
+        "errors": [],
+        "level": "coarse",
+        "mesh_policy": {
+          "thin_tess_w": 33,
+          "thin_sect_tess_u": 6,
+          "thin_tess_u": 12,
+          "thick_tess_w": 21,
+          "thick_sect_tess_u": 6,
+          "thick_tess_u": 31
+        }
+      },
+      "medium": {
+        "name": "machline",
+        "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\machline\\medium\\model.vsp3",
+        "sha256": "8a19b500a1a1234e0a764c91d8069ad1885bd79d1c3562cb55fcd91e25675a4f",
+        "canonical_sha256": "27274a01e184bfa692d0edf60de81dc6c6d3b2dc7ff52424c1d896220152a7de",
+        "valid": true,
+        "return_code": 0,
+        "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\machline\\medium\\apply_machline.vspscript",
+        "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\machline\\medium\\apply_machline.log",
+        "errors": [],
+        "level": "medium",
+        "mesh_policy": {
+          "thin_tess_w": 49,
+          "thin_sect_tess_u": 10,
+          "thin_tess_u": 16,
+          "thick_tess_w": 31,
+          "thick_sect_tess_u": 10,
+          "thick_tess_u": 45
+        }
+      },
+      "fine": {
+        "name": "machline",
+        "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\machline\\fine\\model.vsp3",
+        "sha256": "058c689adcd1dc4af4961a8995f61b8bb692473074f38f0aa44f1aa0fd5d1b45",
+        "canonical_sha256": "8eaaf96bb386c2f3da15d58ff9144a6667640d066652f37b30d35733a8f3feaa",
+        "valid": true,
+        "return_code": 0,
+        "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\machline\\fine\\apply_machline.vspscript",
+        "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\scripts\\machline\\fine\\apply_machline.log",
+        "errors": [],
+        "level": "fine",
+        "mesh_policy": {
+          "thin_tess_w": 65,
+          "thin_sect_tess_u": 14,
+          "thin_tess_u": 20,
+          "thick_tess_w": 41,
+          "thick_sect_tess_u": 14,
+          "thick_tess_u": 61
+        }
+      }
+    }
+  },
+  "probes": {
+    "requested": true,
+    "status": "completed",
+    "vspaero_mixed": {
+      "mode": "mixed",
+      "valid": true,
+      "converged": false,
+      "probes": [
+        {
+          "mode": "mixed",
+          "level": "coarse",
+          "valid": true,
+          "return_code": 0,
+          "elapsed_seconds": 8.923,
+          "set_validation": {
+            "roles": {
+              "fuselage_and_nacelles": {
+                "USER_SET": 1,
+                "API_INDEX": 4,
+                "NAME": "Set_1",
+                "COUNT": 1
+              },
+              "wing_and_empennage": {
+                "USER_SET": 2,
+                "API_INDEX": 5,
+                "NAME": "Set_2",
+                "COUNT": 4
+              }
+            },
+            "geometries": [
+              {
+                "ID": "RMUXLHDSMZ",
+                "NAME": "Fuselage",
+                "TYPE": "Fuselage",
+                "IN_SET_1": true,
+                "IN_SET_2": false
+              },
+              {
+                "ID": "LQZSHZXSTY",
+                "NAME": "Wing",
+                "TYPE": "Wing",
+                "IN_SET_1": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "NDDSSVUXPL",
+                "NAME": "GO",
+                "TYPE": "Wing",
+                "IN_SET_1": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "MKRWRTCFOU",
+                "NAME": "VO_upper",
+                "TYPE": "Wing",
+                "IN_SET_1": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "RGIJJLNZJJ",
+                "NAME": "VO_lower",
+                "TYPE": "Wing",
+                "IN_SET_1": false,
+                "IN_SET_2": true
+              }
+            ],
+            "errors": [],
+            "tail": {
+              "MODE": "fixed_incidence",
+              "NAME": "GO",
+              "ID": "NDDSSVUXPL",
+              "TYPE": "Wing",
+              "ANGLE_DEG": 0.0
+            },
+            "valid": true,
+            "calculation_complete": true
+          },
+          "health_signals": [
+            "not_convex"
+          ],
+          "health_errors": [],
+          "health_warnings": [
+            "not_convex"
+          ],
+          "parse_error": null,
+          "finite_rows": 1,
+          "values": {
+            "Mach": 0.8,
+            "Alpha": 1.0,
+            "CLtot": -0.164391463796,
+            "CDtot": 0.003623242632
+          },
+          "model": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\mixed\\coarse\\model.vsp3",
+          "model_sha256": "09a626b4e9c23932e40541ebc51873b123f908f12bafa160c5a7e45a2adb50cd",
+          "polar": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_mixed\\coarse\\model.polar",
+          "results_csv": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_mixed\\coarse\\probe.csv",
+          "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_mixed\\coarse\\probe.log"
+        },
+        {
+          "mode": "mixed",
+          "level": "medium",
+          "valid": true,
+          "return_code": 0,
+          "elapsed_seconds": 22.099,
+          "set_validation": {
+            "roles": {
+              "fuselage_and_nacelles": {
+                "USER_SET": 1,
+                "API_INDEX": 4,
+                "NAME": "Set_1",
+                "COUNT": 1
+              },
+              "wing_and_empennage": {
+                "USER_SET": 2,
+                "API_INDEX": 5,
+                "NAME": "Set_2",
+                "COUNT": 4
+              }
+            },
+            "geometries": [
+              {
+                "ID": "RMUXLHDSMZ",
+                "NAME": "Fuselage",
+                "TYPE": "Fuselage",
+                "IN_SET_1": true,
+                "IN_SET_2": false
+              },
+              {
+                "ID": "LQZSHZXSTY",
+                "NAME": "Wing",
+                "TYPE": "Wing",
+                "IN_SET_1": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "NDDSSVUXPL",
+                "NAME": "GO",
+                "TYPE": "Wing",
+                "IN_SET_1": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "MKRWRTCFOU",
+                "NAME": "VO_upper",
+                "TYPE": "Wing",
+                "IN_SET_1": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "RGIJJLNZJJ",
+                "NAME": "VO_lower",
+                "TYPE": "Wing",
+                "IN_SET_1": false,
+                "IN_SET_2": true
+              }
+            ],
+            "errors": [],
+            "tail": {
+              "MODE": "fixed_incidence",
+              "NAME": "GO",
+              "ID": "NDDSSVUXPL",
+              "TYPE": "Wing",
+              "ANGLE_DEG": 0.0
+            },
+            "valid": true,
+            "calculation_complete": true
+          },
+          "health_signals": [
+            "not_convex"
+          ],
+          "health_errors": [],
+          "health_warnings": [
+            "not_convex"
+          ],
+          "parse_error": null,
+          "finite_rows": 1,
+          "values": {
+            "Mach": 0.8,
+            "Alpha": 1.0,
+            "CLtot": 10.219610222595,
+            "CDtot": 0.179134846059
+          },
+          "model": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\mixed\\medium\\model.vsp3",
+          "model_sha256": "ad40be2b721998fe3e6b74eede37bb796ffa61fba6b6ff753e5a22f259be8fa0",
+          "polar": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_mixed\\medium\\model.polar",
+          "results_csv": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_mixed\\medium\\probe.csv",
+          "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_mixed\\medium\\probe.log"
+        },
+        {
+          "mode": "mixed",
+          "level": "fine",
+          "valid": true,
+          "return_code": 0,
+          "elapsed_seconds": 49.539,
+          "set_validation": {
+            "roles": {
+              "fuselage_and_nacelles": {
+                "USER_SET": 1,
+                "API_INDEX": 4,
+                "NAME": "Set_1",
+                "COUNT": 1
+              },
+              "wing_and_empennage": {
+                "USER_SET": 2,
+                "API_INDEX": 5,
+                "NAME": "Set_2",
+                "COUNT": 4
+              }
+            },
+            "geometries": [
+              {
+                "ID": "RMUXLHDSMZ",
+                "NAME": "Fuselage",
+                "TYPE": "Fuselage",
+                "IN_SET_1": true,
+                "IN_SET_2": false
+              },
+              {
+                "ID": "LQZSHZXSTY",
+                "NAME": "Wing",
+                "TYPE": "Wing",
+                "IN_SET_1": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "NDDSSVUXPL",
+                "NAME": "GO",
+                "TYPE": "Wing",
+                "IN_SET_1": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "MKRWRTCFOU",
+                "NAME": "VO_upper",
+                "TYPE": "Wing",
+                "IN_SET_1": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "RGIJJLNZJJ",
+                "NAME": "VO_lower",
+                "TYPE": "Wing",
+                "IN_SET_1": false,
+                "IN_SET_2": true
+              }
+            ],
+            "errors": [],
+            "tail": {
+              "MODE": "fixed_incidence",
+              "NAME": "GO",
+              "ID": "NDDSSVUXPL",
+              "TYPE": "Wing",
+              "ANGLE_DEG": 0.0
+            },
+            "valid": true,
+            "calculation_complete": true
+          },
+          "health_signals": [
+            "not_convex",
+            "zero_magnitude"
+          ],
+          "health_errors": [],
+          "health_warnings": [
+            "not_convex",
+            "zero_magnitude"
+          ],
+          "parse_error": null,
+          "finite_rows": 1,
+          "values": {
+            "Mach": 0.8,
+            "Alpha": 1.0,
+            "CLtot": 3.555890097633,
+            "CDtot": -0.104112985361
+          },
+          "model": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\mixed\\fine\\model.vsp3",
+          "model_sha256": "1b42f7a4497bddf1086a14615b0e3ffc25117f2ff43b8e2d20759900a1fb9b16",
+          "polar": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_mixed\\fine\\model.polar",
+          "results_csv": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_mixed\\fine\\probe.csv",
+          "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_mixed\\fine\\probe.log"
+        }
+      ],
+      "convergence": {
+        "valid": true,
+        "converged": false,
+        "relative_tolerance": 0.05,
+        "quantities": {
+          "CLtot": {
+            "coarse": -0.164391463796,
+            "medium": 10.219610222595,
+            "fine": 3.555890097633,
+            "coarse_medium_relative": 1.0160858839246665,
+            "medium_fine_relative": 0.6520522779067326,
+            "converged": false
+          },
+          "CDtot": {
+            "coarse": 0.003623242632,
+            "medium": 0.179134846059,
+            "fine": -0.104112985361,
+            "coarse_medium_relative": 0.9797736581591353,
+            "medium_fine_relative": 1.5811989551530874,
+            "converged": false
+          }
+        },
+        "errors": [
+          "Изменение Medium→Fine превышает допуск"
+        ]
+      }
+    },
+    "vspaero_lifting": {
+      "mode": "lifting",
+      "valid": true,
+      "converged": true,
+      "probes": [
+        {
+          "mode": "lifting",
+          "level": "coarse",
+          "valid": true,
+          "return_code": 0,
+          "elapsed_seconds": 5.558,
+          "set_validation": {
+            "roles": {
+              "fuselage_and_nacelles": {
+                "USER_SET": 3,
+                "API_INDEX": 6,
+                "NAME": "RM_CERT_EMPTY_THICK",
+                "COUNT": 0
+              },
+              "wing_and_empennage": {
+                "USER_SET": 2,
+                "API_INDEX": 5,
+                "NAME": "Set_2",
+                "COUNT": 4
+              }
+            },
+            "geometries": [
+              {
+                "ID": "RMUXLHDSMZ",
+                "NAME": "Fuselage",
+                "TYPE": "Fuselage",
+                "IN_SET_3": false,
+                "IN_SET_2": false
+              },
+              {
+                "ID": "LQZSHZXSTY",
+                "NAME": "Wing",
+                "TYPE": "Wing",
+                "IN_SET_3": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "NDDSSVUXPL",
+                "NAME": "GO",
+                "TYPE": "Wing",
+                "IN_SET_3": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "MKRWRTCFOU",
+                "NAME": "VO_upper",
+                "TYPE": "Wing",
+                "IN_SET_3": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "RGIJJLNZJJ",
+                "NAME": "VO_lower",
+                "TYPE": "Wing",
+                "IN_SET_3": false,
+                "IN_SET_2": true
+              }
+            ],
+            "errors": [],
+            "tail": {
+              "MODE": "fixed_incidence",
+              "NAME": "GO",
+              "ID": "NDDSSVUXPL",
+              "TYPE": "Wing",
+              "ANGLE_DEG": 0.0
+            },
+            "valid": true,
+            "calculation_complete": true
+          },
+          "health_signals": [],
+          "health_errors": [],
+          "health_warnings": [],
+          "parse_error": null,
+          "finite_rows": 1,
+          "values": {
+            "Mach": 0.8,
+            "Alpha": 1.0,
+            "CLtot": 0.083082537397,
+            "CDtot": 0.007908163165
+          },
+          "model": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\lifting\\coarse\\model.vsp3",
+          "model_sha256": "98eb86b938cdd7b7b560720dd3bbab1e2696846f7dcf7744ae4e77dd89ede00f",
+          "polar": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_lifting\\coarse\\model.polar",
+          "results_csv": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_lifting\\coarse\\probe.csv",
+          "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_lifting\\coarse\\probe.log"
+        },
+        {
+          "mode": "lifting",
+          "level": "medium",
+          "valid": true,
+          "return_code": 0,
+          "elapsed_seconds": 9.923,
+          "set_validation": {
+            "roles": {
+              "fuselage_and_nacelles": {
+                "USER_SET": 3,
+                "API_INDEX": 6,
+                "NAME": "RM_CERT_EMPTY_THICK",
+                "COUNT": 0
+              },
+              "wing_and_empennage": {
+                "USER_SET": 2,
+                "API_INDEX": 5,
+                "NAME": "Set_2",
+                "COUNT": 4
+              }
+            },
+            "geometries": [
+              {
+                "ID": "RMUXLHDSMZ",
+                "NAME": "Fuselage",
+                "TYPE": "Fuselage",
+                "IN_SET_3": false,
+                "IN_SET_2": false
+              },
+              {
+                "ID": "LQZSHZXSTY",
+                "NAME": "Wing",
+                "TYPE": "Wing",
+                "IN_SET_3": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "NDDSSVUXPL",
+                "NAME": "GO",
+                "TYPE": "Wing",
+                "IN_SET_3": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "MKRWRTCFOU",
+                "NAME": "VO_upper",
+                "TYPE": "Wing",
+                "IN_SET_3": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "RGIJJLNZJJ",
+                "NAME": "VO_lower",
+                "TYPE": "Wing",
+                "IN_SET_3": false,
+                "IN_SET_2": true
+              }
+            ],
+            "errors": [],
+            "tail": {
+              "MODE": "fixed_incidence",
+              "NAME": "GO",
+              "ID": "NDDSSVUXPL",
+              "TYPE": "Wing",
+              "ANGLE_DEG": 0.0
+            },
+            "valid": true,
+            "calculation_complete": true
+          },
+          "health_signals": [],
+          "health_errors": [],
+          "health_warnings": [],
+          "parse_error": null,
+          "finite_rows": 1,
+          "values": {
+            "Mach": 0.8,
+            "Alpha": 1.0,
+            "CLtot": 0.070663098803,
+            "CDtot": 0.007827228762
+          },
+          "model": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\lifting\\medium\\model.vsp3",
+          "model_sha256": "520454f04e727e555c3fea68b16d2d8767003a70b8286e5d090717058dd3542d",
+          "polar": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_lifting\\medium\\model.polar",
+          "results_csv": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_lifting\\medium\\probe.csv",
+          "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_lifting\\medium\\probe.log"
+        },
+        {
+          "mode": "lifting",
+          "level": "fine",
+          "valid": true,
+          "return_code": 0,
+          "elapsed_seconds": 18.381,
+          "set_validation": {
+            "roles": {
+              "fuselage_and_nacelles": {
+                "USER_SET": 3,
+                "API_INDEX": 6,
+                "NAME": "RM_CERT_EMPTY_THICK",
+                "COUNT": 0
+              },
+              "wing_and_empennage": {
+                "USER_SET": 2,
+                "API_INDEX": 5,
+                "NAME": "Set_2",
+                "COUNT": 4
+              }
+            },
+            "geometries": [
+              {
+                "ID": "RMUXLHDSMZ",
+                "NAME": "Fuselage",
+                "TYPE": "Fuselage",
+                "IN_SET_3": false,
+                "IN_SET_2": false
+              },
+              {
+                "ID": "LQZSHZXSTY",
+                "NAME": "Wing",
+                "TYPE": "Wing",
+                "IN_SET_3": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "NDDSSVUXPL",
+                "NAME": "GO",
+                "TYPE": "Wing",
+                "IN_SET_3": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "MKRWRTCFOU",
+                "NAME": "VO_upper",
+                "TYPE": "Wing",
+                "IN_SET_3": false,
+                "IN_SET_2": true
+              },
+              {
+                "ID": "RGIJJLNZJJ",
+                "NAME": "VO_lower",
+                "TYPE": "Wing",
+                "IN_SET_3": false,
+                "IN_SET_2": true
+              }
+            ],
+            "errors": [],
+            "tail": {
+              "MODE": "fixed_incidence",
+              "NAME": "GO",
+              "ID": "NDDSSVUXPL",
+              "TYPE": "Wing",
+              "ANGLE_DEG": 0.0
+            },
+            "valid": true,
+            "calculation_complete": true
+          },
+          "health_signals": [],
+          "health_errors": [],
+          "health_warnings": [],
+          "parse_error": null,
+          "finite_rows": 1,
+          "values": {
+            "Mach": 0.8,
+            "Alpha": 1.0,
+            "CLtot": 0.07106018486,
+            "CDtot": 0.0078757681
+          },
+          "model": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\vspaero\\lifting\\fine\\model.vsp3",
+          "model_sha256": "b57cd432b99e8a59d03d0de6cae13c0d147504f99354b7c3995b9e37e6797905",
+          "polar": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_lifting\\fine\\model.polar",
+          "results_csv": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_lifting\\fine\\probe.csv",
+          "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\probes\\vspaero_lifting\\fine\\probe.log"
+        }
+      ],
+      "convergence": {
+        "valid": true,
+        "converged": true,
+        "relative_tolerance": 0.05,
+        "quantities": {
+          "CLtot": {
+            "coarse": 0.083082537397,
+            "medium": 0.070663098803,
+            "fine": 0.07106018486,
+            "coarse_medium_relative": 0.149483140297644,
+            "medium_fine_relative": 0.005588024542608919,
+            "converged": true
+          },
+          "CDtot": {
+            "coarse": 0.007908163165,
+            "medium": 0.007827228762,
+            "fine": 0.0078757681,
+            "coarse_medium_relative": 0.010234285928520158,
+            "medium_fine_relative": 0.006163124330692233,
+            "converged": true
+          }
+        },
+        "errors": []
+      }
+    }
+  },
+  "exclusions": [
+    {
+      "component": "Fuselage",
+      "backend": "vspaero",
+      "code": "GEO-INT-001",
+      "reason": "mixed VSPAERO probe rejected; lifting-only twin accepted",
+      "replacement_required": "parasite_drag_or_machline_or_semiempirical"
+    }
+  ],
+  "backends": {
+    "vspaero": {
+      "eligible": true,
+      "mode": "lifting"
+    },
+    "machline": {
+      "eligible": false,
+      "mode": null
+    },
+    "parasite_drag": {
+      "eligible": true,
+      "mode": "full_geometry"
+    },
+    "hybrid": {
+      "eligible": true,
+      "mode": "declared_sources_required"
+    }
+  },
+  "tri": {
+    "requested": false,
+    "eligible": false,
+    "status": "not_requested",
+    "reason": "TRI не передан; сертификат MachLine не выдавался"
+  },
+  "eligible_scenarios": [
+    "quick_assessment",
+    "subsonic_adh",
+    "supersonic_adh",
+    "full_adh",
+    "fixed_go_screening",
+    "fixed_go_numerical_verification",
+    "fixed_go_full_adh",
+    "fixed_tail_study",
+    "mesh_convergence",
+    "night_high_accuracy",
+    "blind_verification"
+  ],
+  "artifacts": {
+    "run_directory": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08",
+    "source_manifest": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\source_manifest.json",
+    "inventory": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\inventory\\master_inventory.json",
+    "semantic_audit": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\semantic_audit.json",
+    "native_diagnostics": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\native_diagnostics.json",
+    "transformation_plan": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\transformation_plan.json",
+    "transformation_log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\transformation_log.jsonl",
+    "geometry_deltas": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08\\geometry_deltas.json"
+  },
+  "error": null,
+  "created_at": "2026-09-09T02:06:57+03:00",
+  "certificate_id": "RMC-E7A21E0D0E2A4A15",
+  "certificate_fingerprint": "e7a21e0d0e2a4a15d6edc85dc478594366d4b96892d1a6b6780d172d1d5b449e"
+}

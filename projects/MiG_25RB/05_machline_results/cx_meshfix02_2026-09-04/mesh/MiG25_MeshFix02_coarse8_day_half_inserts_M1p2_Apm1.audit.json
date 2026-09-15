@@ -1,0 +1,268 @@
+{
+  "method": "positive_half_topology_preserving_pointed_inserts",
+  "source": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_point_open.tri",
+  "target": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_day_half_inserts_M1p2_Apm1.tri",
+  "mirror_about": "xz",
+  "crossing_faces": 0,
+  "compaction": {
+    "merged_duplicate_vertices": 0,
+    "removed_invalid_faces": 0,
+    "removed_degenerate_faces": 0,
+    "removed_duplicate_faces": 0,
+    "removed_unreferenced_vertices": 0,
+    "flipped_faces_for_consistency": 0,
+    "orientation_conflicts": 0
+  },
+  "scan_before": {
+    "M1.2_A-1": {
+      "panels": 8690,
+      "bad_panels": 10,
+      "near_limit_panels": 0,
+      "maximum_margin": 0.12247690011649104,
+      "maximum_value": 0.9558102334498244,
+      "bad_panel_ids": [
+        4398,
+        4357,
+        4152,
+        2341,
+        4429,
+        4327,
+        4311,
+        4430,
+        4473,
+        4840
+      ]
+    },
+    "M1.2_A+0": {
+      "panels": 8690,
+      "bad_panels": 10,
+      "near_limit_panels": 0,
+      "maximum_margin": 0.11782991673135446,
+      "maximum_value": 0.9511632500646878,
+      "bad_panel_ids": [
+        4398,
+        4357,
+        4152,
+        2341,
+        4429,
+        4327,
+        4311,
+        4430,
+        4840,
+        4473
+      ]
+    },
+    "M1.2_A+1": {
+      "panels": 8690,
+      "bad_panels": 9,
+      "near_limit_panels": 1,
+      "maximum_margin": 0.112893199806123,
+      "maximum_value": 0.9462265331394564,
+      "bad_panel_ids": [
+        4398,
+        4357,
+        2341,
+        4152,
+        4429,
+        4327,
+        4311,
+        4430,
+        4840
+      ]
+    }
+  },
+  "replaced_panel_count": 10,
+  "added_vertex_count": 10,
+  "added_face_count_net": 20,
+  "replacements": [
+    {
+      "panel_id": 2341,
+      "component": 1,
+      "center": [
+        64.20224602333333,
+        0.02027672949,
+        0.9240072298333333
+      ],
+      "x_offset_ft": 0.05,
+      "original_area_ft2": 0.008496419038196555,
+      "insert_area_ft2": 0.016353701755072038,
+      "area_ratio": 1.9247758004345399,
+      "maximum_projection": 0.6425647807855764
+    },
+    {
+      "panel_id": 4152,
+      "component": 3,
+      "center": [
+        65.08978195333334,
+        2.245126718333333,
+        -1.1082087224666666
+      ],
+      "x_offset_ft": -0.2,
+      "original_area_ft2": 0.15030856145169008,
+      "insert_area_ft2": 0.22854925962930028,
+      "area_ratio": 1.520533876593298,
+      "maximum_projection": 0.631286548496721
+    },
+    {
+      "panel_id": 4311,
+      "component": 3,
+      "center": [
+        65.09567889,
+        3.442617622,
+        -0.9129287600000001
+      ],
+      "x_offset_ft": -0.2,
+      "original_area_ft2": 0.11642378378220077,
+      "insert_area_ft2": 0.1834011088297298,
+      "area_ratio": 1.5752890249025624,
+      "maximum_projection": 0.6422348136107494
+    },
+    {
+      "panel_id": 4327,
+      "component": 3,
+      "center": [
+        65.08775656,
+        2.5210549409999996,
+        -1.1328872464666666
+      ],
+      "x_offset_ft": -0.1,
+      "original_area_ft2": 0.12243190421659064,
+      "insert_area_ft2": 0.14414383554547328,
+      "area_ratio": 1.1773388355577048,
+      "maximum_projection": 0.8041598967372314
+    },
+    {
+      "panel_id": 4357,
+      "component": 3,
+      "center": [
+        65.12651059666668,
+        4.045579336,
+        -0.6059387259333333
+      ],
+      "x_offset_ft": -0.1,
+      "original_area_ft2": 0.032360892079763254,
+      "insert_area_ft2": 0.051075397808093184,
+      "area_ratio": 1.5783062371149208,
+      "maximum_projection": 0.7218852439277719
+    },
+    {
+      "panel_id": 4398,
+      "component": 3,
+      "center": [
+        65.1259854,
+        4.161776553,
+        -0.4768834750666667
+      ],
+      "x_offset_ft": -0.1,
+      "original_area_ft2": 0.03832278330065588,
+      "insert_area_ft2": 0.057886266759614,
+      "area_ratio": 1.5104922391851245,
+      "maximum_projection": 0.7127966781561627
+    },
+    {
+      "panel_id": 4429,
+      "component": 3,
+      "center": [
+        65.03770550666667,
+        3.6565726463333337,
+        -0.9553712471
+      ],
+      "x_offset_ft": 0.1,
+      "original_area_ft2": 0.06409464679271332,
+      "insert_area_ft2": 0.08642473451682776,
+      "area_ratio": 1.3483923984530495,
+      "maximum_projection": 0.7627476463368508
+    },
+    {
+      "panel_id": 4430,
+      "component": 3,
+      "center": [
+        65.10299569,
+        3.8071295529999998,
+        -0.8116159246
+      ],
+      "x_offset_ft": -0.1,
+      "original_area_ft2": 0.04523108429561937,
+      "insert_area_ft2": 0.06276146485632243,
+      "area_ratio": 1.3875737412379672,
+      "maximum_projection": 0.7505740757616085
+    },
+    {
+      "panel_id": 4473,
+      "component": 3,
+      "center": [
+        64.99323903,
+        3.2466900256666666,
+        -1.1315930891333332
+      ],
+      "x_offset_ft": -0.2,
+      "original_area_ft2": 0.12555707646224956,
+      "insert_area_ft2": 0.19069572124287815,
+      "area_ratio": 1.518797081104492,
+      "maximum_projection": 0.7937815698637173
+    },
+    {
+      "panel_id": 4840,
+      "component": 3,
+      "center": [
+        65.11320182333334,
+        4.586092292333333,
+        1.4947792106666666
+      ],
+      "x_offset_ft": -0.1,
+      "original_area_ft2": 0.030149433098779894,
+      "insert_area_ft2": 0.04659851265278388,
+      "area_ratio": 1.5455850363789976,
+      "maximum_projection": 0.7289562801605809
+    }
+  ],
+  "validation": {
+    "M1.2_A-1": {
+      "panels": 8710,
+      "bad_panels": 0,
+      "near_limit_panels": 0,
+      "maximum_margin": -0.011556986873565545,
+      "maximum_value": 0.8217763464597678,
+      "bad_panel_ids": []
+    },
+    "M1.2_A+0": {
+      "panels": 8710,
+      "bad_panels": 0,
+      "near_limit_panels": 0,
+      "maximum_margin": -0.013658490450998984,
+      "maximum_value": 0.8196748428823344,
+      "bad_panel_ids": []
+    },
+    "M1.2_A+1": {
+      "panels": 8710,
+      "bad_panels": 0,
+      "near_limit_panels": 0,
+      "maximum_margin": -0.012569080605610128,
+      "maximum_value": 0.8207642527277232,
+      "bad_panel_ids": []
+    }
+  },
+  "topology": {
+    "vertices": 4578,
+    "faces": 8710,
+    "connected_components": 1,
+    "bbox_diagonal": 75.95507039562528,
+    "merge_tolerance": 7.595507039562529e-09,
+    "invalid_index_faces": 0,
+    "invalid_index_face_ids": [],
+    "repeated_vertex_faces": 0,
+    "repeated_vertex_face_ids": [],
+    "degenerate_faces": 0,
+    "degenerate_face_ids": [],
+    "duplicate_faces": 0,
+    "duplicate_face_ids": [],
+    "duplicate_vertices": 0,
+    "unreferenced_vertices": 0,
+    "boundary_edges": 446,
+    "nonmanifold_edges": 0,
+    "inconsistent_orientation_edges": 0,
+    "safe_repairs_available": 0,
+    "watertight": false,
+    "machline_safe_topology": true
+  }
+}

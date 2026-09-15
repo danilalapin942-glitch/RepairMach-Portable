@@ -1,0 +1,64 @@
+void main()
+{
+    ClearVSPModel();
+    ReadVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/cert_subset_PN/20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2/vspaero/lifting/medium/model.vsp3" );
+    Update();
+
+    SetSetFlag( "MKRWRTCFOU", 5, false );
+    if ( GetSetFlag( "MKRWRTCFOU", 5 ) )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=SET_CLEAR_NOT_APPLIED;GEOM_ID=MKRWRTCFOU;SET=5" );
+        return;
+    }
+    Print( "APPLIED;ACTION=clear_sets;GEOM_ID=MKRWRTCFOU" );
+
+    SetSetFlag( "RGIJJLNZJJ", 5, false );
+    if ( GetSetFlag( "RGIJJLNZJJ", 5 ) )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=SET_CLEAR_NOT_APPLIED;GEOM_ID=RGIJJLNZJJ;SET=5" );
+        return;
+    }
+    Print( "APPLIED;ACTION=clear_sets;GEOM_ID=RGIJJLNZJJ" );
+
+    array<string> all_geoms = FindGeoms();
+    for ( int gi = 0; gi < int( all_geoms.size() ); ++gi )
+    {
+        SetSetFlag( all_geoms[gi], 6, false );
+    }
+    SetSetName( 6, "RM_CERT_EMPTY_THICK" );
+    for ( int gi = 0; gi < int( all_geoms.size() ); ++gi )
+    {
+        if ( GetSetFlag( all_geoms[gi], 6 ) )
+        {
+            Print( "REPAIRMACH_APPLY_ABORT=EMPTY_SET_NOT_APPLIED;GEOM_ID=" + all_geoms[gi] );
+            return;
+        }
+    }
+    Print( "APPLIED;ACTION=clear_empty_thick_set;SET=6" );
+
+    Update();
+    int apply_error_count = GetNumTotalErrors();
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }
+    if ( apply_error_count > 0 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=OPENVSP_ERRORS_BEFORE_WRITE" );
+        return;
+    }
+    WriteVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/cert_subset_PN/20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2/iso/M1p7_A1_model/medium/no_VO/model.vsp3", 0 );
+    int write_error_count = GetNumTotalErrors();
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }
+    if ( write_error_count > 0 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=OPENVSP_ERRORS_DURING_WRITE" );
+        return;
+    }
+    Print( "REPAIRMACH_APPLY_OK=1" );
+}

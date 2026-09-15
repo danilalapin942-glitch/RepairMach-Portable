@@ -1,0 +1,36 @@
+void main()
+{
+    ClearVSPModel();
+    ReadVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/cert_subset_PN/20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2/machline/medium/model.vsp3" );
+    Update();
+    Print( "REPAIRMACH_INVENTORY_BEGIN" );
+    array<string> geoms = FindGeoms();
+    for ( int i = 0; i < int( geoms.size() ); ++i )
+    {
+        string gid = geoms[i];
+        vec3d mn = GetGeomBBoxMin( gid, 0, true );
+        vec3d mx = GetGeomBBoxMax( gid, 0, true );
+        Print( "GEOM;ID=" + gid + ";NAME=" + GetGeomName( gid ) + ";TYPE=" + GetGeomTypeName( gid ) + ";BMIN_X=" + mn.x() + ";BMIN_Y=" + mn.y() + ";BMIN_Z=" + mn.z() + ";BMAX_X=" + mx.x() + ";BMAX_Y=" + mx.y() + ";BMAX_Z=" + mx.z() + ";SET_1=" + GetSetFlag( gid, 4 ) + ";SET_2=" + GetSetFlag( gid, 5 ) );
+
+        array<string> parms = GetGeomParmIDs( gid );
+        for ( int pi = 0; pi < int( parms.size() ); ++pi )
+        {
+            Print( "PARM;GEOM_ID=" + gid + ";ID=" + parms[pi] + ";NAME=" + GetParmName( parms[pi] ) + ";GROUP=" + GetParmGroupName( parms[pi] ) + ";VALUE=" + GetParmVal( parms[pi] ) );
+        }
+        if ( GetGeomTypeName( gid ) == "Wing" && GetNumXSecSurfs( gid ) == 1 )
+        {
+            string xs = GetXSecSurf( gid, 0 );
+            int nx = GetNumXSec( xs );
+            if ( nx >= 2 )
+            {
+                string terminal = GetXSec( xs, nx - 1 );
+                string tip = GetXSecParm( terminal, "Tip_Chord" );
+                string root = GetXSecParm( terminal, "Root_Chord" );
+                string span = GetXSecParm( terminal, "Span" );
+                if ( ValidParm( tip ) && ValidParm( root ) && ValidParm( span ) )
+                    Print( "WING_TERMINAL;GEOM_ID=" + gid + ";XSEC_COUNT=" + nx + ";TIP_ID=" + tip + ";TIP=" + GetParmVal( tip ) + ";ROOT_ID=" + root + ";ROOT=" + GetParmVal( root ) + ";SPAN_ID=" + span + ";SPAN=" + GetParmVal( span ) );
+            }
+        }
+    }
+    Print( "REPAIRMACH_INVENTORY_END" );
+}

@@ -1,0 +1,42 @@
+ Please specify an input file:
+            /
+           /
+          /
+         /          ____
+        /          /   /
+       /     MachLine (c) 2023 USU Aerolab
+      /          /   /    v4.0
+     / _________/___/_______________
+    ( (__________________________
+     \          \   \
+      \          \   \
+       \          \   \
+        \          \___\
+         \
+
+ Got input file: day_half_variant_inputs/day_half_M1p20_Ap0_morino_local_1e5.json                                    
+
+ Reading and analyzing surface mesh
+     User has selected linear-doublet-constant-source panels.
+     Reading surface mesh in from file mesh/MiG25_MeshFix02_coarse8_day_half_common_M1p2_Apm1.tri... Done.
+     Surface mesh has    4567 vertices and    8688 panels.
+     Mesh set to mirror about xz plane.
+     Locating adjacent panels...Done. Found   13255 edges.
+     Calculating vertex geometric parameters... Done.
+
+ Initializing based on flow properties
+     Initializing flow-dependent panel properties... Done. Found       0 superinclined panels.
+     Characterizing edges...Done. Found   0 wake-shedding edges.
+     Setting up panel singularity distributions... Done.
+     Placing control points using a local offset ratio of 1.0000E-19...
+ !!! Control point placement loop failed.
+ !!! Vertex =           1
+ !!! Vertex loc =  -1.4802973659999999E-016  -7.4014868310000003E-017  -1.5793200000000001     
+ !!! Offset =   2.5188810283390090E-020
+ !!! Current cp =  -1.4800569773616267E-016  -7.4014868310000003E-017  -1.5793200000000001     
+ !!! Direction =  0.99946324995760527       -0.0000000000000000        3.2759914288370481E-002
+ !!! Number of adjacent panels =           2
+ !!! Adjacent panels:
+ panel =           1
+ panel =         203
+

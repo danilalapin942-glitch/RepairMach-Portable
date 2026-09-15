@@ -1,0 +1,14 @@
+{
+  "schema": "repairmach.geometry-transformation-plan/1.0",
+  "method_version": "RM91-GEOMETRY-CERT-1",
+  "bindings": {
+    "master_sha256": "5d8ecd50e765853043050e029d2c5571b593ead411fef9f81fa7f0e9567ddef7",
+    "policy_sha256": "f1793a545ef6745ddb350d17ae6dd04c1be4b9a957a61d9505e3ef2460e0964c",
+    "reference_sha256": "867b5886724fa4b8dd45bb50bc2f428743e001c187daf0a8ba3c9e4276334ef0",
+    "scope_sha256": "df49d95fae4263dafe647cf4df2f603ab0605370a284f802544accef8dbb24d9"
+  },
+  "actions": [],
+  "findings": [],
+  "blocked": false,
+  "plan_sha256": "58599235a24eba6d764f2381af5230e81e62a129609d665fe4614cc8ae991638"
+}

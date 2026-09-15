@@ -1,0 +1,38 @@
+ Please specify an input file:
+            /
+           /
+          /
+         /          ____
+        /          /   /
+       /     MachLine (c) 2023 USU Aerolab
+      /          /   /    v4.0
+     / _________/___/_______________
+    ( (__________________________
+     \          \   \
+      \          \   \
+       \          \   \
+        \          \___\
+         \
+
+ Got input file: day_half_variant_inputs/day_half_M1p20_Ap0_neumann.json                                             
+
+ Reading and analyzing surface mesh
+     User has selected linear-doublet-constant-source panels.
+     Reading surface mesh in from file mesh/MiG25_MeshFix02_coarse8_day_half_common_M1p2_Apm1.tri... Done.
+     Surface mesh has    4567 vertices and    8688 panels.
+     Mesh set to mirror about xz plane.
+     Locating adjacent panels...Done. Found   13255 edges.
+     Calculating vertex geometric parameters... Done.
+
+ Initializing based on flow properties
+     Initializing flow-dependent panel properties... Done. Found       0 superinclined panels.
+     Characterizing edges...Done. Found   0 wake-shedding edges.
+     Setting up panel singularity distributions... Done.
+     Placing control points at panel centroids...Done. Placed  8688 control points.
+     Calculating domains of dependence... Done.
+
+ Running solver using the neumann-mass-flux boundary-condition formulation
+     Calculating body influences... Done.
+     Solving linear system (method: FQRUP)... !!! Zero found on the diagonal of R. Upper-triangular back substitution failed. Quitting...
+
+Note: The following floating-point exceptions are signalling: IEEE_DIVIDE_BY_ZERO

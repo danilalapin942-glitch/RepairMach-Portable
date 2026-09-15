@@ -1,0 +1,12 @@
+﻿{
+    "updated_at":  "2026-09-05T04:04:44.3584407+03:00",
+    "started_at":  "2026-09-05T03:57:52.7708845+03:00",
+    "case":  "retry_coarse8_M1p20_A0_dirichlet_gmres",
+    "report":  "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\reports\\retry_coarse8_M1p20_A0_dirichlet_gmres_report.json",
+    "elapsed_seconds":  411.5885571,
+    "state":  "unreliable",
+    "log":  "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\logs\\retry_coarse8_M1p20_A0_dirichlet_gmres.log",
+    "pid":  43796,
+    "exit_code":  0,
+    "residual_norm":  0.00561476757461928
+}

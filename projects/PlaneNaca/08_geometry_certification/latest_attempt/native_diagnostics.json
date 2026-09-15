@@ -1,0 +1,202 @@
+{
+  "schema": "repairmach.geometry-native-diagnostics/1.0",
+  "inventory_valid": true,
+  "semantic_valid": true,
+  "components": [
+    {
+      "id": "RMUXLHDSMZ",
+      "name": "Fuselage",
+      "type": "Fuselage",
+      "bbox": {
+        "min": [
+          -5.92119e-16,
+          -2.3798,
+          -2.3798
+        ],
+        "max": [
+          46.93,
+          2.3798,
+          2.3798
+        ]
+      },
+      "bbox_size": [
+        46.93,
+        4.7596,
+        4.7596
+      ],
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "terminal_chord": null,
+      "limitations": [
+        "surface area, volume, self-intersection and minimum-gap tests require exported TRI/degen geometry"
+      ]
+    },
+    {
+      "id": "LQZSHZXSTY",
+      "name": "Wing",
+      "type": "Wing",
+      "bbox": {
+        "min": [
+          17.32,
+          0.0,
+          1.57941
+        ],
+        "max": [
+          39.0901,
+          16.185,
+          2.22059
+        ]
+      },
+      "bbox_size": [
+        21.7701,
+        16.185,
+        0.6411800000000001
+      ],
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "terminal_chord": {
+        "xsec_count": 2,
+        "tip_parm_id": "DUCFAWGUMKW",
+        "tip_chord": 0.213663,
+        "root_parm_id": "BOSJBCSXMYZ",
+        "root_chord": 21.3663,
+        "span_parm_id": "DXKQLYJYWBV",
+        "span": 16.185
+      },
+      "limitations": [
+        "surface area, volume, self-intersection and minimum-gap tests require exported TRI/degen geometry"
+      ]
+    },
+    {
+      "id": "NDDSSVUXPL",
+      "name": "GO",
+      "type": "Wing",
+      "bbox": {
+        "min": [
+          41.04,
+          0.0,
+          -0.06945
+        ],
+        "max": [
+          45.67,
+          8.09,
+          0.06945
+        ]
+      },
+      "bbox_size": [
+        4.630000000000003,
+        8.09,
+        0.1389
+      ],
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "terminal_chord": {
+        "xsec_count": 2,
+        "tip_parm_id": "UBFWJZSECBZ",
+        "tip_chord": 1.85,
+        "root_parm_id": "OSPORIJPGGV",
+        "root_chord": 4.63,
+        "span_parm_id": "YJUOIQODUVA",
+        "span": 8.09
+      },
+      "limitations": [
+        "surface area, volume, self-intersection and minimum-gap tests require exported TRI/degen geometry"
+      ]
+    },
+    {
+      "id": "MKRWRTCFOU",
+      "name": "VO_upper",
+      "type": "Wing",
+      "bbox": {
+        "min": [
+          35.9112,
+          7.99119,
+          1.92
+        ],
+        "max": [
+          43.832,
+          8.22881,
+          5.82
+        ]
+      },
+      "bbox_size": [
+        7.9208,
+        0.23761999999999972,
+        3.9000000000000004
+      ],
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "terminal_chord": {
+        "xsec_count": 2,
+        "tip_parm_id": "GOAQMBPVLJM",
+        "tip_chord": 0.0792079,
+        "root_parm_id": "GNHVMJMHVSV",
+        "root_chord": 7.92079,
+        "span_parm_id": "SCXTEKKNZWU",
+        "span": 3.9
+      },
+      "limitations": [
+        "surface area, volume, self-intersection and minimum-gap tests require exported TRI/degen geometry"
+      ]
+    },
+    {
+      "id": "RGIJJLNZJJ",
+      "name": "VO_lower",
+      "type": "Wing",
+      "bbox": {
+        "min": [
+          35.9112,
+          7.99119,
+          -2.02
+        ],
+        "max": [
+          43.832,
+          8.22881,
+          1.88
+        ]
+      },
+      "bbox_size": [
+        7.9208,
+        0.23761999999999972,
+        3.9
+      ],
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "terminal_chord": {
+        "xsec_count": 2,
+        "tip_parm_id": "SIODFLYXDSX",
+        "tip_chord": 0.0792079,
+        "root_parm_id": "NVLHSPMBLCP",
+        "root_chord": 7.92079,
+        "span_parm_id": "GGHGMNRMIMG",
+        "span": 3.9
+      },
+      "limitations": [
+        "surface area, volume, self-intersection and minimum-gap tests require exported TRI/degen geometry"
+      ]
+    }
+  ],
+  "openvsp_errors": [],
+  "coverage": {
+    "available": [
+      "component inventory",
+      "absolute bounding boxes",
+      "surface counts",
+      "Set membership",
+      "terminal wing chord",
+      "selected mesh and transform parameters"
+    ],
+    "requires_tri_or_degen": [
+      "area",
+      "volume",
+      "centroid",
+      "vertices",
+      "faces",
+      "minimum triangle",
+      "boundary/nonmanifold edges",
+      "normals",
+      "self intersections",
+      "intercomponent gaps"
+    ]
+  }
+}

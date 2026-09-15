@@ -1,0 +1,38 @@
+void main()
+{
+    Print( "BUILD_START" );
+    ClearVSPModel();
+    string source = "C:/MiG-25/MiG-25_Gondola_ML_MeshFix02.vsp3";
+    ReadVSPFile( source );
+    Update();
+    Print( "MODEL_LOADED" );
+
+    string analysis = "CfdMeshAnalysis";
+    SetAnalysisInputDefaults( analysis );
+    Print( "DEFAULTS_SET" );
+    SetDoubleAnalysisInput( analysis, "BaseLen", { 5.0 }, 0 );
+    SetDoubleAnalysisInput( analysis, "MinLen", { 0.2 }, 0 );
+    SetDoubleAnalysisInput( analysis, "MaxGap", { 0.03 }, 0 );
+    SetDoubleAnalysisInput( analysis, "NCircSeg", { 10.0 }, 0 );
+    SetDoubleAnalysisInput( analysis, "GrowthRatio", { 1.35 }, 0 );
+    SetDoubleAnalysisInput( analysis, "RelCurveTol", { 0.03 }, 0 );
+    SetIntAnalysisInput( analysis, "SelectedSetIndex", { 0 }, 0 );
+    SetIntAnalysisInput( analysis, "SelectedDegenSetIndex", { SET_NONE }, 0 );
+    SetIntAnalysisInput( analysis, "FACETFileFlag", { 0 }, 0 );
+    SetIntAnalysisInput( analysis, "GMSHFileFlag", { 0 }, 0 );
+    SetIntAnalysisInput( analysis, "OBJFileFlag", { 0 }, 0 );
+    SetIntAnalysisInput( analysis, "POLYFileFlag", { 0 }, 0 );
+    SetIntAnalysisInput( analysis, "STLFileFlag", { 0 }, 0 );
+    SetIntAnalysisInput( analysis, "TRIFileFlag", { 1 }, 0 );
+    SetStringAnalysisInput( analysis, "TRIFileName", { "C:/MiG-25/MiG25_MeshFix02_coarse5_closed.tri" }, 0 );
+    PrintAnalysisInputs( analysis );
+    Print( "RUN_CFD_MESH" );
+    ExecAnalysis( analysis );
+    Print( "CFD_MESH_DONE" );
+
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "API_ERROR: " + err.GetErrorString() );
+    }
+}

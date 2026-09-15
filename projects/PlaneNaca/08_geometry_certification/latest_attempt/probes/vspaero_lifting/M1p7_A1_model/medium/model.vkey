@@ -1,0 +1,25 @@
+# VSPGEOM v3 Tag Key File
+C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/cert_subset_PN/20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2/probes/vspaero_lifting/M1p7_A1_model/medium/model.vspgeom
+8
+
+# part#,geom#,surf#,gname,gid,thick,plate,copy#,geomcopy#
+1,3,0,Wing_C,LQZSHZXSTY,0,3,1,4
+2,3,1,Wing_C,LQZSHZXSTY,0,3,2,4
+3,1,0,GO_C,NDDSSVUXPL,0,3,1,2
+4,1,1,GO_C,NDDSSVUXPL,0,3,2,2
+5,2,0,VO_upper_C,MKRWRTCFOU,0,3,1,3
+6,2,1,VO_upper_C,MKRWRTCFOU,0,3,2,3
+7,0,0,VO_lower_C,RGIJJLNZJJ,0,3,1,1
+8,0,1,VO_lower_C,RGIJJLNZJJ,0,3,2,1
+
+8
+
+# tag#,part#,ssname1,ssname2,...,ssid1,ssid2,...
+1,1
+2,2
+3,3
+4,4
+5,5
+6,6
+7,7
+8,8

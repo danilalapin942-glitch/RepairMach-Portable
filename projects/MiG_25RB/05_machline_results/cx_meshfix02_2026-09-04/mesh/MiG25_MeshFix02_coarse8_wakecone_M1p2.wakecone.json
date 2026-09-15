@@ -1,0 +1,93 @@
+{
+  "source": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_open_gondola_pad020_M1p2.tri",
+  "target": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_wakecone_M1p2.tri",
+  "purpose": "watertight numerical closure; exclude listed closure components from force integration",
+  "cone_length_ft": 30.0,
+  "closure_component_ids": [
+    12,
+    13
+  ],
+  "loops": [
+    {
+      "component": 12,
+      "vertices": 59,
+      "exit_x_min": 64.67830519,
+      "exit_x_max": 65.15807848,
+      "center_y": -2.588497592772034,
+      "center_z": 0.9878244528522033,
+      "apex": [
+        95.15807848,
+        -2.588497592772034,
+        0.9878244528522033
+      ]
+    },
+    {
+      "component": 13,
+      "vertices": 63,
+      "exit_x_min": 64.52316723,
+      "exit_x_max": 65.17404473,
+      "center_y": 2.4784993926371426,
+      "center_z": 1.013386223364762,
+      "apex": [
+        95.17404473,
+        2.4784993926371426,
+        1.013386223364762
+      ]
+    }
+  ],
+  "topology_before": {
+    "vertices": 8644,
+    "faces": 17166,
+    "connected_components": 1,
+    "bbox_diagonal": 84.7068647309944,
+    "merge_tolerance": 8.47068647309944e-09,
+    "invalid_index_faces": 0,
+    "invalid_index_face_ids": [],
+    "repeated_vertex_faces": 0,
+    "repeated_vertex_face_ids": [],
+    "degenerate_faces": 0,
+    "degenerate_face_ids": [],
+    "duplicate_faces": 0,
+    "duplicate_face_ids": [],
+    "duplicate_vertices": 0,
+    "unreferenced_vertices": 0,
+    "boundary_edges": 122,
+    "nonmanifold_edges": 0,
+    "inconsistent_orientation_edges": 0,
+    "safe_repairs_available": 0,
+    "watertight": false,
+    "machline_safe_topology": true
+  },
+  "topology_after": {
+    "vertices": 8646,
+    "faces": 17288,
+    "connected_components": 1,
+    "bbox_diagonal": 105.69373880833434,
+    "merge_tolerance": 1.0569373880833435e-08,
+    "invalid_index_faces": 0,
+    "invalid_index_face_ids": [],
+    "repeated_vertex_faces": 0,
+    "repeated_vertex_face_ids": [],
+    "degenerate_faces": 0,
+    "degenerate_face_ids": [],
+    "duplicate_faces": 0,
+    "duplicate_face_ids": [],
+    "duplicate_vertices": 0,
+    "unreferenced_vertices": 0,
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "inconsistent_orientation_edges": 0,
+    "safe_repairs_available": 0,
+    "watertight": true,
+    "machline_safe_topology": true
+  },
+  "mach_1p2_scan": {
+    "panels": 17288,
+    "bad_panels": 0,
+    "near_limit_panels": 2,
+    "maximum_margin": -0.0038074069874072247,
+    "maximum_value": 0.8295259263459261,
+    "bad_panel_ids": []
+  },
+  "bad_closure_panels": 0
+}

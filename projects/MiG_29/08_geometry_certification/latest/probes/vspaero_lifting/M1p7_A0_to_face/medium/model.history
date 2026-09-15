@@ -1,0 +1,27 @@
+
+***************************************************************************************************************************************************************************************** 
+
+# Name                   Value      Units             
+Sref_                 409.6313740 Lunit^2             
+Cref_                  12.3614000 Lunit               
+Bref_                  37.2703410 Lunit               
+Xcg_                   20.4677800 Lunit               
+Ycg_                    0.0000000 Lunit               
+Zcg_                    0.0000000 Lunit               
+Mach_                   1.7000000 no_unit             
+AoA_                    0.0000000 deg                 
+Beta_                   0.0000000 deg                 
+Rho_                    0.0023770 Munit/Lunit^3       
+Vinf_                 100.0000000 Lunit/Tunit         
+Roll__Rate              0.0000000 rad/Tunit           
+Pitch_Rate              0.0000000 rad/Tunit           
+Yaw___Rate              0.0000000 rad/Tunit           
+
+
+
+Solver Case: 1 
+
+                                                                    Surface Integration Forces and Moments -->                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Wake Induced Forces -->  
+                                                                    Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Su Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake- 
+      Iter             Mach             AoA              Beta              CLo             CLi            CLtot              CDo              CDi             CDtot              CSo              CSi            CStot               L/D              E               CMox             CMoy             CMoz             CMix             CMiy             CMiz             CMxtot           CMytot           CMztot           CFox             CFoy             CFoz             CFix             CFiy             CFiz             CFxtot           CFytot           CFztot           CLwtot           CDwtot           CSwtot           CLiw             CDiw             CSiw             CFwxtot          CFwytot          CFwztot         CFiwx            CFiwy            CFiwz           LoDw              Ew              T/QS         L2 Residual      Max Residual     Wall_Time 
+               1   1.700000000000   0.000000000000   0.000000000000   0.000000396397   0.000000000000   0.000000396397   0.008622055552   0.000000000000   0.008622055552   0.000000000000   0.000000000000   0.000000000000   0.000000000000   0.000000000000   0.000000000000   0.000582717164   0.000000000000   0.000000000000   0.000000000000   0.000000000000   0.000000000000   0.000582717164   0.000000000000   0.008622055552   0.000000000000   0.000000396397   0.000000000000   0.000000000000   0.000000000000   0.008622055552   0.000000000000   0.000000396397   0.000000396397   0.008622055552   0.000000000000   0.000000000000   0.000000000000   0.000000000000   0.008622055552   0.000000000000   0.000000396397   0.000000000000   0.000000000000   0.000000000000   0.000000000000   0.000000000000   0.000000000000  -9.812864407136  -7.970236210436   1.606000000000 

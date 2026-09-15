@@ -1,0 +1,12 @@
+﻿{
+    "updated_at":  "2026-09-05T00:04:39.6392132+03:00",
+    "started_at":  "2026-09-04T23:58:12.2179236+03:00",
+    "case":  "retry_coarse8_M1p20_A0",
+    "report":  "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\reports\\retry_coarse8_M1p20_A0_report.json",
+    "elapsed_seconds":  387.4227999,
+    "state":  "unreliable",
+    "log":  "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\logs\\retry_coarse8_M1p20_A0.log",
+    "pid":  34644,
+    "exit_code":  0,
+    "residual_norm":  1227.9566819401
+}

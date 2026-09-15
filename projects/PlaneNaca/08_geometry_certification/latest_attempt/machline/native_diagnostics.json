@@ -1,0 +1,23 @@
+{
+  "vertices": 2042,
+  "faces": 4080,
+  "connected_components": 1,
+  "bbox_diagonal": 47.41025716361386,
+  "merge_tolerance": 4.741025716361387e-09,
+  "invalid_index_faces": 0,
+  "invalid_index_face_ids": [],
+  "repeated_vertex_faces": 0,
+  "repeated_vertex_face_ids": [],
+  "degenerate_faces": 0,
+  "degenerate_face_ids": [],
+  "duplicate_faces": 0,
+  "duplicate_face_ids": [],
+  "duplicate_vertices": 0,
+  "unreferenced_vertices": 0,
+  "boundary_edges": 0,
+  "nonmanifold_edges": 0,
+  "inconsistent_orientation_edges": 0,
+  "safe_repairs_available": 0,
+  "watertight": true,
+  "machline_safe_topology": true
+}

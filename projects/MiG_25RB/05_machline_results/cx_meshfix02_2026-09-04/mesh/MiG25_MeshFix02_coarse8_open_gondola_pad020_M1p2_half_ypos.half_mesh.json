@@ -1,0 +1,26 @@
+{
+  "source": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_open_gondola_pad020_M1p2.tri",
+  "target": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_open_gondola_pad020_M1p2_half_ypos.tri",
+  "side": "y >= 0",
+  "tolerance": 1e-08,
+  "source_vertices": 8644,
+  "source_faces": 17166,
+  "crossing_faces": 0,
+  "half_vertices": 4526,
+  "half_faces": 8594,
+  "boundary_edges": 458,
+  "symmetry_plane_boundary_edges": 395,
+  "physical_open_boundary_edges": 63,
+  "boundary_component_vertex_counts": [
+    63,
+    395
+  ],
+  "component_tags": {
+    "1": 2902,
+    "3": 2092,
+    "4": 1584,
+    "6": 854,
+    "8": 894,
+    "10": 268
+  }
+}

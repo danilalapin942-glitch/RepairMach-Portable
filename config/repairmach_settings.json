@@ -8,7 +8,7 @@
     "timeout_seconds": 0
   },
   "openvsp": {
-    "install_dir": null
+    "install_dir": "engines/OpenVSP"
   },
   "vspaero": {
     "fuselage_user_set": 1,

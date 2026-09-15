@@ -1,0 +1,54 @@
+# Copyright (c) 2018-2020 Uber Technologies, Inc.
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+from setuptools import setup
+from setuptools.dist import Distribution
+
+
+class BinaryDistribution(Distribution):
+    """A distribution that carries a compiled module.
+
+    The _vsp extension is built by CMake and arrives here as package data rather than through
+    ext_modules, so setuptools would otherwise take the package for pure Python and tag a wheel
+    built from it py3-none-any -- installable on any interpreter on any machine, almost all of
+    which cannot load the module.  Saying so here gets the interpreter, ABI and platform tags
+    of whichever Python builds the wheel, which is meant to be the one the module was compiled
+    against.
+    """
+
+    def has_ext_modules(self):
+        return True
+
+
+setup(
+    name='openvsp',
+    version='3.51.3',
+    packages=['openvsp'],
+    license='MIT',
+    author='Uber Technologies',
+    author_email='',
+    description='OpenVSP Python Wrapper',
+    # numpy is needed by the _vsp extension itself, which calls import_array() as it loads.
+    # Without it the module fails at import with an unreported exception rather than anything
+    # that names numpy.
+    install_requires=['degen_geom', 'utilities', 'openvsp_config', 'numpy'],
+    include_package_data=True,
+    distclass=BinaryDistribution
+)

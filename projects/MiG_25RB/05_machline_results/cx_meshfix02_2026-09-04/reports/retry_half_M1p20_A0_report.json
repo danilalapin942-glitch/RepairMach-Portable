@@ -1,0 +1,102 @@
+{
+    "info" : {
+        "generated_by" : "MachLine (c) 2023 USU Aerolab",
+        "executed" : "Sat Sep  5 05:06:40 2026"
+    },
+    "mesh_info" : {
+        "N_body_panels" : 8594,
+        "N_body_vertices" : 4526,
+        "N_wake_panels" : 0,
+        "average_characteristic_length" : 3.87298077772304E-001,
+        "max_flow_turning_angle" : 1.75988500621382E+002
+    },
+    "solver_results" : {
+        "solver_status_code" : 0,
+        "system_dimension" : 4526,
+        "timing" : {
+            "system_sorting" : 1.45653000000000E-002,
+            "preconditioner" : 2.69050000000000E-002,
+            "matrix_solver" : 5.84007900000000E+000
+        },
+        "system_lower_bandwidth" : 358,
+        "residual" : {
+            "max" : 1.00169648485091E+002,
+            "norm" : 1.31722051296918E+002
+        }
+    },
+    "pressure_calculations" : {
+        "isentropic_rule" : {
+            "max" : 1.38632870776615E+000,
+            "min" : -9.92063492063492E-001
+        },
+        "second_order_rule" : {
+            "max" : 1.41365600799289E+000,
+            "min" : -9.87740325103665E-001
+        },
+        "slender_body_rule" : {
+            "max" : 1.41267144943319E+000,
+            "min" : -9.92063492063492E-001
+        },
+        "linear_rule" : {
+            "max" : 1.41365600799289E+000,
+            "min" : -9.92063492063492E-001
+        }
+    },
+    "total_forces" : {
+        "Cx" : 2.74777809782522E-002,
+        "Cy" : 0.00000000000000E+000,
+        "Cz" : -2.87528557912408E-002
+    },
+    "total_moments" : {
+        "CMx" : 0.00000000000000E+000,
+        "CMy" : 8.93587194660501E+002,
+        "CMz" : 0.00000000000000E+000
+    },
+    "input" : {
+        "flow" : {
+            "freestream_velocity" : [
+                    1.00000000000000E+002,
+                    0.00000000000000E+000,
+                    0.00000000000000E+000
+                ],
+            "gamma" : 1.40000000000000E+000,
+            "freestream_mach_number" : 1.20000000000000E+000
+        },
+        "geometry" : {
+            "file" : "mesh/MiG25_MeshFix02_coarse8_open_gondola_pad020_M1p2_half_ypos.tri",
+            "spanwise_axis" : "+y",
+            "mirror_about" : "xz",
+            "wake_model" : {
+                "trefftz_distance" : 8.00000000000000E+001,
+                "wake_present" : false,
+                "append_wake" : false,
+                "wake_shedding_angle" : 1.50000000000000E+002
+            },
+            "reference" : {
+                "area" : 6.60904000000000E+002
+            }
+        },
+        "solver" : {
+            "formulation" : "dirichlet-morino",
+            "matrix_solver" : "FQRUP",
+            "control_point_offset" : 1.00000000000000E-004,
+            "control_point_offset_type" : "local"
+        },
+        "post_processing" : {
+            "pressure_rules" : {
+                "isentropic" : true,
+                "second-order" : true,
+                "slender-body" : true,
+                "linear" : true
+            },
+            "pressure_for_forces" : "isentropic"
+        },
+        "output" : {
+            "body_file" : "none",
+            "wake_file" : "none",
+            "control_point_file" : "none",
+            "report_file" : "reports/retry_half_M1p20_A0_report.json"
+        }
+    },
+    "total_runtime" : 7.97350000000000E+001
+}

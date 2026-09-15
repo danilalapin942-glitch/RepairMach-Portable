@@ -1,0 +1,54 @@
+{
+  "schema": "repairmach.geometry-certification-run/1.0",
+  "method_version": "RM91-GEOMETRY-CERT-1",
+  "project": "MiG_29_final",
+  "created_at": "2026-09-09T09:02:29+03:00",
+  "master": {
+    "path": "C:\\RepairMach-Portable\\projects\\MiG_29\\00_original\\vsp\\RepairMach91_M160_M170.vsp3",
+    "sha256": "4caecd4a0015736a3506c88e57eead665a5a0051b7f1bcd01469cb43f16e974d",
+    "canonical_sha256": "44f4f8286458939b7169ddaebbf0c24d42a9cd44ef79c5121a44159e159f4cda",
+    "size_bytes": 461998,
+    "frozen_snapshot": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_090229_MiG_29_final_RepairMach91_M160_M170\\frozen_master.vsp3"
+  },
+  "bindings": {
+    "policy_sha256": "107c1819939dc534f330f033718b40379a0e229515432f07a7051fc8050f6149",
+    "reference_sha256": "6025158ac0dd8748e4b01affaa38789bfa5bd6e05e8cff4e5664844c336a2344",
+    "scope_sha256": "df49d95fae4263dafe647cf4df2f603ab0605370a284f802544accef8dbb24d9"
+  },
+  "reference": {
+    "area": 409.631374,
+    "cref": 12.3614,
+    "bref": 37.270341,
+    "center": [
+      20.46778,
+      0.0,
+      0.0
+    ]
+  },
+  "scope": {
+    "mach_intervals": [
+      [
+        0.0,
+        0.8
+      ],
+      [
+        1.2,
+        2.2
+      ]
+    ],
+    "alpha_deg": [
+      0.0,
+      5.0
+    ],
+    "beta_deg": 0.0,
+    "horizontal_tail": {
+      "mode": "fixed",
+      "geometry_name": "GO",
+      "incidence_deg": 0.0
+    }
+  },
+  "status": "complete",
+  "certificate": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_090229_MiG_29_final_RepairMach91_M160_M170\\certificate.json",
+  "certificate_id": "RMC-2B1288DC8BB5ACB1",
+  "verdict": "PASS_WITH_DECLARED_EXCLUSIONS"
+}

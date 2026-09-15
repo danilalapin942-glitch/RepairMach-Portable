@@ -1,0 +1,120 @@
+{
+  "method": "common_M1p2_alpha_envelope_after_minimal_Point_closure_strip",
+  "source": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_point_open_M1p2.tri",
+  "target": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_day_common_M1p2_Apm1.tri",
+  "removed_panel_count": 4,
+  "removed_area_ft2": 0.49967995595313075,
+  "removed_area_fraction_Sref": 0.0007560552757331333,
+  "removed_panels": [
+    {
+      "panel_id": 7201,
+      "component": 2,
+      "center": [
+        65.10734722,
+        -3.442618570333334,
+        -0.9129261895999999
+      ],
+      "area_ft2": 0.12258747195852963,
+      "trigger_alphas_deg": [
+        -1.0
+      ]
+    },
+    {
+      "panel_id": 7362,
+      "component": 2,
+      "center": [
+        64.98824591666666,
+        -3.2466904986666667,
+        -1.1315905636
+      ],
+      "area_ft2": 0.1272519553949293,
+      "trigger_alphas_deg": [
+        -1.0
+      ]
+    },
+    {
+      "panel_id": 9371,
+      "component": 3,
+      "center": [
+        65.10734555666667,
+        3.442617622,
+        -0.9129287600000001
+      ],
+      "area_ft2": 0.12258797232287404,
+      "trigger_alphas_deg": [
+        -1.0
+      ]
+    },
+    {
+      "panel_id": 9530,
+      "component": 3,
+      "center": [
+        64.98823903,
+        3.2466900256666666,
+        -1.1315930891333332
+      ],
+      "area_ft2": 0.12725255627679777,
+      "trigger_alphas_deg": [
+        -1.0
+      ]
+    }
+  ],
+  "compaction": {
+    "merged_duplicate_vertices": 0,
+    "removed_invalid_faces": 0,
+    "removed_degenerate_faces": 0,
+    "removed_duplicate_faces": 0,
+    "removed_unreferenced_vertices": 0,
+    "flipped_faces_for_consistency": 0,
+    "orientation_conflicts": 0
+  },
+  "topology": {
+    "vertices": 8724,
+    "faces": 17343,
+    "connected_components": 1,
+    "bbox_diagonal": 84.7068647309944,
+    "merge_tolerance": 8.47068647309944e-09,
+    "invalid_index_faces": 0,
+    "invalid_index_face_ids": [],
+    "repeated_vertex_faces": 0,
+    "repeated_vertex_face_ids": [],
+    "degenerate_faces": 0,
+    "degenerate_face_ids": [],
+    "duplicate_faces": 0,
+    "duplicate_face_ids": [],
+    "duplicate_vertices": 0,
+    "unreferenced_vertices": 0,
+    "boundary_edges": 105,
+    "nonmanifold_edges": 0,
+    "inconsistent_orientation_edges": 0,
+    "safe_repairs_available": 0,
+    "watertight": false,
+    "machline_safe_topology": true
+  },
+  "validation": {
+    "M1.2_A-1": {
+      "panels": 17343,
+      "bad_panels": 0,
+      "near_limit_panels": 8,
+      "maximum_margin": -0.004641693723154261,
+      "maximum_value": 0.8286916396101791,
+      "bad_panel_ids": []
+    },
+    "M1.2_A+0": {
+      "panels": 17343,
+      "bad_panels": 0,
+      "near_limit_panels": 5,
+      "maximum_margin": -0.0038074069874072247,
+      "maximum_value": 0.8295259263459261,
+      "bad_panel_ids": []
+    },
+    "M1.2_A+1": {
+      "panels": 17343,
+      "bad_panels": 0,
+      "near_limit_panels": 6,
+      "maximum_margin": -0.0032258018846232916,
+      "maximum_value": 0.8301075314487101,
+      "bad_panel_ids": []
+    }
+  }
+}

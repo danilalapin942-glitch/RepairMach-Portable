@@ -1,0 +1,172 @@
+int main()
+{
+    int failure = 0;
+
+    // Projecting a point back onto the surface it came from should land where it
+    // started, so the offsets printed below are the check.  Tolerance is loose
+    // enough for the projection solver but tight enough to catch a real break.
+    double proj_tol = 1e-6;
+
+    // Add Pod Geom
+    string geom_id = AddGeom( "POD", "" );
+
+    int surf_indx = 0;
+
+    double u = 0.12345;
+    double w = 0.67890;
+
+    vec3d surf_pt = CompPnt01( geom_id, surf_indx, u, w );
+    vec3d pt = surf_pt;
+
+    pt.offset_y( -5.0 );
+
+    double u_out, w_out;
+
+    double idist = AxisProjPnt01( geom_id, surf_indx, Y_DIR, pt, u_out, w_out);
+    vec3d p_out = CompPnt01( geom_id, surf_indx, u_out, w_out );
+
+    Print( "AxisProjPnt01" );
+	Print( "iDist " + idist + " u_out " + u_out + " w_out " + w_out );
+    Print( "3D Offset ", false);
+	Print( surf_pt - p_out );
+
+    if ( ( surf_pt - p_out ).mag() > proj_tol )
+    {
+        Print( "FAIL AxisProjPnt01 did not recover the original point" );
+        failure++;
+    }
+
+    int surf_indx_out;
+
+    idist = AxisProjPnt01I( geom_id, Y_DIR, pt, surf_indx_out, u_out, w_out );
+    p_out = CompPnt01( geom_id, surf_indx, u_out, w_out );
+
+    Print( "AxisProjPnt01I" );
+	Print( "iDist " + idist + " u_out " + u_out + " w_out " + w_out + " surf_index " + surf_indx_out );
+    Print( "3D Offset ", false);
+	Print( surf_pt - p_out );
+
+    if ( ( surf_pt - p_out ).mag() > proj_tol )
+    {
+        Print( "FAIL AxisProjPnt01I did not recover the original point" );
+        failure++;
+    }
+    if ( surf_indx_out != surf_indx )
+    {
+        Print( "FAIL AxisProjPnt01I returned surface " + surf_indx_out + ", expected " + surf_indx );
+        failure++;
+    }
+
+    double u0 = u + 0.01234;
+    double w0 = w - 0.05678;
+
+    Print( "AxisProjPnt01Guess" );
+    idist = AxisProjPnt01Guess( geom_id, surf_indx, Y_DIR, pt, u0, w0, u_out, w_out );
+    p_out = CompPnt01( geom_id, surf_indx, u_out, w_out );
+
+    Print( "iDist " + idist + " u_out " + u_out + " w_out " + w_out + " surf_index " + surf_indx_out );
+    Print( "3D Offset ", false);
+	Print( surf_pt - p_out );
+
+    if ( ( surf_pt - p_out ).mag() > proj_tol )
+    {
+        Print( "FAIL AxisProjPnt01Guess did not recover the original point" );
+        failure++;
+    }
+
+    Print( "Vector Tests" );
+    int n = 5;
+
+    array<double> uvec, wvec;
+
+    uvec.resize( n );
+    wvec.resize( n );
+
+    for( int i = 0 ; i < n ; i++ )
+    {
+        uvec[i] = (i+1)*1.0/(n+1);
+
+        wvec[i] = (n-i)*1.0/(n+1);
+    }
+
+    array< vec3d > ptvec = CompVecPnt01( geom_id, surf_indx, uvec, wvec );
+
+    for( int i = 0 ; i < n ; i++ )
+    {
+        ptvec[i].offset_y( -5.0 );
+    }
+
+    array<double> uoutv, woutv, doutv;
+
+
+    AxisProjVecPnt01( geom_id, surf_indx, Y_DIR, ptvec, uoutv, woutv, doutv );
+    array< vec3d > poutv = CompVecPnt01( geom_id, surf_indx, uoutv, woutv );
+
+    // Some of these outputs are expected to be non-zero because the projected point is on the opposite side of
+    // the pod from the originally computed point.  I.e. there were multiple solutions and the original point
+    // is not the closest intersection point.  We could offset those points in the +Y direction instead of -Y.
+    //
+    // Because a non-zero delta is legitimate here, this loop only checks that a
+    // result came back for every point.  The seeded variant below is the one
+    // that has to land on the original solution.
+
+    Print( "AxisProjVecPnt01" );
+    for( int i = 0 ; i < n ; i++ )
+    {
+	    Print( i, false );
+	    Print( "U delta ", false );
+	    Print( uvec[i] - uoutv[i], false );
+	    Print( "W delta ", false );
+	    Print( wvec[i] - woutv[i] );
+    }
+
+    if ( int( uoutv.length() ) != n || int( woutv.length() ) != n || int( doutv.length() ) != n )
+    {
+        Print( "FAIL AxisProjVecPnt01 returned " + uoutv.length() + " results, expected " + n );
+        failure++;
+    }
+
+
+    array<double> u0v, w0v;
+    u0v.resize( n );
+    w0v.resize( n );
+
+    for( int i = 0 ; i < n ; i++ )
+    {
+        u0v[i] = uvec[i] + 0.01234;
+        w0v[i] = wvec[i] - 0.05678;
+    }
+
+    AxisProjVecPnt01Guess( geom_id, surf_indx, Y_DIR, ptvec, u0v, w0v, uoutv, woutv, doutv );
+    poutv = CompVecPnt01( geom_id, surf_indx, uoutv, woutv );
+
+    Print( "AxisProjVecPnt01Guess" );
+    for( int i = 0 ; i < n ; i++ )
+    {
+	    Print( i, false );
+	    Print( "U delta ", false );
+	    Print( uvec[i] - uoutv[i], false );
+	    Print( "W delta ", false );
+	    Print( wvec[i] - woutv[i] );
+    }
+
+    // Seeded from the original parameters, so these must converge back to them.
+    for( int i = 0 ; i < n ; i++ )
+    {
+        if ( !closeTo( uvec[i], uoutv[i], proj_tol ) || !closeTo( wvec[i], woutv[i], proj_tol ) )
+        {
+            Print( "FAIL AxisProjVecPnt01Guess point " + i + " did not converge to its seed" );
+            failure++;
+        }
+    }
+
+    //==== Check For API Errors ====//
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( err.GetErrorString() );
+        failure++;
+    }
+
+    return failure;
+}

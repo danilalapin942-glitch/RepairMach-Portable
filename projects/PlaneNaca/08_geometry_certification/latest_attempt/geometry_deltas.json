@@ -1,0 +1,692 @@
+{
+  "schema": "repairmach.geometry-deltas/1.0",
+  "reference": {
+    "area": 349.2723,
+    "cref": 14.38667,
+    "bref": 32.37,
+    "center": [
+      29.55,
+      0.0,
+      0.0
+    ]
+  },
+  "summary": {
+    "changed_openvsp_parameters": 0,
+    "changed_set_assignments": 0,
+    "estimated_delta_s_over_sref": 0,
+    "delta_v_over_v": null,
+    "delta_b_over_b": null,
+    "delta_c_over_c": null,
+    "cg_shift_over_cref": 0.0,
+    "max_parameter_displacement_over_cref": 0.0,
+    "changed_vertices": null,
+    "changed_panel_fraction": null,
+    "added_faces": null,
+    "removed_faces": null,
+    "note": "Unavailable values are explicitly null. They must be populated from a TRI/degen comparison before being used as acceptance evidence."
+  },
+  "actions": [],
+  "exclusions": [],
+  "twins": {
+    "vspaero_mixed": {
+      "component_count_before": 5,
+      "component_count_after": 5,
+      "connected_region_delta": "not_available_from_vsp_api_inventory",
+      "surface_count_before": 0,
+      "surface_count_after": 0,
+      "components": [
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              17.32,
+              0.0,
+              1.57941
+            ],
+            "max": [
+              39.0901,
+              16.185,
+              2.22059
+            ]
+          },
+          "after": {
+            "min": [
+              17.32,
+              0.0,
+              1.57941
+            ],
+            "max": [
+              39.0901,
+              16.185,
+              2.22059
+            ]
+          },
+          "geom_id": "LQZSHZXSTY",
+          "name": "Wing",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              35.9112,
+              7.99119,
+              1.92
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              5.82
+            ]
+          },
+          "after": {
+            "min": [
+              35.9112,
+              7.99119,
+              1.92
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              5.82
+            ]
+          },
+          "geom_id": "MKRWRTCFOU",
+          "name": "VO_upper",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              41.04,
+              0.0,
+              -0.06945
+            ],
+            "max": [
+              45.67,
+              8.09,
+              0.06945
+            ]
+          },
+          "after": {
+            "min": [
+              41.04,
+              0.0,
+              -0.06945
+            ],
+            "max": [
+              45.67,
+              8.09,
+              0.06945
+            ]
+          },
+          "geom_id": "NDDSSVUXPL",
+          "name": "GO",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              35.9112,
+              7.99119,
+              -2.02
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              1.88
+            ]
+          },
+          "after": {
+            "min": [
+              35.9112,
+              7.99119,
+              -2.02
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              1.88
+            ]
+          },
+          "geom_id": "RGIJJLNZJJ",
+          "name": "VO_lower",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              -5.92119e-16,
+              -2.3798,
+              -2.3798
+            ],
+            "max": [
+              46.93,
+              2.3798,
+              2.3798
+            ]
+          },
+          "after": {
+            "min": [
+              -5.92119e-16,
+              -2.3798,
+              -2.3798
+            ],
+            "max": [
+              46.93,
+              2.3798,
+              2.3798
+            ]
+          },
+          "geom_id": "RMUXLHDSMZ",
+          "name": "Fuselage",
+          "presence_changed": false
+        }
+      ],
+      "max_bbox_displacement_over_cref": 0.0
+    },
+    "vspaero_lifting": {
+      "component_count_before": 5,
+      "component_count_after": 5,
+      "connected_region_delta": "not_available_from_vsp_api_inventory",
+      "surface_count_before": 0,
+      "surface_count_after": 0,
+      "components": [
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              17.32,
+              0.0,
+              1.57941
+            ],
+            "max": [
+              39.0901,
+              16.185,
+              2.22059
+            ]
+          },
+          "after": {
+            "min": [
+              17.32,
+              0.0,
+              1.57941
+            ],
+            "max": [
+              39.0901,
+              16.185,
+              2.22059
+            ]
+          },
+          "geom_id": "LQZSHZXSTY",
+          "name": "Wing",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              35.9112,
+              7.99119,
+              1.92
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              5.82
+            ]
+          },
+          "after": {
+            "min": [
+              35.9112,
+              7.99119,
+              1.92
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              5.82
+            ]
+          },
+          "geom_id": "MKRWRTCFOU",
+          "name": "VO_upper",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              41.04,
+              0.0,
+              -0.06945
+            ],
+            "max": [
+              45.67,
+              8.09,
+              0.06945
+            ]
+          },
+          "after": {
+            "min": [
+              41.04,
+              0.0,
+              -0.06945
+            ],
+            "max": [
+              45.67,
+              8.09,
+              0.06945
+            ]
+          },
+          "geom_id": "NDDSSVUXPL",
+          "name": "GO",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              35.9112,
+              7.99119,
+              -2.02
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              1.88
+            ]
+          },
+          "after": {
+            "min": [
+              35.9112,
+              7.99119,
+              -2.02
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              1.88
+            ]
+          },
+          "geom_id": "RGIJJLNZJJ",
+          "name": "VO_lower",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              -5.92119e-16,
+              -2.3798,
+              -2.3798
+            ],
+            "max": [
+              46.93,
+              2.3798,
+              2.3798
+            ]
+          },
+          "after": {
+            "min": [
+              -5.92119e-16,
+              -2.3798,
+              -2.3798
+            ],
+            "max": [
+              46.93,
+              2.3798,
+              2.3798
+            ]
+          },
+          "geom_id": "RMUXLHDSMZ",
+          "name": "Fuselage",
+          "presence_changed": false
+        }
+      ],
+      "max_bbox_displacement_over_cref": 0.0
+    },
+    "machline": {
+      "component_count_before": 5,
+      "component_count_after": 5,
+      "connected_region_delta": "not_available_from_vsp_api_inventory",
+      "surface_count_before": 0,
+      "surface_count_after": 0,
+      "components": [
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              17.32,
+              0.0,
+              1.57941
+            ],
+            "max": [
+              39.0901,
+              16.185,
+              2.22059
+            ]
+          },
+          "after": {
+            "min": [
+              17.32,
+              0.0,
+              1.57941
+            ],
+            "max": [
+              39.0901,
+              16.185,
+              2.22059
+            ]
+          },
+          "geom_id": "LQZSHZXSTY",
+          "name": "Wing",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              35.9112,
+              7.99119,
+              1.92
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              5.82
+            ]
+          },
+          "after": {
+            "min": [
+              35.9112,
+              7.99119,
+              1.92
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              5.82
+            ]
+          },
+          "geom_id": "MKRWRTCFOU",
+          "name": "VO_upper",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              41.04,
+              0.0,
+              -0.06945
+            ],
+            "max": [
+              45.67,
+              8.09,
+              0.06945
+            ]
+          },
+          "after": {
+            "min": [
+              41.04,
+              0.0,
+              -0.06945
+            ],
+            "max": [
+              45.67,
+              8.09,
+              0.06945
+            ]
+          },
+          "geom_id": "NDDSSVUXPL",
+          "name": "GO",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              35.9112,
+              7.99119,
+              -2.02
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              1.88
+            ]
+          },
+          "after": {
+            "min": [
+              35.9112,
+              7.99119,
+              -2.02
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              1.88
+            ]
+          },
+          "geom_id": "RGIJJLNZJJ",
+          "name": "VO_lower",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              -5.92119e-16,
+              -2.3798,
+              -2.3798
+            ],
+            "max": [
+              46.93,
+              2.3798,
+              2.3798
+            ]
+          },
+          "after": {
+            "min": [
+              -5.92119e-16,
+              -2.3798,
+              -2.3798
+            ],
+            "max": [
+              46.93,
+              2.3798,
+              2.3798
+            ]
+          },
+          "geom_id": "RMUXLHDSMZ",
+          "name": "Fuselage",
+          "presence_changed": false
+        }
+      ],
+      "max_bbox_displacement_over_cref": 0.0
+    },
+    "parasite": {
+      "component_count_before": 5,
+      "component_count_after": 5,
+      "connected_region_delta": "not_available_from_vsp_api_inventory",
+      "surface_count_before": 0,
+      "surface_count_after": 0,
+      "components": [
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              17.32,
+              0.0,
+              1.57941
+            ],
+            "max": [
+              39.0901,
+              16.185,
+              2.22059
+            ]
+          },
+          "after": {
+            "min": [
+              17.32,
+              0.0,
+              1.57941
+            ],
+            "max": [
+              39.0901,
+              16.185,
+              2.22059
+            ]
+          },
+          "geom_id": "LQZSHZXSTY",
+          "name": "Wing",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              35.9112,
+              7.99119,
+              1.92
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              5.82
+            ]
+          },
+          "after": {
+            "min": [
+              35.9112,
+              7.99119,
+              1.92
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              5.82
+            ]
+          },
+          "geom_id": "MKRWRTCFOU",
+          "name": "VO_upper",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              41.04,
+              0.0,
+              -0.06945
+            ],
+            "max": [
+              45.67,
+              8.09,
+              0.06945
+            ]
+          },
+          "after": {
+            "min": [
+              41.04,
+              0.0,
+              -0.06945
+            ],
+            "max": [
+              45.67,
+              8.09,
+              0.06945
+            ]
+          },
+          "geom_id": "NDDSSVUXPL",
+          "name": "GO",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              35.9112,
+              7.99119,
+              -2.02
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              1.88
+            ]
+          },
+          "after": {
+            "min": [
+              35.9112,
+              7.99119,
+              -2.02
+            ],
+            "max": [
+              43.832,
+              8.22881,
+              1.88
+            ]
+          },
+          "geom_id": "RGIJJLNZJJ",
+          "name": "VO_lower",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              -5.92119e-16,
+              -2.3798,
+              -2.3798
+            ],
+            "max": [
+              46.93,
+              2.3798,
+              2.3798
+            ]
+          },
+          "after": {
+            "min": [
+              -5.92119e-16,
+              -2.3798,
+              -2.3798
+            ],
+            "max": [
+              46.93,
+              2.3798,
+              2.3798
+            ]
+          },
+          "geom_id": "RMUXLHDSMZ",
+          "name": "Fuselage",
+          "presence_changed": false
+        }
+      ],
+      "max_bbox_displacement_over_cref": 0.0
+    }
+  }
+}

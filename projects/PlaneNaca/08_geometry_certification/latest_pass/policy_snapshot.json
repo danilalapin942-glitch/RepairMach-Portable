@@ -1,0 +1,132 @@
+{
+  "schema": "repairmach.geometry-certification-policy/1.0",
+  "method_version": "RM91-GEOMETRY-CERT-1",
+  "semantics": {
+    "roles": {
+      "Wing": "thin",
+      "Fuselage": "thick",
+      "GO": "thin",
+      "VO": "thin",
+      "Gondola": "thick"
+    },
+    "required_exact": [
+      "Wing",
+      "Fuselage"
+    ],
+    "aliases": {},
+    "unknown_is_blocker": true,
+    "declared_exclusions": []
+  },
+  "sets": {
+    "thick_user_set": 1,
+    "thin_user_set": 2,
+    "empty_thick_user_set": 3
+  },
+  "scope": {
+    "mach_intervals": [
+      [
+        0.0,
+        0.8
+      ],
+      [
+        1.2,
+        2.2
+      ]
+    ],
+    "alpha_deg": [
+      0.0,
+      5.0
+    ],
+    "beta_deg": 0.0,
+    "horizontal_tail": {
+      "mode": "fixed",
+      "geometry_name": "GO",
+      "incidence_deg": 0.0
+    }
+  },
+  "regularization": {
+    "terminal_chord": {
+      "zero_ratio": 1e-06,
+      "floor_root_ratio": 0.01,
+      "max_area_delta_fraction": 0.01
+    },
+    "offsets": {
+      "coincident_tolerance_cref": 1e-06,
+      "default_delta_cref": 0.0015,
+      "max_delta_cref": 0.002
+    },
+    "explicit_offsets": [],
+    "budgets": {
+      "max_area_delta_fraction": 0.01,
+      "max_displacement_over_cref": 0.002
+    }
+  },
+  "mesh_levels": {
+    "coarse": {
+      "thin_tess_w": 33,
+      "thin_sect_tess_u": 6,
+      "thin_tess_u": 12,
+      "thick_tess_w": 21,
+      "thick_sect_tess_u": 6,
+      "thick_tess_u": 31
+    },
+    "medium": {
+      "thin_tess_w": 49,
+      "thin_sect_tess_u": 10,
+      "thin_tess_u": 16,
+      "thick_tess_w": 31,
+      "thick_sect_tess_u": 10,
+      "thick_tess_u": 45
+    },
+    "fine": {
+      "thin_tess_w": 65,
+      "thin_sect_tess_u": 14,
+      "thin_tess_u": 20,
+      "thick_tess_w": 41,
+      "thick_sect_tess_u": 14,
+      "thick_tess_u": 61
+    }
+  },
+  "convergence": {
+    "relative_tolerance": 0.05,
+    "absolute_floor": 1e-06,
+    "quantities": [
+      "CLtot",
+      "CDtot"
+    ]
+  },
+  "probes": {
+    "openvsp_load": {
+      "enabled": true,
+      "timeout_seconds": 180
+    },
+    "vspaero": {
+      "enabled": true,
+      "mach": 0.8,
+      "alpha_deg": 1.0,
+      "timeout_seconds": 600,
+      "ncpu": 4,
+      "fallback_to_lifting": true
+    }
+  },
+  "machline": {
+    "max_changed_panels": 100,
+    "max_changed_fraction": 0.005,
+    "require_final_bad_zero": true,
+    "require_no_good_panel_regression": true,
+    "automatic_vertex_repair": false
+  },
+  "eligible_scenarios": [
+    "quick_assessment",
+    "subsonic_adh",
+    "supersonic_adh",
+    "full_adh",
+    "fixed_go_screening",
+    "fixed_go_numerical_verification",
+    "fixed_go_full_adh",
+    "fixed_tail_study",
+    "mesh_convergence",
+    "night_high_accuracy",
+    "blind_verification"
+  ]
+}

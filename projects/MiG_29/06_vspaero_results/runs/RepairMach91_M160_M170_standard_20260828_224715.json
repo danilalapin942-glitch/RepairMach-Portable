@@ -1,0 +1,293 @@
+{
+  "schema": "repairmach.vspaero-standard-study/1.0",
+  "repairmach_version": "9.1",
+  "scenario_id": "fixed_tail_study",
+  "scenario_title": "АДХ с заданным углом ГО",
+  "source_vsp3": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\overnight_refinement_2026-08-27\\vspaero_extension\\RepairMach91_M160_M170.vsp3",
+  "imported_vsp3": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\00_original\\vsp\\RepairMach91_M160_M170_20260828_224715.vsp3",
+  "standard": {
+    "mach_step": 0.1,
+    "alpha_start_deg": 0.0,
+    "alpha_end_deg": 5.0,
+    "alpha_step_deg": 1.0,
+    "excluded_transonic_interval": [
+      0.9,
+      1.1
+    ],
+    "horizontal_tail": {
+      "mode": "fixed_incidence",
+      "geometry_name": "GO",
+      "incidence_deg": 0.0
+    },
+    "acceptance_criteria": null
+  },
+  "derived_outputs": {
+    "cy_alpha": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\runs\\RepairMach91_M160_M170_standard_20260828_224715_cy_alpha.json",
+    "cy_alpha_status": "completed",
+    "postprocess_errors": []
+  },
+  "runs": [
+    {
+      "schema": "repairmach.vspaero-run/1.0",
+      "repairmach_version": "9.1",
+      "scenario_id": "fixed_tail_study",
+      "preset": "tail_M0p8",
+      "source_vsp3": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\overnight_refinement_2026-08-27\\vspaero_extension\\RepairMach91_M160_M170.vsp3",
+      "imported_vsp3": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\00_original\\vsp\\RepairMach91_M160_M170_20260828_224715.vsp3",
+      "working_vsp3": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\runs\\RepairMach91_M160_M170_tail_M0p8_20260828_224715\\model.vsp3",
+      "sets": {
+        "fuselage_and_nacelles": {
+          "user_set": 1,
+          "api_index": 4
+        },
+        "wing_and_empennage": {
+          "user_set": 2,
+          "api_index": 5
+        }
+      },
+      "conditions": {
+        "mach": {
+          "start": 0.8,
+          "end": 0.8,
+          "points": 1,
+          "step": 0.0
+        },
+        "alpha_deg": {
+          "start": 0.0,
+          "end": 5.0,
+          "points": 6,
+          "step": 1.0
+        },
+        "beta_deg": 0.0,
+        "horizontal_tail": {
+          "mode": "fixed_incidence",
+          "geometry_name": "GO",
+          "incidence_deg": 0.0
+        }
+      },
+      "reference": {
+        "area": 409.631374,
+        "cref": 12.3614,
+        "bref": 37.270341,
+        "center": [
+          20.46778,
+          0.0,
+          0.0
+        ]
+      },
+      "outputs": {
+        "results_csv": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\csv\\RepairMach91_M160_M170_tail_M0p8_20260828_224715.csv",
+        "set_validation": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\runs\\RepairMach91_M160_M170_tail_M0p8_20260828_224715\\set_validation.json",
+        "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\logs\\RepairMach91_M160_M170_tail_M0p8_20260828_224715.log",
+        "run_directory": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\runs\\RepairMach91_M160_M170_tail_M0p8_20260828_224715",
+        "polar": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\polars\\RepairMach91_M160_M170_tail_M0p8_20260828_224715.polar"
+      },
+      "status": "completed",
+      "vspscript_return_code": 0,
+      "component_name_validation": {
+        "valid": true,
+        "recognized": [
+          {
+            "name": "Fuselage",
+            "base": "Fuselage"
+          },
+          {
+            "name": "Gondola",
+            "base": "Gondola"
+          },
+          {
+            "name": "Wing",
+            "base": "Wing"
+          },
+          {
+            "name": "GO",
+            "base": "GO"
+          },
+          {
+            "name": "VO",
+            "base": "VO"
+          }
+        ],
+        "unknown": [],
+        "errors": [],
+        "warnings": []
+      },
+      "manifest_path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\runs\\RepairMach91_M160_M170_tail_M0p8_20260828_224715\\run_manifest.json"
+    },
+    {
+      "schema": "repairmach.vspaero-run/1.0",
+      "repairmach_version": "9.1",
+      "scenario_id": "fixed_tail_study",
+      "preset": "tail_M1p2",
+      "source_vsp3": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\overnight_refinement_2026-08-27\\vspaero_extension\\RepairMach91_M160_M170.vsp3",
+      "imported_vsp3": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\00_original\\vsp\\RepairMach91_M160_M170_20260828_224715.vsp3",
+      "working_vsp3": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\runs\\RepairMach91_M160_M170_tail_M1p2_20260828_224715\\model.vsp3",
+      "sets": {
+        "fuselage_and_nacelles": {
+          "user_set": 1,
+          "api_index": 4
+        },
+        "wing_and_empennage": {
+          "user_set": 2,
+          "api_index": 5
+        }
+      },
+      "conditions": {
+        "mach": {
+          "start": 1.2,
+          "end": 1.2,
+          "points": 1,
+          "step": 0.0
+        },
+        "alpha_deg": {
+          "start": 0.0,
+          "end": 5.0,
+          "points": 6,
+          "step": 1.0
+        },
+        "beta_deg": 0.0,
+        "horizontal_tail": {
+          "mode": "fixed_incidence",
+          "geometry_name": "GO",
+          "incidence_deg": 0.0
+        }
+      },
+      "reference": {
+        "area": 409.631374,
+        "cref": 12.3614,
+        "bref": 37.270341,
+        "center": [
+          20.46778,
+          0.0,
+          0.0
+        ]
+      },
+      "outputs": {
+        "results_csv": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\csv\\RepairMach91_M160_M170_tail_M1p2_20260828_224715.csv",
+        "set_validation": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\runs\\RepairMach91_M160_M170_tail_M1p2_20260828_224715\\set_validation.json",
+        "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\logs\\RepairMach91_M160_M170_tail_M1p2_20260828_224715.log",
+        "run_directory": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\runs\\RepairMach91_M160_M170_tail_M1p2_20260828_224715",
+        "polar": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\polars\\RepairMach91_M160_M170_tail_M1p2_20260828_224715.polar"
+      },
+      "status": "completed",
+      "vspscript_return_code": 0,
+      "component_name_validation": {
+        "valid": true,
+        "recognized": [
+          {
+            "name": "Fuselage",
+            "base": "Fuselage"
+          },
+          {
+            "name": "Gondola",
+            "base": "Gondola"
+          },
+          {
+            "name": "Wing",
+            "base": "Wing"
+          },
+          {
+            "name": "GO",
+            "base": "GO"
+          },
+          {
+            "name": "VO",
+            "base": "VO"
+          }
+        ],
+        "unknown": [],
+        "errors": [],
+        "warnings": []
+      },
+      "manifest_path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\runs\\RepairMach91_M160_M170_tail_M1p2_20260828_224715\\run_manifest.json"
+    },
+    {
+      "schema": "repairmach.vspaero-run/1.0",
+      "repairmach_version": "9.1",
+      "scenario_id": "fixed_tail_study",
+      "preset": "tail_M1p7",
+      "source_vsp3": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\overnight_refinement_2026-08-27\\vspaero_extension\\RepairMach91_M160_M170.vsp3",
+      "imported_vsp3": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\00_original\\vsp\\RepairMach91_M160_M170_20260828_224715.vsp3",
+      "working_vsp3": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\runs\\RepairMach91_M160_M170_tail_M1p7_20260828_224715\\model.vsp3",
+      "sets": {
+        "fuselage_and_nacelles": {
+          "user_set": 1,
+          "api_index": 4
+        },
+        "wing_and_empennage": {
+          "user_set": 2,
+          "api_index": 5
+        }
+      },
+      "conditions": {
+        "mach": {
+          "start": 1.7,
+          "end": 1.7,
+          "points": 1,
+          "step": 0.0
+        },
+        "alpha_deg": {
+          "start": 0.0,
+          "end": 5.0,
+          "points": 6,
+          "step": 1.0
+        },
+        "beta_deg": 0.0,
+        "horizontal_tail": {
+          "mode": "fixed_incidence",
+          "geometry_name": "GO",
+          "incidence_deg": 0.0
+        }
+      },
+      "reference": {
+        "area": 409.631374,
+        "cref": 12.3614,
+        "bref": 37.270341,
+        "center": [
+          20.46778,
+          0.0,
+          0.0
+        ]
+      },
+      "outputs": {
+        "results_csv": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\csv\\RepairMach91_M160_M170_tail_M1p7_20260828_224715.csv",
+        "set_validation": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\runs\\RepairMach91_M160_M170_tail_M1p7_20260828_224715\\set_validation.json",
+        "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\logs\\RepairMach91_M160_M170_tail_M1p7_20260828_224715.log",
+        "run_directory": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\runs\\RepairMach91_M160_M170_tail_M1p7_20260828_224715",
+        "polar": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\polars\\RepairMach91_M160_M170_tail_M1p7_20260828_224715.polar"
+      },
+      "status": "completed",
+      "vspscript_return_code": 0,
+      "component_name_validation": {
+        "valid": true,
+        "recognized": [
+          {
+            "name": "Fuselage",
+            "base": "Fuselage"
+          },
+          {
+            "name": "Gondola",
+            "base": "Gondola"
+          },
+          {
+            "name": "Wing",
+            "base": "Wing"
+          },
+          {
+            "name": "GO",
+            "base": "GO"
+          },
+          {
+            "name": "VO",
+            "base": "VO"
+          }
+        ],
+        "unknown": [],
+        "errors": [],
+        "warnings": []
+      },
+      "manifest_path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\runs\\RepairMach91_M160_M170_tail_M1p7_20260828_224715\\run_manifest.json"
+    }
+  ],
+  "status": "completed"
+}

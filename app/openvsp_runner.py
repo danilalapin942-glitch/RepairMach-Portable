@@ -9,10 +9,17 @@ import subprocess
 from pathlib import Path
 
 
+PACKAGE_ROOT = Path(__file__).resolve().parents[1]
+
+
 def find_openvsp_dir(configured: str | None = None) -> Path | None:
     candidates = []
     if configured:
-        candidates.append(Path(configured))
+        configured_path = Path(configured).expanduser()
+        if not configured_path.is_absolute():
+            configured_path = PACKAGE_ROOT / configured_path
+        candidates.append(configured_path)
+    candidates.append(PACKAGE_ROOT / "engines" / "OpenVSP")
     if os.environ.get("OPENVSP_HOME"):
         candidates.append(Path(os.environ["OPENVSP_HOME"]))
     discovered = shutil.which("vspscript.exe")

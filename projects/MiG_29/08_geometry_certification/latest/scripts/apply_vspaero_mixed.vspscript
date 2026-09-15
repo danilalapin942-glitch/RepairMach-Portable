@@ -1,0 +1,32 @@
+void main()
+{
+    ClearVSPModel();
+    ReadVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_090229_MiG_29_final_RepairMach91_M160_M170/frozen_master.vsp3" );
+    Update();
+
+    Update();
+    int apply_error_count = GetNumTotalErrors();
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }
+    if ( apply_error_count > 0 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=OPENVSP_ERRORS_BEFORE_WRITE" );
+        return;
+    }
+    WriteVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_090229_MiG_29_final_RepairMach91_M160_M170/vspaero/mixed/model.vsp3", 0 );
+    int write_error_count = GetNumTotalErrors();
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }
+    if ( write_error_count > 0 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=OPENVSP_ERRORS_DURING_WRITE" );
+        return;
+    }
+    Print( "REPAIRMACH_APPLY_OK=1" );
+}

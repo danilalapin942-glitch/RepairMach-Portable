@@ -1,0 +1,274 @@
+void main()
+{
+    ClearVSPModel();
+    ReadVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_092023_MiG_25RB_final_MiG-25RB_VSPAero_v1/probes/vspaero_lifting/M2p2_A0_to_face/medium/model.vsp3" );
+    Update();
+    bool invalid_setup = false;
+
+    array<string> all_engine_geoms = FindGeoms();
+    int engine_expected_count = 0;
+    int engine_applied_count = 0;
+    for ( int engine_index = 0; engine_index < int( all_engine_geoms.size() ); ++engine_index )
+    {
+        string gondola_id = all_engine_geoms[engine_index];
+        string gondola_name = GetGeomName( gondola_id );
+        bool is_gondola = gondola_name == "Gondola" || ( gondola_name.length() >= 8 && gondola_name.substr( 0, 8 ) == "Gondola_" );
+        if ( !is_gondola )
+        {
+            continue;
+        }
+        engine_expected_count += 1;
+        string geom_in_parm = FindParm( gondola_id, "GeomInType", "EngineModel" );
+        string geom_out_parm = FindParm( gondola_id, "GeomOutType", "EngineModel" );
+        string inlet_mode_parm = FindParm( gondola_id, "InletModeType", "EngineModel" );
+        string outlet_mode_parm = FindParm( gondola_id, "OutletModeType", "EngineModel" );
+        bool engine_parms_valid = ValidParm( geom_in_parm ) && ValidParm( geom_out_parm ) && ValidParm( inlet_mode_parm ) && ValidParm( outlet_mode_parm );
+        if ( !engine_parms_valid )
+        {
+            Print( "ERROR=Gondola EngineModel parameters required for to_face are missing;ID=" + gondola_id );
+            Print( "REPAIRMACH_ENGINE_COMPONENT;MODE=to_face;NAME=" + gondola_name + ";ID=" + gondola_id + ";VALID=false" );
+            invalid_setup = true;
+            continue;
+        }
+
+        SetParmVal( geom_in_parm, 3 );
+        SetParmVal( geom_out_parm, 3 );
+        SetParmVal( inlet_mode_parm, 4 );
+        SetParmVal( outlet_mode_parm, 4 );
+        Update();
+        double actual_geom_in = GetParmVal( geom_in_parm );
+        double actual_geom_out = GetParmVal( geom_out_parm );
+        double actual_inlet_mode = GetParmVal( inlet_mode_parm );
+        double actual_outlet_mode = GetParmVal( outlet_mode_parm );
+        bool engine_applied = actual_geom_in == actual_geom_in && actual_geom_out == actual_geom_out && actual_inlet_mode == actual_inlet_mode && actual_outlet_mode == actual_outlet_mode && abs( actual_geom_in - 3.0 ) <= 1.0e-9 && abs( actual_geom_out - 3.0 ) <= 1.0e-9 && abs( actual_inlet_mode - 4.0 ) <= 1.0e-9 && abs( actual_outlet_mode - 4.0 ) <= 1.0e-9;
+        Print( "REPAIRMACH_ENGINE_COMPONENT;MODE=to_face;NAME=" + gondola_name + ";ID=" + gondola_id + ";GEOM_IN_TYPE=" + actual_geom_in + ";GEOM_OUT_TYPE=" + actual_geom_out + ";INLET_MODE_TYPE=" + actual_inlet_mode + ";OUTLET_MODE_TYPE=" + actual_outlet_mode + ";VALID=" + engine_applied );
+        if ( !engine_applied )
+        {
+            Print( "ERROR=Gondola to_face boundary parameters were not applied;ID=" + gondola_id );
+            invalid_setup = true;
+        }
+        else
+        {
+            engine_applied_count += 1;
+            Print( "REPAIRMACH_ENGINE_BOUNDARY_APPLIED=to_face;NAME=" + gondola_name + ";ID=" + gondola_id );
+        }
+    }
+    bool engine_setup_valid = engine_expected_count > 0 && engine_applied_count == engine_expected_count && !invalid_setup;
+    Print( "REPAIRMACH_ENGINE_SETUP;MODE=to_face;EXPECTED_COUNT=" + engine_expected_count + ";APPLIED_COUNT=" + engine_applied_count + ";VALID=" + engine_setup_valid );
+    if ( !engine_setup_valid )
+    {
+        Print( "ERROR=To-Face requires every Gondola/Gondola_suffix component;EXPECTED_COUNT=" + engine_expected_count + ";APPLIED_COUNT=" + engine_applied_count );
+        invalid_setup = true;
+    }
+
+
+    int thick_set = 6;
+    int thin_set = 5;
+    bool invalid_sets = false;
+    array<string> all_geoms = GetGeomSetAtIndex( 0 );
+    array<string> thick_geoms = GetGeomSetAtIndex( thick_set );
+    array<string> thin_geoms = GetGeomSetAtIndex( thin_set );
+
+    Print( "REPAIRMACH_SET_REPORT_BEGIN" );
+    Print( "ROLE=fuselage_and_nacelles;USER_SET=3;API_INDEX=" + thick_set + ";NAME=" + GetSetName( thick_set ) + ";COUNT=" + thick_geoms.size() );
+    Print( "ROLE=wing_and_empennage;USER_SET=2;API_INDEX=" + thin_set + ";NAME=" + GetSetName( thin_set ) + ";COUNT=" + thin_geoms.size() );
+
+
+    if ( thick_geoms.size() == 0 )
+    {
+        Print( "DIAGNOSTIC=Empty thick-geometry set accepted" );
+    }
+
+    if ( thin_geoms.size() == 0 )
+    {
+        Print( "ERROR=Set_2 is empty" );
+        invalid_sets = true;
+    }
+
+
+    for ( int i = 0; i < int( all_geoms.size() ); ++i )
+    {
+        string gid = all_geoms[i];
+        string name = GetGeomName( gid );
+        string geom_type = GetGeomTypeName( gid );
+        bool in_thick = GetSetFlag( gid, thick_set );
+        bool in_thin = GetSetFlag( gid, thin_set );
+        Print( "GEOM;ID=" + gid + ";NAME=" + name + ";TYPE=" + geom_type + ";IN_SET_3=" + in_thick + ";IN_SET_2=" + in_thin );
+        if ( in_thick && in_thin )
+        {
+            Print( "ERROR=Geometry belongs to both sets;ID=" + gid + ";NAME=" + name );
+            invalid_sets = true;
+        }
+
+        if ( in_thick && geom_type == "Wing" )
+        {
+            Print( "ERROR=Wing geometry is assigned to fuselage Set_3;ID=" + gid + ";NAME=" + name );
+            invalid_sets = true;
+        }
+        if ( in_thin && geom_type != "Wing" )
+        {
+            Print( "ERROR=Non-wing geometry is assigned to wing Set_2;ID=" + gid + ";NAME=" + name + ";TYPE=" + geom_type );
+            invalid_sets = true;
+        }
+    }
+
+    string tail_id = "";
+    array<string> tail_candidates = FindGeomsWithName( "GO" );
+    if ( tail_candidates.size() != 1 )
+    {
+        Print( "ERROR=Expected exactly one horizontal-tail geometry named GO;COUNT=" + tail_candidates.size() );
+        invalid_sets = true;
+    }
+    else
+    {
+        tail_id = tail_candidates[0];
+        Print( "TAIL;MODE=fixed_incidence;NAME=" + GetGeomName( tail_id ) + ";ID=" + tail_id + ";TYPE=" + GetGeomTypeName( tail_id ) + ";ANGLE_DEG=0" );
+        if ( !GetSetFlag( tail_id, thin_set ) )
+        {
+            Print( "ERROR=Horizontal tail is not assigned to Set_2;ID=" + tail_id + ";NAME=" + GetGeomName( tail_id ) );
+            invalid_sets = true;
+        }
+        if ( GetGeomTypeName( tail_id ) != "Wing" )
+        {
+            Print( "ERROR=Horizontal-tail geometry must have Wing type;ID=" + tail_id + ";TYPE=" + GetGeomTypeName( tail_id ) );
+            invalid_sets = true;
+        }
+    }
+
+    Print( "REPAIRMACH_SET_REPORT_END" );
+
+    if ( invalid_sets )
+    {
+        Print( "REPAIRMACH_ABORTED_SET_VALIDATION=1" );
+        return;
+    }
+
+    string tail_rotation_parm = FindParm( tail_id, "Y_Rel_Rotation", "XForm" );
+    if ( !ValidParm( tail_rotation_parm ) )
+    {
+        Print( "ERROR=Horizontal-tail incidence parameter is missing;ID=" + tail_id );
+        Print( "REPAIRMACH_TAIL_SETUP;MODE=fixed_incidence;NAME=" + GetGeomName( tail_id ) + ";ID=" + tail_id + ";REQUESTED_ANGLE_DEG=0;VALID=false" );
+        invalid_setup = true;
+    }
+    else
+    {
+        SetParmVal( tail_rotation_parm, 0 );
+        Update();
+        double actual_tail_incidence = GetParmVal( tail_rotation_parm );
+        bool tail_applied = actual_tail_incidence == actual_tail_incidence && abs( actual_tail_incidence - 0 ) <= 1.0e-9;
+        Print( "REPAIRMACH_TAIL_SETUP;MODE=fixed_incidence;NAME=" + GetGeomName( tail_id ) + ";ID=" + tail_id + ";PARM_ID=" + tail_rotation_parm + ";REQUESTED_ANGLE_DEG=0;ACTUAL_ANGLE_DEG=" + actual_tail_incidence + ";VALID=" + tail_applied );
+        if ( !tail_applied )
+        {
+            Print( "ERROR=Horizontal-tail incidence was not applied;ID=" + tail_id );
+            invalid_setup = true;
+        }
+        else
+        {
+            Print( "REPAIRMACH_TAIL_INCIDENCE_APPLIED=" + actual_tail_incidence );
+        }
+    }
+
+    int setup_error_count = GetNumTotalErrors();
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }
+    if ( invalid_setup || setup_error_count > 0 )
+    {
+        Print( "REPAIRMACH_ABORTED_SETUP_VALIDATION=1" );
+        return;
+    }
+
+    WriteVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_092023_MiG_25RB_final_MiG-25RB_VSPAero_v1/probes/vspaero_lifting/M2p2_A0_to_face/medium/model.vsp3", 0 );
+    int setup_write_error_count = GetNumTotalErrors();
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }
+    if ( setup_write_error_count > 0 )
+    {
+        Print( "REPAIRMACH_ABORTED_SETUP_WRITE_ERRORS=1" );
+        return;
+    }
+
+    Print( "REPAIRMACH_SETUP_VALIDATION=OK" );
+    Print( "REPAIRMACH_SET_VALIDATION=OK" );
+
+    string compute_name = "VSPAEROComputeGeometry";
+    SetAnalysisInputDefaults( compute_name );
+    array<int> thick_input(1, thick_set);
+    array<int> thin_input(1, thin_set);
+    SetIntAnalysisInput( compute_name, "GeomSet", thick_input );
+    SetIntAnalysisInput( compute_name, "ThinGeomSet", thin_input );
+    string compute_result = ExecAnalysis( compute_name );
+    Print( "REPAIRMACH_COMPUTE_RESULT_ID=" + compute_result );
+
+    string sweep_name = "VSPAEROSweep";
+    SetAnalysisInputDefaults( sweep_name );
+    SetIntAnalysisInput( sweep_name, "GeomSet", thick_input );
+    SetIntAnalysisInput( sweep_name, "ThinGeomSet", thin_input );
+
+    array<int> ref_flag(1, 0);
+    SetIntAnalysisInput( sweep_name, "RefFlag", ref_flag );
+    array<double> sref(1, 660.904);
+    array<double> cref(1, 16.378);
+    array<double> bref(1, 43.898000000000003);
+    SetDoubleAnalysisInput( sweep_name, "Sref", sref );
+    SetDoubleAnalysisInput( sweep_name, "cref", cref );
+    SetDoubleAnalysisInput( sweep_name, "bref", bref );
+
+    array<double> xcg(1, 0);
+    array<double> ycg(1, 0);
+    array<double> zcg(1, 0);
+    SetDoubleAnalysisInput( sweep_name, "Xcg", xcg );
+    SetDoubleAnalysisInput( sweep_name, "Ycg", ycg );
+    SetDoubleAnalysisInput( sweep_name, "Zcg", zcg );
+
+    array<double> mach_start(1, 2.2000000000000002);
+    array<double> mach_end(1, 2.2000000000000002);
+    array<int> mach_points(1, 1);
+    SetDoubleAnalysisInput( sweep_name, "MachStart", mach_start );
+    SetDoubleAnalysisInput( sweep_name, "MachEnd", mach_end );
+    SetIntAnalysisInput( sweep_name, "MachNpts", mach_points );
+
+    array<double> alpha_start(1, 0);
+    array<double> alpha_end(1, 0);
+    array<int> alpha_points(1, 1);
+    SetDoubleAnalysisInput( sweep_name, "AlphaStart", alpha_start );
+    SetDoubleAnalysisInput( sweep_name, "AlphaEnd", alpha_end );
+    SetIntAnalysisInput( sweep_name, "AlphaNpts", alpha_points );
+
+    array<double> beta(1, 0);
+    array<int> beta_points(1, 1);
+    SetDoubleAnalysisInput( sweep_name, "BetaStart", beta );
+    SetDoubleAnalysisInput( sweep_name, "BetaEnd", beta );
+    SetIntAnalysisInput( sweep_name, "BetaNpts", beta_points );
+    array<int> cpu_count(1, 4);
+    SetIntAnalysisInput( sweep_name, "NCPU", cpu_count );
+    array<double> gmres_factor(1, 1);
+    array<int> wake_iterations(1, 8);
+    array<int> wake_nodes(1, 24);
+    array<double> wake_relaxation(1, 0.80000000000000004);
+    SetDoubleAnalysisInput( sweep_name, "ForwardGMRESConvergenceFactor", gmres_factor );
+    SetIntAnalysisInput( sweep_name, "WakeNumIter", wake_iterations );
+    SetIntAnalysisInput( sweep_name, "NumWakeNodes", wake_nodes );
+    SetDoubleAnalysisInput( sweep_name, "WakeRelax", wake_relaxation );
+
+    string sweep_result = ExecAnalysis( sweep_name );
+    Print( "REPAIRMACH_SWEEP_RESULT_ID=" + sweep_result );
+    WriteResultsCSVFile( sweep_result, "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_092023_MiG_25RB_final_MiG-25RB_VSPAero_v1/probes/vspaero_lifting/M2p2_A0_to_face/medium/probe.csv" );
+    int solver_error_count = GetNumTotalErrors();
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }
+    if ( solver_error_count > 0 )
+    {
+        Print( "REPAIRMACH_ABORTED_SOLVER_ERRORS=1" );
+        return;
+    }
+    Print( "REPAIRMACH_VSPAERO_COMPLETE=1" );
+}

@@ -1,0 +1,10 @@
+{
+  "updated_at": "2026-09-05T09:47:20.320676+03:00",
+  "state": "diagnostic_failed",
+  "pid": 43368,
+  "started_at": "2026-09-05T09:21:27.003553+03:00",
+  "completed_variants": 6,
+  "total_variants": 6,
+  "mesh": "mesh/MiG25_MeshFix02_coarse8_day_half_common_M1p2_Apm1.tri",
+  "summary": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\day_half_variant_summary.csv"
+}

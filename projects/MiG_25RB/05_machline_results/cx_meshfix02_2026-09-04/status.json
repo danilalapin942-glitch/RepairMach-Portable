@@ -1,0 +1,14 @@
+{
+  "updated_at": "2026-09-04T22:04:04.882382+03:00",
+  "state": "complete_with_failures",
+  "pid": 31296,
+  "started_at": "2026-09-04T21:38:01.415324+03:00",
+  "total_cases": 3,
+  "completed_cases": 0,
+  "failed_cases": [
+    "meshfix02_M1p20_Ap0p0_ise",
+    "meshfix02_M1p20_Am2p0_ise",
+    "meshfix02_M1p20_Ap2p0_ise"
+  ],
+  "summary": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\run_summary.csv"
+}

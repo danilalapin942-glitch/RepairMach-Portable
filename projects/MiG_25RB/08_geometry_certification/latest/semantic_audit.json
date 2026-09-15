@@ -1,0 +1,1034 @@
+{
+  "schema": "repairmach.geometry-semantic-audit/1.0",
+  "valid": true,
+  "recognized_components": [
+    {
+      "id": "EKYLTRLALM",
+      "name": "Fuselage",
+      "type": "Fuselage",
+      "parent_id": null,
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "bbox": {
+        "min": [
+          -5.92119e-16,
+          -1.99489,
+          -2.87536
+        ],
+        "max": [
+          64.2257,
+          1.99489,
+          3.90826
+        ]
+      },
+      "sets": {
+        "1": true,
+        "2": false
+      },
+      "parameters": [
+        {
+          "id": "XGRGBAEEMSI",
+          "name": "X_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "GFODDWRRTWQ",
+          "name": "X_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "TOZAXTLFLYM",
+          "name": "X_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "BAUEUOBNMTZ",
+          "name": "Y_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "ZSMPHVYQVLZ",
+          "name": "Y_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "HOJSDARYWFG",
+          "name": "Y_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "YPZYLXKFVAH",
+          "name": "Z_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "DGYGJUFLHLE",
+          "name": "Z_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "BUEARQZMKVL",
+          "name": "Z_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "LITDEMCUEOM",
+          "name": "Tess_U",
+          "group": "Shape",
+          "display_group": "",
+          "value": 16.0
+        },
+        {
+          "id": "FLVIVPWIBCB",
+          "name": "Tess_W",
+          "group": "Shape",
+          "display_group": "",
+          "value": 17.0
+        },
+        {
+          "id": "VSUHQZXCZDY",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "UEOGPTMVGBO",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "XMFWPXCAQCU",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "CHGRNYBORXF",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 14.0
+        },
+        {
+          "id": "YKKNKAIOVGT",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "SHDYCYAUYBJ",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        }
+      ],
+      "semantic_base": "Fuselage",
+      "semantic_source": "canonical",
+      "semantic_role": "thick"
+    },
+    {
+      "id": "LKSOVVQHTG",
+      "name": "Wing",
+      "type": "Wing",
+      "parent_id": null,
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "bbox": {
+        "min": [
+          36.127,
+          5.0,
+          -0.128382
+        ],
+        "max": [
+          58.9698,
+          21.6494,
+          1.76344
+        ]
+      },
+      "sets": {
+        "1": false,
+        "2": true
+      },
+      "parameters": [
+        {
+          "id": "KWFDLDCOJKI",
+          "name": "X_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 36.127
+        },
+        {
+          "id": "WUEBPLSDGBM",
+          "name": "X_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 36.127
+        },
+        {
+          "id": "GVARDJVSDKF",
+          "name": "X_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "YWLGYVPHUDE",
+          "name": "Y_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 5.0
+        },
+        {
+          "id": "DFWKMBKLPDJ",
+          "name": "Y_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 5.0
+        },
+        {
+          "id": "GICUDZUMKDD",
+          "name": "Y_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "RVEBDCGDHGQ",
+          "name": "Z_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 1.47541
+        },
+        {
+          "id": "YIBXLXDCADL",
+          "name": "Z_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 1.47541
+        },
+        {
+          "id": "TVDQDTNBRQK",
+          "name": "Z_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "NIOOMOTMBTN",
+          "name": "Tess_U",
+          "group": "Shape",
+          "display_group": "",
+          "value": 16.0
+        },
+        {
+          "id": "HRVYNUONBFA",
+          "name": "Tess_W",
+          "group": "Shape",
+          "display_group": "",
+          "value": 33.0
+        },
+        {
+          "id": "JRQOLDNIUWQ",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "DYKNEMDFWWW",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "NHCSRMJXNPJ",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "VCMBMFPGFZY",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 19.1
+        },
+        {
+          "id": "LQXFHFPTWFS",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 19.1
+        },
+        {
+          "id": "ADCNCIOUBRW",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "FDYOADJTXML",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 16.7
+        },
+        {
+          "id": "AVGGHAUBNZE",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 7.25066
+        }
+      ],
+      "wing_terminal": {
+        "xsec_count": 2,
+        "tip_parm_id": "AVGGHAUBNZE",
+        "tip_chord": 7.25066,
+        "root_parm_id": "LQXFHFPTWFS",
+        "root_chord": 19.1,
+        "span_parm_id": "FDYOADJTXML",
+        "span": 16.7
+      },
+      "semantic_base": "Wing",
+      "semantic_source": "canonical",
+      "semantic_role": "thin"
+    },
+    {
+      "id": "WEYCYBICLQ",
+      "name": "GO",
+      "type": "Wing",
+      "parent_id": null,
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "bbox": {
+        "min": [
+          57.0492,
+          4.5082,
+          -0.222643
+        ],
+        "max": [
+          71.149,
+          13.7372,
+          0.222643
+        ]
+      },
+      "sets": {
+        "1": false,
+        "2": true
+      },
+      "parameters": [
+        {
+          "id": "MONFBXBNBPI",
+          "name": "X_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 57.0492
+        },
+        {
+          "id": "RMCQRUJBRSU",
+          "name": "X_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 57.0492
+        },
+        {
+          "id": "MQMUGAFEWVB",
+          "name": "X_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "BPBRMZFWZRJ",
+          "name": "Y_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 4.5082
+        },
+        {
+          "id": "UDMBLFSSWUK",
+          "name": "Y_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 4.5082
+        },
+        {
+          "id": "YDSNUNCMMUE",
+          "name": "Y_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "FHOQIOTVMHM",
+          "name": "Z_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "JAYURJJSQFB",
+          "name": "Z_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "QZMSBLIARNP",
+          "name": "Z_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "DIPNOJEKNIE",
+          "name": "Tess_U",
+          "group": "Shape",
+          "display_group": "",
+          "value": 16.0
+        },
+        {
+          "id": "CDXEBSJTQRX",
+          "name": "Tess_W",
+          "group": "Shape",
+          "display_group": "",
+          "value": 33.0
+        },
+        {
+          "id": "MAUPLXBINTM",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "DNGCZTAKYNT",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "DGLMTLFICSM",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "GHSCMTTHGKT",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 8.893
+        },
+        {
+          "id": "SMTAGLAFPZZ",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 8.893
+        },
+        {
+          "id": "BNANYKIPSFM",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "UTYJKMGBPTP",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 9.229
+        },
+        {
+          "id": "EDNALEEDLRM",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 3.015
+        }
+      ],
+      "wing_terminal": {
+        "xsec_count": 2,
+        "tip_parm_id": "EDNALEEDLRM",
+        "tip_chord": 3.015,
+        "root_parm_id": "SMTAGLAFPZZ",
+        "root_chord": 8.893,
+        "span_parm_id": "UTYJKMGBPTP",
+        "span": 9.229
+      },
+      "semantic_base": "GO",
+      "semantic_source": "canonical",
+      "semantic_role": "thin"
+    },
+    {
+      "id": "IJYCWWDGPY",
+      "name": "VO",
+      "type": "Wing",
+      "parent_id": null,
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "bbox": {
+        "min": [
+          48.6885,
+          3.74997,
+          2.13115
+        ],
+        "max": [
+          64.7212,
+          5.45242,
+          11.3112
+        ]
+      },
+      "sets": {
+        "1": false,
+        "2": true
+      },
+      "parameters": [
+        {
+          "id": "VEBAXBMIPWA",
+          "name": "X_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 48.6885
+        },
+        {
+          "id": "MSLJZJRPSIZ",
+          "name": "X_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 48.6885
+        },
+        {
+          "id": "WGDRUQYBJUU",
+          "name": "X_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 90.0
+        },
+        {
+          "id": "KLVSMBBILHI",
+          "name": "Y_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 4.09836
+        },
+        {
+          "id": "XIYCDWXESXC",
+          "name": "Y_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 4.09836
+        },
+        {
+          "id": "AGWQEJWGWNM",
+          "name": "Y_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "QOAYQCZKKIC",
+          "name": "Z_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 2.13115
+        },
+        {
+          "id": "XUJPBEVYELB",
+          "name": "Z_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 2.13115
+        },
+        {
+          "id": "ZVMONMFKXBR",
+          "name": "Z_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "DNHKNNVVZLE",
+          "name": "Tess_U",
+          "group": "Shape",
+          "display_group": "",
+          "value": 16.0
+        },
+        {
+          "id": "TKJJRXMWUAN",
+          "name": "Tess_W",
+          "group": "Shape",
+          "display_group": "",
+          "value": 33.0
+        },
+        {
+          "id": "EOAJHMDUERJ",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "WKKBRXZNLQR",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "YFJSFBTLBFY",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "WRYYJXDOLPP",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 15.311
+        },
+        {
+          "id": "ZKMTOHGPVSM",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 15.311
+        },
+        {
+          "id": "VDJHPLJVKCC",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "GFRYWXYRROW",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 9.261
+        },
+        {
+          "id": "GWIJSYBTZTB",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 3.286
+        }
+      ],
+      "wing_terminal": {
+        "xsec_count": 2,
+        "tip_parm_id": "GWIJSYBTZTB",
+        "tip_chord": 3.286,
+        "root_parm_id": "ZKMTOHGPVSM",
+        "root_chord": 15.311,
+        "span_parm_id": "GFRYWXYRROW",
+        "span": 9.261
+      },
+      "semantic_base": "VO",
+      "semantic_source": "canonical",
+      "semantic_role": "thin"
+    },
+    {
+      "id": "PLKOTSTWOY",
+      "name": "VentralVO",
+      "type": "Wing",
+      "parent_id": null,
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "bbox": {
+        "min": [
+          53.1148,
+          3.85513,
+          -4.12563
+        ],
+        "max": [
+          62.1792,
+          4.65518,
+          -1.55738
+        ]
+      },
+      "sets": {
+        "1": false,
+        "2": true
+      },
+      "parameters": [
+        {
+          "id": "SOAMVEAHJVB",
+          "name": "X_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 53.1148
+        },
+        {
+          "id": "LFSKBLGLNOR",
+          "name": "X_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 53.1148
+        },
+        {
+          "id": "LCRQFJWGPCL",
+          "name": "X_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": -90.0
+        },
+        {
+          "id": "HIARLLBDDON",
+          "name": "Y_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 4.01639
+        },
+        {
+          "id": "YGCMHLFBUQR",
+          "name": "Y_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 4.01639
+        },
+        {
+          "id": "LXOHAGWPCHP",
+          "name": "Y_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "MCCYWTUZEQZ",
+          "name": "Z_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": -1.55738
+        },
+        {
+          "id": "IRBWJCWBUQY",
+          "name": "Z_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": -1.55738
+        },
+        {
+          "id": "GTTGBQSHXJA",
+          "name": "Z_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "LDDZJTEJUVZ",
+          "name": "Tess_U",
+          "group": "Shape",
+          "display_group": "",
+          "value": 16.0
+        },
+        {
+          "id": "EKTSKFCWMYQ",
+          "name": "Tess_W",
+          "group": "Shape",
+          "display_group": "",
+          "value": 33.0
+        },
+        {
+          "id": "MULMCHESKJN",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "HXIMOCUXCMA",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "CRVZMTZKEUL",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "MRWGKRGOTTA",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 9.0
+        },
+        {
+          "id": "BEDGZLZUYMS",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 9.0
+        },
+        {
+          "id": "IQUSKOQGJNK",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "BUTSRMWXRVC",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 2.60449
+        },
+        {
+          "id": "RUGGSIMYRJQ",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 5.6746
+        }
+      ],
+      "wing_terminal": {
+        "xsec_count": 2,
+        "tip_parm_id": "RUGGSIMYRJQ",
+        "tip_chord": 5.6746,
+        "root_parm_id": "BEDGZLZUYMS",
+        "root_chord": 9.0,
+        "span_parm_id": "BUTSRMWXRVC",
+        "span": 2.60449
+      },
+      "semantic_base": "VO",
+      "semantic_source": "explicit_alias",
+      "semantic_role": "thin"
+    },
+    {
+      "id": "XSELHKHPAE",
+      "name": "Gondola",
+      "type": "Fuselage",
+      "parent_id": null,
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "bbox": {
+        "min": [
+          21.5529,
+          -5.36899,
+          -2.45611
+        ],
+        "max": [
+          65.0598,
+          0.0350157,
+          3.585
+        ]
+      },
+      "sets": {
+        "1": true,
+        "2": false
+      },
+      "parameters": [
+        {
+          "id": "RYQZTNBLEQU",
+          "name": "X_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 17.2951
+        },
+        {
+          "id": "TFFMBQUAAFL",
+          "name": "X_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 17.2951
+        },
+        {
+          "id": "YNORITYBGRH",
+          "name": "X_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "FRDRDZNKQKU",
+          "name": "Y_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": -3.11475
+        },
+        {
+          "id": "ENGQRSWLFDZ",
+          "name": "Y_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": -3.11475
+        },
+        {
+          "id": "LQFCNNJGPML",
+          "name": "Y_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "FWEIKYJBMTY",
+          "name": "Z_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.184426
+        },
+        {
+          "id": "DSJXAXFTFNR",
+          "name": "Z_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.184426
+        },
+        {
+          "id": "USABCNQMHRS",
+          "name": "Z_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "UULMKRKMENR",
+          "name": "Tess_U",
+          "group": "Shape",
+          "display_group": "",
+          "value": 16.0
+        },
+        {
+          "id": "JMWCLCIKFBK",
+          "name": "Tess_W",
+          "group": "Shape",
+          "display_group": "",
+          "value": 17.0
+        },
+        {
+          "id": "ASKERUAWCEQ",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "DTEQPPKQPMS",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "WFHKMOCFYXV",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "BBKDQURVCST",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "SPXSWNYSQMH",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "ZGMKTGEKFXY",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        }
+      ],
+      "semantic_base": "Gondola",
+      "semantic_source": "canonical",
+      "semantic_role": "thick"
+    }
+  ],
+  "declared_exclusions": [
+    {
+      "component": "Wing2",
+      "backends": [
+        "vspaero",
+        "hybrid"
+      ],
+      "reason": "Reference-only full-planform construction geometry; active aerodynamic wing is Wing",
+      "replacement_required": [
+        "not_physical"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "code": "GEO-EXCL-001",
+      "severity": "WARNING",
+      "scope": "master",
+      "message": "Компонент исключён явным правилом проекта; гибридная замена обязательна",
+      "evidence": {
+        "component": "Wing2",
+        "backends": [
+          "vspaero",
+          "hybrid"
+        ],
+        "reason": "Reference-only full-planform construction geometry; active aerodynamic wing is Wing",
+        "replacement_required": [
+          "not_physical"
+        ]
+      },
+      "component": "Wing2",
+      "disposition": "declared_exclusion"
+    }
+  ],
+  "reference": {
+    "area": 660.904,
+    "cref": 16.378,
+    "bref": 43.898,
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "sets": {
+    "thick_user_set": 1,
+    "thin_user_set": 2
+  }
+}

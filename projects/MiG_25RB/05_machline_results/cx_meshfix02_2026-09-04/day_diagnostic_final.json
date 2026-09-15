@@ -1,0 +1,14 @@
+{
+  "state": "blocked_by_geometry",
+  "updated_at": "2026-09-05T10:31:00+03:00",
+  "mach": 1.2,
+  "required_residual_norm": 1e-5,
+  "accepted_points": 0,
+  "cx0_available": false,
+  "original_vsp3_modified": false,
+  "best_failed_residual_norm": 178.115023553472,
+  "best_failed_variant": "dirichlet-morino / FQRUP / local offset 1e-3 / symmetry-preserving +Y half",
+  "diagnosis": "Point aft closure of both Gondola components produces complex nozzle openings and an ill-conditioned or singular MachLine system",
+  "required_geometry_change": "Replace Point aft closure with one removable Flat cap per nozzle; remesh and remove only the planar cap panels",
+  "report": "DAY_DIAGNOSTIC_REPORT.md"
+}

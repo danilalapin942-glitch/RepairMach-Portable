@@ -1,0 +1,101 @@
+{
+    "info" : {
+        "generated_by" : "MachLine (c) 2023 USU Aerolab",
+        "executed" : "Sat Sep  5 07:19:37 2026"
+    },
+    "mesh_info" : {
+        "N_body_panels" : 17288,
+        "N_body_vertices" : 8646,
+        "N_wake_panels" : 0,
+        "average_characteristic_length" : 3.98573917726851E-001,
+        "max_flow_turning_angle" : 1.76332490417695E+002
+    },
+    "solver_results" : {
+        "solver_status_code" : 0,
+        "system_dimension" : 8646,
+        "timing" : {
+            "system_sorting" : 3.32455000000000E-002,
+            "preconditioner" : 1.07697100000000E-001,
+            "matrix_solver" : 5.61004349000000E+001
+        },
+        "system_lower_bandwidth" : 697,
+        "residual" : {
+            "max" : 2.83126660521043E+005,
+            "norm" : 5.38393757642257E+005
+        }
+    },
+    "pressure_calculations" : {
+        "isentropic_rule" : {
+            "max" : 1.40269378617730E+000,
+            "min" : -9.92063492063492E-001
+        },
+        "second_order_rule" : {
+            "max" : 1.41365600799289E+000,
+            "min" : -9.92063482172464E-001
+        },
+        "slender_body_rule" : {
+            "max" : 1.41233510914339E+000,
+            "min" : -9.92063492063492E-001
+        },
+        "linear_rule" : {
+            "max" : 1.41365600799289E+000,
+            "min" : -9.92063492063492E-001
+        }
+    },
+    "total_forces" : {
+        "Cx" : 8.92457410929413E-002,
+        "Cy" : 1.74690574423812E-002,
+        "Cz" : -3.40289571128171E-002
+    },
+    "total_moments" : {
+        "CMx" : -4.94194935624562E+001,
+        "CMy" : 1.10412889552170E+003,
+        "CMz" : 6.87598699392218E+002
+    },
+    "input" : {
+        "flow" : {
+            "freestream_velocity" : [
+                    1.00000000000000E+002,
+                    0.00000000000000E+000,
+                    0.00000000000000E+000
+                ],
+            "gamma" : 1.40000000000000E+000,
+            "freestream_mach_number" : 1.20000000000000E+000
+        },
+        "geometry" : {
+            "file" : "mesh/MiG25_MeshFix02_coarse8_wakecone_M1p2.tri",
+            "spanwise_axis" : "+y",
+            "wake_model" : {
+                "trefftz_distance" : 8.00000000000000E+001,
+                "wake_present" : false,
+                "append_wake" : false,
+                "wake_shedding_angle" : 1.50000000000000E+002
+            },
+            "reference" : {
+                "area" : 6.60904000000000E+002
+            }
+        },
+        "solver" : {
+            "formulation" : "dirichlet-source-free",
+            "matrix_solver" : "FQRUP",
+            "control_point_offset" : 1.00000000000000E-004,
+            "control_point_offset_type" : "local"
+        },
+        "post_processing" : {
+            "pressure_rules" : {
+                "isentropic" : true,
+                "second-order" : true,
+                "slender-body" : true,
+                "linear" : true
+            },
+            "pressure_for_forces" : "isentropic"
+        },
+        "output" : {
+            "body_file" : "diagnostics/retry_wakecone_M1p20_A0_sourcefree_body.vtk",
+            "wake_file" : "none",
+            "control_point_file" : "none",
+            "report_file" : "reports/retry_wakecone_M1p20_A0_sourcefree_report.json"
+        }
+    },
+    "total_runtime" : 1.96953000000000E+002
+}

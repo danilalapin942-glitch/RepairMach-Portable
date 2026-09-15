@@ -1,0 +1,3135 @@
+ REPAIRMACH_ENGINE_BOUNDARY=model 
+ REPAIRMACH_ENGINE_SETUP;MODE=model;VALID=true 
+ REPAIRMACH_SET_REPORT_BEGIN 
+ ROLE=fuselage_and_nacelles;USER_SET=1;API_INDEX=4;NAME=Set_1;COUNT=1 
+ ROLE=wing_and_empennage;USER_SET=2;API_INDEX=5;NAME=Set_2;COUNT=4 
+ COMPONENT_NAME;BASE=Fuselage;COUNT=1 
+ COMPONENT_NAME;BASE=Wing;COUNT=1 
+ GEOM;ID=RMUXLHDSMZ;NAME=Fuselage;TYPE=Fuselage;IN_SET_1=true;IN_SET_2=false 
+ GEOM;ID=LQZSHZXSTY;NAME=Wing;TYPE=Wing;IN_SET_1=false;IN_SET_2=true 
+ GEOM;ID=NDDSSVUXPL;NAME=GO;TYPE=Wing;IN_SET_1=false;IN_SET_2=true 
+ GEOM;ID=MKRWRTCFOU;NAME=VO_upper;TYPE=Wing;IN_SET_1=false;IN_SET_2=true 
+ GEOM;ID=RGIJJLNZJJ;NAME=VO_lower;TYPE=Wing;IN_SET_1=false;IN_SET_2=true 
+ TAIL;MODE=fixed_incidence;NAME=GO;ID=NDDSSVUXPL;TYPE=Wing;ANGLE_DEG=0 
+ REPAIRMACH_SET_REPORT_END 
+ REPAIRMACH_TAIL_SETUP;MODE=fixed_incidence;NAME=GO;ID=NDDSSVUXPL;PARM_ID=FUXGVIJOJUW;REQUESTED_ANGLE_DEG=0;ACTUAL_ANGLE_DEG=0;VALID=true 
+ REPAIRMACH_TAIL_INCIDENCE_APPLIED=0 
+ REPAIRMACH_SETUP_VALIDATION=OK 
+ REPAIRMACH_SET_VALIDATION=OK 
+ REPAIRMACH_COMPUTE_RESULT_ID=CLQAUJK 
+C:\OpenVSP-3.51.0-win64-Python3.13\OpenVSP-3.51.0-win64\vspaero.exe -omp 4 C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/cert_subset_PN/20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2/probes/vspaero_mixed/M0_A0_model/medium/model
+Setting Sref to: 349.272300 
+
+Setting Cref to: 14.386670 
+
+Setting Bref to: 32.370000 
+
+Setting X_cg to: 29.550000 
+
+Setting Y_cg to: 0.000000 
+
+Setting Z_cg to: 0.000000 
+
+Number of Machs: 1 
+
+Mach: 0.000000 
+
+Number of AoAs: 1 
+
+AoA: 0.000000 
+
+Number of Betas: 1 
+
+Beta: 0.000000 
+
+Number of ReCs: 1 
+
+ReC: 10000000.000000 
+
+Setting Vinf to: 100.000000 
+
+Setting Rho to: 0.002377 
+
+Setting StallModel to: 0 
+
+Setting Clo2D to: 0.000000 
+
+Setting CLMax2D to: 1.000000 
+
+Setting Symmetry to: 0 
+
+Setting FreezeMultiPoleAtIteration to: 10000 
+
+Setting FreezeWakeAtIteration to: 10000 
+
+Setting FreezeWakeRootVortices to: 0 
+
+Setting ImplicitWake to: 0 
+
+Setting ImplicitWakeStartIteration_ to: 0 
+
+Setting FarDist to: -1.000000 
+
+Setting NumWakeNodes to: 24 
+
+Setting WakeIters to: 8 
+
+Setting WakeRelax to: 0.800000 
+
+Setting ForwardGMRESConvergenceFactor to: 1.000000e+00 
+
+Setting AdjointGMRESConvergenceFactor_ to: 1.000000e+00 
+
+Setting NonLinearConvergenceFactor to: 1.000000e+00 
+
+Setting CoreSizeFactor to: 1.000000 
+
+Setting multipole FarAway factor to: 5.000000 
+
+Setting UpdateMatrixPreconditioner flag to: 0 
+
+Setting UseWakeNodeMatrixPreconditioner flag to: 0 
+
+Setting QuadTreeBufferLevels_ flag to: 0 
+
+Number of NumberOfAdjointForceAndMomentCases_: 0 
+
+Number of NumberOfAdjointComponentListSettings_: 0 
+
+Setting Write2DFEMFile to: 0 
+
+Setting WriteTecplotFile to: 0 
+
+Sref            = 349.272300 
+
+Cref            = 14.386670 
+
+Bref            = 32.370000 
+
+X_cg            = 29.550000 
+
+Y_cg            = 0.000000 
+
+Z_cg            = 0.000000 
+
+Mach            = 0.000000 
+
+AoA             = 0.000000 
+
+Beta            = 0.000000 
+
+Vinf            = 100.000000 
+
+Vref            = 100.000000 
+
+Rho             = 0.002377 
+
+ReCref          = 10000000.000000 
+
+StallModel      = 0  
+
+Clo2D           = 0.000000 
+
+CLMax2D_        = 1.000000 
+
+Symmetry        = 0  
+
+FarDist         = -1.000000 
+
+NumWakeNodes    = 24  
+
+WakeIters       = 8  
+
+NumberOfControlGroups = 0 
+
+NumberofSurveyPoints: 0 
+
+NumberOfQuadTrees: 1 
+
+QuadTree(1):          2:    0.00000 
+
+NumberOfInlets: 0 
+
+NumberOfNozzles: 0 
+
+NumberOfInlets: 0 
+
+NumberOfNozzles: 0 
+
+VSPAERO v.7.2.2 --- Compiled on: Jun 29 2026 at 20:44:01 PST 
+
+
+
+
+
+
+
+
+
+Initializing OPENMP for 4 threads 
+
+NumberOfThreads_: 4 
+
+_OPENMP Version string: 200203
+
+NumNodes: 3054 
+
+MaxNumberOfGridLevels_: 20 
+
+NumLoops: 2818 
+
+NumNodesInList: 9 
+
+KuttaNodeList_[1]: 814 
+
+KuttaNodeList_[2]: 1263 
+
+KuttaNodeList_[3]: 1288 
+
+KuttaNodeList_[4]: 1313 
+
+KuttaNodeList_[5]: 1338 
+
+KuttaNodeList_[6]: 1363 
+
+KuttaNodeList_[7]: 1388 
+
+KuttaNodeList_[8]: 1413 
+
+KuttaNodeList_[9]: 1438 
+
+NumNodesInList: 9 
+
+KuttaNodeList_[10]: 1662 
+
+KuttaNodeList_[11]: 1637 
+
+KuttaNodeList_[12]: 1612 
+
+KuttaNodeList_[13]: 1587 
+
+KuttaNodeList_[14]: 1562 
+
+KuttaNodeList_[15]: 1537 
+
+KuttaNodeList_[16]: 1512 
+
+KuttaNodeList_[17]: 1487 
+
+KuttaNodeList_[18]: 807 
+
+NumNodesInList: 8 
+
+KuttaNodeList_[19]: 973 
+
+KuttaNodeList_[20]: 1709 
+
+KuttaNodeList_[21]: 1734 
+
+KuttaNodeList_[22]: 1759 
+
+KuttaNodeList_[23]: 1784 
+
+KuttaNodeList_[24]: 1809 
+
+KuttaNodeList_[25]: 1834 
+
+KuttaNodeList_[26]: 1859 
+
+NumNodesInList: 8 
+
+KuttaNodeList_[27]: 2034 
+
+KuttaNodeList_[28]: 2009 
+
+KuttaNodeList_[29]: 1984 
+
+KuttaNodeList_[30]: 1959 
+
+KuttaNodeList_[31]: 1934 
+
+KuttaNodeList_[32]: 1909 
+
+KuttaNodeList_[33]: 1884 
+
+KuttaNodeList_[34]: 951 
+
+NumNodesInList: 9 
+
+KuttaNodeList_[35]: 2062 
+
+KuttaNodeList_[36]: 2059 
+
+KuttaNodeList_[37]: 2109 
+
+KuttaNodeList_[38]: 2134 
+
+KuttaNodeList_[39]: 2159 
+
+KuttaNodeList_[40]: 2184 
+
+KuttaNodeList_[41]: 2209 
+
+KuttaNodeList_[42]: 2234 
+
+KuttaNodeList_[43]: 2259 
+
+NumNodesInList: 9 
+
+KuttaNodeList_[44]: 2310 
+
+KuttaNodeList_[45]: 2307 
+
+KuttaNodeList_[46]: 2357 
+
+KuttaNodeList_[47]: 2382 
+
+KuttaNodeList_[48]: 2407 
+
+KuttaNodeList_[49]: 2432 
+
+KuttaNodeList_[50]: 2457 
+
+KuttaNodeList_[51]: 2482 
+
+KuttaNodeList_[52]: 2507 
+
+NumNodesInList: 9 
+
+KuttaNodeList_[53]: 2755 
+
+KuttaNodeList_[54]: 2730 
+
+KuttaNodeList_[55]: 2705 
+
+KuttaNodeList_[56]: 2680 
+
+KuttaNodeList_[57]: 2655 
+
+KuttaNodeList_[58]: 2630 
+
+KuttaNodeList_[59]: 2605 
+
+KuttaNodeList_[60]: 2557 
+
+KuttaNodeList_[61]: 2555 
+
+NumNodesInList: 9 
+
+KuttaNodeList_[62]: 3003 
+
+KuttaNodeList_[63]: 2978 
+
+KuttaNodeList_[64]: 2953 
+
+KuttaNodeList_[65]: 2928 
+
+KuttaNodeList_[66]: 2903 
+
+KuttaNodeList_[67]: 2878 
+
+KuttaNodeList_[68]: 2853 
+
+KuttaNodeList_[69]: 2805 
+
+KuttaNodeList_[70]: 2803 
+
+VSPGEOM defined NumKuttaNodes: 70 
+
+Found 9 VSPGEOM Surfaces 
+
+Found 9 VSPGEOM Surfaces 
+
+DumChar: # VSPGEOM v3 Tag Key File
+
+ 
+
+DumChar: C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/cert_subset_PN/20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2/probes/vspaero_mixed/M0_A0_model/medium/model.vspgeom
+
+ 
+
+DumChar: 9
+
+ 
+
+NumberOfVSPSurfaces: 9 
+
+DumChar: 
+
+ 
+
+DumChar: # part#,geom#,surf#,gname,gid,thick,plate,copy#,geomcopy#
+
+ 
+
+Thick/thin data exists... DumChar: # part#,geom#,surf#,gname,gid,thick,plate,copy#,geomcopy#
+
+ 
+
+Part: 1 ... CompID: 0 ... SurfID: 0 
+
+Surface: 1 exists in triangulation and has OpenVSP Name: Fuselage_S 
+
+CompID: 0 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 0 
+
+Surface: 1 is thick 
+
+Setting ComponentIDForSurface_ to : 1 
+
+Part: 2 ... CompID: 4 ... SurfID: 0 
+
+Surface: 2 exists in triangulation and has OpenVSP Name: Wing_C 
+
+CompID: 4 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 4 
+
+Surface: 2 is thin 
+
+Setting ComponentIDForSurface_ to : 5 
+
+Part: 3 ... CompID: 4 ... SurfID: 1 
+
+Surface: 3 exists in triangulation and has OpenVSP Name: Wing_C 
+
+CompID: 4 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 4 
+
+Surface: 3 is thin 
+
+Setting ComponentIDForSurface_ to : 5 
+
+Part: 4 ... CompID: 2 ... SurfID: 0 
+
+Surface: 4 exists in triangulation and has OpenVSP Name: GO_C 
+
+CompID: 2 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 2 
+
+Surface: 4 is thin 
+
+Setting ComponentIDForSurface_ to : 3 
+
+Part: 5 ... CompID: 2 ... SurfID: 1 
+
+Surface: 5 exists in triangulation and has OpenVSP Name: GO_C 
+
+CompID: 2 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 2 
+
+Surface: 5 is thin 
+
+Setting ComponentIDForSurface_ to : 3 
+
+Part: 6 ... CompID: 3 ... SurfID: 0 
+
+Surface: 6 exists in triangulation and has OpenVSP Name: VO_upper_C 
+
+CompID: 3 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 3 
+
+Surface: 6 is thin 
+
+Setting ComponentIDForSurface_ to : 4 
+
+Part: 7 ... CompID: 3 ... SurfID: 1 
+
+Surface: 7 exists in triangulation and has OpenVSP Name: VO_upper_C 
+
+CompID: 3 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 3 
+
+Surface: 7 is thin 
+
+Setting ComponentIDForSurface_ to : 4 
+
+Part: 8 ... CompID: 1 ... SurfID: 0 
+
+Surface: 8 exists in triangulation and has OpenVSP Name: VO_lower_C 
+
+CompID: 1 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 1 
+
+Surface: 8 is thin 
+
+Setting ComponentIDForSurface_ to : 2 
+
+Part: 9 ... CompID: 1 ... SurfID: 1 
+
+Surface: 9 exists in triangulation and has OpenVSP Name: VO_lower_C 
+
+CompID: 1 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 1 
+
+Surface: 9 is thin 
+
+Setting ComponentIDForSurface_ to : 2 
+
+Found 9 used surfaces based on parsing VSPGEOM file 
+
+Found 9 used surfaces based on parsing VKEY file ... 
+
+Marking tris on thick and thin surfaces 
+
+Determining the number of thin and thick surfaces 
+
+NumberOfThinSurfaces_: 8 
+
+NumberOfThickSurfaces_: 1 
+
+Renumbering surfaces 
+
+Renumbering surface lists 
+
+Determining number of unique components 
+
+Found 5 unique components 
+
+ComponentIDForComponent_[1]: 1 
+
+ComponentIDForComponent_[2]: 5 
+
+ComponentIDForComponent_[3]: 3 
+
+ComponentIDForComponent_[4]: 4 
+
+ComponentIDForComponent_[5]: 2 
+
+ComponentIDForSurface_[1]: 1 
+
+ComponentIDForSurface_[2]: 2 
+
+ComponentIDForSurface_[3]: 2 
+
+ComponentIDForSurface_[4]: 3 
+
+ComponentIDForSurface_[5]: 3 
+
+ComponentIDForSurface_[6]: 4 
+
+ComponentIDForSurface_[7]: 4 
+
+ComponentIDForSurface_[8]: 5 
+
+ComponentIDForSurface_[9]: 5 
+
+ComponentIDForComponent_[1]: 1 
+
+ComponentIDForComponent_[2]: 5 
+
+ComponentIDForComponent_[3]: 3 
+
+ComponentIDForComponent_[4]: 4 
+
+ComponentIDForComponent_[5]: 2 
+
+Surface: 1 --> Component: 1 --> SurfaceName: Fuselage_S 
+
+Surface: 2 --> Component: 2 --> SurfaceName: Wing_C 
+
+Surface: 3 --> Component: 2 --> SurfaceName: Wing_C 
+
+Surface: 4 --> Component: 3 --> SurfaceName: GO_C 
+
+Surface: 5 --> Component: 3 --> SurfaceName: GO_C 
+
+Surface: 6 --> Component: 4 --> SurfaceName: VO_upper_C 
+
+Surface: 7 --> Component: 4 --> SurfaceName: VO_upper_C 
+
+Surface: 8 --> Component: 5 --> SurfaceName: VO_lower_C 
+
+Surface: 9 --> Component: 5 --> SurfaceName: VO_lower_C 
+
+SurfaceIsThick_[1]: 1 
+
+SurfaceIsThick_[2]: 0 
+
+SurfaceIsThick_[3]: 0 
+
+SurfaceIsThick_[4]: 0 
+
+SurfaceIsThick_[5]: 0 
+
+SurfaceIsThick_[6]: 0 
+
+SurfaceIsThick_[7]: 0 
+
+SurfaceIsThick_[8]: 0 
+
+SurfaceIsThick_[9]: 0 
+
+Component: 1 with ID: 1 is thick 
+
+Component: 2 with ID: 2 is thin 
+
+Component: 3 with ID: 3 is thin 
+
+Component: 4 with ID: 4 is thin 
+
+Component: 5 with ID: 5 is thin 
+
+Pure tri mesh has 5776 tris 
+
+After building ...pure tri mesh has 5776 tris 
+
+Looking for C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/cert_subset_PN/20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2/probes/vspaero_mixed/M0_A0_model/medium/model.ControlSurfaces.taglist control surface definition file ... 
+
+Did not find any control surface definitions... 
+
+Did not find a groups file... so setting up a single group for steady analysis 
+
+NumberOfComponentGroups_: 1 
+
+AllComponentsAreFixed_: 0 
+
+ThereIsRelativeComponentMotion_: 0 
+
+There are thin 4 components 
+
+Number of thin  tris:        3296 
+
+Number of thick tris:        2480 
+
+Number of thin + thick tris: 5776 
+
+Number actual total tris:    5776 
+
+There are thin components... renumbering for edge data structures 
+
+NumberOfThickTris: 2480 
+
+There are thick components as well... it's a mixed mesh 
+
+Thick tris are being stored in temp mesh: 1 
+
+ComponentIDForComponent(1): 1 
+
+ComponentIDForComponent(2): 2 
+
+ComponentIDForComponent(3): 3 
+
+ComponentIDForComponent(4): 4 
+
+ComponentIDForComponent(5): 5 
+
+ComponentIsThick(1): 1 
+
+ComponentIsThick(2): 0 
+
+ComponentIsThick(3): 0 
+
+ComponentIsThick(4): 0 
+
+ComponentIsThick(5): 0 
+
+Surface 2 has 892 tris and is being stored in temp mesh: 2 
+
+Surface 3 has 684 tris and is being stored in temp mesh: 3 
+
+Surface 4 has 860 tris and is being stored in temp mesh: 4 
+
+Surface 5 has 860 tris and is being stored in temp mesh: 5 
+
+Created one thick surface mesh structure... 
+
+Created 4 thin surface mesh structures 
+
+Created 5 total mesh structures 
+
+There were 496 loops that we could not find upwind edges for... 
+
+Searching for thin/thick or thin/thin intersections... 
+
+Number of kutta nodes before trimming: 70 
+
+NumberOfKuttaNodes after trimming: 70 
+
+NumberOfKuttaNodes: 70 
+
+NumberOfKuttaEdges: 62 
+
+Working on VortexSheet: 1 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 807 
+
+Working on CurrentComponentID: 2 
+
+Kutta node: 1... ie Node: 807 is not convex! 
+
+VortexSheet: 1 finished... which has 9 kutta nodes ... and 9 out of 70 kutta nodes are now allocated 
+
+Working on VortexSheet: 2 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 814 
+
+Working on CurrentComponentID: 2 
+
+Kutta node: 1... ie Node: 814 is not convex! 
+
+VortexSheet: 2 finished... which has 9 kutta nodes ... and 18 out of 70 kutta nodes are now allocated 
+
+Working on VortexSheet: 3 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 951 
+
+Working on CurrentComponentID: 3 
+
+Kutta node: 1... ie Node: 951 is not convex! 
+
+VortexSheet: 3 finished... which has 8 kutta nodes ... and 26 out of 70 kutta nodes are now allocated 
+
+Working on VortexSheet: 4 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 973 
+
+Working on CurrentComponentID: 3 
+
+Kutta node: 1... ie Node: 973 is not convex! 
+
+VortexSheet: 4 finished... which has 8 kutta nodes ... and 34 out of 70 kutta nodes are now allocated 
+
+Working on VortexSheet: 5 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 2062 
+
+Working on CurrentComponentID: 4 
+
+VortexSheet: 5 finished... which has 9 kutta nodes ... and 43 out of 70 kutta nodes are now allocated 
+
+Working on VortexSheet: 6 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 2310 
+
+Working on CurrentComponentID: 5 
+
+VortexSheet: 6 finished... which has 9 kutta nodes ... and 52 out of 70 kutta nodes are now allocated 
+
+Working on VortexSheet: 7 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 2555 
+
+Working on CurrentComponentID: 4 
+
+VortexSheet: 7 finished... which has 9 kutta nodes ... and 61 out of 70 kutta nodes are now allocated 
+
+Working on VortexSheet: 8 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 2803 
+
+Working on CurrentComponentID: 5 
+
+VortexSheet: 8 finished... which has 9 kutta nodes ... and 70 out of 70 kutta nodes are now allocated 
+
+Creating wake grids... 
+
+WakeAngle: 1.000000 0.000000 0.000000 
+
+Xmax_ - Xmin_: 46.930000 
+
+Ymax_ - Ymin_: 32.370000 
+
+Zmax_ - Zmin_: 8.199800 
+
+
+
+Wake FarFieldDist_ set to: 46.930000 
+
+
+
+There are:          8 Vortex Sheets 
+
+NumberOfWakeTrailingNodes_: 24 
+
+NumberOfWakeNodes: 1680 
+
+NumberOfWakeLoops: 1426 
+
+Merging fine wake grids... 
+
+Merging coarse wake grids... 
+
+Model is a VSPGEOM Panel geometry 
+
+NumberOfComponents_: 5
+
+Total NumberOfNodes:      4734 
+
+Total NumberOfLoops:      8628 
+
+Total NumberOfEdges:      13492 
+
+Total NumberOfKuttaNodes: 70 
+
+NumberOfSurfaces_:        9 
+
+Total surface area: 963.677944 
+
+Minimum loop area constraint set to: 963.677944 
+
+Agglomerating mesh... 
+
+Grid:0 --> # loops:       8628 ...# Edges:      13492 ...# Nodes:       4734  
+
+There are: 4734 coarse grid nodes 
+
+There are: 9076 coarse grid edges 
+
+There are: 4212 coarse grid loops 
+
+WTF! ... 
+
+Working on Loop: 1095 
+
+NumberOfLoopNodes: 5 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 4 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 2244 with nodes Node1,2: 1174 1175 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 2309 with nodes Node1,2: 1174 1254 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 2310 with nodes Node1,2: 1206 1207 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 2311 with nodes Node1,2: 1175 1207 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 2244 with boundary edge flag of: 0 and with Loops: 1063 1095 
+
+Local Edge: 2 is global edge: 2309 with boundary edge flag of: 0 and with Loops: 1094 1095 
+
+Local Edge: 3 is global edge: 2310 with boundary edge flag of: 1 and with Loops: 1095 1095 
+
+Local Edge: 4 is global edge: 2311 with boundary edge flag of: 0 and with Loops: 1095 1096 
+
+Fine grid tri 1 is: 2369 with surface ID: 1 
+
+Fine Loop Edge: 3581 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3584 has boundary edge flag of: 1 
+
+Fine Loop Edge: 3585 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 2370 with surface ID: 1 
+
+Fine Loop Edge: 3585 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3586 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3587 has boundary edge flag of: 0 
+
+Fine grid tri 3 is: 2371 with surface ID: 1 
+
+Fine Loop Edge: 3587 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3484 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3583 has boundary edge flag of: 0 
+
+WTF! ... 
+
+Working on Loop: 1103 
+
+NumberOfLoopNodes: 5 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 4 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 2260 with nodes Node1,2: 1182 1183 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 2326 with nodes Node1,2: 1182 1230 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 2327 with nodes Node1,2: 1214 1215 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 2328 with nodes Node1,2: 1183 1215 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 2260 with boundary edge flag of: 0 and with Loops: 1071 1103 
+
+Local Edge: 2 is global edge: 2326 with boundary edge flag of: 0 and with Loops: 1102 1103 
+
+Local Edge: 3 is global edge: 2327 with boundary edge flag of: 1 and with Loops: 1103 1103 
+
+Local Edge: 4 is global edge: 2328 with boundary edge flag of: 0 and with Loops: 1103 1104 
+
+Fine grid tri 1 is: 2387 with surface ID: 1 
+
+Fine Loop Edge: 3607 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3611 has boundary edge flag of: 1 
+
+Fine Loop Edge: 3612 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 2388 with surface ID: 1 
+
+Fine Loop Edge: 3613 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3508 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3610 has boundary edge flag of: 0 
+
+Fine grid tri 3 is: 2389 with surface ID: 1 
+
+Fine Loop Edge: 3612 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3614 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3613 has boundary edge flag of: 0 
+
+WTF! ... 
+
+Working on Loop: 1111 
+
+NumberOfLoopNodes: 5 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 4 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 2277 with nodes Node1,2: 1190 1191 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 2341 with nodes Node1,2: 1190 1238 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 2344 with nodes Node1,2: 1191 1223 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 2345 with nodes Node1,2: 1222 1223 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 2277 with boundary edge flag of: 0 and with Loops: 1079 1111 
+
+Local Edge: 2 is global edge: 2341 with boundary edge flag of: 0 and with Loops: 1110 1111 
+
+Local Edge: 3 is global edge: 2344 with boundary edge flag of: 0 and with Loops: 1111 1112 
+
+Local Edge: 4 is global edge: 2345 with boundary edge flag of: 1 and with Loops: 1111 1111 
+
+Fine grid tri 1 is: 2405 with surface ID: 1 
+
+Fine Loop Edge: 3638 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3534 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3634 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 2406 with surface ID: 1 
+
+Fine Loop Edge: 3639 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3638 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3640 has boundary edge flag of: 0 
+
+Fine grid tri 3 is: 2407 with surface ID: 1 
+
+Fine Loop Edge: 3635 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3641 has boundary edge flag of: 1 
+
+Fine Loop Edge: 3640 has boundary edge flag of: 0 
+
+WTF! ... 
+
+Working on Loop: 1118 
+
+NumberOfLoopNodes: 5 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 4 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 2290 with nodes Node1,2: 1166 1197 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 2291 with nodes Node1,2: 1166 1246 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 2357 with nodes Node1,2: 1197 1229 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 2358 with nodes Node1,2: 1198 1229 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 2290 with boundary edge flag of: 0 and with Loops: 1086 1118 
+
+Local Edge: 2 is global edge: 2291 with boundary edge flag of: 0 and with Loops: 1087 1118 
+
+Local Edge: 3 is global edge: 2357 with boundary edge flag of: 0 and with Loops: 1117 1118 
+
+Local Edge: 4 is global edge: 2358 with boundary edge flag of: 1 and with Loops: 1118 1118 
+
+Fine grid tri 1 is: 2420 with surface ID: 1 
+
+Fine Loop Edge: 3555 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3554 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3660 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 2421 with surface ID: 1 
+
+Fine Loop Edge: 3661 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3660 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3659 has boundary edge flag of: 0 
+
+Fine grid tri 3 is: 2422 with surface ID: 1 
+
+Fine Loop Edge: 3662 has boundary edge flag of: 1 
+
+Fine Loop Edge: 3557 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3661 has boundary edge flag of: 0 
+
+WTF! ... 
+
+Working on Loop: 1119 
+
+NumberOfLoopNodes: 4 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 3 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 2359 with nodes Node1,2: 1230 1231 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 2360 with nodes Node1,2: 1214 1262 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 2361 with nodes Node1,2: 1231 1262 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 2359 with boundary edge flag of: 1 and with Loops: 1119 1119 
+
+Local Edge: 2 is global edge: 2360 with boundary edge flag of: 0 and with Loops: 1119 1150 
+
+Local Edge: 3 is global edge: 2361 with boundary edge flag of: 0 and with Loops: 1119 1120 
+
+Fine grid tri 1 is: 2423 with surface ID: 1 
+
+Fine Loop Edge: 3663 has boundary edge flag of: 1 
+
+Fine Loop Edge: 3607 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3664 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 2424 with surface ID: 1 
+
+Fine Loop Edge: 3664 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3665 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3666 has boundary edge flag of: 0 
+
+WTF! ... 
+
+Working on Loop: 1126 
+
+NumberOfLoopNodes: 4 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 3 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 2372 with nodes Node1,2: 1237 1262 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 2374 with nodes Node1,2: 1237 1238 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 2375 with nodes Node1,2: 1222 1262 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 2372 with boundary edge flag of: 0 and with Loops: 1125 1126 
+
+Local Edge: 2 is global edge: 2374 with boundary edge flag of: 1 and with Loops: 1126 1126 
+
+Local Edge: 3 is global edge: 2375 with boundary edge flag of: 0 and with Loops: 1126 1127 
+
+Fine grid tri 1 is: 2431 with surface ID: 1 
+
+Fine Loop Edge: 3679 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3635 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3680 has boundary edge flag of: 1 
+
+Fine grid tri 2 is: 2432 with surface ID: 1 
+
+Fine Loop Edge: 3677 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3681 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3679 has boundary edge flag of: 0 
+
+WTF! ... 
+
+Working on Loop: 1134 
+
+NumberOfLoopNodes: 4 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 3 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 2388 with nodes Node1,2: 1245 1262 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 2390 with nodes Node1,2: 1245 1246 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 2391 with nodes Node1,2: 1198 1262 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 2388 with boundary edge flag of: 0 and with Loops: 1133 1134 
+
+Local Edge: 2 is global edge: 2390 with boundary edge flag of: 1 and with Loops: 1134 1134 
+
+Local Edge: 3 is global edge: 2391 with boundary edge flag of: 0 and with Loops: 1134 1135 
+
+Fine grid tri 1 is: 2441 with surface ID: 1 
+
+Fine Loop Edge: 3697 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3557 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3698 has boundary edge flag of: 1 
+
+Fine grid tri 2 is: 2442 with surface ID: 1 
+
+Fine Loop Edge: 3695 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3699 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3697 has boundary edge flag of: 0 
+
+WTF! ... 
+
+Working on Loop: 1142 
+
+NumberOfLoopNodes: 4 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 3 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 2404 with nodes Node1,2: 1253 1262 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 2406 with nodes Node1,2: 1206 1262 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 2407 with nodes Node1,2: 1253 1254 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 2404 with boundary edge flag of: 0 and with Loops: 1141 1142 
+
+Local Edge: 2 is global edge: 2406 with boundary edge flag of: 0 and with Loops: 1142 1143 
+
+Local Edge: 3 is global edge: 2407 with boundary edge flag of: 1 and with Loops: 1142 1142 
+
+Fine grid tri 1 is: 2451 with surface ID: 1 
+
+Fine Loop Edge: 3715 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3713 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3716 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 2452 with surface ID: 1 
+
+Fine Loop Edge: 3581 has boundary edge flag of: 0 
+
+Fine Loop Edge: 3717 has boundary edge flag of: 1 
+
+Fine Loop Edge: 3715 has boundary edge flag of: 0 
+
+Number of Kutta Nodes: 70 
+
+There were 256 loops that we could not find upwind edges for... 
+
+Grid:1 --> # loops:       4212 ...# Edges:       9076 ...# Nodes:       4734  
+
+There are: 3772 coarse grid nodes 
+
+There are: 5006 coarse grid edges 
+
+There are: 1167 coarse grid loops 
+
+WTF! ... 
+
+Working on Loop: 270 
+
+NumberOfLoopNodes: 9 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 8 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 1080 with nodes Node1,2: 888 889 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 1081 with nodes Node1,2: 889 890 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 1119 with nodes Node1,2: 888 915 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 1120 with nodes Node1,2: 890 916 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 5 is global edge: 1144 with nodes Node1,2: 915 984 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 6 is global edge: 1145 with nodes Node1,2: 936 937 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 7 is global edge: 1146 with nodes Node1,2: 937 938 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 8 is global edge: 1147 with nodes Node1,2: 916 938 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 1080 with boundary edge flag of: 0 and with Loops: 254 270 
+
+Local Edge: 2 is global edge: 1081 with boundary edge flag of: 0 and with Loops: 254 270 
+
+Local Edge: 3 is global edge: 1119 with boundary edge flag of: 0 and with Loops: 269 270 
+
+Local Edge: 4 is global edge: 1120 with boundary edge flag of: 0 and with Loops: 270 271 
+
+Local Edge: 5 is global edge: 1144 with boundary edge flag of: 0 and with Loops: 269 270 
+
+Local Edge: 6 is global edge: 1145 with boundary edge flag of: 1 and with Loops: 270 270 
+
+Local Edge: 7 is global edge: 1146 with boundary edge flag of: 1 and with Loops: 270 270 
+
+Local Edge: 8 is global edge: 1147 with boundary edge flag of: 0 and with Loops: 270 271 
+
+Fine grid tri 1 is: 1063 with surface ID: 1 
+
+Fine Loop Edge: 2180 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2243 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2244 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2245 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 1064 with surface ID: 1 
+
+Fine Loop Edge: 2182 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2245 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2246 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2247 has boundary edge flag of: 0 
+
+Fine grid tri 3 is: 1095 with surface ID: 1 
+
+Fine Loop Edge: 2244 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2309 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2310 has boundary edge flag of: 1 
+
+Fine Loop Edge: 2311 has boundary edge flag of: 0 
+
+Fine grid tri 4 is: 1096 with surface ID: 1 
+
+Fine Loop Edge: 2246 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2311 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2312 has boundary edge flag of: 1 
+
+Fine Loop Edge: 2313 has boundary edge flag of: 0 
+
+WTF! ... 
+
+Working on Loop: 274 
+
+NumberOfLoopNodes: 9 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 8 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 1092 with nodes Node1,2: 896 897 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 1094 with nodes Node1,2: 897 898 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 1123 with nodes Node1,2: 896 919 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 1124 with nodes Node1,2: 898 920 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 5 is global edge: 1157 with nodes Node1,2: 919 960 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 6 is global edge: 1158 with nodes Node1,2: 944 945 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 7 is global edge: 1159 with nodes Node1,2: 920 946 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 8 is global edge: 1160 with nodes Node1,2: 945 946 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 1092 with boundary edge flag of: 0 and with Loops: 258 274 
+
+Local Edge: 2 is global edge: 1094 with boundary edge flag of: 0 and with Loops: 258 274 
+
+Local Edge: 3 is global edge: 1123 with boundary edge flag of: 0 and with Loops: 273 274 
+
+Local Edge: 4 is global edge: 1124 with boundary edge flag of: 0 and with Loops: 274 275 
+
+Local Edge: 5 is global edge: 1157 with boundary edge flag of: 0 and with Loops: 273 274 
+
+Local Edge: 6 is global edge: 1158 with boundary edge flag of: 1 and with Loops: 274 274 
+
+Local Edge: 7 is global edge: 1159 with boundary edge flag of: 0 and with Loops: 274 275 
+
+Local Edge: 8 is global edge: 1160 with boundary edge flag of: 1 and with Loops: 274 274 
+
+Fine grid tri 1 is: 1071 with surface ID: 1 
+
+Fine Loop Edge: 2197 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2259 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2260 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2261 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 1072 with surface ID: 1 
+
+Fine Loop Edge: 2199 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2261 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2262 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2263 has boundary edge flag of: 0 
+
+Fine grid tri 3 is: 1103 with surface ID: 1 
+
+Fine Loop Edge: 2260 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2326 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2327 has boundary edge flag of: 1 
+
+Fine Loop Edge: 2328 has boundary edge flag of: 0 
+
+Fine grid tri 4 is: 1104 with surface ID: 1 
+
+Fine Loop Edge: 2263 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2328 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2329 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2330 has boundary edge flag of: 1 
+
+WTF! ... 
+
+Working on Loop: 278 
+
+NumberOfLoopNodes: 9 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 8 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 1104 with nodes Node1,2: 904 905 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 1106 with nodes Node1,2: 905 906 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 1127 with nodes Node1,2: 904 923 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 1128 with nodes Node1,2: 906 924 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 5 is global edge: 1168 with nodes Node1,2: 923 968 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 6 is global edge: 1171 with nodes Node1,2: 952 953 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 7 is global edge: 1172 with nodes Node1,2: 924 954 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 8 is global edge: 1173 with nodes Node1,2: 953 954 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 1104 with boundary edge flag of: 0 and with Loops: 262 278 
+
+Local Edge: 2 is global edge: 1106 with boundary edge flag of: 0 and with Loops: 262 278 
+
+Local Edge: 3 is global edge: 1127 with boundary edge flag of: 0 and with Loops: 277 278 
+
+Local Edge: 4 is global edge: 1128 with boundary edge flag of: 0 and with Loops: 278 279 
+
+Local Edge: 5 is global edge: 1168 with boundary edge flag of: 0 and with Loops: 277 278 
+
+Local Edge: 6 is global edge: 1171 with boundary edge flag of: 1 and with Loops: 278 278 
+
+Local Edge: 7 is global edge: 1172 with boundary edge flag of: 0 and with Loops: 278 279 
+
+Local Edge: 8 is global edge: 1173 with boundary edge flag of: 1 and with Loops: 278 278 
+
+Fine grid tri 1 is: 1079 with surface ID: 1 
+
+Fine Loop Edge: 2213 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2275 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2276 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2277 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 1080 with surface ID: 1 
+
+Fine Loop Edge: 2215 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2276 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2278 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2279 has boundary edge flag of: 0 
+
+Fine grid tri 3 is: 1111 with surface ID: 1 
+
+Fine Loop Edge: 2277 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2341 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2344 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2345 has boundary edge flag of: 1 
+
+Fine grid tri 4 is: 1112 with surface ID: 1 
+
+Fine Loop Edge: 2279 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2344 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2346 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2347 has boundary edge flag of: 1 
+
+WTF! ... 
+
+Working on Loop: 285 
+
+NumberOfLoopNodes: 5 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 4 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 1190 with nodes Node1,2: 966 992 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 1192 with nodes Node1,2: 966 967 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 1193 with nodes Node1,2: 967 968 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 1194 with nodes Node1,2: 952 992 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 1190 with boundary edge flag of: 0 and with Loops: 284 285 
+
+Local Edge: 2 is global edge: 1192 with boundary edge flag of: 1 and with Loops: 285 285 
+
+Local Edge: 3 is global edge: 1193 with boundary edge flag of: 1 and with Loops: 285 285 
+
+Local Edge: 4 is global edge: 1194 with boundary edge flag of: 0 and with Loops: 285 286 
+
+Fine grid tri 1 is: 1125 with surface ID: 1 
+
+Fine Loop Edge: 2370 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2372 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2373 has boundary edge flag of: 1 
+
+Fine grid tri 2 is: 1126 with surface ID: 1 
+
+Fine Loop Edge: 2372 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2374 has boundary edge flag of: 1 
+
+Fine Loop Edge: 2375 has boundary edge flag of: 0 
+
+WTF! ... 
+
+Working on Loop: 289 
+
+NumberOfLoopNodes: 5 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 4 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 1202 with nodes Node1,2: 974 992 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 1204 with nodes Node1,2: 974 975 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 1205 with nodes Node1,2: 975 976 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 1206 with nodes Node1,2: 928 992 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 1202 with boundary edge flag of: 0 and with Loops: 288 289 
+
+Local Edge: 2 is global edge: 1204 with boundary edge flag of: 1 and with Loops: 289 289 
+
+Local Edge: 3 is global edge: 1205 with boundary edge flag of: 1 and with Loops: 289 289 
+
+Local Edge: 4 is global edge: 1206 with boundary edge flag of: 0 and with Loops: 289 266 
+
+Fine grid tri 1 is: 1133 with surface ID: 1 
+
+Fine Loop Edge: 2386 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2388 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2389 has boundary edge flag of: 1 
+
+Fine grid tri 2 is: 1134 with surface ID: 1 
+
+Fine Loop Edge: 2388 has boundary edge flag of: 0 
+
+Fine Loop Edge: 2390 has boundary edge flag of: 1 
+
+Fine Loop Edge: 2391 has boundary edge flag of: 0 
+
+Number of Kutta Nodes: 70 
+
+Merged: 1459 edges that were colinear 
+
+There were 63 loops that we could not find upwind edges for... 
+
+Grid:2 --> # loops:       1167 ...# Edges:       3547 ...# Nodes:       2313 
+
+There are: 1925 coarse grid nodes 
+
+There are: 2339 coarse grid edges 
+
+There are: 370 coarse grid loops 
+
+WTF! ... 
+
+Working on Loop: 68 
+
+NumberOfLoopNodes: 13 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 12 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 435 with nodes Node1,2: 456 457 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 436 with nodes Node1,2: 457 458 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 437 with nodes Node1,2: 458 459 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 438 with nodes Node1,2: 459 460 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 5 is global edge: 460 with nodes Node1,2: 456 481 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 6 is global edge: 461 with nodes Node1,2: 460 482 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 7 is global edge: 468 with nodes Node1,2: 481 544 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 8 is global edge: 469 with nodes Node1,2: 482 500 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 9 is global edge: 484 with nodes Node1,2: 496 497 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 10 is global edge: 485 with nodes Node1,2: 497 498 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 11 is global edge: 486 with nodes Node1,2: 498 499 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 12 is global edge: 487 with nodes Node1,2: 499 500 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 435 with boundary edge flag of: 0 and with Loops: 60 68 
+
+Local Edge: 2 is global edge: 436 with boundary edge flag of: 0 and with Loops: 60 68 
+
+Local Edge: 3 is global edge: 437 with boundary edge flag of: 0 and with Loops: 60 68 
+
+Local Edge: 4 is global edge: 438 with boundary edge flag of: 0 and with Loops: 60 68 
+
+Local Edge: 5 is global edge: 460 with boundary edge flag of: 0 and with Loops: 67 68 
+
+Local Edge: 6 is global edge: 461 with boundary edge flag of: 0 and with Loops: 68 69 
+
+Local Edge: 7 is global edge: 468 with boundary edge flag of: 0 and with Loops: 67 68 
+
+Local Edge: 8 is global edge: 469 with boundary edge flag of: 0 and with Loops: 68 69 
+
+Local Edge: 9 is global edge: 484 with boundary edge flag of: 1 and with Loops: 68 68 
+
+Local Edge: 10 is global edge: 485 with boundary edge flag of: 1 and with Loops: 68 68 
+
+Local Edge: 11 is global edge: 486 with boundary edge flag of: 1 and with Loops: 68 68 
+
+Local Edge: 12 is global edge: 487 with boundary edge flag of: 1 and with Loops: 68 68 
+
+Fine grid tri 1 is: 254 with surface ID: 1 
+
+Fine Loop Edge: 825 has boundary edge flag of: 0 
+
+Fine Loop Edge: 826 has boundary edge flag of: 0 
+
+Fine Loop Edge: 852 has boundary edge flag of: 0 
+
+Fine Loop Edge: 853 has boundary edge flag of: 0 
+
+Fine Loop Edge: 873 has boundary edge flag of: 0 
+
+Fine Loop Edge: 874 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 255 with surface ID: 1 
+
+Fine Loop Edge: 827 has boundary edge flag of: 0 
+
+Fine Loop Edge: 828 has boundary edge flag of: 0 
+
+Fine Loop Edge: 853 has boundary edge flag of: 0 
+
+Fine Loop Edge: 854 has boundary edge flag of: 0 
+
+Fine Loop Edge: 875 has boundary edge flag of: 0 
+
+Fine Loop Edge: 876 has boundary edge flag of: 0 
+
+Fine grid tri 3 is: 270 with surface ID: 1 
+
+Fine Loop Edge: 873 has boundary edge flag of: 0 
+
+Fine Loop Edge: 874 has boundary edge flag of: 0 
+
+Fine Loop Edge: 900 has boundary edge flag of: 0 
+
+Fine Loop Edge: 901 has boundary edge flag of: 0 
+
+Fine Loop Edge: 922 has boundary edge flag of: 1 
+
+Fine Loop Edge: 923 has boundary edge flag of: 1 
+
+Fine grid tri 4 is: 271 with surface ID: 1 
+
+Fine Loop Edge: 875 has boundary edge flag of: 0 
+
+Fine Loop Edge: 876 has boundary edge flag of: 0 
+
+Fine Loop Edge: 901 has boundary edge flag of: 0 
+
+Fine Loop Edge: 902 has boundary edge flag of: 0 
+
+Fine Loop Edge: 924 has boundary edge flag of: 1 
+
+Fine Loop Edge: 925 has boundary edge flag of: 1 
+
+WTF! ... 
+
+Working on Loop: 70 
+
+NumberOfLoopNodes: 13 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 12 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 443 with nodes Node1,2: 464 465 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 444 with nodes Node1,2: 465 466 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 445 with nodes Node1,2: 466 467 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 446 with nodes Node1,2: 467 468 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 5 is global edge: 462 with nodes Node1,2: 464 483 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 6 is global edge: 463 with nodes Node1,2: 468 484 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 7 is global edge: 470 with nodes Node1,2: 483 520 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 8 is global edge: 471 with nodes Node1,2: 484 508 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 9 is global edge: 493 with nodes Node1,2: 504 505 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 10 is global edge: 494 with nodes Node1,2: 505 506 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 11 is global edge: 495 with nodes Node1,2: 506 507 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 12 is global edge: 496 with nodes Node1,2: 507 508 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 443 with boundary edge flag of: 0 and with Loops: 62 70 
+
+Local Edge: 2 is global edge: 444 with boundary edge flag of: 0 and with Loops: 62 70 
+
+Local Edge: 3 is global edge: 445 with boundary edge flag of: 0 and with Loops: 62 70 
+
+Local Edge: 4 is global edge: 446 with boundary edge flag of: 0 and with Loops: 62 70 
+
+Local Edge: 5 is global edge: 462 with boundary edge flag of: 0 and with Loops: 69 70 
+
+Local Edge: 6 is global edge: 463 with boundary edge flag of: 0 and with Loops: 70 71 
+
+Local Edge: 7 is global edge: 470 with boundary edge flag of: 0 and with Loops: 69 70 
+
+Local Edge: 8 is global edge: 471 with boundary edge flag of: 0 and with Loops: 70 71 
+
+Local Edge: 9 is global edge: 493 with boundary edge flag of: 1 and with Loops: 70 70 
+
+Local Edge: 10 is global edge: 494 with boundary edge flag of: 1 and with Loops: 70 70 
+
+Local Edge: 11 is global edge: 495 with boundary edge flag of: 1 and with Loops: 70 70 
+
+Local Edge: 12 is global edge: 496 with boundary edge flag of: 1 and with Loops: 70 70 
+
+Fine grid tri 1 is: 258 with surface ID: 1 
+
+Fine Loop Edge: 833 has boundary edge flag of: 0 
+
+Fine Loop Edge: 834 has boundary edge flag of: 0 
+
+Fine Loop Edge: 856 has boundary edge flag of: 0 
+
+Fine Loop Edge: 857 has boundary edge flag of: 0 
+
+Fine Loop Edge: 881 has boundary edge flag of: 0 
+
+Fine Loop Edge: 882 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 259 with surface ID: 1 
+
+Fine Loop Edge: 835 has boundary edge flag of: 0 
+
+Fine Loop Edge: 836 has boundary edge flag of: 0 
+
+Fine Loop Edge: 857 has boundary edge flag of: 0 
+
+Fine Loop Edge: 858 has boundary edge flag of: 0 
+
+Fine Loop Edge: 883 has boundary edge flag of: 0 
+
+Fine Loop Edge: 884 has boundary edge flag of: 0 
+
+Fine grid tri 3 is: 274 with surface ID: 1 
+
+Fine Loop Edge: 881 has boundary edge flag of: 0 
+
+Fine Loop Edge: 882 has boundary edge flag of: 0 
+
+Fine Loop Edge: 904 has boundary edge flag of: 0 
+
+Fine Loop Edge: 905 has boundary edge flag of: 0 
+
+Fine Loop Edge: 931 has boundary edge flag of: 1 
+
+Fine Loop Edge: 932 has boundary edge flag of: 1 
+
+Fine grid tri 4 is: 275 with surface ID: 1 
+
+Fine Loop Edge: 883 has boundary edge flag of: 0 
+
+Fine Loop Edge: 884 has boundary edge flag of: 0 
+
+Fine Loop Edge: 905 has boundary edge flag of: 0 
+
+Fine Loop Edge: 906 has boundary edge flag of: 0 
+
+Fine Loop Edge: 933 has boundary edge flag of: 1 
+
+Fine Loop Edge: 934 has boundary edge flag of: 1 
+
+WTF! ... 
+
+Working on Loop: 72 
+
+NumberOfLoopNodes: 13 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 12 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 451 with nodes Node1,2: 472 473 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 452 with nodes Node1,2: 473 474 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 453 with nodes Node1,2: 474 475 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 454 with nodes Node1,2: 475 476 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 5 is global edge: 464 with nodes Node1,2: 472 485 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 6 is global edge: 465 with nodes Node1,2: 476 486 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 7 is global edge: 472 with nodes Node1,2: 485 528 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 8 is global edge: 473 with nodes Node1,2: 486 516 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 9 is global edge: 502 with nodes Node1,2: 512 513 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 10 is global edge: 503 with nodes Node1,2: 513 514 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 11 is global edge: 504 with nodes Node1,2: 514 515 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 12 is global edge: 505 with nodes Node1,2: 515 516 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 451 with boundary edge flag of: 0 and with Loops: 64 72 
+
+Local Edge: 2 is global edge: 452 with boundary edge flag of: 0 and with Loops: 64 72 
+
+Local Edge: 3 is global edge: 453 with boundary edge flag of: 0 and with Loops: 64 72 
+
+Local Edge: 4 is global edge: 454 with boundary edge flag of: 0 and with Loops: 64 72 
+
+Local Edge: 5 is global edge: 464 with boundary edge flag of: 0 and with Loops: 71 72 
+
+Local Edge: 6 is global edge: 465 with boundary edge flag of: 0 and with Loops: 72 73 
+
+Local Edge: 7 is global edge: 472 with boundary edge flag of: 0 and with Loops: 71 72 
+
+Local Edge: 8 is global edge: 473 with boundary edge flag of: 0 and with Loops: 72 73 
+
+Local Edge: 9 is global edge: 502 with boundary edge flag of: 1 and with Loops: 72 72 
+
+Local Edge: 10 is global edge: 503 with boundary edge flag of: 1 and with Loops: 72 72 
+
+Local Edge: 11 is global edge: 504 with boundary edge flag of: 1 and with Loops: 72 72 
+
+Local Edge: 12 is global edge: 505 with boundary edge flag of: 1 and with Loops: 72 72 
+
+Fine grid tri 1 is: 262 with surface ID: 1 
+
+Fine Loop Edge: 841 has boundary edge flag of: 0 
+
+Fine Loop Edge: 842 has boundary edge flag of: 0 
+
+Fine Loop Edge: 860 has boundary edge flag of: 0 
+
+Fine Loop Edge: 861 has boundary edge flag of: 0 
+
+Fine Loop Edge: 889 has boundary edge flag of: 0 
+
+Fine Loop Edge: 890 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 263 with surface ID: 1 
+
+Fine Loop Edge: 843 has boundary edge flag of: 0 
+
+Fine Loop Edge: 844 has boundary edge flag of: 0 
+
+Fine Loop Edge: 861 has boundary edge flag of: 0 
+
+Fine Loop Edge: 862 has boundary edge flag of: 0 
+
+Fine Loop Edge: 891 has boundary edge flag of: 0 
+
+Fine Loop Edge: 892 has boundary edge flag of: 0 
+
+Fine grid tri 3 is: 278 with surface ID: 1 
+
+Fine Loop Edge: 889 has boundary edge flag of: 0 
+
+Fine Loop Edge: 890 has boundary edge flag of: 0 
+
+Fine Loop Edge: 908 has boundary edge flag of: 0 
+
+Fine Loop Edge: 909 has boundary edge flag of: 0 
+
+Fine Loop Edge: 940 has boundary edge flag of: 1 
+
+Fine Loop Edge: 941 has boundary edge flag of: 1 
+
+Fine grid tri 4 is: 279 with surface ID: 1 
+
+Fine Loop Edge: 891 has boundary edge flag of: 0 
+
+Fine Loop Edge: 892 has boundary edge flag of: 0 
+
+Fine Loop Edge: 909 has boundary edge flag of: 0 
+
+Fine Loop Edge: 910 has boundary edge flag of: 0 
+
+Fine Loop Edge: 942 has boundary edge flag of: 1 
+
+Fine Loop Edge: 943 has boundary edge flag of: 1 
+
+WTF! ... 
+
+Working on Loop: 75 
+
+NumberOfLoopNodes: 7 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 6 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 513 with nodes Node1,2: 524 552 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 515 with nodes Node1,2: 524 525 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 516 with nodes Node1,2: 525 526 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 517 with nodes Node1,2: 526 527 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 5 is global edge: 518 with nodes Node1,2: 527 528 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 6 is global edge: 519 with nodes Node1,2: 512 552 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 513 with boundary edge flag of: 0 and with Loops: 74 75 
+
+Local Edge: 2 is global edge: 515 with boundary edge flag of: 1 and with Loops: 75 75 
+
+Local Edge: 3 is global edge: 516 with boundary edge flag of: 1 and with Loops: 75 75 
+
+Local Edge: 4 is global edge: 517 with boundary edge flag of: 1 and with Loops: 75 75 
+
+Local Edge: 5 is global edge: 518 with boundary edge flag of: 1 and with Loops: 75 75 
+
+Local Edge: 6 is global edge: 519 with boundary edge flag of: 0 and with Loops: 75 76 
+
+Fine grid tri 1 is: 284 with surface ID: 1 
+
+Fine Loop Edge: 952 has boundary edge flag of: 0 
+
+Fine Loop Edge: 954 has boundary edge flag of: 1 
+
+Fine Loop Edge: 955 has boundary edge flag of: 0 
+
+Fine Loop Edge: 956 has boundary edge flag of: 1 
+
+Fine grid tri 2 is: 285 with surface ID: 1 
+
+Fine Loop Edge: 955 has boundary edge flag of: 0 
+
+Fine Loop Edge: 957 has boundary edge flag of: 1 
+
+Fine Loop Edge: 958 has boundary edge flag of: 1 
+
+Fine Loop Edge: 959 has boundary edge flag of: 0 
+
+Number of Kutta Nodes: 70 
+
+Merged: 336 edges that were colinear 
+
+There were 15 loops that we could not find upwind edges for... 
+
+Grid:3 --> # loops:        370 ...# Edges:       2003 ...# Nodes:       1589 
+
+There are: 1419 coarse grid nodes 
+
+There are: 1604 coarse grid edges 
+
+There are: 150 coarse grid loops 
+
+WTF! ... 
+
+Working on Loop: 18 
+
+NumberOfLoopNodes: 24 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 23 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 187 with nodes Node1,2: 263 264 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 188 with nodes Node1,2: 264 265 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 189 with nodes Node1,2: 265 266 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 190 with nodes Node1,2: 266 267 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 5 is global edge: 191 with nodes Node1,2: 267 268 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 6 is global edge: 192 with nodes Node1,2: 268 269 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 7 is global edge: 193 with nodes Node1,2: 269 270 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 8 is global edge: 194 with nodes Node1,2: 270 271 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 9 is global edge: 216 with nodes Node1,2: 263 295 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 10 is global edge: 217 with nodes Node1,2: 271 296 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 11 is global edge: 220 with nodes Node1,2: 295 299 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 12 is global edge: 221 with nodes Node1,2: 296 300 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 13 is global edge: 224 with nodes Node1,2: 299 359 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 14 is global edge: 225 with nodes Node1,2: 300 335 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 15 is global edge: 236 with nodes Node1,2: 311 312 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 16 is global edge: 237 with nodes Node1,2: 312 313 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 17 is global edge: 238 with nodes Node1,2: 313 314 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 18 is global edge: 239 with nodes Node1,2: 314 315 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 19 is global edge: 240 with nodes Node1,2: 315 316 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 20 is global edge: 241 with nodes Node1,2: 316 317 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 21 is global edge: 242 with nodes Node1,2: 317 318 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 22 is global edge: 243 with nodes Node1,2: 318 319 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 23 is global edge: 244 with nodes Node1,2: 319 335 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 187 with boundary edge flag of: 0 and with Loops: 14 18 
+
+Local Edge: 2 is global edge: 188 with boundary edge flag of: 0 and with Loops: 14 18 
+
+Local Edge: 3 is global edge: 189 with boundary edge flag of: 0 and with Loops: 14 18 
+
+Local Edge: 4 is global edge: 190 with boundary edge flag of: 0 and with Loops: 14 18 
+
+Local Edge: 5 is global edge: 191 with boundary edge flag of: 0 and with Loops: 14 18 
+
+Local Edge: 6 is global edge: 192 with boundary edge flag of: 0 and with Loops: 14 18 
+
+Local Edge: 7 is global edge: 193 with boundary edge flag of: 0 and with Loops: 14 18 
+
+Local Edge: 8 is global edge: 194 with boundary edge flag of: 0 and with Loops: 14 18 
+
+Local Edge: 9 is global edge: 216 with boundary edge flag of: 0 and with Loops: 17 18 
+
+Local Edge: 10 is global edge: 217 with boundary edge flag of: 0 and with Loops: 18 19 
+
+Local Edge: 11 is global edge: 220 with boundary edge flag of: 0 and with Loops: 17 18 
+
+Local Edge: 12 is global edge: 221 with boundary edge flag of: 0 and with Loops: 18 19 
+
+Local Edge: 13 is global edge: 224 with boundary edge flag of: 0 and with Loops: 17 18 
+
+Local Edge: 14 is global edge: 225 with boundary edge flag of: 0 and with Loops: 18 19 
+
+Local Edge: 15 is global edge: 236 with boundary edge flag of: 1 and with Loops: 18 18 
+
+Local Edge: 16 is global edge: 237 with boundary edge flag of: 1 and with Loops: 18 18 
+
+Local Edge: 17 is global edge: 238 with boundary edge flag of: 1 and with Loops: 18 18 
+
+Local Edge: 18 is global edge: 239 with boundary edge flag of: 1 and with Loops: 18 18 
+
+Local Edge: 19 is global edge: 240 with boundary edge flag of: 1 and with Loops: 18 18 
+
+Local Edge: 20 is global edge: 241 with boundary edge flag of: 1 and with Loops: 18 18 
+
+Local Edge: 21 is global edge: 242 with boundary edge flag of: 1 and with Loops: 18 18 
+
+Local Edge: 22 is global edge: 243 with boundary edge flag of: 1 and with Loops: 18 18 
+
+Local Edge: 23 is global edge: 244 with boundary edge flag of: 0 and with Loops: 18 21 
+
+Fine grid tri 1 is: 60 with surface ID: 1 
+
+Fine Loop Edge: 326 has boundary edge flag of: 0 
+
+Fine Loop Edge: 327 has boundary edge flag of: 0 
+
+Fine Loop Edge: 328 has boundary edge flag of: 0 
+
+Fine Loop Edge: 329 has boundary edge flag of: 0 
+
+Fine Loop Edge: 356 has boundary edge flag of: 0 
+
+Fine Loop Edge: 357 has boundary edge flag of: 0 
+
+Fine Loop Edge: 364 has boundary edge flag of: 0 
+
+Fine Loop Edge: 365 has boundary edge flag of: 0 
+
+Fine Loop Edge: 379 has boundary edge flag of: 0 
+
+Fine Loop Edge: 380 has boundary edge flag of: 0 
+
+Fine Loop Edge: 381 has boundary edge flag of: 0 
+
+Fine Loop Edge: 382 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 61 with surface ID: 1 
+
+Fine Loop Edge: 330 has boundary edge flag of: 0 
+
+Fine Loop Edge: 331 has boundary edge flag of: 0 
+
+Fine Loop Edge: 332 has boundary edge flag of: 0 
+
+Fine Loop Edge: 333 has boundary edge flag of: 0 
+
+Fine Loop Edge: 357 has boundary edge flag of: 0 
+
+Fine Loop Edge: 358 has boundary edge flag of: 0 
+
+Fine Loop Edge: 365 has boundary edge flag of: 0 
+
+Fine Loop Edge: 366 has boundary edge flag of: 0 
+
+Fine Loop Edge: 383 has boundary edge flag of: 0 
+
+Fine Loop Edge: 384 has boundary edge flag of: 0 
+
+Fine Loop Edge: 385 has boundary edge flag of: 0 
+
+Fine Loop Edge: 386 has boundary edge flag of: 0 
+
+Fine grid tri 3 is: 68 with surface ID: 1 
+
+Fine Loop Edge: 379 has boundary edge flag of: 0 
+
+Fine Loop Edge: 380 has boundary edge flag of: 0 
+
+Fine Loop Edge: 381 has boundary edge flag of: 0 
+
+Fine Loop Edge: 382 has boundary edge flag of: 0 
+
+Fine Loop Edge: 404 has boundary edge flag of: 0 
+
+Fine Loop Edge: 405 has boundary edge flag of: 0 
+
+Fine Loop Edge: 420 has boundary edge flag of: 1 
+
+Fine Loop Edge: 421 has boundary edge flag of: 1 
+
+Fine Loop Edge: 422 has boundary edge flag of: 1 
+
+Fine Loop Edge: 423 has boundary edge flag of: 1 
+
+Fine grid tri 4 is: 69 with surface ID: 1 
+
+Fine Loop Edge: 383 has boundary edge flag of: 0 
+
+Fine Loop Edge: 384 has boundary edge flag of: 0 
+
+Fine Loop Edge: 385 has boundary edge flag of: 0 
+
+Fine Loop Edge: 386 has boundary edge flag of: 0 
+
+Fine Loop Edge: 405 has boundary edge flag of: 0 
+
+Fine Loop Edge: 406 has boundary edge flag of: 0 
+
+Fine Loop Edge: 424 has boundary edge flag of: 1 
+
+Fine Loop Edge: 425 has boundary edge flag of: 1 
+
+Fine Loop Edge: 426 has boundary edge flag of: 1 
+
+Fine Loop Edge: 427 has boundary edge flag of: 1 
+
+Fine Loop Edge: 428 has boundary edge flag of: 0 
+
+WTF! ... 
+
+Working on Loop: 19 
+
+NumberOfLoopNodes: 24 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 23 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 200 with nodes Node1,2: 271 273 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 201 with nodes Node1,2: 273 277 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 202 with nodes Node1,2: 277 278 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 203 with nodes Node1,2: 278 279 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 5 is global edge: 204 with nodes Node1,2: 279 280 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 6 is global edge: 205 with nodes Node1,2: 280 281 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 7 is global edge: 206 with nodes Node1,2: 281 282 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 8 is global edge: 207 with nodes Node1,2: 282 283 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 9 is global edge: 217 with nodes Node1,2: 271 296 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 10 is global edge: 218 with nodes Node1,2: 283 297 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 11 is global edge: 221 with nodes Node1,2: 296 300 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 12 is global edge: 222 with nodes Node1,2: 297 301 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 13 is global edge: 225 with nodes Node1,2: 300 335 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 14 is global edge: 226 with nodes Node1,2: 301 343 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 15 is global edge: 245 with nodes Node1,2: 319 320 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 16 is global edge: 246 with nodes Node1,2: 320 321 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 17 is global edge: 247 with nodes Node1,2: 321 322 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 18 is global edge: 248 with nodes Node1,2: 322 323 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 19 is global edge: 249 with nodes Node1,2: 323 324 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 20 is global edge: 250 with nodes Node1,2: 324 325 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 21 is global edge: 251 with nodes Node1,2: 325 326 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 22 is global edge: 252 with nodes Node1,2: 327 343 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 23 is global edge: 253 with nodes Node1,2: 326 327 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 200 with boundary edge flag of: 0 and with Loops: 15 19 
+
+Local Edge: 2 is global edge: 201 with boundary edge flag of: 0 and with Loops: 15 19 
+
+Local Edge: 3 is global edge: 202 with boundary edge flag of: 0 and with Loops: 15 19 
+
+Local Edge: 4 is global edge: 203 with boundary edge flag of: 0 and with Loops: 15 19 
+
+Local Edge: 5 is global edge: 204 with boundary edge flag of: 0 and with Loops: 15 19 
+
+Local Edge: 6 is global edge: 205 with boundary edge flag of: 0 and with Loops: 15 19 
+
+Local Edge: 7 is global edge: 206 with boundary edge flag of: 0 and with Loops: 15 19 
+
+Local Edge: 8 is global edge: 207 with boundary edge flag of: 0 and with Loops: 15 19 
+
+Local Edge: 9 is global edge: 217 with boundary edge flag of: 0 and with Loops: 18 19 
+
+Local Edge: 10 is global edge: 218 with boundary edge flag of: 0 and with Loops: 19 20 
+
+Local Edge: 11 is global edge: 221 with boundary edge flag of: 0 and with Loops: 18 19 
+
+Local Edge: 12 is global edge: 222 with boundary edge flag of: 0 and with Loops: 19 20 
+
+Local Edge: 13 is global edge: 225 with boundary edge flag of: 0 and with Loops: 18 19 
+
+Local Edge: 14 is global edge: 226 with boundary edge flag of: 0 and with Loops: 19 20 
+
+Local Edge: 15 is global edge: 245 with boundary edge flag of: 1 and with Loops: 19 19 
+
+Local Edge: 16 is global edge: 246 with boundary edge flag of: 1 and with Loops: 19 19 
+
+Local Edge: 17 is global edge: 247 with boundary edge flag of: 1 and with Loops: 19 19 
+
+Local Edge: 18 is global edge: 248 with boundary edge flag of: 1 and with Loops: 19 19 
+
+Local Edge: 19 is global edge: 249 with boundary edge flag of: 1 and with Loops: 19 19 
+
+Local Edge: 20 is global edge: 250 with boundary edge flag of: 1 and with Loops: 19 19 
+
+Local Edge: 21 is global edge: 251 with boundary edge flag of: 1 and with Loops: 19 19 
+
+Local Edge: 22 is global edge: 252 with boundary edge flag of: 0 and with Loops: 19 22 
+
+Local Edge: 23 is global edge: 253 with boundary edge flag of: 1 and with Loops: 19 19 
+
+Fine grid tri 1 is: 62 with surface ID: 1 
+
+Fine Loop Edge: 339 has boundary edge flag of: 0 
+
+Fine Loop Edge: 340 has boundary edge flag of: 0 
+
+Fine Loop Edge: 341 has boundary edge flag of: 0 
+
+Fine Loop Edge: 342 has boundary edge flag of: 0 
+
+Fine Loop Edge: 358 has boundary edge flag of: 0 
+
+Fine Loop Edge: 359 has boundary edge flag of: 0 
+
+Fine Loop Edge: 366 has boundary edge flag of: 0 
+
+Fine Loop Edge: 367 has boundary edge flag of: 0 
+
+Fine Loop Edge: 387 has boundary edge flag of: 0 
+
+Fine Loop Edge: 388 has boundary edge flag of: 0 
+
+Fine Loop Edge: 389 has boundary edge flag of: 0 
+
+Fine Loop Edge: 390 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 63 with surface ID: 1 
+
+Fine Loop Edge: 343 has boundary edge flag of: 0 
+
+Fine Loop Edge: 344 has boundary edge flag of: 0 
+
+Fine Loop Edge: 345 has boundary edge flag of: 0 
+
+Fine Loop Edge: 346 has boundary edge flag of: 0 
+
+Fine Loop Edge: 359 has boundary edge flag of: 0 
+
+Fine Loop Edge: 360 has boundary edge flag of: 0 
+
+Fine Loop Edge: 367 has boundary edge flag of: 0 
+
+Fine Loop Edge: 368 has boundary edge flag of: 0 
+
+Fine Loop Edge: 391 has boundary edge flag of: 0 
+
+Fine Loop Edge: 392 has boundary edge flag of: 0 
+
+Fine Loop Edge: 393 has boundary edge flag of: 0 
+
+Fine Loop Edge: 394 has boundary edge flag of: 0 
+
+Fine grid tri 3 is: 70 with surface ID: 1 
+
+Fine Loop Edge: 387 has boundary edge flag of: 0 
+
+Fine Loop Edge: 388 has boundary edge flag of: 0 
+
+Fine Loop Edge: 389 has boundary edge flag of: 0 
+
+Fine Loop Edge: 390 has boundary edge flag of: 0 
+
+Fine Loop Edge: 406 has boundary edge flag of: 0 
+
+Fine Loop Edge: 407 has boundary edge flag of: 0 
+
+Fine Loop Edge: 429 has boundary edge flag of: 1 
+
+Fine Loop Edge: 430 has boundary edge flag of: 1 
+
+Fine Loop Edge: 431 has boundary edge flag of: 1 
+
+Fine Loop Edge: 432 has boundary edge flag of: 1 
+
+Fine grid tri 4 is: 71 with surface ID: 1 
+
+Fine Loop Edge: 391 has boundary edge flag of: 0 
+
+Fine Loop Edge: 392 has boundary edge flag of: 0 
+
+Fine Loop Edge: 393 has boundary edge flag of: 0 
+
+Fine Loop Edge: 394 has boundary edge flag of: 0 
+
+Fine Loop Edge: 407 has boundary edge flag of: 0 
+
+Fine Loop Edge: 408 has boundary edge flag of: 0 
+
+Fine Loop Edge: 433 has boundary edge flag of: 1 
+
+Fine Loop Edge: 434 has boundary edge flag of: 1 
+
+Fine Loop Edge: 435 has boundary edge flag of: 1 
+
+Fine Loop Edge: 436 has boundary edge flag of: 0 
+
+Fine Loop Edge: 437 has boundary edge flag of: 1 
+
+WTF! ... 
+
+Working on Loop: 20 
+
+NumberOfLoopNodes: 15 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 14 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 208 with nodes Node1,2: 283 284 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 209 with nodes Node1,2: 284 285 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 210 with nodes Node1,2: 285 286 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 211 with nodes Node1,2: 286 287 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 5 is global edge: 218 with nodes Node1,2: 283 297 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 6 is global edge: 219 with nodes Node1,2: 287 298 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 7 is global edge: 222 with nodes Node1,2: 297 301 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 8 is global edge: 223 with nodes Node1,2: 298 302 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 9 is global edge: 226 with nodes Node1,2: 301 343 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 10 is global edge: 227 with nodes Node1,2: 302 331 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 11 is global edge: 254 with nodes Node1,2: 327 328 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 12 is global edge: 255 with nodes Node1,2: 328 329 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 13 is global edge: 256 with nodes Node1,2: 329 330 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 14 is global edge: 257 with nodes Node1,2: 330 331 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 208 with boundary edge flag of: 0 and with Loops: 16 20 
+
+Local Edge: 2 is global edge: 209 with boundary edge flag of: 0 and with Loops: 16 20 
+
+Local Edge: 3 is global edge: 210 with boundary edge flag of: 0 and with Loops: 16 20 
+
+Local Edge: 4 is global edge: 211 with boundary edge flag of: 0 and with Loops: 16 20 
+
+Local Edge: 5 is global edge: 218 with boundary edge flag of: 0 and with Loops: 19 20 
+
+Local Edge: 6 is global edge: 219 with boundary edge flag of: 0 and with Loops: 20 17 
+
+Local Edge: 7 is global edge: 222 with boundary edge flag of: 0 and with Loops: 19 20 
+
+Local Edge: 8 is global edge: 223 with boundary edge flag of: 0 and with Loops: 20 17 
+
+Local Edge: 9 is global edge: 226 with boundary edge flag of: 0 and with Loops: 19 20 
+
+Local Edge: 10 is global edge: 227 with boundary edge flag of: 0 and with Loops: 20 17 
+
+Local Edge: 11 is global edge: 254 with boundary edge flag of: 1 and with Loops: 20 20 
+
+Local Edge: 12 is global edge: 255 with boundary edge flag of: 1 and with Loops: 20 20 
+
+Local Edge: 13 is global edge: 256 with boundary edge flag of: 1 and with Loops: 20 20 
+
+Local Edge: 14 is global edge: 257 with boundary edge flag of: 1 and with Loops: 20 20 
+
+Fine grid tri 1 is: 64 with surface ID: 1 
+
+Fine Loop Edge: 347 has boundary edge flag of: 0 
+
+Fine Loop Edge: 348 has boundary edge flag of: 0 
+
+Fine Loop Edge: 349 has boundary edge flag of: 0 
+
+Fine Loop Edge: 350 has boundary edge flag of: 0 
+
+Fine Loop Edge: 360 has boundary edge flag of: 0 
+
+Fine Loop Edge: 361 has boundary edge flag of: 0 
+
+Fine Loop Edge: 368 has boundary edge flag of: 0 
+
+Fine Loop Edge: 369 has boundary edge flag of: 0 
+
+Fine Loop Edge: 395 has boundary edge flag of: 0 
+
+Fine Loop Edge: 396 has boundary edge flag of: 0 
+
+Fine Loop Edge: 397 has boundary edge flag of: 0 
+
+Fine Loop Edge: 398 has boundary edge flag of: 0 
+
+Fine grid tri 2 is: 72 with surface ID: 1 
+
+Fine Loop Edge: 395 has boundary edge flag of: 0 
+
+Fine Loop Edge: 396 has boundary edge flag of: 0 
+
+Fine Loop Edge: 397 has boundary edge flag of: 0 
+
+Fine Loop Edge: 398 has boundary edge flag of: 0 
+
+Fine Loop Edge: 408 has boundary edge flag of: 0 
+
+Fine Loop Edge: 409 has boundary edge flag of: 0 
+
+Fine Loop Edge: 438 has boundary edge flag of: 1 
+
+Fine Loop Edge: 439 has boundary edge flag of: 1 
+
+Fine Loop Edge: 440 has boundary edge flag of: 1 
+
+Fine Loop Edge: 441 has boundary edge flag of: 1 
+
+WTF! ... 
+
+Working on Loop: 21 
+
+NumberOfLoopNodes: 17 
+
+CoarseGrid().LoopList(i).NumberOfEdges(): 16 
+
+These should be the same value if we assume a sensical mesh... but we problably coarsened too much! 
+
+The solver will likely be fine... but you might want check the coarse meshes if this mesh is actually used... 
+
+Edge: 1 is global edge: 244 with nodes Node1,2: 319 335 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 2 is global edge: 262 with nodes Node1,2: 335 336 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 3 is global edge: 263 with nodes Node1,2: 336 337 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 4 is global edge: 264 with nodes Node1,2: 337 338 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 5 is global edge: 265 with nodes Node1,2: 338 339 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 6 is global edge: 266 with nodes Node1,2: 339 340 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 7 is global edge: 267 with nodes Node1,2: 340 341 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 8 is global edge: 268 with nodes Node1,2: 341 342 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 9 is global edge: 269 with nodes Node1,2: 342 343 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 10 is global edge: 270 with nodes Node1,2: 327 367 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 11 is global edge: 290 with nodes Node1,2: 362 367 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 12 is global edge: 292 with nodes Node1,2: 362 363 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 13 is global edge: 293 with nodes Node1,2: 363 364 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 14 is global edge: 294 with nodes Node1,2: 364 365 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 15 is global edge: 295 with nodes Node1,2: 365 366 at xyz: 0.000000 0.000000 0.000000 
+
+Edge: 16 is global edge: 296 with nodes Node1,2: 335 366 at xyz: 0.000000 0.000000 0.000000 
+
+Local Edge: 1 is global edge: 244 with boundary edge flag of: 0 and with Loops: 18 21 
+
+Local Edge: 2 is global edge: 262 with boundary edge flag of: 1 and with Loops: 21 21 
+
+Local Edge: 3 is global edge: 263 with boundary edge flag of: 1 and with Loops: 21 21 
+
+Local Edge: 4 is global edge: 264 with boundary edge flag of: 1 and with Loops: 21 21 
+
+Local Edge: 5 is global edge: 265 with boundary edge flag of: 1 and with Loops: 21 21 
+
+Local Edge: 6 is global edge: 266 with boundary edge flag of: 1 and with Loops: 21 21 
+
+Local Edge: 7 is global edge: 267 with boundary edge flag of: 1 and with Loops: 21 21 
+
+Local Edge: 8 is global edge: 268 with boundary edge flag of: 1 and with Loops: 21 21 
+
+Local Edge: 9 is global edge: 269 with boundary edge flag of: 1 and with Loops: 21 21 
+
+Local Edge: 10 is global edge: 270 with boundary edge flag of: 0 and with Loops: 21 22 
+
+Local Edge: 11 is global edge: 290 with boundary edge flag of: 0 and with Loops: 17 21 
+
+Local Edge: 12 is global edge: 292 with boundary edge flag of: 1 and with Loops: 21 21 
+
+Local Edge: 13 is global edge: 293 with boundary edge flag of: 1 and with Loops: 21 21 
+
+Local Edge: 14 is global edge: 294 with boundary edge flag of: 1 and with Loops: 21 21 
+
+Local Edge: 15 is global edge: 295 with boundary edge flag of: 1 and with Loops: 21 21 
+
+Local Edge: 16 is global edge: 296 with boundary edge flag of: 1 and with Loops: 21 21 
+
+Fine grid tri 1 is: 74 with surface ID: 1 
+
+Fine Loop Edge: 428 has boundary edge flag of: 0 
+
+Fine Loop Edge: 446 has boundary edge flag of: 1 
+
+Fine Loop Edge: 447 has boundary edge flag of: 1 
+
+Fine Loop Edge: 448 has boundary edge flag of: 1 
+
+Fine Loop Edge: 449 has boundary edge flag of: 0 
+
+Fine Loop Edge: 450 has boundary edge flag of: 1 
+
+Fine Loop Edge: 481 has boundary edge flag of: 0 
+
+Fine Loop Edge: 483 has boundary edge flag of: 1 
+
+Fine Loop Edge: 484 has boundary edge flag of: 1 
+
+Fine Loop Edge: 485 has boundary edge flag of: 1 
+
+Fine grid tri 2 is: 75 with surface ID: 1 
+
+Fine Loop Edge: 449 has boundary edge flag of: 0 
+
+Fine Loop Edge: 451 has boundary edge flag of: 1 
+
+Fine Loop Edge: 452 has boundary edge flag of: 1 
+
+Fine Loop Edge: 453 has boundary edge flag of: 1 
+
+Fine Loop Edge: 454 has boundary edge flag of: 1 
+
+Fine Loop Edge: 455 has boundary edge flag of: 0 
+
+Fine grid tri 3 is: 80 with surface ID: 1 
+
+Fine Loop Edge: 478 has boundary edge flag of: 0 
+
+Fine Loop Edge: 480 has boundary edge flag of: 1 
+
+Fine Loop Edge: 481 has boundary edge flag of: 0 
+
+Fine Loop Edge: 482 has boundary edge flag of: 1 
+
+Number of Kutta Nodes: 70 
+
+Merged: 56 edges that were colinear 
+
+There were 2 loops that we could not find upwind edges for... 
+
+Grid:4 --> # loops:        150 ...# Edges:       1548 ...# Nodes:       1363 
+
+There are: 1236 coarse grid nodes 
+
+There are: 1350 coarse grid edges 
+
+There are: 100 coarse grid loops 
+
+Number of Kutta Nodes: 70 
+
+Merged: 6 edges that were colinear 
+
+NumberOfGridLevels_: 4 
+
+NumberOfSurfaces_: 9 
+
+WakeAngle: 1.000000 0.000000 0.000000 
+
+Xmax_ - Xmin_: 46.930000 
+
+Ymax_ - Ymin_: 32.370000 
+
+Zmax_ - Zmin_: 8.199800 
+
+
+
+Wake FarFieldDist_ set to: 46.930000 
+
+
+
+There are:          8 Vortex Sheets 
+
+Creating vortex sheet data... 
+
+There are: 9 kutta nodes for sheet: 1 
+
+There are: 9 kutta nodes for sheet: 2 
+
+There are: 8 kutta nodes for sheet: 3 
+
+There are: 8 kutta nodes for sheet: 4 
+
+There are: 9 kutta nodes for sheet: 5 
+
+There are: 9 kutta nodes for sheet: 6 
+
+There are: 9 kutta nodes for sheet: 7 
+
+There are: 9 kutta nodes for sheet: 8 
+
+Marking kutta node 1 on sheet 1 as concave 
+
+Marking kutta node 1 on sheet 1 as on thin/thick or thin/thin intersection 
+
+CoreWidth_: 0.406679 
+
+There are:          9 kutta nodes for vortex sheet:          1  
+
+Marking kutta node 1 on sheet 2 as concave 
+
+Marking kutta node 1 on sheet 2 as on thin/thick or thin/thin intersection 
+
+CoreWidth_: 0.406679 
+
+There are:          9 kutta nodes for vortex sheet:          2  
+
+Marking kutta node 1 on sheet 3 as concave 
+
+Marking kutta node 1 on sheet 3 as on thin/thick or thin/thin intersection 
+
+CoreWidth_: 0.221169 
+
+There are:          8 kutta nodes for vortex sheet:          3  
+
+Marking kutta node 1 on sheet 4 as concave 
+
+Marking kutta node 1 on sheet 4 as on thin/thick or thin/thin intersection 
+
+CoreWidth_: 0.221169 
+
+There are:          8 kutta nodes for vortex sheet:          4  
+
+CoreWidth_: 0.108344 
+
+There are:          9 kutta nodes for vortex sheet:          5  
+
+CoreWidth_: 0.108344 
+
+There are:          9 kutta nodes for vortex sheet:          6  
+
+CoreWidth_: 0.108344 
+
+There are:          9 kutta nodes for vortex sheet:          7  
+
+CoreWidth_: 0.108344 
+
+There are:          9 kutta nodes for vortex sheet:          8  
+
+Done creating vortex sheet data... 
+
+j: 1 --> U1,2: 0.354665 0.370370 
+
+j: 2 --> U1,2: 0.370370 0.407407 
+
+j: 3 --> U1,2: 0.407407 0.444444 
+
+j: 4 --> U1,2: 0.444444 0.481481 
+
+j: 5 --> U1,2: 0.481481 0.518519 
+
+j: 6 --> U1,2: 0.518519 0.555556 
+
+j: 7 --> U1,2: 0.555556 0.592593 
+
+j: 8 --> U1,2: 0.592593 0.629630 
+
+j: 1 --> U1,2: 0.354665 0.370370 
+
+j: 2 --> U1,2: 0.370370 0.407407 
+
+j: 3 --> U1,2: 0.407407 0.444444 
+
+j: 4 --> U1,2: 0.444444 0.481481 
+
+j: 5 --> U1,2: 0.481481 0.518519 
+
+j: 6 --> U1,2: 0.518519 0.555556 
+
+j: 7 --> U1,2: 0.555556 0.592593 
+
+j: 8 --> U1,2: 0.592593 0.629630 
+
+j: 1 --> U1,2: 0.414287 0.444444 
+
+j: 2 --> U1,2: 0.444444 0.481481 
+
+j: 3 --> U1,2: 0.481481 0.518519 
+
+j: 4 --> U1,2: 0.518519 0.555556 
+
+j: 5 --> U1,2: 0.555556 0.592593 
+
+j: 6 --> U1,2: 0.592593 0.629630 
+
+j: 7 --> U1,2: 0.629630 0.666667 
+
+j: 1 --> U1,2: 0.414287 0.444444 
+
+j: 2 --> U1,2: 0.444444 0.481481 
+
+j: 3 --> U1,2: 0.481481 0.518519 
+
+j: 4 --> U1,2: 0.518519 0.555556 
+
+j: 5 --> U1,2: 0.555556 0.592593 
+
+j: 6 --> U1,2: 0.592593 0.629630 
+
+j: 7 --> U1,2: 0.629630 0.666667 
+
+j: 1 --> U1,2: 0.370370 0.333333 
+
+j: 2 --> U1,2: 0.370370 0.407407 
+
+j: 3 --> U1,2: 0.407407 0.444444 
+
+j: 4 --> U1,2: 0.444444 0.481481 
+
+j: 5 --> U1,2: 0.481481 0.518519 
+
+j: 6 --> U1,2: 0.518519 0.555556 
+
+j: 7 --> U1,2: 0.555556 0.592593 
+
+j: 8 --> U1,2: 0.592593 0.629630 
+
+j: 1 --> U1,2: 0.370370 0.333333 
+
+j: 2 --> U1,2: 0.370370 0.407407 
+
+j: 3 --> U1,2: 0.407407 0.444444 
+
+j: 4 --> U1,2: 0.444444 0.481481 
+
+j: 5 --> U1,2: 0.481481 0.518519 
+
+j: 6 --> U1,2: 0.518519 0.555556 
+
+j: 7 --> U1,2: 0.555556 0.592593 
+
+j: 8 --> U1,2: 0.592593 0.629630 
+
+j: 1 --> U1,2: 0.333333 0.370370 
+
+j: 2 --> U1,2: 0.370370 0.407407 
+
+j: 3 --> U1,2: 0.407407 0.444444 
+
+j: 4 --> U1,2: 0.444444 0.481481 
+
+j: 5 --> U1,2: 0.481481 0.518519 
+
+j: 6 --> U1,2: 0.518519 0.555556 
+
+j: 7 --> U1,2: 0.555556 0.592593 
+
+j: 8 --> U1,2: 0.592593 0.629630 
+
+j: 1 --> U1,2: 0.333333 0.370370 
+
+j: 2 --> U1,2: 0.370370 0.407407 
+
+j: 3 --> U1,2: 0.407407 0.444444 
+
+j: 4 --> U1,2: 0.444444 0.481481 
+
+j: 5 --> U1,2: 0.481481 0.518519 
+
+j: 6 --> U1,2: 0.518519 0.555556 
+
+j: 7 --> U1,2: 0.555556 0.592593 
+
+j: 8 --> U1,2: 0.592593 0.629630 
+
+Found 8 wake surfaces for component group: 1 
+
+Found vortex sheet: 1 for component group: 1 
+
+Found vortex sheet: 2 for component group: 1 
+
+Found vortex sheet: 3 for component group: 1 
+
+Found vortex sheet: 4 for component group: 1 
+
+Found vortex sheet: 5 for component group: 1 
+
+Found vortex sheet: 6 for component group: 1 
+
+Found vortex sheet: 7 for component group: 1 
+
+Found vortex sheet: 8 for component group: 1 
+
+Xmax_ - Xmin_: 46.930000 
+
+Ymax_ - Ymin_: 32.370000 
+
+Zmax_ - Zmin_: 8.199800 
+
+
+
+Minimum loop area: 3.155769e-05 
+
+Character Minimum loop length: 7.944519e-03 
+
+Setting surface edge cutoff to: 1.000000e-05 
+
+Number Of Trailing Vortices: 70 
+
+Model type: PANEL or MIXED 
+
+Setting up Kelvin constraints... 
+
+Found 1 disjoint thick bodies 
+
+Found 1 actual kelvin constraints 
+
+Number Of Vortex Loop Equations: 2786 
+
+Number Of Wake Node Equations:   5040 
+
+Number Of Stall Equations:       62 
+
+Total Number Of Equations:       7888 
+
+No high lift data file found... 
+
+Creating vortex loop matrix preconditioners data structure... 
+
+Starting at level: 4 with a target of 500 loops 
+
+Level: 4 has MaxLoops of: 111 
+
+Using level: 4 to create matrix preconditioners. 
+
+Created: 6 Matrix preconditioners 
+
+Min matrix: 76 Loops 
+
+Max matrix: 566 Loops 
+
+Avg matrix: 464 Loops 
+
+
+
+Using 2786 out of 2786 surface loops 
+
+Creating wake nodes matrix preconditioners data structure... 
+
+Starting... Creating vorticity gradient data structure .. 
+
+Finished... Creating vorticity gradient data structure .. 
+
+VSPGeom().Grid(MGLevel_).NumberOfLoops(): 4212 
+
+NumberOfEngineFaces_: 0 
+
+VSPGeom().NumberOfSurfaces(): 9 
+
+Done with setup... 
+
+WakeAngle_: 1.000000 -0.000000 0.000000 
+
+Xmax_ - Xmin_: 46.930000 
+
+Ymax_ - Ymin_: 32.370000 
+
+Zmax_ - Zmin_: 8.199800 
+
+
+
+The wake FarDist set to: 46.930000 
+
+Updating wake grids... 
+
+SigmaAvg_: 1.014946 
+
+Creating interaction lists... 
+
+
+
+Forward sweep... 
+
+1000 / 4212 
+2000 / 4212 
+3000 / 4212 
+4000 / 4212 
+Working on level 2 of 4 
+Working on level 3 of 4 
+Working on level 4 of 4 
+Forward Mode: total multipole speed up ratio: 2.807845 
+
+Surface: 1 ... ComponentID: 1 ... Name: Fuselage_S ... SurfaceGIDList: RMUXLHDSMZ 
+
+Surface: 2 ... ComponentID: 2 ... Name: Wing_C ... SurfaceGIDList: LQZSHZXSTY 
+
+Surface: 3 ... ComponentID: 2 ... Name: Wing_C ... SurfaceGIDList: LQZSHZXSTY 
+
+Surface: 4 ... ComponentID: 3 ... Name: GO_C ... SurfaceGIDList: NDDSSVUXPL 
+
+Surface: 5 ... ComponentID: 3 ... Name: GO_C ... SurfaceGIDList: NDDSSVUXPL 
+
+Surface: 6 ... ComponentID: 4 ... Name: VO_upper_C ... SurfaceGIDList: MKRWRTCFOU 
+
+Surface: 7 ... ComponentID: 4 ... Name: VO_upper_C ... SurfaceGIDList: MKRWRTCFOU 
+
+Surface: 8 ... ComponentID: 5 ... Name: VO_lower_C ... SurfaceGIDList: RGIJJLNZJJ 
+
+Surface: 9 ... ComponentID: 5 ... Name: VO_lower_C ... SurfaceGIDList: RGIJJLNZJJ 
+
+Solving... Mach: 0.001000 ... Alpha: 0.000000 ... Beta: 0.000000 
+
+
+
+                                                                    Surface Integration Forces and Moments -->                                                  Wake Induced Forces -->  
+
+                                                                    Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-  Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake 
+
+    Iter    Mach       AoA      Beta       CLo       CLi      CLtot     CDo        CDi      CDtot      L/D        E       CMxtot    CMytot    Cmztot    CLiw       CDiw    LoDwake    Ewake      T/QS      L2Res    MaxRes  Wall_Time 
+
+Wake Iter:     1 / 8     ... GMRES Iter:     0 ... Red:    0.00000 / -1.00000   ...  Max:    4.33046 / 1.00000    ... KTRes: 0.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:     1 ... Red:   -0.70083 / -1.00000   ...  Max:    3.62963 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:     2 ... Red:   -0.80340 / -1.00000   ...  Max:    3.52706 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:     3 ... Red:   -1.02817 / -1.00000   ...  Max:    3.30229 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:     4 ... Red:   -1.22918 / -1.00000   ...  Max:    3.10128 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:     5 ... Red:   -1.43159 / -1.00000   ...  Max:    2.89888 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:     6 ... Red:   -1.58529 / -1.00000   ...  Max:    2.74518 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:     7 ... Red:   -1.86991 / -1.00000   ...  Max:    2.46055 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:     8 ... Red:   -1.97138 / -1.00000   ...  Max:    2.35908 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:     9 ... Red:   -2.01338 / -1.00000   ...  Max:    2.31708 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:    10 ... Red:   -2.26382 / -1.00000   ...  Max:    2.06664 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:    11 ... Red:   -2.54094 / -1.00000   ...  Max:    1.78952 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:    12 ... Red:   -2.76285 / -1.00000   ...  Max:    1.56761 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:    13 ... Red:   -3.07607 / -1.00000   ...  Max:    1.25440 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:    14 ... Red:   -3.33718 / -1.00000   ...  Max:    0.99329 / 1.00000    
+        1   0.00100   0.00000   0.00000   0.00000   0.00000   0.00000   0.00625   0.00000   0.00625   0.00000   0.00000   0.00000   0.00074   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000   1.26064   2.00000   1.91000 
+
+1000 / 4212 
+2000 / 4212 
+3000 / 4212 
+4000 / 4212 
+Working on level 2 of 4 
+Working on level 3 of 4 
+Working on level 4 of 4 
+Wake Iter:     2 / 8     ... GMRES Iter:     0 ... Red:    0.00000 / -1.00000   ...  Max:    1.00379 / 1.00000    ... KTRes: 0.00000    
+Wake Iter:     2 / 8     ... GMRES Iter:     1 ... Red:   -0.07705 / -1.00000   ...  Max:    0.92674 / 1.00000    
+Wake Iter:     2 / 8     ... GMRES Iter:     2 ... Red:   -0.15532 / -1.00000   ...  Max:    0.84847 / 1.00000    
+Wake Iter:     2 / 8     ... GMRES Iter:     3 ... Red:   -0.28192 / -1.00000   ...  Max:    0.72187 / 1.00000    
+Wake Iter:     2 / 8     ... GMRES Iter:     4 ... Red:   -0.37991 / -1.00000   ...  Max:    0.62388 / 1.00000    
+Wake Iter:     2 / 8     ... GMRES Iter:     5 ... Red:   -0.61533 / -1.00000   ...  Max:    0.38847 / 1.00000    
+Wake Iter:     2 / 8     ... GMRES Iter:     6 ... Red:   -0.81831 / -1.00000   ...  Max:    0.18549 / 1.00000    
+Wake Iter:     2 / 8     ... GMRES Iter:     7 ... Red:   -0.96552 / -1.00000   ...  Max:    0.03827 / 1.00000    
+Wake Iter:     2 / 8     ... GMRES Iter:     8 ... Red:   -1.08894 / -1.00000   ...  Max:   -0.08515 / 1.00000    
+        2   0.00100   0.00000   0.00000   0.00000   2.84485   2.84485   0.00626  -0.00373   0.00253 1124.19931   0.00000  -0.00375  -3.46726  -0.06523  -0.01057   0.00019  -1.63926   0.06143   0.00000   0.26910   2.13810   4.59600 
+
+1000 / 4212 
+2000 / 4212 
+3000 / 4212 
+4000 / 4212 
+Working on level 2 of 4 
+Working on level 3 of 4 
+Working on level 4 of 4 
+Wake Iter:     3 / 8     ... GMRES Iter:     0 ... Red:    0.00000 / -1.00000   ...  Max:    0.75068 / 1.00000    ... KTRes: 0.00000    
+Wake Iter:     3 / 8     ... GMRES Iter:     1 ... Red:   -0.39266 / -1.00000   ...  Max:    0.35802 / 1.00000    
+Wake Iter:     3 / 8     ... GMRES Iter:     2 ... Red:   -0.65482 / -1.00000   ...  Max:    0.09585 / 1.00000    
+Wake Iter:     3 / 8     ... GMRES Iter:     3 ... Red:   -0.92158 / -1.00000   ...  Max:   -0.17090 / 1.00000    
+Wake Iter:     3 / 8     ... GMRES Iter:     4 ... Red:   -1.12832 / -1.00000   ...  Max:   -0.37765 / 1.00000    
+        3   0.00100   0.00000   0.00000   0.00000   2.84938   2.84938   0.00626  -0.00386   0.00240 1189.66944   0.00000  -0.00375  -3.47767  -0.06648  -0.01165   0.00020  -1.80461   0.07216   0.00000  -0.45489   1.46981   6.85500 
+
+1000 / 4212 
+2000 / 4212 
+3000 / 4212 
+4000 / 4212 
+Working on level 2 of 4 
+Working on level 3 of 4 
+Working on level 4 of 4 
+Wake Iter:     4 / 8     ... GMRES Iter:     0 ... Red:    0.00000 / -1.00000   ...  Max:    0.50582 / 1.00000    ... KTRes: 0.00000    
+Wake Iter:     4 / 8     ... GMRES Iter:     1 ... Red:   -0.39113 / -1.00000   ...  Max:    0.11469 / 1.00000    
+Wake Iter:     4 / 8     ... GMRES Iter:     2 ... Red:   -0.50064 / -1.00000   ...  Max:    0.00517 / 1.00000    
+Wake Iter:     4 / 8     ... GMRES Iter:     3 ... Red:   -0.69373 / -1.00000   ...  Max:   -0.18792 / 1.00000    
+Wake Iter:     4 / 8     ... GMRES Iter:     4 ... Red:   -0.90409 / -1.00000   ...  Max:   -0.39827 / 1.00000    
+Wake Iter:     4 / 8     ... GMRES Iter:     5 ... Red:   -1.00214 / -1.00000   ...  Max:   -0.49633 / 1.00000    
+        4   0.00100   0.00000   0.00000   0.00000   2.84687   2.84687   0.00626  -0.00385   0.00240 1183.90171   0.00000  -0.00375  -3.47428  -0.06676  -0.01138   0.00020  -1.76201   0.06733   0.00000  -1.16434   0.26923   9.12500 
+
+1000 / 4212 
+2000 / 4212 
+3000 / 4212 
+4000 / 4212 
+Working on level 2 of 4 
+Working on level 3 of 4 
+Working on level 4 of 4 
+Wake Iter:     5 / 8     ... GMRES Iter:     0 ... Red:    0.00000 / -1.00000   ...  Max:    0.37464 / 1.00000    ... KTRes: 0.00000    
+Wake Iter:     5 / 8     ... GMRES Iter:     1 ... Red:   -0.47282 / -1.00000   ...  Max:   -0.09819 / 1.00000    
+Wake Iter:     5 / 8     ... GMRES Iter:     2 ... Red:   -0.58924 / -1.00000   ...  Max:   -0.21460 / 1.00000    
+Wake Iter:     5 / 8     ... GMRES Iter:     3 ... Red:   -0.74858 / -1.00000   ...  Max:   -0.37394 / 1.00000    
+Wake Iter:     5 / 8     ... GMRES Iter:     4 ... Red:   -0.95946 / -1.00000   ...  Max:   -0.58483 / 1.00000    
+Wake Iter:     5 / 8     ... GMRES Iter:     5 ... Red:   -1.09605 / -1.00000   ...  Max:   -0.72141 / 1.00000    
+        5   0.00100   0.00000   0.00000   0.00000   2.84662   2.84662   0.00626  -0.00386   0.00240 1187.60340   0.00000  -0.00375  -3.47369  -0.06667  -0.01118   0.00021  -1.72959   0.06441   0.00000  -0.99383   0.89777  11.44100 
+
+1000 / 4212 
+2000 / 4212 
+3000 / 4212 
+4000 / 4212 
+Working on level 2 of 4 
+Working on level 3 of 4 
+Working on level 4 of 4 
+Wake Iter:     6 / 8     ... GMRES Iter:     0 ... Red:    0.00000 / -1.00000   ...  Max:    1.13262 / 1.00000    ... KTRes: 0.00000    
+Wake Iter:     6 / 8     ... GMRES Iter:     1 ... Red:   -0.39331 / -1.00000   ...  Max:    0.73931 / 1.00000    
+Wake Iter:     6 / 8     ... GMRES Iter:     2 ... Red:   -0.61634 / -1.00000   ...  Max:    0.51628 / 1.00000    
+Wake Iter:     6 / 8     ... GMRES Iter:     3 ... Red:   -0.86570 / -1.00000   ...  Max:    0.26692 / 1.00000    
+Wake Iter:     6 / 8     ... GMRES Iter:     4 ... Red:   -1.03205 / -1.00000   ...  Max:    0.10057 / 1.00000    
+        6   0.00100   0.00000   0.00000   0.00000   2.84635   2.84635   0.00626  -0.00389   0.00237 1201.59773   0.00000  -0.00375  -3.47329  -0.06665  -0.01112   0.00021  -1.72053   0.06272   0.00000  -1.01709   0.70971  13.68800 
+
+1000 / 4212 
+2000 / 4212 
+3000 / 4212 
+4000 / 4212 
+Working on level 2 of 4 
+Working on level 3 of 4 
+Working on level 4 of 4 
+Wake Iter:     7 / 8     ... GMRES Iter:     0 ... Red:    0.00000 / -1.00000   ...  Max:    0.64570 / 1.00000    ... KTRes: 0.00000    
+Wake Iter:     7 / 8     ... GMRES Iter:     1 ... Red:   -0.50488 / -1.00000   ...  Max:    0.14082 / 1.00000    
+Wake Iter:     7 / 8     ... GMRES Iter:     2 ... Red:   -0.75367 / -1.00000   ...  Max:   -0.10797 / 1.00000    
+Wake Iter:     7 / 8     ... GMRES Iter:     3 ... Red:   -1.01960 / -1.00000   ...  Max:   -0.37389 / 1.00000    
+        7   0.00100   0.00000   0.00000   0.00000   2.85494   2.85494   0.00626  -0.00390   0.00236 1210.64395   0.00000  -0.00376  -3.48348  -0.06664  -0.01092   0.00021  -1.68904   0.05979   0.00000  -0.57093   1.08459  15.81800 
+
+1000 / 4212 
+2000 / 4212 
+3000 / 4212 
+4000 / 4212 
+Working on level 2 of 4 
+Working on level 3 of 4 
+Working on level 4 of 4 
+Wake Iter:     8 / 8     ... GMRES Iter:     0 ... Red:    0.00000 / -1.00000   ...  Max:    0.57071 / 1.00000    ... KTRes: 0.00000    
+Wake Iter:     8 / 8     ... GMRES Iter:     1 ... Red:   -0.49220 / -1.00000   ...  Max:    0.07852 / 1.00000    
+Wake Iter:     8 / 8     ... GMRES Iter:     2 ... Red:   -0.87914 / -1.00000   ...  Max:   -0.30842 / 1.00000    
+Wake Iter:     8 / 8     ... GMRES Iter:     3 ... Red:   -1.14871 / -1.00000   ...  Max:   -0.57800 / 1.00000    
+        8   0.00100   0.00000   0.00000   0.00000   2.85275   2.85275   0.00626  -0.00387   0.00238 1197.87703   0.00000  -0.00375  -3.48073  -0.06679  -0.01080   0.00021  -1.66923   0.05800   0.00000  -0.95352   0.81145  18.49600 
+
+Creating quad tree velocity survey data structures... 
+
+Xmin_: -0.000000 
+
+Xmax_: 46.930000 
+
+Ymin_: -16.185000 
+
+Ymax_: 16.185000 
+
+Zmin_: -2.379800 
+
+Zmax_: 5.820000 
+
+Working on quad tree: 1 
+
+Direction, Value: 2 0.000000 
+
+Inserted: 72 points 
+
+
+
+Total setup and solve time: 29.510000 seconds 
+
+Done
+ REPAIRMACH_SWEEP_RESULT_ID=YRKVKFJ 
+ REPAIRMACH_VSPAERO_COMPLETE=1 

@@ -1,0 +1,43 @@
+﻿ Please specify an input file:
+            /
+           /
+          /
+         /          ____
+        /          /   /
+       /     MachLine (c) 2023 USU Aerolab
+      /          /   /    v4.0
+     / _________/___/_______________
+    ( (__________________________
+     \          \   \
+      \          \   \
+       \          \   \
+        \          \___\
+         \
+
+ Got input file: inputs/retry_coarse8_M1p20_A0_ndonly.json                                                           
+
+ Reading and analyzing surface mesh
+     User has selected linear-doublet-constant-source panels.
+     Reading surface mesh in from file mesh/MiG25_MeshFix02_coarse8_open_gondola_pad020_M1p2.tri... Done.
+     Surface mesh has    8644 vertices and   17166 panels.
+     Locating adjacent panels...Done. Found   25810 edges.
+     Calculating vertex geometric parameters... Done.
+
+ Initializing based on flow properties
+     Initializing flow-dependent panel properties... Done. Found       0 superinclined panels.
+     Characterizing edges...Done. Found   0 wake-shedding edges.
+     Setting up panel singularity distributions... Done.
+     Placing control points above select panel centroids...Done. Placed  8644 control points.
+     Calculating domains of dependence... Done.
+     Permuting linear system for efficient solution... Done.
+
+ Running solver using the neumann-doublet-only-mass-flux boundary-condition formulation
+     Calculating body influences... Done.
+     Solving linear system (method: FQRUP)... Done.
+         Maximum residual:                       NaN
+         Norm of residual:                       NaN
+         Lower bandwidth of A matrix:        7578
+ !!! Linear system failed to produce a valid solution.
+                      Report: reports/retry_coarse8_M1p20_A0_ndonly_report.json
+
+ MachLine encountered an error. Execution time:  3720.8440 s

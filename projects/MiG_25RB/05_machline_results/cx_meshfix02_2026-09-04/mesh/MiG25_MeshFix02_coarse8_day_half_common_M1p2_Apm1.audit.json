@@ -1,0 +1,1021 @@
+{
+  "method": "symmetry_preserving_half_mesh_from_minimal_Point_closure_strip",
+  "source": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_point_open.tri",
+  "target": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_day_half_common_M1p2_Apm1.tri",
+  "mirror_about": "xz",
+  "crossing_faces": 0,
+  "half_compaction": {
+    "merged_duplicate_vertices": 0,
+    "removed_invalid_faces": 0,
+    "removed_degenerate_faces": 0,
+    "removed_duplicate_faces": 0,
+    "removed_unreferenced_vertices": 0,
+    "flipped_faces_for_consistency": 0,
+    "orientation_conflicts": 0
+  },
+  "scan_before": {
+    "M1.2_A-1": {
+      "panels": 8690,
+      "bad_panels": 10,
+      "near_limit_panels": 0,
+      "maximum_margin": 0.12247690011649104,
+      "maximum_value": 0.9558102334498244,
+      "bad_panel_ids": [
+        4398,
+        4357,
+        4152,
+        2341,
+        4429,
+        4327,
+        4311,
+        4430,
+        4473,
+        4840
+      ]
+    },
+    "M1.2_A+0": {
+      "panels": 8690,
+      "bad_panels": 10,
+      "near_limit_panels": 0,
+      "maximum_margin": 0.11782991673135446,
+      "maximum_value": 0.9511632500646878,
+      "bad_panel_ids": [
+        4398,
+        4357,
+        4152,
+        2341,
+        4429,
+        4327,
+        4311,
+        4430,
+        4840,
+        4473
+      ]
+    },
+    "M1.2_A+1": {
+      "panels": 8690,
+      "bad_panels": 9,
+      "near_limit_panels": 1,
+      "maximum_margin": 0.112893199806123,
+      "maximum_value": 0.9462265331394564,
+      "bad_panel_ids": [
+        4398,
+        4357,
+        2341,
+        4152,
+        4429,
+        4327,
+        4311,
+        4430,
+        4840
+      ]
+    }
+  },
+  "repair_log": [
+    {
+      "pass": 1,
+      "alpha_deg": -1.0,
+      "repairs": 4,
+      "unresolved": 6,
+      "entries": [
+        {
+          "panel_id": 4398,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4398,
+            "vertices": [
+              2419,
+              2509,
+              2476
+            ],
+            "center": [
+              65.1259854,
+              4.161776553,
+              -0.4768834750666667
+            ],
+            "normal": [
+              0.9511632500646878,
+              0.14107296993916274,
+              -0.27456672937361537
+            ],
+            "area": 0.03832278330065588,
+            "neighbor_count": 2,
+            "neighbor_angle": 37.51318360799857,
+            "mach_value": 0.9558102334498244,
+            "mach_margin": 0.12247690011649104
+          }
+        },
+        {
+          "panel_id": 4357,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4357,
+            "vertices": [
+              2477,
+              2476,
+              2509
+            ],
+            "center": [
+              65.12651059666668,
+              4.045579336,
+              -0.6059387259333333
+            ],
+            "normal": [
+              0.9441104027603048,
+              0.3141831488877213,
+              -0.09972209561963324
+            ],
+            "area": 0.032360892079763254,
+            "neighbor_count": 2,
+            "neighbor_angle": 31.433488603926545,
+            "mach_value": 0.9457070007165945,
+            "mach_margin": 0.11237366738326116
+          }
+        },
+        {
+          "panel_id": 4152,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4152,
+            "vertices": [
+              2292,
+              2300,
+              2290
+            ],
+            "center": [
+              65.08978195333334,
+              2.245126718333333,
+              -1.1082087224666666
+            ],
+            "normal": [
+              0.8919039673924697,
+              0.08802553571485881,
+              -0.4435750421424593
+            ],
+            "area": 0.15030856145169008,
+            "neighbor_count": 2,
+            "neighbor_angle": 26.989235652815427,
+            "mach_value": 0.8995095780191074,
+            "mach_margin": 0.06617624468577399
+          }
+        },
+        {
+          "panel_id": 2341,
+          "status": "REPAIRED",
+          "vertex_id": 1620,
+          "direction": "-X",
+          "step": 0.01,
+          "before_margin": 0.05667370619411105,
+          "after_margin": -0.004792704954196703
+        },
+        {
+          "panel_id": 4429,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4429,
+            "vertices": [
+              2455,
+              2461,
+              2456
+            ],
+            "center": [
+              65.03770550666667,
+              3.6565726463333337,
+              -0.9553712471
+            ],
+            "normal": [
+              0.8818168208436143,
+              0.12316504021860049,
+              -0.45522463393934587
+            ],
+            "area": 0.06409464679271332,
+            "neighbor_count": 3,
+            "neighbor_angle": 18.639992191973697,
+            "mach_value": 0.8896272812023972,
+            "mach_margin": 0.05629394786906383
+          }
+        },
+        {
+          "panel_id": 4327,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4327,
+            "vertices": [
+              2290,
+              2478,
+              2292
+            ],
+            "center": [
+              65.08775656,
+              2.5210549409999996,
+              -1.1328872464666666
+            ],
+            "normal": [
+              0.8772561622467471,
+              -0.18202299920442314,
+              -0.4441725493102152
+            ],
+            "area": 0.12243190421659064,
+            "neighbor_count": 2,
+            "neighbor_angle": 18.346670128904574,
+            "mach_value": 0.8848744317429975,
+            "mach_margin": 0.05154109840966414
+          }
+        },
+        {
+          "panel_id": 4311,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4311,
+            "vertices": [
+              2455,
+              2456,
+              2457
+            ],
+            "center": [
+              65.09567889,
+              3.442617622,
+              -0.9129287600000001
+            ],
+            "normal": [
+              0.8727451940742033,
+              0.15893725222114197,
+              -0.46157856977634304
+            ],
+            "area": 0.11642378378220077,
+            "neighbor_count": 2,
+            "neighbor_angle": 4.2339308977240036,
+            "mach_value": 0.8806679275563863,
+            "mach_margin": 0.04733459422305297
+          }
+        },
+        {
+          "panel_id": 4430,
+          "status": "REPAIRED",
+          "vertex_id": 2456,
+          "direction": "+X",
+          "step": 0.05,
+          "before_margin": 0.03564290192009234,
+          "after_margin": -0.00750897585109811
+        },
+        {
+          "panel_id": 4473,
+          "status": "REPAIRED",
+          "vertex_id": 2457,
+          "direction": "+X",
+          "step": 0.05,
+          "before_margin": 0.01740556764653478,
+          "after_margin": -0.0244917978971525
+        },
+        {
+          "panel_id": 4840,
+          "status": "REPAIRED",
+          "vertex_id": 2729,
+          "direction": "-X",
+          "step": 0.01,
+          "before_margin": 0.016674922301106676,
+          "after_margin": -0.005605428822858527
+        }
+      ]
+    },
+    {
+      "pass": 1,
+      "alpha_deg": 0.0,
+      "repairs": 0,
+      "unresolved": 4,
+      "entries": [
+        {
+          "panel_id": 4398,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4398,
+            "vertices": [
+              2419,
+              2509,
+              2476
+            ],
+            "center": [
+              65.1259854,
+              4.161776553,
+              -0.4768834750666667
+            ],
+            "normal": [
+              0.9511632500646878,
+              0.14107296993916274,
+              -0.27456672937361537
+            ],
+            "area": 0.03832278330065588,
+            "neighbor_count": 2,
+            "neighbor_angle": 37.51318360799857,
+            "mach_value": 0.9511632500646878,
+            "mach_margin": 0.11782991673135446
+          }
+        },
+        {
+          "panel_id": 4357,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4357,
+            "vertices": [
+              2477,
+              2476,
+              2509
+            ],
+            "center": [
+              65.12651059666668,
+              4.045579336,
+              -0.6059387259333333
+            ],
+            "normal": [
+              0.9441104027603048,
+              0.3141831488877213,
+              -0.09972209561963324
+            ],
+            "area": 0.032360892079763254,
+            "neighbor_count": 2,
+            "neighbor_angle": 31.433488603926545,
+            "mach_value": 0.9441104027603048,
+            "mach_margin": 0.11077706942697141
+          }
+        },
+        {
+          "panel_id": 4152,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4152,
+            "vertices": [
+              2292,
+              2300,
+              2290
+            ],
+            "center": [
+              65.08978195333334,
+              2.245126718333333,
+              -1.1082087224666666
+            ],
+            "normal": [
+              0.8919039673924697,
+              0.08802553571485881,
+              -0.4435750421424593
+            ],
+            "area": 0.15030856145169008,
+            "neighbor_count": 2,
+            "neighbor_angle": 26.989235652815427,
+            "mach_value": 0.8919039673924697,
+            "mach_margin": 0.05857063405913632
+          }
+        },
+        {
+          "panel_id": 4327,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4327,
+            "vertices": [
+              2290,
+              2478,
+              2292
+            ],
+            "center": [
+              65.08775656,
+              2.5210549409999996,
+              -1.1328872464666666
+            ],
+            "normal": [
+              0.8772561622467471,
+              -0.18202299920442314,
+              -0.4441725493102152
+            ],
+            "area": 0.12243190421659064,
+            "neighbor_count": 2,
+            "neighbor_angle": 18.346670128904574,
+            "mach_value": 0.8772561622467471,
+            "mach_margin": 0.0439228289134137
+          }
+        }
+      ]
+    },
+    {
+      "pass": 1,
+      "alpha_deg": 1.0,
+      "repairs": 1,
+      "unresolved": 3,
+      "entries": [
+        {
+          "panel_id": 4398,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4398,
+            "vertices": [
+              2419,
+              2509,
+              2476
+            ],
+            "center": [
+              65.1259854,
+              4.161776553,
+              -0.4768834750666667
+            ],
+            "normal": [
+              0.9511632500646878,
+              0.14107296993916274,
+              -0.27456672937361537
+            ],
+            "area": 0.03832278330065588,
+            "neighbor_count": 2,
+            "neighbor_angle": 37.51318360799857,
+            "mach_value": 0.9462265331394564,
+            "mach_margin": 0.112893199806123
+          }
+        },
+        {
+          "panel_id": 4357,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4357,
+            "vertices": [
+              2477,
+              2476,
+              2509
+            ],
+            "center": [
+              65.12651059666668,
+              4.045579336,
+              -0.6059387259333333
+            ],
+            "normal": [
+              0.9441104027603048,
+              0.3141831488877213,
+              -0.09972209561963324
+            ],
+            "area": 0.032360892079763254,
+            "neighbor_count": 2,
+            "neighbor_angle": 31.433488603926545,
+            "mach_value": 0.9422262196295316,
+            "mach_margin": 0.1088928862961982
+          }
+        },
+        {
+          "panel_id": 4152,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4152,
+            "vertices": [
+              2292,
+              2300,
+              2290
+            ],
+            "center": [
+              65.08978195333334,
+              2.245126718333333,
+              -1.1082087224666666
+            ],
+            "normal": [
+              0.8919039673924697,
+              0.08802553571485881,
+              -0.4435750421424593
+            ],
+            "area": 0.15030856145169008,
+            "neighbor_count": 2,
+            "neighbor_angle": 26.989235652815427,
+            "mach_value": 0.8840266741772966,
+            "mach_margin": 0.050693340843963264
+          }
+        },
+        {
+          "panel_id": 4327,
+          "status": "REPAIRED",
+          "vertex_id": 2290,
+          "direction": "-X",
+          "step": 0.05,
+          "before_margin": 0.03603733869197179,
+          "after_margin": -0.002066934035582668
+        }
+      ]
+    },
+    {
+      "pass": 2,
+      "alpha_deg": -1.0,
+      "repairs": 2,
+      "unresolved": 3,
+      "entries": [
+        {
+          "panel_id": 4398,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4398,
+            "vertices": [
+              2419,
+              2509,
+              2476
+            ],
+            "center": [
+              65.1259854,
+              4.161776553,
+              -0.4768834750666667
+            ],
+            "normal": [
+              0.9511632500646878,
+              0.14107296993916274,
+              -0.27456672937361537
+            ],
+            "area": 0.03832278330065588,
+            "neighbor_count": 2,
+            "neighbor_angle": 37.51318360799857,
+            "mach_value": 0.9558102334498244,
+            "mach_margin": 0.12247690011649104
+          }
+        },
+        {
+          "panel_id": 4357,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4357,
+            "vertices": [
+              2477,
+              2476,
+              2509
+            ],
+            "center": [
+              65.12651059666668,
+              4.045579336,
+              -0.6059387259333333
+            ],
+            "normal": [
+              0.9441104027603048,
+              0.3141831488877213,
+              -0.09972209561963324
+            ],
+            "area": 0.032360892079763254,
+            "neighbor_count": 2,
+            "neighbor_angle": 31.433488603926545,
+            "mach_value": 0.9457070007165945,
+            "mach_margin": 0.11237366738326116
+          }
+        },
+        {
+          "panel_id": 4152,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4152,
+            "vertices": [
+              2292,
+              2300,
+              2290
+            ],
+            "center": [
+              65.07311528666668,
+              2.245126718333333,
+              -1.1082087224666666
+            ],
+            "normal": [
+              0.8594013412315727,
+              0.10568926568867529,
+              -0.5002590467023685
+            ],
+            "area": 0.15599324304020773,
+            "neighbor_count": 2,
+            "neighbor_angle": 26.71652884829558,
+            "mach_value": 0.8680011744516771,
+            "mach_margin": 0.034667841118343756
+          }
+        },
+        {
+          "panel_id": 4327,
+          "status": "REPAIRED",
+          "vertex_id": 2292,
+          "direction": "+X",
+          "step": 0.05,
+          "before_margin": 0.015327465097689008,
+          "after_margin": -0.0031032651629010477
+        },
+        {
+          "panel_id": 4311,
+          "status": "REPAIRED",
+          "vertex_id": 2455,
+          "direction": "-X",
+          "step": 0.005,
+          "before_margin": 0.0021082437408035393,
+          "after_margin": -0.0024857709443864007
+        }
+      ]
+    },
+    {
+      "pass": 2,
+      "alpha_deg": 0.0,
+      "repairs": 0,
+      "unresolved": 2,
+      "entries": [
+        {
+          "panel_id": 4398,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4398,
+            "vertices": [
+              2419,
+              2509,
+              2476
+            ],
+            "center": [
+              65.1259854,
+              4.161776553,
+              -0.4768834750666667
+            ],
+            "normal": [
+              0.9511632500646878,
+              0.14107296993916274,
+              -0.27456672937361537
+            ],
+            "area": 0.03832278330065588,
+            "neighbor_count": 2,
+            "neighbor_angle": 37.51318360799857,
+            "mach_value": 0.9511632500646878,
+            "mach_margin": 0.11782991673135446
+          }
+        },
+        {
+          "panel_id": 4357,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4357,
+            "vertices": [
+              2477,
+              2476,
+              2509
+            ],
+            "center": [
+              65.12651059666668,
+              4.045579336,
+              -0.6059387259333333
+            ],
+            "normal": [
+              0.9441104027603048,
+              0.3141831488877213,
+              -0.09972209561963324
+            ],
+            "area": 0.032360892079763254,
+            "neighbor_count": 2,
+            "neighbor_angle": 31.433488603926545,
+            "mach_value": 0.9441104027603048,
+            "mach_margin": 0.11077706942697141
+          }
+        }
+      ]
+    },
+    {
+      "pass": 2,
+      "alpha_deg": 1.0,
+      "repairs": 0,
+      "unresolved": 2,
+      "entries": [
+        {
+          "panel_id": 4398,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4398,
+            "vertices": [
+              2419,
+              2509,
+              2476
+            ],
+            "center": [
+              65.1259854,
+              4.161776553,
+              -0.4768834750666667
+            ],
+            "normal": [
+              0.9511632500646878,
+              0.14107296993916274,
+              -0.27456672937361537
+            ],
+            "area": 0.03832278330065588,
+            "neighbor_count": 2,
+            "neighbor_angle": 37.51318360799857,
+            "mach_value": 0.9462265331394564,
+            "mach_margin": 0.112893199806123
+          }
+        },
+        {
+          "panel_id": 4357,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4357,
+            "vertices": [
+              2477,
+              2476,
+              2509
+            ],
+            "center": [
+              65.12651059666668,
+              4.045579336,
+              -0.6059387259333333
+            ],
+            "normal": [
+              0.9441104027603048,
+              0.3141831488877213,
+              -0.09972209561963324
+            ],
+            "area": 0.032360892079763254,
+            "neighbor_count": 2,
+            "neighbor_angle": 31.433488603926545,
+            "mach_value": 0.9422262196295316,
+            "mach_margin": 0.1088928862961982
+          }
+        }
+      ]
+    },
+    {
+      "pass": 3,
+      "alpha_deg": -1.0,
+      "repairs": 1,
+      "unresolved": 2,
+      "entries": [
+        {
+          "panel_id": 4398,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4398,
+            "vertices": [
+              2419,
+              2509,
+              2476
+            ],
+            "center": [
+              65.1259854,
+              4.161776553,
+              -0.4768834750666667
+            ],
+            "normal": [
+              0.9511632500646878,
+              0.14107296993916274,
+              -0.27456672937361537
+            ],
+            "area": 0.03832278330065588,
+            "neighbor_count": 2,
+            "neighbor_angle": 37.51318360799857,
+            "mach_value": 0.9558102334498244,
+            "mach_margin": 0.12247690011649104
+          }
+        },
+        {
+          "panel_id": 4357,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4357,
+            "vertices": [
+              2477,
+              2476,
+              2509
+            ],
+            "center": [
+              65.12651059666668,
+              4.045579336,
+              -0.6059387259333333
+            ],
+            "normal": [
+              0.9441104027603048,
+              0.3141831488877213,
+              -0.09972209561963324
+            ],
+            "area": 0.032360892079763254,
+            "neighbor_count": 2,
+            "neighbor_angle": 31.433488603926545,
+            "mach_value": 0.9457070007165945,
+            "mach_margin": 0.11237366738326116
+          }
+        },
+        {
+          "panel_id": 4152,
+          "status": "REPAIRED",
+          "vertex_id": 2292,
+          "direction": "+X",
+          "step": 0.02,
+          "before_margin": 0.006575848208255186,
+          "after_margin": -0.006195623138365192
+        }
+      ]
+    },
+    {
+      "pass": 3,
+      "alpha_deg": 0.0,
+      "repairs": 0,
+      "unresolved": 2,
+      "entries": [
+        {
+          "panel_id": 4398,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4398,
+            "vertices": [
+              2419,
+              2509,
+              2476
+            ],
+            "center": [
+              65.1259854,
+              4.161776553,
+              -0.4768834750666667
+            ],
+            "normal": [
+              0.9511632500646878,
+              0.14107296993916274,
+              -0.27456672937361537
+            ],
+            "area": 0.03832278330065588,
+            "neighbor_count": 2,
+            "neighbor_angle": 37.51318360799857,
+            "mach_value": 0.9511632500646878,
+            "mach_margin": 0.11782991673135446
+          }
+        },
+        {
+          "panel_id": 4357,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4357,
+            "vertices": [
+              2477,
+              2476,
+              2509
+            ],
+            "center": [
+              65.12651059666668,
+              4.045579336,
+              -0.6059387259333333
+            ],
+            "normal": [
+              0.9441104027603048,
+              0.3141831488877213,
+              -0.09972209561963324
+            ],
+            "area": 0.032360892079763254,
+            "neighbor_count": 2,
+            "neighbor_angle": 31.433488603926545,
+            "mach_value": 0.9441104027603048,
+            "mach_margin": 0.11077706942697141
+          }
+        }
+      ]
+    },
+    {
+      "pass": 3,
+      "alpha_deg": 1.0,
+      "repairs": 0,
+      "unresolved": 2,
+      "entries": [
+        {
+          "panel_id": 4398,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4398,
+            "vertices": [
+              2419,
+              2509,
+              2476
+            ],
+            "center": [
+              65.1259854,
+              4.161776553,
+              -0.4768834750666667
+            ],
+            "normal": [
+              0.9511632500646878,
+              0.14107296993916274,
+              -0.27456672937361537
+            ],
+            "area": 0.03832278330065588,
+            "neighbor_count": 2,
+            "neighbor_angle": 37.51318360799857,
+            "mach_value": 0.9462265331394564,
+            "mach_margin": 0.112893199806123
+          }
+        },
+        {
+          "panel_id": 4357,
+          "status": "NO_SAFE_CANDIDATE",
+          "before": {
+            "panel_id": 4357,
+            "vertices": [
+              2477,
+              2476,
+              2509
+            ],
+            "center": [
+              65.12651059666668,
+              4.045579336,
+              -0.6059387259333333
+            ],
+            "normal": [
+              0.9441104027603048,
+              0.3141831488877213,
+              -0.09972209561963324
+            ],
+            "area": 0.032360892079763254,
+            "neighbor_count": 2,
+            "neighbor_angle": 31.433488603926545,
+            "mach_value": 0.9422262196295316,
+            "mach_margin": 0.1088928862961982
+          }
+        }
+      ]
+    }
+  ],
+  "unresolved_terminal_panels_removed": [
+    {
+      "panel_id": 4357,
+      "component": 3,
+      "center": [
+        65.12651059666668,
+        4.045579336,
+        -0.6059387259333333
+      ],
+      "area_ft2": 0.032360892079763254,
+      "trigger_alphas_deg": [
+        -1.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "panel_id": 4398,
+      "component": 3,
+      "center": [
+        65.1259854,
+        4.161776553,
+        -0.4768834750666667
+      ],
+      "area_ft2": 0.03832278330065588,
+      "trigger_alphas_deg": [
+        -1.0,
+        0.0,
+        1.0
+      ]
+    }
+  ],
+  "unresolved_removed_area_ft2": 0.07068367538041914,
+  "final_compaction": {
+    "merged_duplicate_vertices": 0,
+    "removed_invalid_faces": 0,
+    "removed_degenerate_faces": 0,
+    "removed_duplicate_faces": 0,
+    "removed_unreferenced_vertices": 1,
+    "flipped_faces_for_consistency": 0,
+    "orientation_conflicts": 0
+  },
+  "validation": {
+    "M1.2_A-1": {
+      "panels": 8688,
+      "bad_panels": 0,
+      "near_limit_panels": 6,
+      "maximum_margin": -0.001604062386963423,
+      "maximum_value": 0.83172927094637,
+      "bad_panel_ids": []
+    },
+    "M1.2_A+0": {
+      "panels": 8688,
+      "bad_panels": 0,
+      "near_limit_panels": 2,
+      "maximum_margin": -0.003958570249266713,
+      "maximum_value": 0.8293747630840667,
+      "bad_panel_ids": []
+    },
+    "M1.2_A+1": {
+      "panels": 8688,
+      "bad_panels": 0,
+      "near_limit_panels": 2,
+      "maximum_margin": -0.00337707113150576,
+      "maximum_value": 0.8299562622018276,
+      "bad_panel_ids": []
+    }
+  },
+  "topology": {
+    "vertices": 4567,
+    "faces": 8688,
+    "connected_components": 1,
+    "bbox_diagonal": 75.95507039562528,
+    "merge_tolerance": 7.595507039562529e-09,
+    "invalid_index_faces": 0,
+    "invalid_index_face_ids": [],
+    "repeated_vertex_faces": 0,
+    "repeated_vertex_face_ids": [],
+    "degenerate_faces": 0,
+    "degenerate_face_ids": [],
+    "duplicate_faces": 0,
+    "duplicate_face_ids": [],
+    "duplicate_vertices": 0,
+    "unreferenced_vertices": 0,
+    "boundary_edges": 446,
+    "nonmanifold_edges": 0,
+    "inconsistent_orientation_edges": 0,
+    "safe_repairs_available": 0,
+    "watertight": false,
+    "machline_safe_topology": true
+  },
+  "boundaries": {
+    "boundary_edges": 446,
+    "symmetry_plane_boundary_edges": 395,
+    "physical_open_boundary_edges": 51,
+    "physical_boundary_component_vertex_counts": [
+      51
+    ]
+  }
+}

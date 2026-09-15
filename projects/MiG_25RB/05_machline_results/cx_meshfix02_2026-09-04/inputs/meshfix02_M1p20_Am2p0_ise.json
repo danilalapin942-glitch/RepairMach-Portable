@@ -1,0 +1,45 @@
+{
+  "flow": {
+    "freestream_velocity": [
+      99.93908270190957,
+      0.0,
+      -3.489949670250097
+    ],
+    "gamma": 1.4,
+    "freestream_mach_number": 1.2
+  },
+  "geometry": {
+    "file": "mesh/MiG25_MeshFix02_coarse5_open_pad010.tri",
+    "spanwise_axis": "+y",
+    "wake_model": {
+      "trefftz_distance": 80.0,
+      "wake_present": false,
+      "append_wake": false,
+      "wake_shedding_angle": 150.0
+    },
+    "reference": {
+      "area": 660.904
+    }
+  },
+  "solver": {
+    "formulation": "dirichlet-morino",
+    "matrix_solver": "FQRUP",
+    "control_point_offset": 0.0001,
+    "control_point_offset_type": "local"
+  },
+  "post_processing": {
+    "pressure_rules": {
+      "isentropic": true,
+      "second-order": true,
+      "slender-body": true,
+      "linear": true
+    },
+    "pressure_for_forces": "isentropic"
+  },
+  "output": {
+    "body_file": "none",
+    "wake_file": "none",
+    "control_point_file": "none",
+    "report_file": "reports/meshfix02_M1p20_Am2p0_ise_report.json"
+  }
+}

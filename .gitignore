@@ -9,6 +9,11 @@ logs/*.log
 **/05_machline_results/**/*.csv
 **/10_blind_validation/**
 
+# Published reproducibility archive requested for MiG-25RB MeshFix02.
+!projects/MiG_25RB/05_machline_results/cx_meshfix02_2026-09-04/**/*.vtk
+!projects/MiG_25RB/05_machline_results/cx_meshfix02_2026-09-04/**/*.vtp
+!projects/MiG_25RB/05_machline_results/cx_meshfix02_2026-09-04/**/*.csv
+
 # Python caches
 __pycache__/
 *.pyc

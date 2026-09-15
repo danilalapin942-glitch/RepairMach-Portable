@@ -1,0 +1,15 @@
+void main()
+{
+    ClearVSPModel();
+    ReadVSPFile( "YFQ_44.vsp3" );
+    Update();
+
+    array<string> geoms = FindGeoms();
+    Print( "REPAIRMACH_GEOMETRY_COUNT=" + geoms.size() );
+
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( err.GetErrorString() );
+    }
+}

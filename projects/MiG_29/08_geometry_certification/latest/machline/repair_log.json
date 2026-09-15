@@ -1,0 +1,9 @@
+{
+  "merged_duplicate_vertices": 0,
+  "removed_invalid_faces": 0,
+  "removed_degenerate_faces": 0,
+  "removed_duplicate_faces": 0,
+  "removed_unreferenced_vertices": 0,
+  "flipped_faces_for_consistency": 0,
+  "orientation_conflicts": 0
+}

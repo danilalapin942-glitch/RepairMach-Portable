@@ -1,0 +1,8 @@
+void main()
+{
+    ClearVSPModel();
+    ReadVSPFile( "C:/MiG-25/MiG-25_Gondola_ML_MeshFix02.vsp3" );
+    Update();
+    SetAnalysisInputDefaults( "CfdMeshAnalysis" );
+    PrintAnalysisInputs( "CfdMeshAnalysis" );
+}

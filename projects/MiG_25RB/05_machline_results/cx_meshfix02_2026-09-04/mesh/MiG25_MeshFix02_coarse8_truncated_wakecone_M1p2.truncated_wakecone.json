@@ -1,0 +1,60 @@
+{
+  "source": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_open_gondola_pad020_M1p2.tri",
+  "target": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_truncated_wakecone_M1p2.tri",
+  "purpose": "move open nozzle boundaries far downstream and shrink them; exclude added components from forces",
+  "length_ft": 30.0,
+  "exit_scale": 0.001,
+  "force_exclusion_component_ids": [
+    12,
+    13
+  ],
+  "loops": [
+    {
+      "component": 12,
+      "source_vertices": 59,
+      "downstream_x": 95.15807848,
+      "center_y": -2.588497592772034,
+      "center_z": 0.9878244528522033,
+      "downstream_radius_max_ft": 0.0025612193402461815
+    },
+    {
+      "component": 13,
+      "source_vertices": 63,
+      "downstream_x": 95.17404473,
+      "center_y": 2.4784993926371426,
+      "center_z": 1.013386223364762,
+      "downstream_radius_max_ft": 0.0025046691048452568
+    }
+  ],
+  "topology": {
+    "vertices": 8766,
+    "faces": 17410,
+    "connected_components": 1,
+    "bbox_diagonal": 105.69373880833434,
+    "merge_tolerance": 1.0569373880833435e-08,
+    "invalid_index_faces": 0,
+    "invalid_index_face_ids": [],
+    "repeated_vertex_faces": 0,
+    "repeated_vertex_face_ids": [],
+    "degenerate_faces": 0,
+    "degenerate_face_ids": [],
+    "duplicate_faces": 0,
+    "duplicate_face_ids": [],
+    "duplicate_vertices": 0,
+    "unreferenced_vertices": 0,
+    "boundary_edges": 122,
+    "nonmanifold_edges": 0,
+    "inconsistent_orientation_edges": 0,
+    "safe_repairs_available": 0,
+    "watertight": false,
+    "machline_safe_topology": true
+  },
+  "mach_1p2_scan": {
+    "panels": 17410,
+    "bad_panels": 0,
+    "near_limit_panels": 2,
+    "maximum_margin": -0.0038074069874072247,
+    "maximum_value": 0.8295259263459261,
+    "bad_panel_ids": []
+  }
+}

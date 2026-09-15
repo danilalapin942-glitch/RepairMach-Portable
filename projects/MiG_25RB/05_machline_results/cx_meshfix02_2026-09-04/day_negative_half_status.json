@@ -1,0 +1,13 @@
+{
+  "updated_at": "2026-09-05T09:56:40.712860+03:00",
+  "state": "diagnostic_failed",
+  "pid": 40716,
+  "started_at": "2026-09-05T09:55:19.038487+03:00",
+  "failed_case": "day_half_M1p20_Ap0_ise",
+  "completed_cases": 0,
+  "total_cases": 3,
+  "residual_norm": 929.271896922443,
+  "exit_code": 0,
+  "mesh": "mesh/MiG25_MeshFix02_coarse8_day_half_common_M1p2_Apm1_yneg.tri",
+  "mirror_about": "xz"
+}

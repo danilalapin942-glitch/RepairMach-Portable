@@ -1,0 +1,44 @@
+{
+  "schema": "repairmach.machline-tri-export/1.0",
+  "status": "passed",
+  "source_solver_twin": {
+    "role": "machline_fine",
+    "mesh_level": "fine",
+    "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_092023_MiG_25RB_final_MiG-25RB_VSPAero_v1\\machline\\fine\\model.vsp3",
+    "sha256": "3341487d53a6288b9f7a541ca3f5cd2dbfbc3faeb105dce851edc3e4f80167f1",
+    "canonical_sha256": "940e008fce0f4c2259393b49e90065f63f69746ac95d633aaa58417e09bc61a9"
+  },
+  "certification_bindings": {
+    "master_sha256": "8fcc33a6fb73db78f6e8111f7cda9637fd07aadd78be3516073af524643a4f01",
+    "plan_sha256": "a1c132c28a7307e1fdec89c7c2c0ebcee227e730c9454b1289ef6f41774e2cbd",
+    "base_twin_sha256": "fc57d781a3fdbf8e85725016f171e48693b527ba082b85c005bf314968911054",
+    "fine_twin_sha256": "3341487d53a6288b9f7a541ca3f5cd2dbfbc3faeb105dce851edc3e4f80167f1",
+    "fine_mesh_signature_sha256": "c9c80352f0cc6820ddd887e66e993a60343a3ef9e2820b294efdbb5c0dab8cba"
+  },
+  "source_unchanged": true,
+  "export": {
+    "format": "OpenVSP_EXPORT_NASCART",
+    "thick_user_set": 1,
+    "thick_api_set": 4,
+    "thin_user_set": 2,
+    "thin_api_set": 5,
+    "include_subsurfaces": true,
+    "raw_path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_092023_MiG_25RB_final_MiG-25RB_VSPAero_v1\\machline\\export\\openvsp_nascart_raw.tri",
+    "raw_sha256": "c249643cfede45ebf4edf34611bffc39a3453e01050b5a59b0ce8824b83a54fa",
+    "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_092023_MiG_25RB_final_MiG-25RB_VSPAero_v1\\machline\\export\\machline_fine_export.tri",
+    "sha256": "1d884c5475411c7c49b944b79bb555d1b50a46d34851ed5fd117343cdec51ab1"
+  },
+  "tool": {
+    "vspscript_executable": "C:\\OpenVSP-3.51.0-win64-Python3.13\\OpenVSP-3.51.0-win64\\vspscript.exe",
+    "vspscript_sha256": "79b238c97814e0dd74a6b49839710c8b17406b46d0616f5bd2bf1692a4264088",
+    "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_092023_MiG_25RB_final_MiG-25RB_VSPAero_v1\\machline\\export\\export_machline_tri.vspscript",
+    "script_sha256": "72dd0b4ba91b73cd07c34731404e7aed475b2a569ce1108ad620fc28526a6b9b",
+    "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_092023_MiG_25RB_final_MiG-25RB_VSPAero_v1\\machline\\export\\export_machline_tri.log",
+    "log_sha256": "dde694599d664f1a23bd99220525bb4945ad5a930b3dd605a0864640f8233727",
+    "return_code": 0
+  },
+  "legacy_tri_hint": null,
+  "errors": [],
+  "manifest_path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_092023_MiG_25RB_final_MiG-25RB_VSPAero_v1\\machline\\export\\export_manifest.json",
+  "record_fingerprint": "423794f91dbc7bc70426c821effa9b4b7afa6ca5e5e6d26e3aaa04b655457da4"
+}

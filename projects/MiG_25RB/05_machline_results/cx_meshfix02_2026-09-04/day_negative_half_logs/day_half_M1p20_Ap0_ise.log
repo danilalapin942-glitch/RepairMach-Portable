@@ -1,0 +1,68 @@
+ Please specify an input file:
+            /
+           /
+          /
+         /          ____
+        /          /   /
+       /     MachLine (c) 2023 USU Aerolab
+      /          /   /    v4.0
+     / _________/___/_______________
+    ( (__________________________
+     \          \   \
+      \          \   \
+       \          \   \
+        \          \___\
+         \
+
+ Got input file: day_negative_half_inputs/day_half_M1p20_Ap0_ise.json                                                
+
+ Reading and analyzing surface mesh
+     User has selected linear-doublet-constant-source panels.
+     Reading surface mesh in from file mesh/MiG25_MeshFix02_coarse8_day_half_common_M1p2_Apm1_yneg.tri... Done.
+     Surface mesh has    4554 vertices and    8663 panels.
+     Mesh set to mirror about xz plane.
+     Locating adjacent panels...Done. Found   13217 edges.
+     Calculating vertex geometric parameters... Done.
+
+ Initializing based on flow properties
+     Initializing flow-dependent panel properties... Done. Found       0 superinclined panels.
+     Characterizing edges...Done. Found   0 wake-shedding edges.
+     Setting up panel singularity distributions... Done.
+     Placing control points using a local offset ratio of 1.0000E-04...Done. Placed  4554 control points.
+     Calculating domains of dependence... Done.
+     Permuting linear system for efficient solution... Done.
+
+ Running solver using the dirichlet-morino boundary-condition formulation
+     Calculating source strengths... Done.
+     Calculating body influences... Done.
+     Solving linear system (method: FQRUP)... Done.
+         Maximum residual:   444.87888318549091     
+         Norm of residual:   929.27189692244303     
+         Lower bandwidth of A matrix:         352
+     Calculating surface velocities... Done.
+     Calculating outer surface potentials... Done.
+     Calculating surface pressures... Done.
+         Maximum isentropic pressure coefficient:   1.3995798519173734     
+         Minimum isentropic pressure coefficient: -0.99206349206349209     
+         Maximum second-order pressure coefficient:   1.4136560079928946     
+         Minimum second-order pressure coefficient: -0.99196273217439779     
+         Maximum slender-body pressure coefficient:   1.4125012391806437     
+         Minimum slender-body pressure coefficient: -0.99206349206349209     
+         Maximum linear pressure coefficient:   1.4136560079928946     
+         Minimum linear pressure coefficient: -0.99206349206349209     
+         Vacuum pressure coefficient: -0.99206349206349209     
+     Calculating forces using the isentropic pressure rule... Done.
+         Cx:   3.3426878650456480E-002
+         Cy:   0.0000000000000000     
+         Cz:  -2.3059829369370670E-002
+     Calculating moments... Done.
+         CMx:   0.0000000000000000     
+         CMy:   655.97374757626312     
+         CMz:   0.0000000000000000     
+
+ Writing results to file
+                     Surface: day_negative_half_vtk/day_half_M1p20_Ap0_ise_body.vtk
+                      Report: day_negative_half_reports/day_half_M1p20_Ap0_ise_report.json
+
+ MachLine exited successfully. Execution time:    81.6570 s
+

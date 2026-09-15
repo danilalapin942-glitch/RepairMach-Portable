@@ -1,0 +1,54 @@
+{
+  "schema": "repairmach.geometry-certification-run/1.0",
+  "method_version": "RM91-GEOMETRY-CERT-1",
+  "project": "Plane_Naca_final",
+  "created_at": "2026-09-10T11:07:31+03:00",
+  "master": {
+    "path": "C:\\RepairMach-Portable\\projects\\Plane_Naca\\06_vspaero_input\\models\\PlaneNaca_STABLE_M08.vsp3",
+    "sha256": "5d8ecd50e765853043050e029d2c5571b593ead411fef9f81fa7f0e9567ddef7",
+    "canonical_sha256": "6ad659f6f3aef90eaf83fc407be82b858e781e73c638bf2b90d1ceadf3f434e5",
+    "size_bytes": 279791,
+    "frozen_snapshot": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\cert_subset_PN\\20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2\\frozen_master.vsp3"
+  },
+  "bindings": {
+    "policy_sha256": "f1793a545ef6745ddb350d17ae6dd04c1be4b9a957a61d9505e3ef2460e0964c",
+    "reference_sha256": "867b5886724fa4b8dd45bb50bc2f428743e001c187daf0a8ba3c9e4276334ef0",
+    "scope_sha256": "df49d95fae4263dafe647cf4df2f603ab0605370a284f802544accef8dbb24d9"
+  },
+  "reference": {
+    "area": 349.2723,
+    "cref": 14.38667,
+    "bref": 32.37,
+    "center": [
+      29.55,
+      0.0,
+      0.0
+    ]
+  },
+  "scope": {
+    "mach_intervals": [
+      [
+        0.0,
+        0.8
+      ],
+      [
+        1.2,
+        2.2
+      ]
+    ],
+    "alpha_deg": [
+      0.0,
+      5.0
+    ],
+    "beta_deg": 0.0,
+    "horizontal_tail": {
+      "mode": "fixed",
+      "geometry_name": "GO",
+      "incidence_deg": 0.0
+    }
+  },
+  "status": "failed",
+  "certificate": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\cert_subset_PN\\20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2\\certificate.json",
+  "certificate_id": "RMC-A3D3B9D0AF3C4D5E",
+  "verdict": "FAIL"
+}

@@ -1,0 +1,91 @@
+{
+  "roles": {
+    "fuselage_and_nacelles": {
+      "USER_SET": 1,
+      "API_INDEX": 4,
+      "NAME": "Set_1",
+      "COUNT": 2
+    },
+    "wing_and_empennage": {
+      "USER_SET": 2,
+      "API_INDEX": 5,
+      "NAME": "Set_2",
+      "COUNT": 3
+    }
+  },
+  "geometries": [
+    {
+      "ID": "ZGNJFWTPXL",
+      "NAME": "Fuselage",
+      "TYPE": "Fuselage",
+      "IN_SET_1": true,
+      "IN_SET_2": false
+    },
+    {
+      "ID": "BJTILEQDFM",
+      "NAME": "Gondola",
+      "TYPE": "Fuselage",
+      "IN_SET_1": true,
+      "IN_SET_2": false
+    },
+    {
+      "ID": "MALYAAKVUW",
+      "NAME": "Wing",
+      "TYPE": "Wing",
+      "IN_SET_1": false,
+      "IN_SET_2": true
+    },
+    {
+      "ID": "SKENFXYHVR",
+      "NAME": "GO",
+      "TYPE": "Wing",
+      "IN_SET_1": false,
+      "IN_SET_2": true
+    },
+    {
+      "ID": "KZXEIOUXLJ",
+      "NAME": "VO",
+      "TYPE": "Wing",
+      "IN_SET_1": false,
+      "IN_SET_2": true
+    }
+  ],
+  "errors": [],
+  "tail": {
+    "MODE": "fixed_incidence",
+    "NAME": "GO",
+    "ID": "SKENFXYHVR",
+    "TYPE": "Wing",
+    "ANGLE_DEG": 0.0
+  },
+  "valid": true,
+  "calculation_complete": true,
+  "component_names": {
+    "valid": true,
+    "recognized": [
+      {
+        "name": "Fuselage",
+        "base": "Fuselage"
+      },
+      {
+        "name": "Gondola",
+        "base": "Gondola"
+      },
+      {
+        "name": "Wing",
+        "base": "Wing"
+      },
+      {
+        "name": "GO",
+        "base": "GO"
+      },
+      {
+        "name": "VO",
+        "base": "VO"
+      }
+    ],
+    "unknown": [],
+    "errors": [],
+    "warnings": []
+  }
+}

@@ -1,0 +1,183 @@
+void main()
+{
+    ClearVSPModel();
+    ReadVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08/vspaero/lifting/model.vsp3" );
+    Update();
+
+    if ( !ValidParm( "QAEYLJZEHXT" ) || abs( GetParmVal( "QAEYLJZEHXT" ) - 16 ) > 1.6000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=QAEYLJZEHXT" );
+        return;
+    }
+    SetParmVal( "QAEYLJZEHXT", 61 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=QAEYLJZEHXT;VALUE=61" );
+
+    if ( !ValidParm( "IGLXTQWRCJD" ) || abs( GetParmVal( "IGLXTQWRCJD" ) - 17 ) > 1.7000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=IGLXTQWRCJD" );
+        return;
+    }
+    SetParmVal( "IGLXTQWRCJD", 41 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=IGLXTQWRCJD;VALUE=41" );
+
+    if ( !ValidParm( "BVYXSICZBBT" ) || abs( GetParmVal( "BVYXSICZBBT" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=BVYXSICZBBT" );
+        return;
+    }
+    SetParmVal( "BVYXSICZBBT", 14 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=BVYXSICZBBT;VALUE=14" );
+
+    if ( !ValidParm( "GHTEAADYJMI" ) || abs( GetParmVal( "GHTEAADYJMI" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=GHTEAADYJMI" );
+        return;
+    }
+    SetParmVal( "GHTEAADYJMI", 14 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=GHTEAADYJMI;VALUE=14" );
+
+    if ( !ValidParm( "LTQJGTKSKJB" ) || abs( GetParmVal( "LTQJGTKSKJB" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=LTQJGTKSKJB" );
+        return;
+    }
+    SetParmVal( "LTQJGTKSKJB", 14 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=LTQJGTKSKJB;VALUE=14" );
+
+    if ( !ValidParm( "UQXICSHNCMH" ) || abs( GetParmVal( "UQXICSHNCMH" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=UQXICSHNCMH" );
+        return;
+    }
+    SetParmVal( "UQXICSHNCMH", 14 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=UQXICSHNCMH;VALUE=14" );
+
+    if ( !ValidParm( "MEUZJVNDMRC" ) || abs( GetParmVal( "MEUZJVNDMRC" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=MEUZJVNDMRC" );
+        return;
+    }
+    SetParmVal( "MEUZJVNDMRC", 14 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=MEUZJVNDMRC;VALUE=14" );
+
+    if ( !ValidParm( "YQFAZYTDEEX" ) || abs( GetParmVal( "YQFAZYTDEEX" ) - 16 ) > 1.6000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=YQFAZYTDEEX" );
+        return;
+    }
+    SetParmVal( "YQFAZYTDEEX", 20 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=YQFAZYTDEEX;VALUE=20" );
+
+    if ( !ValidParm( "NYPUQSWICQH" ) || abs( GetParmVal( "NYPUQSWICQH" ) - 81 ) > 8.0999999999999997e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=NYPUQSWICQH" );
+        return;
+    }
+    SetParmVal( "NYPUQSWICQH", 65 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=NYPUQSWICQH;VALUE=65" );
+
+    if ( !ValidParm( "WCEVLKHEGQK" ) || abs( GetParmVal( "WCEVLKHEGQK" ) - 18 ) > 1.8e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=WCEVLKHEGQK" );
+        return;
+    }
+    SetParmVal( "WCEVLKHEGQK", 14 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=WCEVLKHEGQK;VALUE=14" );
+
+    if ( !ValidParm( "YBZFBNOSBHS" ) || abs( GetParmVal( "YBZFBNOSBHS" ) - 18 ) > 1.8e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=YBZFBNOSBHS" );
+        return;
+    }
+    SetParmVal( "YBZFBNOSBHS", 14 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=YBZFBNOSBHS;VALUE=14" );
+
+    if ( !ValidParm( "GZRZAWHHMCJ" ) || abs( GetParmVal( "GZRZAWHHMCJ" ) - 16 ) > 1.6000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=GZRZAWHHMCJ" );
+        return;
+    }
+    SetParmVal( "GZRZAWHHMCJ", 20 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=GZRZAWHHMCJ;VALUE=20" );
+
+    if ( !ValidParm( "XSIJVOIINEO" ) || abs( GetParmVal( "XSIJVOIINEO" ) - 16 ) > 1.6000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=XSIJVOIINEO" );
+        return;
+    }
+    SetParmVal( "XSIJVOIINEO", 20 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=XSIJVOIINEO;VALUE=20" );
+
+    if ( !ValidParm( "UJDKIZPHGXM" ) || abs( GetParmVal( "UJDKIZPHGXM" ) - 81 ) > 8.0999999999999997e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=UJDKIZPHGXM" );
+        return;
+    }
+    SetParmVal( "UJDKIZPHGXM", 65 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=UJDKIZPHGXM;VALUE=65" );
+
+    if ( !ValidParm( "DUPTSXTWAOI" ) || abs( GetParmVal( "DUPTSXTWAOI" ) - 18 ) > 1.8e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=DUPTSXTWAOI" );
+        return;
+    }
+    SetParmVal( "DUPTSXTWAOI", 14 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=DUPTSXTWAOI;VALUE=14" );
+
+    if ( !ValidParm( "YQQFKTRMEWA" ) || abs( GetParmVal( "YQQFKTRMEWA" ) - 18 ) > 1.8e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=YQQFKTRMEWA" );
+        return;
+    }
+    SetParmVal( "YQQFKTRMEWA", 14 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=YQQFKTRMEWA;VALUE=14" );
+
+    if ( !ValidParm( "CODFASFGXRA" ) || abs( GetParmVal( "CODFASFGXRA" ) - 16 ) > 1.6000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=CODFASFGXRA" );
+        return;
+    }
+    SetParmVal( "CODFASFGXRA", 20 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=CODFASFGXRA;VALUE=20" );
+
+    if ( !ValidParm( "LSYDBTYAHJZ" ) || abs( GetParmVal( "LSYDBTYAHJZ" ) - 81 ) > 8.0999999999999997e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=LSYDBTYAHJZ" );
+        return;
+    }
+    SetParmVal( "LSYDBTYAHJZ", 65 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=LSYDBTYAHJZ;VALUE=65" );
+
+    if ( !ValidParm( "LVQIUBNDWZJ" ) || abs( GetParmVal( "LVQIUBNDWZJ" ) - 18 ) > 1.8e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=LVQIUBNDWZJ" );
+        return;
+    }
+    SetParmVal( "LVQIUBNDWZJ", 14 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=LVQIUBNDWZJ;VALUE=14" );
+
+    if ( !ValidParm( "JGNFMBRRDHA" ) || abs( GetParmVal( "JGNFMBRRDHA" ) - 18 ) > 1.8e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=JGNFMBRRDHA" );
+        return;
+    }
+    SetParmVal( "JGNFMBRRDHA", 14 );
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=JGNFMBRRDHA;VALUE=14" );
+
+    array<string> all_geoms = FindGeoms();
+    for ( int gi = 0; gi < int( all_geoms.size() ); ++gi )
+    {
+        SetSetFlag( all_geoms[gi], 6, false );
+    }
+    SetSetName( 6, "RM_CERT_EMPTY_THICK" );
+    Print( "APPLIED;ACTION=clear_empty_thick_set;SET=6" );
+
+    Update();
+    WriteVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08/vspaero/lifting/fine/model.vsp3", 0 );
+    Print( "REPAIRMACH_APPLY_OK=1" );
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }
+}

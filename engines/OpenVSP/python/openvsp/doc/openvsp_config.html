@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>OpenVSP Config &#8212; Project name not set  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="openvsp package" href="openvsp.html" />
+    <link rel="prev" title="OpenVSP Python API Documentation" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="openvsp.html" title="openvsp package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="OpenVSP Python API Documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Project name not set  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">OpenVSP Config</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="openvsp-config">
+<h1>OpenVSP Config<a class="headerlink" href="#openvsp-config" title="Link to this heading">¶</a></h1>
+<p>The OpenVSP python API can be loaded in different modes.  Since it is not possible to pass options directly to a python
+package during import, <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp_config</span></code> is a configuration module that holds variables that the <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp</span></code> package
+uses to set how it is loaded.</p>
+<p>At present, the <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp_config</span></code> has two attributes that control how <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp</span></code> is loaded, <code class="code highlight py python docutils literal highlight-python"><span class="n">LOAD_GRAPHICS</span></code> and
+<code class="code highlight py python docutils literal highlight-python"><span class="n">LOAD_FACADE</span></code>, which can be set to <code class="code highlight py python docutils literal highlight-python"><span class="kc">True</span></code> or <code class="code highlight py python docutils literal highlight-python"><span class="kc">False</span></code>.  Although these options control how the OpenVSP API is loaded,
+these differences should otherwise be transparent to the user.  I.e. no changes to a user’s code are required when
+changing from one API mode to another.</p>
+<p>No matter how you want to use the OpenVSP API, you should import <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp_config</span></code>, set the desired attribute options,
+and then import <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp</span></code> itself.</p>
+<section id="normal-openvsp-api">
+<h2>‘Normal’ OpenVSP API<a class="headerlink" href="#normal-openvsp-api" title="Link to this heading">¶</a></h2>
+<p>As illustrated here, conventional users of the OpenVSP API will sett both options to <code class="code highlight py python docutils literal highlight-python"><span class="kc">False</span></code> before loading <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openvsp_config</span>
+<span class="n">openvsp_config</span><span class="o">.</span><span class="n">LOAD_GRAPHICS</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">openvsp_config</span><span class="o">.</span><span class="n">LOAD_FACADE</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openvsp</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vsp</span>
+
+<span class="n">vsp</span><span class="o">.</span><span class="n">ReadVSPFile</span><span class="p">(</span> <span class="s2">"example.vsp3"</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the default for both options is <code class="code highlight py python docutils literal highlight-python"><span class="kc">False</span></code>, so the above code block is equvilent to the next code block where
+<code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp_config</span></code> was imported before importing <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp</span></code>, without setting any attribute values in-between.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openvsp_config</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openvsp</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vsp</span>
+
+<span class="n">vsp</span><span class="o">.</span><span class="n">ReadVSPFile</span><span class="p">(</span> <span class="s2">"example.vsp3"</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>In fact, if you do not import <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp_config</span></code> at all like in the next example, the default values will be applied and
+you will still get the default behavior.  This behavior is retained to provide backwards compatibility to existing users
+of the OpenVSP API.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openvsp</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vsp</span>
+
+<span class="n">vsp</span><span class="o">.</span><span class="n">ReadVSPFile</span><span class="p">(</span> <span class="s2">"example.vsp3"</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>If you are a conventional user of the OpenVSP API, you may be wondering why you should bother importing
+<code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp_config</span></code> and setting the option attributes at all.  Importing <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp_config</span></code> and setting the option
+attributes (even when they are not strictly needed) documents your intent and makes your use of <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp</span></code> most clear.</p>
+</section>
+<section id="openvsp-api-with-gui">
+<h2>OpenVSP API with GUI<a class="headerlink" href="#openvsp-api-with-gui" title="Link to this heading">¶</a></h2>
+<p>The OpenVSP API can be used with a complete working version of the OpenVSP GUI.  To load the GUI version of <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp</span></code>,
+set <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp_config</span><span class="o">.</span><span class="n">LOAD_GRAPHICS</span> <span class="o">=</span> <span class="kc">True</span></code> before you import <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp</span></code> as shown below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openvsp_config</span>
+<span class="n">openvsp_config</span><span class="o">.</span><span class="n">LOAD_GRAPHICS</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">openvsp_config</span><span class="o">.</span><span class="n">LOAD_FACADE</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openvsp</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vsp</span>
+
+<span class="n">vsp</span><span class="o">.</span><span class="n">ReadVSPFile</span><span class="p">(</span> <span class="s2">"example.vsp3"</span> <span class="p">)</span>
+<span class="n">vsp</span><span class="o">.</span><span class="n">InitGUI</span><span class="p">()</span>
+<span class="n">vsp</span><span class="o">.</span><span class="n">StartGUI</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that when the GUI is running in this mode, complete program flow control has been transferred to the GUI.  While
+the GUI is fully interactive, Python execution will halt until the user stops the GUI by selecting <code class="code highlight py python docutils literal highlight-python"><span class="n">Stop</span> <span class="n">GUI</span></code> from the File
+menu in the OpenVSP GUI.</p>
+</section>
+<section id="openvsp-api-in-separate-python-process">
+<h2>OpenVSP API in Separate Python Process<a class="headerlink" href="#openvsp-api-in-separate-python-process" title="Link to this heading">¶</a></h2>
+<p>The OpenVSP API can also be loaded into a separate Python process.  In this case, communication between processes
+is handled transparently by a local facade that communicates requests to a server on the other process via sockets.
+To load this version, set <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp_config</span><span class="o">.</span><span class="n">LOAD_FACADE</span> <span class="o">=</span> <span class="kc">True</span></code> before you import <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp</span></code> as shown below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openvsp_config</span>
+<span class="n">openvsp_config</span><span class="o">.</span><span class="n">LOAD_GRAPHICS</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">openvsp_config</span><span class="o">.</span><span class="n">LOAD_FACADE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openvsp</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vsp</span>
+
+<span class="n">vsp</span><span class="o">.</span><span class="n">ReadVSPFile</span><span class="p">(</span> <span class="s2">"example.vsp3"</span> <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="openvsp-api-with-gui-in-separate-python-process">
+<h2>OpenVSP API with GUI in Separate Python Process<a class="headerlink" href="#openvsp-api-with-gui-in-separate-python-process" title="Link to this heading">¶</a></h2>
+<p>These options can be combined, which will load the OpenVSP API with a GUI in a separate Python process.  In this case
+the OpenVSP GUI can be fully interactive while also returning program flow control to Python.  This allows OpenVSP GUI
+to be active concurrent with an ongoing Python program using the same model in memory.  This mode of operation is
+depicted below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openvsp_config</span>
+<span class="n">openvsp_config</span><span class="o">.</span><span class="n">LOAD_GRAPHICS</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">openvsp_config</span><span class="o">.</span><span class="n">LOAD_FACADE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openvsp</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vsp</span>
+
+<span class="n">vsp</span><span class="o">.</span><span class="n">ReadVSPFile</span><span class="p">(</span> <span class="s2">"example.vsp3"</span> <span class="p">)</span>
+<span class="n">vsp</span><span class="o">.</span><span class="n">InitGUI</span><span class="p">()</span>
+<span class="n">vsp</span><span class="o">.</span><span class="n">StartGUI</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>An astute reader may wonder why a separate process was required to achieve a non-blocking GUI.  Perhaps a more
+straightforward approach of running the OpenVSP GUI in a separate thread could have sufficed.  Indeed, a threading
+approach would have worked for many cases.  However, a separate process is required to allow the primary Python
+thread to retain the capability to execute a GUI of its own.</p>
+<p>Loading OpenVSP with both the <code class="code highlight py python docutils literal highlight-python"><span class="n">LOAD_GRAPHICS</span></code> and <code class="code highlight py python docutils literal highlight-python"><span class="n">LOAD_FACADE</span></code> options allows us to develop a Python GUI application
+that uses the OpenVSP API and that can have a fully interactive OpenVSP GUI operating concurrent to the application’s
+own GUI.</p>
+</section>
+<section id="multiple-instances-of-openvsp-using-the-multifacade-api">
+<h2>Multiple Instances of OpenVSP using the MultiFacade API<a class="headerlink" href="#multiple-instances-of-openvsp-using-the-multifacade-api" title="Link to this heading">¶</a></h2>
+<p>In all releases of OpenVSP, there can only be one instance of OpenVSP in a given process. This means that a user could not
+interface with two separate vehicles loaded in to separate instances of OpenVSP. Although the Facade API was originally
+developed simply to have the GUI and API operate simultaneously, it provides an avenue to enable the user to interface with
+multiple instances of OpenVSP. This is because the facade creates a separate process to interface with. Therefore, additional
+processes can be created to interface with multiple instances of OpenVSP each with an independent working model. A sample
+multifacade code is detailed below</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openvsp_config</span>
+<span class="n">openvsp_config</span><span class="o">.</span><span class="n">LOAD_MULTI_FACADE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openvsp</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vsp_multi</span>
+
+<span class="c1">#start two servers</span>
+<span class="n">vsp_a</span> <span class="o">=</span> <span class="n">vsp_multi</span><span class="o">.</span><span class="n">vsp_servers</span><span class="o">.</span><span class="n">start_vsp_instance</span><span class="p">()</span>
+<span class="n">vsp_b</span> <span class="o">=</span> <span class="n">vsp_multi</span><span class="o">.</span><span class="n">vsp_servers</span><span class="o">.</span><span class="n">start_vsp_instance</span><span class="p">()</span>
+
+<span class="c1">#load two models</span>
+<span class="n">vsp_a</span><span class="o">.</span><span class="n">ReadVSPFile</span><span class="p">(</span><span class="sa">r</span><span class="s1">'model1.vsp3'</span><span class="p">)</span>
+<span class="n">vsp_b</span><span class="o">.</span><span class="n">ReadVSPFile</span><span class="p">(</span><span class="sa">r</span><span class="s1">'model2.vsp3'</span><span class="p">)</span>
+
+<span class="c1"># test API of both models</span>
+<span class="n">geom_list_a</span> <span class="o">=</span> <span class="n">vsp_a</span><span class="o">.</span><span class="n">FindGeoms</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Geoms_A: </span><span class="si">{</span><span class="n">geom_list_a</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">geom_list_b</span> <span class="o">=</span> <span class="n">vsp_b</span><span class="o">.</span><span class="n">FindGeoms</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Geoms_B: </span><span class="si">{</span><span class="n">geom_list_b</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you can see, <code class="code highlight py python docutils literal highlight-python"><span class="n">openvsp</span></code> is imported as <code class="code highlight py python docutils literal highlight-python"><span class="n">vsp_multi</span></code>. This instance of vsp functions exactly like a normal facade instance.
+Except, it has some additional API calls to create new instances of vsp. These new API calls are detailed below</p>
+<p><code class="code highlight py python docutils literal highlight-python"><span class="n">vsp_instance</span> <span class="o">=</span> <span class="n">vsp_multi</span><span class="o">.</span><span class="n">vsp_servers</span><span class="o">.</span><span class="n">start_vsp_instance</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></code> starts a new instance of vsp with an optional name and port. The name will default to
+<code class="code highlight py python docutils literal highlight-python"><span class="s2">"default_name_</span><span class="si">{i}</span><span class="s2">"</span></code> if no name is provided. The port defaults to -1, which indicates that a port will be chosen dynamically at run time.</p>
+<p><code class="code highlight py python docutils literal highlight-python"><span class="n">vsp_instance</span> <span class="o">=</span> <span class="n">vsp_multi</span><span class="o">.</span><span class="n">vsp_servers</span><span class="o">.</span><span class="n">get_vsp_instance</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code> returns an existing instance by name.</p>
+<p><code class="code highlight py python docutils literal highlight-python"><span class="n">vsp_multi</span><span class="o">.</span><span class="n">vsp_servers</span><span class="o">.</span><span class="n">get_vsp_instance</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code> stops a vsp instance by name or port.</p>
+</section>
+<section id="additional-facade-options">
+<h2>Additional Facade Options<a class="headerlink" href="#additional-facade-options" title="Link to this heading">¶</a></h2>
+<p>There are additional options the user can set when working with the facade API.</p>
+<p>The <code class="code highlight py python docutils literal highlight-python"><span class="n">FACADE_PORT</span></code> option allows the user to specify a port the facade should communicate across.
+It has a default value of -1 which indicates that a port will be selected dynamically.</p>
+<p>The <code class="code highlight py python docutils literal highlight-python"><span class="n">FACADE_SERVER_TIMEOUT</span></code> option allows the user to specify how long the facade should wait
+when attempting to establish a connection across a port. It has a default value of 0.1 seconds.</p>
+<p>The <code class="code highlight py python docutils literal highlight-python"><span class="n">FACADE_SERVER_ATTEMPTS</span></code> option allows the user to specify how many times the facade will
+attempt to establish a connection. It does not always succeed first time. The default is 10 attempts.</p>
+<p>The <code class="code highlight py python docutils literal highlight-python"><span class="n">FACADE_PRINT_LEVEL</span></code> option sets what level of messages will be printed to console when using the facade.
+A value of 0 sets no messages will be printed. A value of 1 (default) sets informative level messages will be printed.
+A value of 2 sets debug level messages will be printed.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">OpenVSP Config</a><ul>
+<li><a class="reference internal" href="#normal-openvsp-api">‘Normal’ OpenVSP API</a></li>
+<li><a class="reference internal" href="#openvsp-api-with-gui">OpenVSP API with GUI</a></li>
+<li><a class="reference internal" href="#openvsp-api-in-separate-python-process">OpenVSP API in Separate Python Process</a></li>
+<li><a class="reference internal" href="#openvsp-api-with-gui-in-separate-python-process">OpenVSP API with GUI in Separate Python Process</a></li>
+<li><a class="reference internal" href="#multiple-instances-of-openvsp-using-the-multifacade-api">Multiple Instances of OpenVSP using the MultiFacade API</a></li>
+<li><a class="reference internal" href="#additional-facade-options">Additional Facade Options</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">OpenVSP Python API Documentation</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="openvsp.html"
+                          title="next chapter">openvsp package</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/openvsp_config.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="openvsp.html" title="openvsp package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="OpenVSP Python API Documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Project name not set  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">OpenVSP Config</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    </div>
+  </body>
+</html>

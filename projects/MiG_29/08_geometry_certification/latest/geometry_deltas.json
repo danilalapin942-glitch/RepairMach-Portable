@@ -1,0 +1,692 @@
+{
+  "schema": "repairmach.geometry-deltas/1.0",
+  "reference": {
+    "area": 409.631374,
+    "cref": 12.3614,
+    "bref": 37.270341,
+    "center": [
+      20.46778,
+      0.0,
+      0.0
+    ]
+  },
+  "summary": {
+    "changed_openvsp_parameters": 0,
+    "changed_set_assignments": 0,
+    "estimated_delta_s_over_sref": 0,
+    "delta_v_over_v": null,
+    "delta_b_over_b": null,
+    "delta_c_over_c": null,
+    "cg_shift_over_cref": 0.0,
+    "max_parameter_displacement_over_cref": 0.0,
+    "changed_vertices": null,
+    "changed_panel_fraction": null,
+    "added_faces": null,
+    "removed_faces": null,
+    "note": "Unavailable values are explicitly null. They must be populated from a TRI/degen comparison before being used as acceptance evidence."
+  },
+  "actions": [],
+  "exclusions": [],
+  "twins": {
+    "vspaero_mixed": {
+      "component_count_before": 5,
+      "component_count_after": 5,
+      "connected_region_delta": "not_available_from_vsp_api_inventory",
+      "surface_count_before": 0,
+      "surface_count_after": 0,
+      "components": [
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              21.148,
+              -4.52397,
+              -3.98941
+            ],
+            "max": [
+              51.148,
+              -1.20378,
+              -0.410593
+            ]
+          },
+          "after": {
+            "min": [
+              21.148,
+              -4.52397,
+              -3.98941
+            ],
+            "max": [
+              51.148,
+              -1.20378,
+              -0.410593
+            ]
+          },
+          "geom_id": "BJTILEQDFM",
+          "name": "Gondola",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              31.2807,
+              4.95222,
+              -4.30781e-17
+            ],
+            "max": [
+              49.1267,
+              6.80637,
+              9.41574
+            ]
+          },
+          "after": {
+            "min": [
+              31.2807,
+              4.95222,
+              -4.30781e-17
+            ],
+            "max": [
+              49.1267,
+              6.80637,
+              9.41574
+            ]
+          },
+          "geom_id": "KZXEIOUXLJ",
+          "name": "VO",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              10.3893,
+              1.0,
+              -0.698813
+            ],
+            "max": [
+              43.1611,
+              18.1074,
+              1.32436
+            ]
+          },
+          "after": {
+            "min": [
+              10.3893,
+              1.0,
+              -0.698813
+            ],
+            "max": [
+              43.1611,
+              18.1074,
+              1.32436
+            ]
+          },
+          "geom_id": "MALYAAKVUW",
+          "name": "Wing",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              44.0369,
+              5.90164,
+              -0.494456
+            ],
+            "max": [
+              55.256,
+              12.1734,
+              0.408958
+            ]
+          },
+          "after": {
+            "min": [
+              44.0369,
+              5.90164,
+              -0.494456
+            ],
+            "max": [
+              55.256,
+              12.1734,
+              0.408958
+            ]
+          },
+          "geom_id": "SKENFXYHVR",
+          "name": "GO",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              -2.96059e-16,
+              -1.68109,
+              -1.50042
+            ],
+            "max": [
+              46.6596,
+              1.68109,
+              4.03125
+            ]
+          },
+          "after": {
+            "min": [
+              -2.96059e-16,
+              -1.68109,
+              -1.50042
+            ],
+            "max": [
+              46.6596,
+              1.68109,
+              4.03125
+            ]
+          },
+          "geom_id": "ZGNJFWTPXL",
+          "name": "Fuselage",
+          "presence_changed": false
+        }
+      ],
+      "max_bbox_displacement_over_cref": 0.0
+    },
+    "vspaero_lifting": {
+      "component_count_before": 5,
+      "component_count_after": 5,
+      "connected_region_delta": "not_available_from_vsp_api_inventory",
+      "surface_count_before": 0,
+      "surface_count_after": 0,
+      "components": [
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              21.148,
+              -4.52397,
+              -3.98941
+            ],
+            "max": [
+              51.148,
+              -1.20378,
+              -0.410593
+            ]
+          },
+          "after": {
+            "min": [
+              21.148,
+              -4.52397,
+              -3.98941
+            ],
+            "max": [
+              51.148,
+              -1.20378,
+              -0.410593
+            ]
+          },
+          "geom_id": "BJTILEQDFM",
+          "name": "Gondola",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              31.2807,
+              4.95222,
+              -4.30781e-17
+            ],
+            "max": [
+              49.1267,
+              6.80637,
+              9.41574
+            ]
+          },
+          "after": {
+            "min": [
+              31.2807,
+              4.95222,
+              -4.30781e-17
+            ],
+            "max": [
+              49.1267,
+              6.80637,
+              9.41574
+            ]
+          },
+          "geom_id": "KZXEIOUXLJ",
+          "name": "VO",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              10.3893,
+              1.0,
+              -0.698813
+            ],
+            "max": [
+              43.1611,
+              18.1074,
+              1.32436
+            ]
+          },
+          "after": {
+            "min": [
+              10.3893,
+              1.0,
+              -0.698813
+            ],
+            "max": [
+              43.1611,
+              18.1074,
+              1.32436
+            ]
+          },
+          "geom_id": "MALYAAKVUW",
+          "name": "Wing",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              44.0369,
+              5.90164,
+              -0.494456
+            ],
+            "max": [
+              55.256,
+              12.1734,
+              0.408958
+            ]
+          },
+          "after": {
+            "min": [
+              44.0369,
+              5.90164,
+              -0.494456
+            ],
+            "max": [
+              55.256,
+              12.1734,
+              0.408958
+            ]
+          },
+          "geom_id": "SKENFXYHVR",
+          "name": "GO",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              -2.96059e-16,
+              -1.68109,
+              -1.50042
+            ],
+            "max": [
+              46.6596,
+              1.68109,
+              4.03125
+            ]
+          },
+          "after": {
+            "min": [
+              -2.96059e-16,
+              -1.68109,
+              -1.50042
+            ],
+            "max": [
+              46.6596,
+              1.68109,
+              4.03125
+            ]
+          },
+          "geom_id": "ZGNJFWTPXL",
+          "name": "Fuselage",
+          "presence_changed": false
+        }
+      ],
+      "max_bbox_displacement_over_cref": 0.0
+    },
+    "machline": {
+      "component_count_before": 5,
+      "component_count_after": 5,
+      "connected_region_delta": "not_available_from_vsp_api_inventory",
+      "surface_count_before": 0,
+      "surface_count_after": 0,
+      "components": [
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              21.148,
+              -4.52397,
+              -3.98941
+            ],
+            "max": [
+              51.148,
+              -1.20378,
+              -0.410593
+            ]
+          },
+          "after": {
+            "min": [
+              21.148,
+              -4.52397,
+              -3.98941
+            ],
+            "max": [
+              51.148,
+              -1.20378,
+              -0.410593
+            ]
+          },
+          "geom_id": "BJTILEQDFM",
+          "name": "Gondola",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              31.2807,
+              4.95222,
+              -4.30781e-17
+            ],
+            "max": [
+              49.1267,
+              6.80637,
+              9.41574
+            ]
+          },
+          "after": {
+            "min": [
+              31.2807,
+              4.95222,
+              -4.30781e-17
+            ],
+            "max": [
+              49.1267,
+              6.80637,
+              9.41574
+            ]
+          },
+          "geom_id": "KZXEIOUXLJ",
+          "name": "VO",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              10.3893,
+              1.0,
+              -0.698813
+            ],
+            "max": [
+              43.1611,
+              18.1074,
+              1.32436
+            ]
+          },
+          "after": {
+            "min": [
+              10.3893,
+              1.0,
+              -0.698813
+            ],
+            "max": [
+              43.1611,
+              18.1074,
+              1.32436
+            ]
+          },
+          "geom_id": "MALYAAKVUW",
+          "name": "Wing",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              44.0369,
+              5.90164,
+              -0.494456
+            ],
+            "max": [
+              55.256,
+              12.1734,
+              0.408958
+            ]
+          },
+          "after": {
+            "min": [
+              44.0369,
+              5.90164,
+              -0.494456
+            ],
+            "max": [
+              55.256,
+              12.1734,
+              0.408958
+            ]
+          },
+          "geom_id": "SKENFXYHVR",
+          "name": "GO",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              -2.96059e-16,
+              -1.68109,
+              -1.50042
+            ],
+            "max": [
+              46.6596,
+              1.68109,
+              4.03125
+            ]
+          },
+          "after": {
+            "min": [
+              -2.96059e-16,
+              -1.68109,
+              -1.50042
+            ],
+            "max": [
+              46.6596,
+              1.68109,
+              4.03125
+            ]
+          },
+          "geom_id": "ZGNJFWTPXL",
+          "name": "Fuselage",
+          "presence_changed": false
+        }
+      ],
+      "max_bbox_displacement_over_cref": 0.0
+    },
+    "parasite": {
+      "component_count_before": 5,
+      "component_count_after": 5,
+      "connected_region_delta": "not_available_from_vsp_api_inventory",
+      "surface_count_before": 0,
+      "surface_count_after": 0,
+      "components": [
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              21.148,
+              -4.52397,
+              -3.98941
+            ],
+            "max": [
+              51.148,
+              -1.20378,
+              -0.410593
+            ]
+          },
+          "after": {
+            "min": [
+              21.148,
+              -4.52397,
+              -3.98941
+            ],
+            "max": [
+              51.148,
+              -1.20378,
+              -0.410593
+            ]
+          },
+          "geom_id": "BJTILEQDFM",
+          "name": "Gondola",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              31.2807,
+              4.95222,
+              -4.30781e-17
+            ],
+            "max": [
+              49.1267,
+              6.80637,
+              9.41574
+            ]
+          },
+          "after": {
+            "min": [
+              31.2807,
+              4.95222,
+              -4.30781e-17
+            ],
+            "max": [
+              49.1267,
+              6.80637,
+              9.41574
+            ]
+          },
+          "geom_id": "KZXEIOUXLJ",
+          "name": "VO",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              10.3893,
+              1.0,
+              -0.698813
+            ],
+            "max": [
+              43.1611,
+              18.1074,
+              1.32436
+            ]
+          },
+          "after": {
+            "min": [
+              10.3893,
+              1.0,
+              -0.698813
+            ],
+            "max": [
+              43.1611,
+              18.1074,
+              1.32436
+            ]
+          },
+          "geom_id": "MALYAAKVUW",
+          "name": "Wing",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              44.0369,
+              5.90164,
+              -0.494456
+            ],
+            "max": [
+              55.256,
+              12.1734,
+              0.408958
+            ]
+          },
+          "after": {
+            "min": [
+              44.0369,
+              5.90164,
+              -0.494456
+            ],
+            "max": [
+              55.256,
+              12.1734,
+              0.408958
+            ]
+          },
+          "geom_id": "SKENFXYHVR",
+          "name": "GO",
+          "presence_changed": false
+        },
+        {
+          "max_coordinate_delta": 0.0,
+          "max_coordinate_delta_over_cref": 0.0,
+          "before": {
+            "min": [
+              -2.96059e-16,
+              -1.68109,
+              -1.50042
+            ],
+            "max": [
+              46.6596,
+              1.68109,
+              4.03125
+            ]
+          },
+          "after": {
+            "min": [
+              -2.96059e-16,
+              -1.68109,
+              -1.50042
+            ],
+            "max": [
+              46.6596,
+              1.68109,
+              4.03125
+            ]
+          },
+          "geom_id": "ZGNJFWTPXL",
+          "name": "Fuselage",
+          "presence_changed": false
+        }
+      ],
+      "max_bbox_displacement_over_cref": 0.0
+    }
+  }
+}

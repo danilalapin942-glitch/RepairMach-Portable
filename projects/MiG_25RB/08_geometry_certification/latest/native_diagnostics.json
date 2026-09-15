@@ -1,0 +1,266 @@
+{
+  "schema": "repairmach.geometry-native-diagnostics/1.0",
+  "inventory_valid": true,
+  "semantic_valid": true,
+  "components": [
+    {
+      "id": "EKYLTRLALM",
+      "name": "Fuselage",
+      "type": "Fuselage",
+      "bbox": {
+        "min": [
+          -5.92119e-16,
+          -1.99489,
+          -2.87536
+        ],
+        "max": [
+          64.2257,
+          1.99489,
+          3.90826
+        ]
+      },
+      "bbox_size": [
+        64.2257,
+        3.98978,
+        6.78362
+      ],
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "terminal_chord": null,
+      "limitations": [
+        "surface area, volume, self-intersection and minimum-gap tests require exported TRI/degen geometry"
+      ]
+    },
+    {
+      "id": "UPQJQXHTKG",
+      "name": "Wing2",
+      "type": "Wing",
+      "bbox": {
+        "min": [
+          31.1475,
+          0.0,
+          0.314509
+        ],
+        "max": [
+          58.938,
+          21.8728,
+          2.72047
+        ]
+      },
+      "bbox_size": [
+        27.7905,
+        21.8728,
+        2.405961
+      ],
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "terminal_chord": {
+        "xsec_count": 2,
+        "tip_parm_id": "MOEVOAEBLJM",
+        "tip_chord": 7.33736,
+        "root_parm_id": "OHYJRXXBRLY",
+        "root_chord": 22.773,
+        "span_parm_id": "DCUGBPDVHVT",
+        "span": 21.9432
+      },
+      "limitations": [
+        "surface area, volume, self-intersection and minimum-gap tests require exported TRI/degen geometry"
+      ]
+    },
+    {
+      "id": "LKSOVVQHTG",
+      "name": "Wing",
+      "type": "Wing",
+      "bbox": {
+        "min": [
+          36.127,
+          5.0,
+          -0.128382
+        ],
+        "max": [
+          58.9698,
+          21.6494,
+          1.76344
+        ]
+      },
+      "bbox_size": [
+        22.842799999999997,
+        16.6494,
+        1.891822
+      ],
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "terminal_chord": {
+        "xsec_count": 2,
+        "tip_parm_id": "AVGGHAUBNZE",
+        "tip_chord": 7.25066,
+        "root_parm_id": "LQXFHFPTWFS",
+        "root_chord": 19.1,
+        "span_parm_id": "FDYOADJTXML",
+        "span": 16.7
+      },
+      "limitations": [
+        "surface area, volume, self-intersection and minimum-gap tests require exported TRI/degen geometry"
+      ]
+    },
+    {
+      "id": "WEYCYBICLQ",
+      "name": "GO",
+      "type": "Wing",
+      "bbox": {
+        "min": [
+          57.0492,
+          4.5082,
+          -0.222643
+        ],
+        "max": [
+          71.149,
+          13.7372,
+          0.222643
+        ]
+      },
+      "bbox_size": [
+        14.099800000000002,
+        9.229,
+        0.445286
+      ],
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "terminal_chord": {
+        "xsec_count": 2,
+        "tip_parm_id": "EDNALEEDLRM",
+        "tip_chord": 3.015,
+        "root_parm_id": "SMTAGLAFPZZ",
+        "root_chord": 8.893,
+        "span_parm_id": "UTYJKMGBPTP",
+        "span": 9.229
+      },
+      "limitations": [
+        "surface area, volume, self-intersection and minimum-gap tests require exported TRI/degen geometry"
+      ]
+    },
+    {
+      "id": "IJYCWWDGPY",
+      "name": "VO",
+      "type": "Wing",
+      "bbox": {
+        "min": [
+          48.6885,
+          3.74997,
+          2.13115
+        ],
+        "max": [
+          64.7212,
+          5.45242,
+          11.3112
+        ]
+      },
+      "bbox_size": [
+        16.0327,
+        1.7024500000000002,
+        9.18005
+      ],
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "terminal_chord": {
+        "xsec_count": 2,
+        "tip_parm_id": "GWIJSYBTZTB",
+        "tip_chord": 3.286,
+        "root_parm_id": "ZKMTOHGPVSM",
+        "root_chord": 15.311,
+        "span_parm_id": "GFRYWXYRROW",
+        "span": 9.261
+      },
+      "limitations": [
+        "surface area, volume, self-intersection and minimum-gap tests require exported TRI/degen geometry"
+      ]
+    },
+    {
+      "id": "PLKOTSTWOY",
+      "name": "VentralVO",
+      "type": "Wing",
+      "bbox": {
+        "min": [
+          53.1148,
+          3.85513,
+          -4.12563
+        ],
+        "max": [
+          62.1792,
+          4.65518,
+          -1.55738
+        ]
+      },
+      "bbox_size": [
+        9.0644,
+        0.8000499999999997,
+        2.56825
+      ],
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "terminal_chord": {
+        "xsec_count": 2,
+        "tip_parm_id": "RUGGSIMYRJQ",
+        "tip_chord": 5.6746,
+        "root_parm_id": "BEDGZLZUYMS",
+        "root_chord": 9.0,
+        "span_parm_id": "BUTSRMWXRVC",
+        "span": 2.60449
+      },
+      "limitations": [
+        "surface area, volume, self-intersection and minimum-gap tests require exported TRI/degen geometry"
+      ]
+    },
+    {
+      "id": "XSELHKHPAE",
+      "name": "Gondola",
+      "type": "Fuselage",
+      "bbox": {
+        "min": [
+          21.5529,
+          -5.36899,
+          -2.45611
+        ],
+        "max": [
+          65.0598,
+          0.0350157,
+          3.585
+        ]
+      },
+      "bbox_size": [
+        43.506899999999995,
+        5.4040057,
+        6.04111
+      ],
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "terminal_chord": null,
+      "limitations": [
+        "surface area, volume, self-intersection and minimum-gap tests require exported TRI/degen geometry"
+      ]
+    }
+  ],
+  "openvsp_errors": [],
+  "coverage": {
+    "available": [
+      "component inventory",
+      "absolute bounding boxes",
+      "surface counts",
+      "Set membership",
+      "terminal wing chord",
+      "selected mesh and transform parameters"
+    ],
+    "requires_tri_or_degen": [
+      "area",
+      "volume",
+      "centroid",
+      "vertices",
+      "faces",
+      "minimum triangle",
+      "boundary/nonmanifold edges",
+      "normals",
+      "self intersections",
+      "intercomponent gaps"
+    ]
+  }
+}

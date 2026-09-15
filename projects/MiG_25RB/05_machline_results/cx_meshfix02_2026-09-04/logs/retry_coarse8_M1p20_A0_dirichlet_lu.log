@@ -1,0 +1,65 @@
+﻿ Please specify an input file:
+            /
+           /
+          /
+         /          ____
+        /          /   /
+       /     MachLine (c) 2023 USU Aerolab
+      /          /   /    v4.0
+     / _________/___/_______________
+    ( (__________________________
+     \          \   \
+      \          \   \
+       \          \   \
+        \          \___\
+         \
+
+ Got input file: inputs/retry_coarse8_M1p20_A0_dirichlet_lu.json                                                     
+
+ Reading and analyzing surface mesh
+     User has selected linear-doublet-constant-source panels.
+     Reading surface mesh in from file mesh/MiG25_MeshFix02_coarse8_open_gondola_pad020_M1p2.tri... Done.
+     Surface mesh has    8644 vertices and   17166 panels.
+     Locating adjacent panels...Done. Found   25810 edges.
+     Calculating vertex geometric parameters... Done.
+
+ Initializing based on flow properties
+     Initializing flow-dependent panel properties... Done. Found       0 superinclined panels.
+     Characterizing edges...Done. Found   0 wake-shedding edges.
+     Setting up panel singularity distributions... Done.
+     Placing control points using a local offset ratio of 1.0000E-04...Done. Placed  8644 control points.
+     Calculating domains of dependence... Done.
+     Permuting linear system for efficient solution... Done.
+
+ Running solver using the dirichlet-morino boundary-condition formulation
+     Calculating source strengths... Done.
+     Calculating body influences... Done.
+     Solving linear system (method: LU)... Done.
+         Maximum residual:   49709055.866158538     
+         Norm of residual:   74590087.159223244     
+         Lower bandwidth of A matrix:         697
+     Calculating surface velocities... Done.
+     Calculating outer surface potentials... Done.
+     Calculating surface pressures... Done.
+         Maximum isentropic pressure coefficient:   1.3999616600978890     
+         Minimum isentropic pressure coefficient: -0.99206349206349209     
+         Maximum second-order pressure coefficient:   1.4136560079928946     
+         Minimum second-order pressure coefficient: -0.99206348217728002     
+         Maximum slender-body pressure coefficient:   1.4122079264185048     
+         Minimum slender-body pressure coefficient: -0.99206349206349209     
+         Maximum linear pressure coefficient:   1.4136560079928946     
+         Minimum linear pressure coefficient: -0.99206349206349209     
+         Vacuum pressure coefficient: -0.99206349206349209     
+     Calculating forces using the isentropic pressure rule... Done.
+         Cx:   2.7637834285429916E-002
+         Cy:   7.8165879146856760E-003
+         Cz:  -1.1574580045855275E-002
+     Calculating moments... Done.
+         CMx:   3.5878051404802154     
+         CMy:   176.03047263038258     
+         CMz:   295.16058377807860     
+
+ Writing results to file
+                      Report: reports/retry_coarse8_M1p20_A0_dirichlet_lu_report.json
+
+ MachLine exited successfully. Execution time:   956.0160 s

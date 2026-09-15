@@ -1,0 +1,12 @@
+{
+  "updated_at": "2026-09-05T08:09:26.197470+03:00",
+  "state": "diagnostic_failed",
+  "pid": 21332,
+  "started_at": "2026-09-05T08:06:08.507293+03:00",
+  "failed_case": "day_M1p20_Ap0_ise",
+  "residual_norm": 1.36292983606811e+16,
+  "exit_code": 0,
+  "completed_cases": 0,
+  "total_cases": 3,
+  "mesh": "mesh/MiG25_MeshFix02_coarse8_day_common_M1p2_Apm1.tri"
+}

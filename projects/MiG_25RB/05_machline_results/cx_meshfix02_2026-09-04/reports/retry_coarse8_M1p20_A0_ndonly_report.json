@@ -1,0 +1,68 @@
+{
+    "info" : {
+        "generated_by" : "MachLine (c) 2023 USU Aerolab",
+        "executed" : "Sat Sep  5 02:24:36 2026"
+    },
+    "mesh_info" : {
+        "N_body_panels" : 17166,
+        "N_body_vertices" : 8644,
+        "N_wake_panels" : 0,
+        "average_characteristic_length" : 3.87816096812546E-001,
+        "max_flow_turning_angle" : 1.75988500621382E+002
+    },
+    "solver_results" : {
+        "solver_status_code" : 4,
+        "system_dimension" : 8644,
+        "timing" : {
+            "system_sorting" : 1.14700000000000E-002,
+            "preconditioner" : 1.07652100000000E-001,
+            "matrix_solver" : 3.55026443570000E+003
+        }
+    },
+    "input" : {
+        "flow" : {
+            "freestream_velocity" : [
+                    1.00000000000000E+002,
+                    0.00000000000000E+000,
+                    0.00000000000000E+000
+                ],
+            "gamma" : 1.40000000000000E+000,
+            "freestream_mach_number" : 1.20000000000000E+000
+        },
+        "geometry" : {
+            "file" : "mesh/MiG25_MeshFix02_coarse8_open_gondola_pad020_M1p2.tri",
+            "spanwise_axis" : "+y",
+            "wake_model" : {
+                "trefftz_distance" : 8.00000000000000E+001,
+                "wake_present" : false,
+                "append_wake" : false,
+                "wake_shedding_angle" : 1.50000000000000E+002
+            },
+            "reference" : {
+                "area" : 6.60904000000000E+002
+            }
+        },
+        "solver" : {
+            "formulation" : "neumann-doublet-only-mass-flux",
+            "matrix_solver" : "FQRUP",
+            "control_point_offset" : 1.00000000000000E-004,
+            "control_point_offset_type" : "direct"
+        },
+        "post_processing" : {
+            "pressure_rules" : {
+                "isentropic" : true,
+                "second-order" : true,
+                "slender-body" : true,
+                "linear" : true
+            },
+            "pressure_for_forces" : "isentropic"
+        },
+        "output" : {
+            "body_file" : "none",
+            "wake_file" : "none",
+            "control_point_file" : "none",
+            "report_file" : "reports/retry_coarse8_M1p20_A0_ndonly_report.json"
+        }
+    },
+    "total_runtime" : 3.72084400000000E+003
+}

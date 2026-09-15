@@ -1,0 +1,199 @@
+void main()
+{
+    ClearVSPModel();
+    ReadVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08/probes/vspaero_mixed/coarse/model.vsp3" );
+    Update();
+    Print( "REPAIRMACH_ENGINE_BOUNDARY=model" );
+
+
+    int thick_set = 4;
+    int thin_set = 5;
+    bool invalid_sets = false;
+    array<string> all_geoms = GetGeomSetAtIndex( 0 );
+    array<string> thick_geoms = GetGeomSetAtIndex( thick_set );
+    array<string> thin_geoms = GetGeomSetAtIndex( thin_set );
+
+    Print( "REPAIRMACH_SET_REPORT_BEGIN" );
+    Print( "ROLE=fuselage_and_nacelles;USER_SET=1;API_INDEX=" + thick_set + ";NAME=" + GetSetName( thick_set ) + ";COUNT=" + thick_geoms.size() );
+    Print( "ROLE=wing_and_empennage;USER_SET=2;API_INDEX=" + thin_set + ";NAME=" + GetSetName( thin_set ) + ";COUNT=" + thin_geoms.size() );
+
+
+    if ( thick_geoms.size() == 0 )
+    {
+        Print( "ERROR=Set_1 is empty" );
+        invalid_sets = true;
+    }
+
+    if ( thin_geoms.size() == 0 )
+    {
+        Print( "ERROR=Set_2 is empty" );
+        invalid_sets = true;
+    }
+
+    array<string> required_fuselage = FindGeomsWithName( "Fuselage" );
+    array<string> required_wing = FindGeomsWithName( "Wing" );
+    Print( "COMPONENT_NAME;BASE=Fuselage;COUNT=" + required_fuselage.size() );
+    Print( "COMPONENT_NAME;BASE=Wing;COUNT=" + required_wing.size() );
+    if ( required_fuselage.size() != 1 )
+    {
+        Print( "ERROR=Expected exactly one primary geometry named Fuselage;COUNT=" + required_fuselage.size() );
+        invalid_sets = true;
+    }
+    else if ( !GetSetFlag( required_fuselage[0], thick_set ) )
+    {
+        Print( "ERROR=Fuselage must be assigned to Set_1" );
+        invalid_sets = true;
+    }
+    if ( required_wing.size() != 1 )
+    {
+        Print( "ERROR=Expected exactly one primary geometry named Wing;COUNT=" + required_wing.size() );
+        invalid_sets = true;
+    }
+    else if ( !GetSetFlag( required_wing[0], thin_set ) )
+    {
+        Print( "ERROR=Wing must be assigned to Set_2" );
+        invalid_sets = true;
+    }
+
+
+    for ( int i = 0; i < int( all_geoms.size() ); ++i )
+    {
+        string gid = all_geoms[i];
+        string name = GetGeomName( gid );
+        string geom_type = GetGeomTypeName( gid );
+        bool in_thick = GetSetFlag( gid, thick_set );
+        bool in_thin = GetSetFlag( gid, thin_set );
+        Print( "GEOM;ID=" + gid + ";NAME=" + name + ";TYPE=" + geom_type + ";IN_SET_1=" + in_thick + ";IN_SET_2=" + in_thin );
+        if ( in_thick && in_thin )
+        {
+            Print( "ERROR=Geometry belongs to both sets;ID=" + gid + ";NAME=" + name );
+            invalid_sets = true;
+        }
+
+        if ( !in_thick && !in_thin )
+        {
+            Print( "ERROR=Geometry is not assigned to Set_1 or Set_2;ID=" + gid + ";NAME=" + name );
+            invalid_sets = true;
+        }
+
+        if ( in_thick && geom_type == "Wing" )
+        {
+            Print( "ERROR=Wing geometry is assigned to fuselage Set_1;ID=" + gid + ";NAME=" + name );
+            invalid_sets = true;
+        }
+        if ( in_thin && geom_type != "Wing" )
+        {
+            Print( "ERROR=Non-wing geometry is assigned to wing Set_2;ID=" + gid + ";NAME=" + name + ";TYPE=" + geom_type );
+            invalid_sets = true;
+        }
+    }
+
+    string tail_id = "";
+    array<string> tail_candidates = FindGeomsWithName( "GO" );
+    if ( tail_candidates.size() != 1 )
+    {
+        Print( "ERROR=Expected exactly one horizontal-tail geometry named GO;COUNT=" + tail_candidates.size() );
+        invalid_sets = true;
+    }
+    else
+    {
+        tail_id = tail_candidates[0];
+        Print( "TAIL;MODE=fixed_incidence;NAME=" + GetGeomName( tail_id ) + ";ID=" + tail_id + ";TYPE=" + GetGeomTypeName( tail_id ) + ";ANGLE_DEG=0" );
+        if ( !GetSetFlag( tail_id, thin_set ) )
+        {
+            Print( "ERROR=Horizontal tail is not assigned to Set_2;ID=" + tail_id + ";NAME=" + GetGeomName( tail_id ) );
+            invalid_sets = true;
+        }
+        if ( GetGeomTypeName( tail_id ) != "Wing" )
+        {
+            Print( "ERROR=Horizontal-tail geometry must have Wing type;ID=" + tail_id + ";TYPE=" + GetGeomTypeName( tail_id ) );
+            invalid_sets = true;
+        }
+    }
+
+    Print( "REPAIRMACH_SET_REPORT_END" );
+
+    if ( invalid_sets )
+    {
+        Print( "REPAIRMACH_ABORTED_SET_VALIDATION=1" );
+        return;
+    }
+
+    SetParmVal( tail_id, "Y_Rel_Rotation", "XForm", 0 );
+    Update();
+    WriteVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08/probes/vspaero_mixed/coarse/model.vsp3", 0 );
+    Print( "REPAIRMACH_TAIL_INCIDENCE_APPLIED=0" );
+
+    Print( "REPAIRMACH_SET_VALIDATION=OK" );
+
+    string compute_name = "VSPAEROComputeGeometry";
+    SetAnalysisInputDefaults( compute_name );
+    array<int> thick_input(1, thick_set);
+    array<int> thin_input(1, thin_set);
+    SetIntAnalysisInput( compute_name, "GeomSet", thick_input );
+    SetIntAnalysisInput( compute_name, "ThinGeomSet", thin_input );
+    string compute_result = ExecAnalysis( compute_name );
+    Print( "REPAIRMACH_COMPUTE_RESULT_ID=" + compute_result );
+
+    string sweep_name = "VSPAEROSweep";
+    SetAnalysisInputDefaults( sweep_name );
+    SetIntAnalysisInput( sweep_name, "GeomSet", thick_input );
+    SetIntAnalysisInput( sweep_name, "ThinGeomSet", thin_input );
+
+    array<int> ref_flag(1, 0);
+    SetIntAnalysisInput( sweep_name, "RefFlag", ref_flag );
+    array<double> sref(1, 349.27229999999997);
+    array<double> cref(1, 14.386670000000001);
+    array<double> bref(1, 32.369999999999997);
+    SetDoubleAnalysisInput( sweep_name, "Sref", sref );
+    SetDoubleAnalysisInput( sweep_name, "cref", cref );
+    SetDoubleAnalysisInput( sweep_name, "bref", bref );
+
+    array<double> xcg(1, 29.550000000000001);
+    array<double> ycg(1, 0);
+    array<double> zcg(1, 0);
+    SetDoubleAnalysisInput( sweep_name, "Xcg", xcg );
+    SetDoubleAnalysisInput( sweep_name, "Ycg", ycg );
+    SetDoubleAnalysisInput( sweep_name, "Zcg", zcg );
+
+    array<double> mach_start(1, 0.80000000000000004);
+    array<double> mach_end(1, 0.80000000000000004);
+    array<int> mach_points(1, 1);
+    SetDoubleAnalysisInput( sweep_name, "MachStart", mach_start );
+    SetDoubleAnalysisInput( sweep_name, "MachEnd", mach_end );
+    SetIntAnalysisInput( sweep_name, "MachNpts", mach_points );
+
+    array<double> alpha_start(1, 1);
+    array<double> alpha_end(1, 1);
+    array<int> alpha_points(1, 1);
+    SetDoubleAnalysisInput( sweep_name, "AlphaStart", alpha_start );
+    SetDoubleAnalysisInput( sweep_name, "AlphaEnd", alpha_end );
+    SetIntAnalysisInput( sweep_name, "AlphaNpts", alpha_points );
+
+    array<double> beta(1, 0);
+    array<int> beta_points(1, 1);
+    SetDoubleAnalysisInput( sweep_name, "BetaStart", beta );
+    SetDoubleAnalysisInput( sweep_name, "BetaEnd", beta );
+    SetIntAnalysisInput( sweep_name, "BetaNpts", beta_points );
+    array<int> cpu_count(1, 4);
+    SetIntAnalysisInput( sweep_name, "NCPU", cpu_count );
+    array<double> gmres_factor(1, 1);
+    array<int> wake_iterations(1, 8);
+    array<int> wake_nodes(1, 24);
+    array<double> wake_relaxation(1, 0.80000000000000004);
+    SetDoubleAnalysisInput( sweep_name, "ForwardGMRESConvergenceFactor", gmres_factor );
+    SetIntAnalysisInput( sweep_name, "WakeNumIter", wake_iterations );
+    SetIntAnalysisInput( sweep_name, "NumWakeNodes", wake_nodes );
+    SetDoubleAnalysisInput( sweep_name, "WakeRelax", wake_relaxation );
+
+    string sweep_result = ExecAnalysis( sweep_name );
+    Print( "REPAIRMACH_SWEEP_RESULT_ID=" + sweep_result );
+    WriteResultsCSVFile( sweep_result, "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_020500_Plane_Naca_final_PlaneNaca_STABLE_M08/probes/vspaero_mixed/coarse/probe.csv" );
+    Print( "REPAIRMACH_VSPAERO_COMPLETE=1" );
+
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }
+}

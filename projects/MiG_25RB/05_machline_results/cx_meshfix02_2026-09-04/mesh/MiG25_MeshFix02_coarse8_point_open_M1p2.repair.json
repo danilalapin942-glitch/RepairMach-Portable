@@ -1,0 +1,599 @@
+{
+  "source": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_point_open.tri",
+  "target": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_point_open_M1p2.tri",
+  "scan_before": {
+    "panels": 17358,
+    "bad_panels": 24,
+    "near_limit_panels": 1,
+    "maximum_margin": 0.13532521151821975,
+    "maximum_value": 0.9686585448515531,
+    "bad_panel_ids": [
+      7064,
+      7292,
+      9466,
+      6955,
+      7035,
+      7251,
+      9425,
+      7865,
+      9220,
+      4105,
+      5235,
+      7034,
+      7325,
+      9497,
+      7220,
+      9395,
+      7205,
+      9379,
+      7326,
+      9498,
+      9908,
+      7732,
+      7369,
+      9541
+    ]
+  },
+  "repair_log": [
+    {
+      "panel_id": 7064,
+      "status": "NO_SAFE_CANDIDATE",
+      "before": {
+        "panel_id": 7064,
+        "vertices": [
+          3601,
+          3633,
+          3588
+        ],
+        "center": [
+          65.13072866,
+          -1.339456817,
+          -0.9557059546333333
+        ],
+        "normal": [
+          0.9686585448515531,
+          0.02686394172175841,
+          -0.24693916684325673
+        ],
+        "area": 0.08805885967526214,
+        "neighbor_count": 1,
+        "neighbor_angle": 62.42321591478297,
+        "mach_value": 0.9686585448515531,
+        "mach_margin": 0.13532521151821975
+      }
+    },
+    {
+      "panel_id": 7292,
+      "status": "NO_SAFE_CANDIDATE",
+      "before": {
+        "panel_id": 7292,
+        "vertices": [
+          3712,
+          3770,
+          3804
+        ],
+        "center": [
+          65.12598563,
+          -4.161776228333333,
+          -0.4768835376
+        ],
+        "normal": [
+          0.9511641283606003,
+          -0.1410718650267846,
+          -0.2745642544430797
+        ],
+        "area": 0.03832268419003324,
+        "neighbor_count": 2,
+        "neighbor_angle": 37.513243309451816,
+        "mach_value": 0.9511641283606003,
+        "mach_margin": 0.1178307950272669
+      }
+    },
+    {
+      "panel_id": 9466,
+      "status": "NO_SAFE_CANDIDATE",
+      "before": {
+        "panel_id": 9466,
+        "vertices": [
+          4843,
+          4933,
+          4900
+        ],
+        "center": [
+          65.1259854,
+          4.161776553,
+          -0.4768834750666667
+        ],
+        "normal": [
+          0.9511632500646878,
+          0.14107296993916274,
+          -0.27456672937361537
+        ],
+        "area": 0.03832278330065588,
+        "neighbor_count": 2,
+        "neighbor_angle": 37.51318360799857,
+        "mach_value": 0.9511632500646878,
+        "mach_margin": 0.11782991673135446
+      }
+    },
+    {
+      "panel_id": 6955,
+      "status": "NO_SAFE_CANDIDATE",
+      "before": {
+        "panel_id": 6955,
+        "vertices": [
+          3588,
+          3582,
+          3589
+        ],
+        "center": [
+          65.08456091333333,
+          -1.7508779270000001,
+          -1.1494296638000001
+        ],
+        "normal": [
+          0.9471134773351618,
+          -0.017777516988569986,
+          -0.32040602513033195
+        ],
+        "area": 0.14724680152860192,
+        "neighbor_count": 2,
+        "neighbor_angle": 34.980528035980086,
+        "mach_value": 0.9471134773351618,
+        "mach_margin": 0.11378014400182845
+      }
+    },
+    {
+      "panel_id": 7035,
+      "status": "NO_SAFE_CANDIDATE",
+      "before": {
+        "panel_id": 7035,
+        "vertices": [
+          3582,
+          3581,
+          3589
+        ],
+        "center": [
+          65.12841451,
+          -2.0729130783333334,
+          -1.0283457147000001
+        ],
+        "normal": [
+          0.9470848942763223,
+          0.036174886365122394,
+          -0.31893820816903995
+        ],
+        "area": 0.14266977863414332,
+        "neighbor_count": 2,
+        "neighbor_angle": 7.1845532817729465,
+        "mach_value": 0.9470848942763223,
+        "mach_margin": 0.11375156094298888
+      }
+    },
+    {
+      "panel_id": 7251,
+      "status": "NO_SAFE_CANDIDATE",
+      "before": {
+        "panel_id": 7251,
+        "vertices": [
+          3769,
+          3804,
+          3770
+        ],
+        "center": [
+          65.12651082000001,
+          -4.045579259666667,
+          -0.6059385361666667
+        ],
+        "normal": [
+          0.944111126246175,
+          -0.3141809845859468,
+          -0.09972206487425125
+        ],
+        "area": 0.03236083740284143,
+        "neighbor_count": 2,
+        "neighbor_angle": 31.433390982591305,
+        "mach_value": 0.944111126246175,
+        "mach_margin": 0.11077779291284162
+      }
+    },
+    {
+      "panel_id": 9425,
+      "status": "NO_SAFE_CANDIDATE",
+      "before": {
+        "panel_id": 9425,
+        "vertices": [
+          4901,
+          4900,
+          4933
+        ],
+        "center": [
+          65.12651059666668,
+          4.045579336,
+          -0.6059387259333333
+        ],
+        "normal": [
+          0.9441104027603048,
+          0.3141831488877213,
+          -0.09972209561963324
+        ],
+        "area": 0.032360892079763254,
+        "neighbor_count": 2,
+        "neighbor_angle": 31.433488603926545,
+        "mach_value": 0.9441104027603048,
+        "mach_margin": 0.11077706942697141
+      }
+    },
+    {
+      "panel_id": 7865,
+      "status": "REPAIRED",
+      "vertex_id": 4106,
+      "direction": "-X",
+      "step": 0.05,
+      "before_margin": 0.07890059499631052,
+      "after_margin": -0.018097240532990333
+    },
+    {
+      "panel_id": 9220,
+      "status": "NO_SAFE_CANDIDATE",
+      "before": {
+        "panel_id": 9220,
+        "vertices": [
+          4716,
+          4724,
+          4714
+        ],
+        "center": [
+          65.08978195333334,
+          2.245126718333333,
+          -1.1082087224666666
+        ],
+        "normal": [
+          0.8919039673924697,
+          0.08802553571485881,
+          -0.4435750421424593
+        ],
+        "area": 0.15030856145169008,
+        "neighbor_count": 2,
+        "neighbor_angle": 26.989235652815427,
+        "mach_value": 0.8919039673924697,
+        "mach_margin": 0.05857063405913632
+      }
+    },
+    {
+      "panel_id": 4105,
+      "status": "REPAIRED",
+      "vertex_id": 2375,
+      "direction": "-X",
+      "step": 0.01,
+      "before_margin": 0.05778682864756224,
+      "after_margin": -0.0038074069874072247
+    },
+    {
+      "panel_id": 5235,
+      "status": "REPAIRED",
+      "vertex_id": 2914,
+      "direction": "-X",
+      "step": 0.01,
+      "before_margin": 0.057569722314351424,
+      "after_margin": -0.003958570249266713
+    },
+    {
+      "panel_id": 7034,
+      "status": "NO_SAFE_CANDIDATE",
+      "before": {
+        "panel_id": 7034,
+        "vertices": [
+          3599,
+          3589,
+          3581
+        ],
+        "center": [
+          65.03133416666667,
+          -2.235052337333333,
+          -1.239765861566667
+        ],
+        "normal": [
+          0.8893579702881695,
+          -0.11958190628817873,
+          -0.4412964631326572
+        ],
+        "area": 0.16449107096253238,
+        "neighbor_count": 3,
+        "neighbor_angle": 21.352231570715556,
+        "mach_value": 0.8893579702881695,
+        "mach_margin": 0.05602463695483617
+      }
+    },
+    {
+      "panel_id": 7325,
+      "status": "REPAIRED",
+      "vertex_id": 3753,
+      "direction": "+X",
+      "step": 0.05,
+      "before_margin": 0.04848622636719224,
+      "after_margin": -0.009727893168724355
+    },
+    {
+      "panel_id": 9497,
+      "status": "REPAIRED",
+      "vertex_id": 4880,
+      "direction": "+X",
+      "step": 0.05,
+      "before_margin": 0.048483487510280976,
+      "after_margin": -0.009730699905430407
+    },
+    {
+      "panel_id": 7220,
+      "status": "NO_SAFE_CANDIDATE",
+      "before": {
+        "panel_id": 7220,
+        "vertices": [
+          3599,
+          3581,
+          3773
+        ],
+        "center": [
+          65.08777263,
+          -2.521053765,
+          -1.1328738675666667
+        ],
+        "normal": [
+          0.8772924843939115,
+          0.1820001240676323,
+          -0.44411017964613825
+        ],
+        "area": 0.12243165360167181,
+        "neighbor_count": 2,
+        "neighbor_angle": 19.194691553689214,
+        "mach_value": 0.8772924843939115,
+        "mach_margin": 0.04395915106057813
+      }
+    },
+    {
+      "panel_id": 9395,
+      "status": "NO_SAFE_CANDIDATE",
+      "before": {
+        "panel_id": 9395,
+        "vertices": [
+          4714,
+          4902,
+          4716
+        ],
+        "center": [
+          65.08775656,
+          2.5210549409999996,
+          -1.1328872464666666
+        ],
+        "normal": [
+          0.8772561622467471,
+          -0.18202299920442314,
+          -0.4441725493102152
+        ],
+        "area": 0.12243190421659064,
+        "neighbor_count": 2,
+        "neighbor_angle": 18.346670128904574,
+        "mach_value": 0.8772561622467471,
+        "mach_margin": 0.0439228289134137
+      }
+    },
+    {
+      "panel_id": 7205,
+      "status": "REPAIRED",
+      "vertex_id": 3751,
+      "direction": "-X",
+      "step": 0.02,
+      "before_margin": 0.016250260862735177,
+      "after_margin": -0.002385274690733352
+    },
+    {
+      "panel_id": 9379,
+      "status": "REPAIRED",
+      "vertex_id": 4879,
+      "direction": "-X",
+      "step": 0.02,
+      "before_margin": 0.016244971071207592,
+      "after_margin": -0.0023907348101879222
+    },
+    {
+      "panel_id": 9908,
+      "status": "REPAIRED",
+      "vertex_id": 5153,
+      "direction": "-X",
+      "step": 0.01,
+      "before_margin": 0.015881133195420838,
+      "after_margin": -0.006524684849917528
+    },
+    {
+      "panel_id": 7732,
+      "status": "REPAIRED",
+      "vertex_id": 4023,
+      "direction": "-X",
+      "step": 0.01,
+      "before_margin": 0.01588104300280324,
+      "after_margin": -0.006524777178209318
+    },
+    {
+      "panel_id": 7369,
+      "status": "REPAIRED",
+      "vertex_id": 3752,
+      "direction": "+X",
+      "step": 0.005,
+      "before_margin": 0.0013138597925790307,
+      "after_margin": -0.0030256634484405742
+    },
+    {
+      "panel_id": 9541,
+      "status": "REPAIRED",
+      "vertex_id": 4881,
+      "direction": "+X",
+      "step": 0.005,
+      "before_margin": 0.0013025934722497023,
+      "after_margin": -0.003036956235268007
+    }
+  ],
+  "unresolved_closure_panels_removed": [
+    {
+      "panel_id": 7064,
+      "component": 2,
+      "center": [
+        65.13072866,
+        -1.339456817,
+        -0.9557059546333333
+      ],
+      "area_ft2": 0.08805885967526214,
+      "mach_margin": 0.13532521151821975
+    },
+    {
+      "panel_id": 7292,
+      "component": 2,
+      "center": [
+        65.12598563,
+        -4.161776228333333,
+        -0.4768835376
+      ],
+      "area_ft2": 0.03832268419003324,
+      "mach_margin": 0.1178307950272669
+    },
+    {
+      "panel_id": 9466,
+      "component": 3,
+      "center": [
+        65.1259854,
+        4.161776553,
+        -0.4768834750666667
+      ],
+      "area_ft2": 0.03832278330065588,
+      "mach_margin": 0.11782991673135446
+    },
+    {
+      "panel_id": 6955,
+      "component": 2,
+      "center": [
+        65.08456091333333,
+        -1.7508779270000001,
+        -1.1494296638000001
+      ],
+      "area_ft2": 0.14724680152860192,
+      "mach_margin": 0.11378014400182845
+    },
+    {
+      "panel_id": 7035,
+      "component": 2,
+      "center": [
+        65.12841451,
+        -2.0729130783333334,
+        -1.0283457147000001
+      ],
+      "area_ft2": 0.14266977863414332,
+      "mach_margin": 0.11375156094298888
+    },
+    {
+      "panel_id": 7251,
+      "component": 2,
+      "center": [
+        65.12651082000001,
+        -4.045579259666667,
+        -0.6059385361666667
+      ],
+      "area_ft2": 0.03236083740284143,
+      "mach_margin": 0.11077779291284162
+    },
+    {
+      "panel_id": 9425,
+      "component": 3,
+      "center": [
+        65.12651059666668,
+        4.045579336,
+        -0.6059387259333333
+      ],
+      "area_ft2": 0.032360892079763254,
+      "mach_margin": 0.11077706942697141
+    },
+    {
+      "panel_id": 9220,
+      "component": 3,
+      "center": [
+        65.08978195333334,
+        2.245126718333333,
+        -1.1082087224666666
+      ],
+      "area_ft2": 0.15030856145169008,
+      "mach_margin": 0.05857063405913632
+    },
+    {
+      "panel_id": 7034,
+      "component": 2,
+      "center": [
+        65.03133416666667,
+        -2.235052337333333,
+        -1.239765861566667
+      ],
+      "area_ft2": 0.16449107096253238,
+      "mach_margin": 0.05602463695483617
+    },
+    {
+      "panel_id": 7220,
+      "component": 2,
+      "center": [
+        65.08777263,
+        -2.521053765,
+        -1.1328738675666667
+      ],
+      "area_ft2": 0.12243165360167181,
+      "mach_margin": 0.04395915106057813
+    },
+    {
+      "panel_id": 9395,
+      "component": 3,
+      "center": [
+        65.08775656,
+        2.5210549409999996,
+        -1.1328872464666666
+      ],
+      "area_ft2": 0.12243190421659064,
+      "mach_margin": 0.0439228289134137
+    }
+  ],
+  "unresolved_removed_area_ft2": 1.0790058270437861,
+  "trim_compaction": {
+    "merged_duplicate_vertices": 0,
+    "removed_invalid_faces": 0,
+    "removed_degenerate_faces": 0,
+    "removed_duplicate_faces": 0,
+    "removed_unreferenced_vertices": 6,
+    "flipped_faces_for_consistency": 0,
+    "orientation_conflicts": 0
+  },
+  "scan_after": {
+    "panels": 17347,
+    "bad_panels": 0,
+    "near_limit_panels": 9,
+    "maximum_margin": -0.0030256634484405742,
+    "maximum_value": 0.8303076698848928,
+    "bad_panel_ids": []
+  },
+  "topology_after": {
+    "vertices": 8724,
+    "faces": 17347,
+    "connected_components": 1,
+    "bbox_diagonal": 84.7068647309944,
+    "merge_tolerance": 8.47068647309944e-09,
+    "invalid_index_faces": 0,
+    "invalid_index_face_ids": [],
+    "repeated_vertex_faces": 0,
+    "repeated_vertex_face_ids": [],
+    "degenerate_faces": 0,
+    "degenerate_face_ids": [],
+    "duplicate_faces": 0,
+    "duplicate_face_ids": [],
+    "duplicate_vertices": 0,
+    "unreferenced_vertices": 0,
+    "boundary_edges": 101,
+    "nonmanifold_edges": 0,
+    "inconsistent_orientation_edges": 0,
+    "safe_repairs_available": 0,
+    "watertight": false,
+    "machline_safe_topology": true
+  }
+}

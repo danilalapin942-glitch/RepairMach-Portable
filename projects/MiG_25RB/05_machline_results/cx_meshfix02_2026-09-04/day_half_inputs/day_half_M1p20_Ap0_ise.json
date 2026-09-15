@@ -1,0 +1,46 @@
+{
+  "flow": {
+    "freestream_velocity": [
+      100.0,
+      0.0,
+      0.0
+    ],
+    "gamma": 1.4,
+    "freestream_mach_number": 1.2
+  },
+  "geometry": {
+    "file": "mesh/MiG25_MeshFix02_coarse8_day_half_common_M1p2_Apm1.tri",
+    "spanwise_axis": "+y",
+    "mirror_about": "xz",
+    "wake_model": {
+      "trefftz_distance": 80.0,
+      "wake_present": false,
+      "append_wake": false,
+      "wake_shedding_angle": 150.0
+    },
+    "reference": {
+      "area": 660.904
+    }
+  },
+  "solver": {
+    "formulation": "dirichlet-morino",
+    "matrix_solver": "FQRUP",
+    "control_point_offset": 0.0001,
+    "control_point_offset_type": "local"
+  },
+  "post_processing": {
+    "pressure_rules": {
+      "isentropic": true,
+      "second-order": true,
+      "slender-body": true,
+      "linear": true
+    },
+    "pressure_for_forces": "isentropic"
+  },
+  "output": {
+    "body_file": "day_half_vtk/day_half_M1p20_Ap0_ise_body.vtk",
+    "wake_file": "none",
+    "control_point_file": "none",
+    "report_file": "day_half_reports/day_half_M1p20_Ap0_ise_report.json"
+  }
+}

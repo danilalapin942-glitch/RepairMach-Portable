@@ -1,0 +1,13 @@
+void main()
+{
+    ClearVSPModel();
+    Update();
+    WriteVSPFile( "YFQ_44.vsp3", 0 );
+
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( err.GetErrorString() );
+    }
+    Print( "REPAIRMACH_BLANK_VSP3_CREATED" );
+}

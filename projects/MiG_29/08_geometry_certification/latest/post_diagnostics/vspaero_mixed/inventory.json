@@ -1,0 +1,877 @@
+{
+  "schema": "repairmach.openvsp-inventory/1.0",
+  "openvsp_version": "3.51.0",
+  "sets": [],
+  "components": [
+    {
+      "id": "ZGNJFWTPXL",
+      "name": "Fuselage",
+      "type": "Fuselage",
+      "parent_id": null,
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "bbox": {
+        "min": [
+          -2.96059e-16,
+          -1.68109,
+          -1.50042
+        ],
+        "max": [
+          46.6596,
+          1.68109,
+          4.03125
+        ]
+      },
+      "sets": {
+        "1": true,
+        "2": false
+      },
+      "parameters": [
+        {
+          "id": "UMDMEPQPQVN",
+          "name": "X_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "ZLCAAFSUKHG",
+          "name": "X_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "RGKKBWNKDWO",
+          "name": "X_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "ARHNNEWNGSD",
+          "name": "Y_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "WQGAUVPJXTJ",
+          "name": "Y_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "UHNYKKBFIZA",
+          "name": "Y_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "LNVQJSOFYKS",
+          "name": "Z_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "PAYWNGPYGNS",
+          "name": "Z_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "HUETMFMEKDR",
+          "name": "Z_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "YNPSBVWPRFX",
+          "name": "Tess_U",
+          "group": "Shape",
+          "display_group": "",
+          "value": 16.0
+        },
+        {
+          "id": "WUAQPELLBLJ",
+          "name": "Tess_W",
+          "group": "Shape",
+          "display_group": "",
+          "value": 17.0
+        },
+        {
+          "id": "YQLFJUUHRGV",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "SJOBVUUMORK",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 9.0
+        },
+        {
+          "id": "RZKXJQYCHGN",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 10.0
+        },
+        {
+          "id": "EWOOMAXNPVK",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 7.0
+        },
+        {
+          "id": "HUMTIUAVVIS",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 16.0
+        },
+        {
+          "id": "UAWLONTMZRN",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 16.0
+        },
+        {
+          "id": "LURUSCHJYPI",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 10.0
+        }
+      ]
+    },
+    {
+      "id": "BJTILEQDFM",
+      "name": "Gondola",
+      "type": "Fuselage",
+      "parent_id": null,
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "bbox": {
+        "min": [
+          21.148,
+          -4.52397,
+          -3.98941
+        ],
+        "max": [
+          51.148,
+          -1.20378,
+          -0.410593
+        ]
+      },
+      "sets": {
+        "1": true,
+        "2": false
+      },
+      "parameters": [
+        {
+          "id": "PYPYFHBNCMO",
+          "name": "X_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 21.148
+        },
+        {
+          "id": "BJOOMUPVVIK",
+          "name": "X_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 21.148
+        },
+        {
+          "id": "ALSREMAXHSP",
+          "name": "X_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": -13.814
+        },
+        {
+          "id": "ENNECAXDLNY",
+          "name": "Y_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": -2.86388
+        },
+        {
+          "id": "IXZMUYMDSFA",
+          "name": "Y_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": -2.86388
+        },
+        {
+          "id": "JRRYJTTQWCE",
+          "name": "Y_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "UUJMTHTLTZE",
+          "name": "Z_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": -2.2
+        },
+        {
+          "id": "HMLDIDZVZLT",
+          "name": "Z_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": -2.2
+        },
+        {
+          "id": "DTZMZGDMBJY",
+          "name": "Z_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "SXNTMIECANN",
+          "name": "Tess_U",
+          "group": "Shape",
+          "display_group": "",
+          "value": 16.0
+        },
+        {
+          "id": "XAHRCJRSWNE",
+          "name": "Tess_W",
+          "group": "Shape",
+          "display_group": "",
+          "value": 17.0
+        },
+        {
+          "id": "TXQBABMINST",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "JVGHVOEYATQ",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "HYDZJTPKMTE",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "ETDKESPAJCM",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "GODCBTNWLIO",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "AKYJLAHYOLK",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "TREGZWUVSHB",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        }
+      ]
+    },
+    {
+      "id": "MALYAAKVUW",
+      "name": "Wing",
+      "type": "Wing",
+      "parent_id": null,
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "bbox": {
+        "min": [
+          10.3893,
+          1.0,
+          -0.698813
+        ],
+        "max": [
+          43.1611,
+          18.1074,
+          1.32436
+        ]
+      },
+      "sets": {
+        "1": false,
+        "2": true
+      },
+      "parameters": [
+        {
+          "id": "TOFJRSFCBQC",
+          "name": "X_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 10.3893
+        },
+        {
+          "id": "QAOGXTAEZOH",
+          "name": "X_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 10.3893
+        },
+        {
+          "id": "KMYNXVEFEVA",
+          "name": "X_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "YLFKCQJTGWX",
+          "name": "Y_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "RONDRUXSNCQ",
+          "name": "Y_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "DZBGKQYQYQC",
+          "name": "Y_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "NAZINRDNGBZ",
+          "name": "Z_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.409836
+        },
+        {
+          "id": "HQPKPXRZRUL",
+          "name": "Z_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.409836
+        },
+        {
+          "id": "UWXPNXAHXHE",
+          "name": "Z_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "XPTTJVKHMLU",
+          "name": "Tess_U",
+          "group": "Shape",
+          "display_group": "",
+          "value": 16.0
+        },
+        {
+          "id": "ZRCZJLXGNHS",
+          "name": "Tess_W",
+          "group": "Shape",
+          "display_group": "",
+          "value": 33.0
+        },
+        {
+          "id": "IOHVDNUWOFH",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "IXRGQBSBQCJ",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "YAJPNXHFSQD",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "SGQXOZWWSFL",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 30.4008
+        },
+        {
+          "id": "TTLAUQRYTBL",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 30.4008
+        },
+        {
+          "id": "YXQEKVHVGJD",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 14.0
+        },
+        {
+          "id": "PCHKDKBGEBG",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 4.77796
+        },
+        {
+          "id": "WJUXALVOIMR",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 14.1824
+        },
+        {
+          "id": "YAYAQQJKGWH",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 14.1824
+        },
+        {
+          "id": "RYFECTATTFF",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 20.0
+        },
+        {
+          "id": "AODOBOSPZIX",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 12.3418
+        },
+        {
+          "id": "KXFTDQDXPXD",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 5.31767
+        }
+      ],
+      "wing_terminal": {
+        "xsec_count": 3,
+        "tip_parm_id": "KXFTDQDXPXD",
+        "tip_chord": 5.31767,
+        "root_parm_id": "YAYAQQJKGWH",
+        "root_chord": 14.1824,
+        "span_parm_id": "AODOBOSPZIX",
+        "span": 12.3418
+      }
+    },
+    {
+      "id": "SKENFXYHVR",
+      "name": "GO",
+      "type": "Wing",
+      "parent_id": null,
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "bbox": {
+        "min": [
+          44.0369,
+          5.90164,
+          -0.494456
+        ],
+        "max": [
+          55.256,
+          12.1734,
+          0.408958
+        ]
+      },
+      "sets": {
+        "1": false,
+        "2": true
+      },
+      "parameters": [
+        {
+          "id": "VJOLKXOGXER",
+          "name": "X_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 44.0369
+        },
+        {
+          "id": "QJGSUZEPLXH",
+          "name": "X_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 44.0369
+        },
+        {
+          "id": "JEOYYBYJFZQ",
+          "name": "X_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "NJGFTIVFTWQ",
+          "name": "Y_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 5.90164
+        },
+        {
+          "id": "JCXDFKUJXGU",
+          "name": "Y_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 5.90164
+        },
+        {
+          "id": "KCNVHEXEMDU",
+          "name": "Y_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "LFDMADAZGNX",
+          "name": "Z_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0819672
+        },
+        {
+          "id": "SELQGZAXJIE",
+          "name": "Z_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0819672
+        },
+        {
+          "id": "GHKQUHXGJMB",
+          "name": "Z_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "QYEIHWNTRXW",
+          "name": "Tess_U",
+          "group": "Shape",
+          "display_group": "",
+          "value": 16.0
+        },
+        {
+          "id": "ERBETLHLMEB",
+          "name": "Tess_W",
+          "group": "Shape",
+          "display_group": "",
+          "value": 33.0
+        },
+        {
+          "id": "PZJVLPSSTXH",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "XNWMMHJZTKQ",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "BGFAXUPKMOU",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "ZMGLUSGTBZV",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 8.15424
+        },
+        {
+          "id": "CECFIOTJJSV",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 8.15424
+        },
+        {
+          "id": "IAKVGNJYLWJ",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "ZBNQXIXPOUJ",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.27165
+        },
+        {
+          "id": "YELQWAVXPQP",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 3.87594
+        }
+      ],
+      "wing_terminal": {
+        "xsec_count": 2,
+        "tip_parm_id": "YELQWAVXPQP",
+        "tip_chord": 3.87594,
+        "root_parm_id": "CECFIOTJJSV",
+        "root_chord": 8.15424,
+        "span_parm_id": "ZBNQXIXPOUJ",
+        "span": 6.27165
+      }
+    },
+    {
+      "id": "KZXEIOUXLJ",
+      "name": "VO",
+      "type": "Wing",
+      "parent_id": null,
+      "main_surfaces": null,
+      "total_surfaces": null,
+      "bbox": {
+        "min": [
+          31.2807,
+          4.95222,
+          -4.30781e-17
+        ],
+        "max": [
+          49.1267,
+          6.80637,
+          9.41574
+        ]
+      },
+      "sets": {
+        "1": false,
+        "2": true
+      },
+      "parameters": [
+        {
+          "id": "PPMJPJHMLTD",
+          "name": "X_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 31.2807
+        },
+        {
+          "id": "AYPBANAYCDZ",
+          "name": "X_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 31.2807
+        },
+        {
+          "id": "ASUZEQSJKUC",
+          "name": "X_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 90.0
+        },
+        {
+          "id": "QBBQYEXJSSR",
+          "name": "Y_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 5.65574
+        },
+        {
+          "id": "HBHCYEXCNCU",
+          "name": "Y_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 5.65574
+        },
+        {
+          "id": "FFLZURMKLEL",
+          "name": "Y_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "RKRUIFTZATN",
+          "name": "Z_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "WLNAALAWSKO",
+          "name": "Z_Rel_Location",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "MBITGKEXLNC",
+          "name": "Z_Rel_Rotation",
+          "group": "XForm",
+          "display_group": "",
+          "value": 0.0
+        },
+        {
+          "id": "XHTBVKWCCRP",
+          "name": "Tess_U",
+          "group": "Shape",
+          "display_group": "",
+          "value": 16.0
+        },
+        {
+          "id": "VZYUTTBSNAZ",
+          "name": "Tess_W",
+          "group": "Shape",
+          "display_group": "",
+          "value": 33.0
+        },
+        {
+          "id": "PCKAIUWYMMM",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "BTEUVCQTLVK",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "NMUQLWGWNDQ",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 1.0
+        },
+        {
+          "id": "CTPSKZDEPVF",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 17.4803
+        },
+        {
+          "id": "GRUFCLUIUEV",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 17.4803
+        },
+        {
+          "id": "ZARILEGUEZA",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "MXSABUFUJDZ",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 2.4881
+        },
+        {
+          "id": "AZHTKDDAQNS",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 9.58396
+        },
+        {
+          "id": "KQTIBPGODFG",
+          "name": "Root_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 9.58396
+        },
+        {
+          "id": "NSFMDJAGSPX",
+          "name": "SectTess_U",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.0
+        },
+        {
+          "id": "NPFMKMDOVKN",
+          "name": "Span",
+          "group": "XSec",
+          "display_group": "",
+          "value": 6.9623
+        },
+        {
+          "id": "ZUDYPMYMQPS",
+          "name": "Tip_Chord",
+          "group": "XSec",
+          "display_group": "",
+          "value": 2.18176
+        }
+      ],
+      "wing_terminal": {
+        "xsec_count": 3,
+        "tip_parm_id": "ZUDYPMYMQPS",
+        "tip_chord": 2.18176,
+        "root_parm_id": "KQTIBPGODFG",
+        "root_chord": 9.58396,
+        "span_parm_id": "NPFMKMDOVKN",
+        "span": 6.9623
+      }
+    }
+  ],
+  "errors": [],
+  "valid": true,
+  "vspscript_return_code": 1,
+  "source_path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\geometry_certification_2026-09-09\\20260909_090229_MiG_29_final_RepairMach91_M160_M170\\vspaero\\mixed\\model.vsp3",
+  "source_sha256": "b88a743d45571e85d8333edb128267c2bb640cb083e2fecf192f9c922f3e3994",
+  "source_canonical_sha256": "bb87ca6d4adaedee142472049ca2452da4195d5025be40a48749fd1297ca33f6"
+}

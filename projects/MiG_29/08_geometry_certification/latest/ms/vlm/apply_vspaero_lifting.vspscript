@@ -1,0 +1,426 @@
+void main()
+{
+    ClearVSPModel();
+    ReadVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_090229_MiG_29_final_RepairMach91_M160_M170/vspaero/lifting/model.vsp3" );
+    Update();
+
+    if ( !ValidParm( "YNPSBVWPRFX" ) || abs( GetParmVal( "YNPSBVWPRFX" ) - 16 ) > 1.6000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=YNPSBVWPRFX" );
+        return;
+    }
+    SetParmVal( "YNPSBVWPRFX", 45 );
+    double actual_YNPSBVWPRFX = GetParmVal( "YNPSBVWPRFX" );
+    if ( actual_YNPSBVWPRFX != actual_YNPSBVWPRFX || abs( actual_YNPSBVWPRFX - 45 ) > 4.4999999999999998e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=YNPSBVWPRFX;REQUESTED=45;ACTUAL=" + actual_YNPSBVWPRFX );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=YNPSBVWPRFX;VALUE=" + actual_YNPSBVWPRFX );
+
+    if ( !ValidParm( "WUAQPELLBLJ" ) || abs( GetParmVal( "WUAQPELLBLJ" ) - 17 ) > 1.7000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=WUAQPELLBLJ" );
+        return;
+    }
+    SetParmVal( "WUAQPELLBLJ", 33 );
+    double actual_WUAQPELLBLJ = GetParmVal( "WUAQPELLBLJ" );
+    if ( actual_WUAQPELLBLJ != actual_WUAQPELLBLJ || abs( actual_WUAQPELLBLJ - 33 ) > 3.3000000000000002e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=WUAQPELLBLJ;REQUESTED=33;ACTUAL=" + actual_WUAQPELLBLJ );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=WUAQPELLBLJ;VALUE=" + actual_WUAQPELLBLJ );
+
+    if ( !ValidParm( "YQLFJUUHRGV" ) || abs( GetParmVal( "YQLFJUUHRGV" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=YQLFJUUHRGV" );
+        return;
+    }
+    SetParmVal( "YQLFJUUHRGV", 10 );
+    double actual_YQLFJUUHRGV = GetParmVal( "YQLFJUUHRGV" );
+    if ( actual_YQLFJUUHRGV != actual_YQLFJUUHRGV || abs( actual_YQLFJUUHRGV - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=YQLFJUUHRGV;REQUESTED=10;ACTUAL=" + actual_YQLFJUUHRGV );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=YQLFJUUHRGV;VALUE=" + actual_YQLFJUUHRGV );
+
+    if ( !ValidParm( "SJOBVUUMORK" ) || abs( GetParmVal( "SJOBVUUMORK" ) - 9 ) > 8.9999999999999999e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=SJOBVUUMORK" );
+        return;
+    }
+    SetParmVal( "SJOBVUUMORK", 10 );
+    double actual_SJOBVUUMORK = GetParmVal( "SJOBVUUMORK" );
+    if ( actual_SJOBVUUMORK != actual_SJOBVUUMORK || abs( actual_SJOBVUUMORK - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=SJOBVUUMORK;REQUESTED=10;ACTUAL=" + actual_SJOBVUUMORK );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=SJOBVUUMORK;VALUE=" + actual_SJOBVUUMORK );
+
+    if ( !ValidParm( "EWOOMAXNPVK" ) || abs( GetParmVal( "EWOOMAXNPVK" ) - 7 ) > 7.0000000000000006e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=EWOOMAXNPVK" );
+        return;
+    }
+    SetParmVal( "EWOOMAXNPVK", 10 );
+    double actual_EWOOMAXNPVK = GetParmVal( "EWOOMAXNPVK" );
+    if ( actual_EWOOMAXNPVK != actual_EWOOMAXNPVK || abs( actual_EWOOMAXNPVK - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=EWOOMAXNPVK;REQUESTED=10;ACTUAL=" + actual_EWOOMAXNPVK );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=EWOOMAXNPVK;VALUE=" + actual_EWOOMAXNPVK );
+
+    if ( !ValidParm( "HUMTIUAVVIS" ) || abs( GetParmVal( "HUMTIUAVVIS" ) - 16 ) > 1.6000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=HUMTIUAVVIS" );
+        return;
+    }
+    SetParmVal( "HUMTIUAVVIS", 10 );
+    double actual_HUMTIUAVVIS = GetParmVal( "HUMTIUAVVIS" );
+    if ( actual_HUMTIUAVVIS != actual_HUMTIUAVVIS || abs( actual_HUMTIUAVVIS - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=HUMTIUAVVIS;REQUESTED=10;ACTUAL=" + actual_HUMTIUAVVIS );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=HUMTIUAVVIS;VALUE=" + actual_HUMTIUAVVIS );
+
+    if ( !ValidParm( "UAWLONTMZRN" ) || abs( GetParmVal( "UAWLONTMZRN" ) - 16 ) > 1.6000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=UAWLONTMZRN" );
+        return;
+    }
+    SetParmVal( "UAWLONTMZRN", 10 );
+    double actual_UAWLONTMZRN = GetParmVal( "UAWLONTMZRN" );
+    if ( actual_UAWLONTMZRN != actual_UAWLONTMZRN || abs( actual_UAWLONTMZRN - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=UAWLONTMZRN;REQUESTED=10;ACTUAL=" + actual_UAWLONTMZRN );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=UAWLONTMZRN;VALUE=" + actual_UAWLONTMZRN );
+
+    if ( !ValidParm( "SXNTMIECANN" ) || abs( GetParmVal( "SXNTMIECANN" ) - 16 ) > 1.6000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=SXNTMIECANN" );
+        return;
+    }
+    SetParmVal( "SXNTMIECANN", 45 );
+    double actual_SXNTMIECANN = GetParmVal( "SXNTMIECANN" );
+    if ( actual_SXNTMIECANN != actual_SXNTMIECANN || abs( actual_SXNTMIECANN - 45 ) > 4.4999999999999998e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=SXNTMIECANN;REQUESTED=45;ACTUAL=" + actual_SXNTMIECANN );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=SXNTMIECANN;VALUE=" + actual_SXNTMIECANN );
+
+    if ( !ValidParm( "XAHRCJRSWNE" ) || abs( GetParmVal( "XAHRCJRSWNE" ) - 17 ) > 1.7000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=XAHRCJRSWNE" );
+        return;
+    }
+    SetParmVal( "XAHRCJRSWNE", 33 );
+    double actual_XAHRCJRSWNE = GetParmVal( "XAHRCJRSWNE" );
+    if ( actual_XAHRCJRSWNE != actual_XAHRCJRSWNE || abs( actual_XAHRCJRSWNE - 33 ) > 3.3000000000000002e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=XAHRCJRSWNE;REQUESTED=33;ACTUAL=" + actual_XAHRCJRSWNE );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=XAHRCJRSWNE;VALUE=" + actual_XAHRCJRSWNE );
+
+    if ( !ValidParm( "TXQBABMINST" ) || abs( GetParmVal( "TXQBABMINST" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=TXQBABMINST" );
+        return;
+    }
+    SetParmVal( "TXQBABMINST", 10 );
+    double actual_TXQBABMINST = GetParmVal( "TXQBABMINST" );
+    if ( actual_TXQBABMINST != actual_TXQBABMINST || abs( actual_TXQBABMINST - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=TXQBABMINST;REQUESTED=10;ACTUAL=" + actual_TXQBABMINST );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=TXQBABMINST;VALUE=" + actual_TXQBABMINST );
+
+    if ( !ValidParm( "JVGHVOEYATQ" ) || abs( GetParmVal( "JVGHVOEYATQ" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=JVGHVOEYATQ" );
+        return;
+    }
+    SetParmVal( "JVGHVOEYATQ", 10 );
+    double actual_JVGHVOEYATQ = GetParmVal( "JVGHVOEYATQ" );
+    if ( actual_JVGHVOEYATQ != actual_JVGHVOEYATQ || abs( actual_JVGHVOEYATQ - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=JVGHVOEYATQ;REQUESTED=10;ACTUAL=" + actual_JVGHVOEYATQ );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=JVGHVOEYATQ;VALUE=" + actual_JVGHVOEYATQ );
+
+    if ( !ValidParm( "HYDZJTPKMTE" ) || abs( GetParmVal( "HYDZJTPKMTE" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=HYDZJTPKMTE" );
+        return;
+    }
+    SetParmVal( "HYDZJTPKMTE", 10 );
+    double actual_HYDZJTPKMTE = GetParmVal( "HYDZJTPKMTE" );
+    if ( actual_HYDZJTPKMTE != actual_HYDZJTPKMTE || abs( actual_HYDZJTPKMTE - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=HYDZJTPKMTE;REQUESTED=10;ACTUAL=" + actual_HYDZJTPKMTE );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=HYDZJTPKMTE;VALUE=" + actual_HYDZJTPKMTE );
+
+    if ( !ValidParm( "ETDKESPAJCM" ) || abs( GetParmVal( "ETDKESPAJCM" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=ETDKESPAJCM" );
+        return;
+    }
+    SetParmVal( "ETDKESPAJCM", 10 );
+    double actual_ETDKESPAJCM = GetParmVal( "ETDKESPAJCM" );
+    if ( actual_ETDKESPAJCM != actual_ETDKESPAJCM || abs( actual_ETDKESPAJCM - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=ETDKESPAJCM;REQUESTED=10;ACTUAL=" + actual_ETDKESPAJCM );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=ETDKESPAJCM;VALUE=" + actual_ETDKESPAJCM );
+
+    if ( !ValidParm( "GODCBTNWLIO" ) || abs( GetParmVal( "GODCBTNWLIO" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=GODCBTNWLIO" );
+        return;
+    }
+    SetParmVal( "GODCBTNWLIO", 10 );
+    double actual_GODCBTNWLIO = GetParmVal( "GODCBTNWLIO" );
+    if ( actual_GODCBTNWLIO != actual_GODCBTNWLIO || abs( actual_GODCBTNWLIO - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=GODCBTNWLIO;REQUESTED=10;ACTUAL=" + actual_GODCBTNWLIO );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=GODCBTNWLIO;VALUE=" + actual_GODCBTNWLIO );
+
+    if ( !ValidParm( "AKYJLAHYOLK" ) || abs( GetParmVal( "AKYJLAHYOLK" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=AKYJLAHYOLK" );
+        return;
+    }
+    SetParmVal( "AKYJLAHYOLK", 10 );
+    double actual_AKYJLAHYOLK = GetParmVal( "AKYJLAHYOLK" );
+    if ( actual_AKYJLAHYOLK != actual_AKYJLAHYOLK || abs( actual_AKYJLAHYOLK - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=AKYJLAHYOLK;REQUESTED=10;ACTUAL=" + actual_AKYJLAHYOLK );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=AKYJLAHYOLK;VALUE=" + actual_AKYJLAHYOLK );
+
+    if ( !ValidParm( "TREGZWUVSHB" ) || abs( GetParmVal( "TREGZWUVSHB" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=TREGZWUVSHB" );
+        return;
+    }
+    SetParmVal( "TREGZWUVSHB", 10 );
+    double actual_TREGZWUVSHB = GetParmVal( "TREGZWUVSHB" );
+    if ( actual_TREGZWUVSHB != actual_TREGZWUVSHB || abs( actual_TREGZWUVSHB - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=TREGZWUVSHB;REQUESTED=10;ACTUAL=" + actual_TREGZWUVSHB );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=TREGZWUVSHB;VALUE=" + actual_TREGZWUVSHB );
+
+    if ( !ValidParm( "ZRCZJLXGNHS" ) || abs( GetParmVal( "ZRCZJLXGNHS" ) - 33 ) > 3.3000000000000002e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=ZRCZJLXGNHS" );
+        return;
+    }
+    SetParmVal( "ZRCZJLXGNHS", 49 );
+    double actual_ZRCZJLXGNHS = GetParmVal( "ZRCZJLXGNHS" );
+    if ( actual_ZRCZJLXGNHS != actual_ZRCZJLXGNHS || abs( actual_ZRCZJLXGNHS - 49 ) > 4.9e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=ZRCZJLXGNHS;REQUESTED=49;ACTUAL=" + actual_ZRCZJLXGNHS );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=ZRCZJLXGNHS;VALUE=" + actual_ZRCZJLXGNHS );
+
+    if ( !ValidParm( "IXRGQBSBQCJ" ) || abs( GetParmVal( "IXRGQBSBQCJ" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=IXRGQBSBQCJ" );
+        return;
+    }
+    SetParmVal( "IXRGQBSBQCJ", 10 );
+    double actual_IXRGQBSBQCJ = GetParmVal( "IXRGQBSBQCJ" );
+    if ( actual_IXRGQBSBQCJ != actual_IXRGQBSBQCJ || abs( actual_IXRGQBSBQCJ - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=IXRGQBSBQCJ;REQUESTED=10;ACTUAL=" + actual_IXRGQBSBQCJ );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=IXRGQBSBQCJ;VALUE=" + actual_IXRGQBSBQCJ );
+
+    if ( !ValidParm( "YXQEKVHVGJD" ) || abs( GetParmVal( "YXQEKVHVGJD" ) - 14 ) > 1.4000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=YXQEKVHVGJD" );
+        return;
+    }
+    SetParmVal( "YXQEKVHVGJD", 10 );
+    double actual_YXQEKVHVGJD = GetParmVal( "YXQEKVHVGJD" );
+    if ( actual_YXQEKVHVGJD != actual_YXQEKVHVGJD || abs( actual_YXQEKVHVGJD - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=YXQEKVHVGJD;REQUESTED=10;ACTUAL=" + actual_YXQEKVHVGJD );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=YXQEKVHVGJD;VALUE=" + actual_YXQEKVHVGJD );
+
+    if ( !ValidParm( "RYFECTATTFF" ) || abs( GetParmVal( "RYFECTATTFF" ) - 20 ) > 2.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=RYFECTATTFF" );
+        return;
+    }
+    SetParmVal( "RYFECTATTFF", 10 );
+    double actual_RYFECTATTFF = GetParmVal( "RYFECTATTFF" );
+    if ( actual_RYFECTATTFF != actual_RYFECTATTFF || abs( actual_RYFECTATTFF - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=RYFECTATTFF;REQUESTED=10;ACTUAL=" + actual_RYFECTATTFF );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=RYFECTATTFF;VALUE=" + actual_RYFECTATTFF );
+
+    if ( !ValidParm( "ERBETLHLMEB" ) || abs( GetParmVal( "ERBETLHLMEB" ) - 33 ) > 3.3000000000000002e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=ERBETLHLMEB" );
+        return;
+    }
+    SetParmVal( "ERBETLHLMEB", 49 );
+    double actual_ERBETLHLMEB = GetParmVal( "ERBETLHLMEB" );
+    if ( actual_ERBETLHLMEB != actual_ERBETLHLMEB || abs( actual_ERBETLHLMEB - 49 ) > 4.9e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=ERBETLHLMEB;REQUESTED=49;ACTUAL=" + actual_ERBETLHLMEB );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=ERBETLHLMEB;VALUE=" + actual_ERBETLHLMEB );
+
+    if ( !ValidParm( "XNWMMHJZTKQ" ) || abs( GetParmVal( "XNWMMHJZTKQ" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=XNWMMHJZTKQ" );
+        return;
+    }
+    SetParmVal( "XNWMMHJZTKQ", 10 );
+    double actual_XNWMMHJZTKQ = GetParmVal( "XNWMMHJZTKQ" );
+    if ( actual_XNWMMHJZTKQ != actual_XNWMMHJZTKQ || abs( actual_XNWMMHJZTKQ - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=XNWMMHJZTKQ;REQUESTED=10;ACTUAL=" + actual_XNWMMHJZTKQ );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=XNWMMHJZTKQ;VALUE=" + actual_XNWMMHJZTKQ );
+
+    if ( !ValidParm( "IAKVGNJYLWJ" ) || abs( GetParmVal( "IAKVGNJYLWJ" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=IAKVGNJYLWJ" );
+        return;
+    }
+    SetParmVal( "IAKVGNJYLWJ", 10 );
+    double actual_IAKVGNJYLWJ = GetParmVal( "IAKVGNJYLWJ" );
+    if ( actual_IAKVGNJYLWJ != actual_IAKVGNJYLWJ || abs( actual_IAKVGNJYLWJ - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=IAKVGNJYLWJ;REQUESTED=10;ACTUAL=" + actual_IAKVGNJYLWJ );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=IAKVGNJYLWJ;VALUE=" + actual_IAKVGNJYLWJ );
+
+    if ( !ValidParm( "VZYUTTBSNAZ" ) || abs( GetParmVal( "VZYUTTBSNAZ" ) - 33 ) > 3.3000000000000002e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=VZYUTTBSNAZ" );
+        return;
+    }
+    SetParmVal( "VZYUTTBSNAZ", 49 );
+    double actual_VZYUTTBSNAZ = GetParmVal( "VZYUTTBSNAZ" );
+    if ( actual_VZYUTTBSNAZ != actual_VZYUTTBSNAZ || abs( actual_VZYUTTBSNAZ - 49 ) > 4.9e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=VZYUTTBSNAZ;REQUESTED=49;ACTUAL=" + actual_VZYUTTBSNAZ );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=VZYUTTBSNAZ;VALUE=" + actual_VZYUTTBSNAZ );
+
+    if ( !ValidParm( "BTEUVCQTLVK" ) || abs( GetParmVal( "BTEUVCQTLVK" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=BTEUVCQTLVK" );
+        return;
+    }
+    SetParmVal( "BTEUVCQTLVK", 10 );
+    double actual_BTEUVCQTLVK = GetParmVal( "BTEUVCQTLVK" );
+    if ( actual_BTEUVCQTLVK != actual_BTEUVCQTLVK || abs( actual_BTEUVCQTLVK - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=BTEUVCQTLVK;REQUESTED=10;ACTUAL=" + actual_BTEUVCQTLVK );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=BTEUVCQTLVK;VALUE=" + actual_BTEUVCQTLVK );
+
+    if ( !ValidParm( "ZARILEGUEZA" ) || abs( GetParmVal( "ZARILEGUEZA" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=ZARILEGUEZA" );
+        return;
+    }
+    SetParmVal( "ZARILEGUEZA", 10 );
+    double actual_ZARILEGUEZA = GetParmVal( "ZARILEGUEZA" );
+    if ( actual_ZARILEGUEZA != actual_ZARILEGUEZA || abs( actual_ZARILEGUEZA - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=ZARILEGUEZA;REQUESTED=10;ACTUAL=" + actual_ZARILEGUEZA );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=ZARILEGUEZA;VALUE=" + actual_ZARILEGUEZA );
+
+    if ( !ValidParm( "NSFMDJAGSPX" ) || abs( GetParmVal( "NSFMDJAGSPX" ) - 6 ) > 6e-10 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_BINDING;PARM_ID=NSFMDJAGSPX" );
+        return;
+    }
+    SetParmVal( "NSFMDJAGSPX", 10 );
+    double actual_NSFMDJAGSPX = GetParmVal( "NSFMDJAGSPX" );
+    if ( actual_NSFMDJAGSPX != actual_NSFMDJAGSPX || abs( actual_NSFMDJAGSPX - 10 ) > 1.0000000000000001e-09 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=PARAMETER_NOT_APPLIED;PARM_ID=NSFMDJAGSPX;REQUESTED=10;ACTUAL=" + actual_NSFMDJAGSPX );
+        return;
+    }
+    Print( "APPLIED;ACTION=set_parameter;PARM_ID=NSFMDJAGSPX;VALUE=" + actual_NSFMDJAGSPX );
+
+    array<string> all_geoms = FindGeoms();
+    for ( int gi = 0; gi < int( all_geoms.size() ); ++gi )
+    {
+        SetSetFlag( all_geoms[gi], 6, false );
+    }
+    SetSetName( 6, "RM_CERT_EMPTY_THICK" );
+    for ( int gi = 0; gi < int( all_geoms.size() ); ++gi )
+    {
+        if ( GetSetFlag( all_geoms[gi], 6 ) )
+        {
+            Print( "REPAIRMACH_APPLY_ABORT=EMPTY_SET_NOT_APPLIED;GEOM_ID=" + all_geoms[gi] );
+            return;
+        }
+    }
+    Print( "APPLIED;ACTION=clear_empty_thick_set;SET=6" );
+
+    Update();
+    int apply_error_count = GetNumTotalErrors();
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }
+    if ( apply_error_count > 0 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=OPENVSP_ERRORS_BEFORE_WRITE" );
+        return;
+    }
+    WriteVSPFile( "C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/geometry_certification_2026-09-09/20260909_090229_MiG_29_final_RepairMach91_M160_M170/vspaero/lifting/medium/model.vsp3", 0 );
+    int write_error_count = GetNumTotalErrors();
+    while ( GetNumTotalErrors() > 0 )
+    {
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }
+    if ( write_error_count > 0 )
+    {
+        Print( "REPAIRMACH_APPLY_ABORT=OPENVSP_ERRORS_DURING_WRITE" );
+        return;
+    }
+    Print( "REPAIRMACH_APPLY_OK=1" );
+}

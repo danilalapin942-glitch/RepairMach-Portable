@@ -1,0 +1,1014 @@
+ REPAIRMACH_ENGINE_BOUNDARY=model 
+ REPAIRMACH_ENGINE_SETUP;MODE=model;VALID=true 
+ REPAIRMACH_SET_REPORT_BEGIN 
+ ROLE=fuselage_and_nacelles;USER_SET=3;API_INDEX=6;NAME=RM_CERT_EMPTY_THICK;COUNT=0 
+ ROLE=wing_and_empennage;USER_SET=2;API_INDEX=5;NAME=Set_2;COUNT=4 
+ DIAGNOSTIC=Empty thick-geometry set accepted 
+ GEOM;ID=RMUXLHDSMZ;NAME=Fuselage;TYPE=Fuselage;IN_SET_3=false;IN_SET_2=false 
+ GEOM;ID=LQZSHZXSTY;NAME=Wing;TYPE=Wing;IN_SET_3=false;IN_SET_2=true 
+ GEOM;ID=NDDSSVUXPL;NAME=GO;TYPE=Wing;IN_SET_3=false;IN_SET_2=true 
+ GEOM;ID=MKRWRTCFOU;NAME=VO_upper;TYPE=Wing;IN_SET_3=false;IN_SET_2=true 
+ GEOM;ID=RGIJJLNZJJ;NAME=VO_lower;TYPE=Wing;IN_SET_3=false;IN_SET_2=true 
+ TAIL;MODE=fixed_incidence;NAME=GO;ID=NDDSSVUXPL;TYPE=Wing;ANGLE_DEG=0 
+ REPAIRMACH_SET_REPORT_END 
+ REPAIRMACH_TAIL_SETUP;MODE=fixed_incidence;NAME=GO;ID=NDDSSVUXPL;PARM_ID=FUXGVIJOJUW;REQUESTED_ANGLE_DEG=0;ACTUAL_ANGLE_DEG=0;VALID=true 
+ REPAIRMACH_TAIL_INCIDENCE_APPLIED=0 
+ REPAIRMACH_SETUP_VALIDATION=OK 
+ REPAIRMACH_SET_VALIDATION=OK 
+ REPAIRMACH_COMPUTE_RESULT_ID=EYBAKUZ 
+C:\OpenVSP-3.51.0-win64-Python3.13\OpenVSP-3.51.0-win64\vspaero.exe -omp 4 C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/cert_subset_PN/20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2/probes/vspaero_lifting/M0p8_A0_model/coarse/model
+Setting Sref to: 349.272300 
+
+Setting Cref to: 14.386670 
+
+Setting Bref to: 32.370000 
+
+Setting X_cg to: 29.550000 
+
+Setting Y_cg to: 0.000000 
+
+Setting Z_cg to: 0.000000 
+
+Number of Machs: 1 
+
+Mach: 0.800000 
+
+Number of AoAs: 1 
+
+AoA: 0.000000 
+
+Number of Betas: 1 
+
+Beta: 0.000000 
+
+Number of ReCs: 1 
+
+ReC: 10000000.000000 
+
+Setting Vinf to: 100.000000 
+
+Setting Rho to: 0.002377 
+
+Setting StallModel to: 0 
+
+Setting Clo2D to: 0.000000 
+
+Setting CLMax2D to: 1.000000 
+
+Setting Symmetry to: 0 
+
+Setting FreezeMultiPoleAtIteration to: 10000 
+
+Setting FreezeWakeAtIteration to: 10000 
+
+Setting FreezeWakeRootVortices to: 0 
+
+Setting ImplicitWake to: 0 
+
+Setting ImplicitWakeStartIteration_ to: 0 
+
+Setting FarDist to: -1.000000 
+
+Setting NumWakeNodes to: 24 
+
+Setting WakeIters to: 8 
+
+Setting WakeRelax to: 0.800000 
+
+Setting ForwardGMRESConvergenceFactor to: 1.000000e+00 
+
+Setting AdjointGMRESConvergenceFactor_ to: 1.000000e+00 
+
+Setting NonLinearConvergenceFactor to: 1.000000e+00 
+
+Setting CoreSizeFactor to: 1.000000 
+
+Setting multipole FarAway factor to: 5.000000 
+
+Setting UpdateMatrixPreconditioner flag to: 0 
+
+Setting UseWakeNodeMatrixPreconditioner flag to: 0 
+
+Setting QuadTreeBufferLevels_ flag to: 0 
+
+Number of NumberOfAdjointForceAndMomentCases_: 0 
+
+Number of NumberOfAdjointComponentListSettings_: 0 
+
+Setting Write2DFEMFile to: 0 
+
+Setting WriteTecplotFile to: 0 
+
+Sref            = 349.272300 
+
+Cref            = 14.386670 
+
+Bref            = 32.370000 
+
+X_cg            = 29.550000 
+
+Y_cg            = 0.000000 
+
+Z_cg            = 0.000000 
+
+Mach            = 0.800000 
+
+AoA             = 0.000000 
+
+Beta            = 0.000000 
+
+Vinf            = 100.000000 
+
+Vref            = 100.000000 
+
+Rho             = 0.002377 
+
+ReCref          = 10000000.000000 
+
+StallModel      = 0  
+
+Clo2D           = 0.000000 
+
+CLMax2D_        = 1.000000 
+
+Symmetry        = 0  
+
+FarDist         = -1.000000 
+
+NumWakeNodes    = 24  
+
+WakeIters       = 8  
+
+NumberOfControlGroups = 0 
+
+NumberofSurveyPoints: 0 
+
+NumberOfQuadTrees: 1 
+
+QuadTree(1):          2:    0.00000 
+
+NumberOfInlets: 0 
+
+NumberOfNozzles: 0 
+
+NumberOfInlets: 0 
+
+NumberOfNozzles: 0 
+
+VSPAERO v.7.2.2 --- Compiled on: Jun 29 2026 at 20:44:01 PST 
+
+
+
+
+
+
+
+
+
+Initializing OPENMP for 4 threads 
+
+NumberOfThreads_: 4 
+
+_OPENMP Version string: 200203
+
+NumNodes: 770 
+
+MaxNumberOfGridLevels_: 16 
+
+NumLoops: 640 
+
+NumNodesInList: 9 
+
+KuttaNodeList_[1]: 153 
+
+KuttaNodeList_[2]: 136 
+
+KuttaNodeList_[3]: 119 
+
+KuttaNodeList_[4]: 102 
+
+KuttaNodeList_[5]: 3 
+
+KuttaNodeList_[6]: 1 
+
+KuttaNodeList_[7]: 35 
+
+KuttaNodeList_[8]: 52 
+
+KuttaNodeList_[9]: 69 
+
+NumNodesInList: 11 
+
+KuttaNodeList_[10]: 354 
+
+KuttaNodeList_[11]: 337 
+
+KuttaNodeList_[12]: 320 
+
+KuttaNodeList_[13]: 303 
+
+KuttaNodeList_[14]: 286 
+
+KuttaNodeList_[15]: 187 
+
+KuttaNodeList_[16]: 184 
+
+KuttaNodeList_[17]: 218 
+
+KuttaNodeList_[18]: 235 
+
+KuttaNodeList_[19]: 252 
+
+KuttaNodeList_[20]: 269 
+
+NumNodesInList: 5 
+
+KuttaNodeList_[21]: 373 
+
+KuttaNodeList_[22]: 371 
+
+KuttaNodeList_[23]: 405 
+
+KuttaNodeList_[24]: 422 
+
+KuttaNodeList_[25]: 439 
+
+NumNodesInList: 5 
+
+KuttaNodeList_[26]: 473 
+
+KuttaNodeList_[27]: 471 
+
+KuttaNodeList_[28]: 505 
+
+KuttaNodeList_[29]: 522 
+
+KuttaNodeList_[30]: 539 
+
+NumNodesInList: 5 
+
+KuttaNodeList_[31]: 640 
+
+KuttaNodeList_[32]: 623 
+
+KuttaNodeList_[33]: 606 
+
+KuttaNodeList_[34]: 573 
+
+KuttaNodeList_[35]: 571 
+
+NumNodesInList: 5 
+
+KuttaNodeList_[36]: 740 
+
+KuttaNodeList_[37]: 723 
+
+KuttaNodeList_[38]: 706 
+
+KuttaNodeList_[39]: 673 
+
+KuttaNodeList_[40]: 671 
+
+VSPGEOM defined NumKuttaNodes: 40 
+
+Found 8 VSPGEOM Surfaces 
+
+Found 8 VSPGEOM Surfaces 
+
+DumChar: # VSPGEOM v3 Tag Key File
+
+ 
+
+DumChar: C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/cert_subset_PN/20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2/probes/vspaero_lifting/M0p8_A0_model/coarse/model.vspgeom
+
+ 
+
+DumChar: 8
+
+ 
+
+NumberOfVSPSurfaces: 8 
+
+DumChar: 
+
+ 
+
+DumChar: # part#,geom#,surf#,gname,gid,thick,plate,copy#,geomcopy#
+
+ 
+
+Thick/thin data exists... DumChar: # part#,geom#,surf#,gname,gid,thick,plate,copy#,geomcopy#
+
+ 
+
+Part: 1 ... CompID: 3 ... SurfID: 0 
+
+Surface: 1 exists in triangulation and has OpenVSP Name: Wing_C 
+
+CompID: 3 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 3 
+
+Surface: 1 is thin 
+
+Setting ComponentIDForSurface_ to : 4 
+
+Part: 2 ... CompID: 3 ... SurfID: 1 
+
+Surface: 2 exists in triangulation and has OpenVSP Name: Wing_C 
+
+CompID: 3 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 3 
+
+Surface: 2 is thin 
+
+Setting ComponentIDForSurface_ to : 4 
+
+Part: 3 ... CompID: 1 ... SurfID: 0 
+
+Surface: 3 exists in triangulation and has OpenVSP Name: GO_C 
+
+CompID: 1 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 1 
+
+Surface: 3 is thin 
+
+Setting ComponentIDForSurface_ to : 2 
+
+Part: 4 ... CompID: 1 ... SurfID: 1 
+
+Surface: 4 exists in triangulation and has OpenVSP Name: GO_C 
+
+CompID: 1 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 1 
+
+Surface: 4 is thin 
+
+Setting ComponentIDForSurface_ to : 2 
+
+Part: 5 ... CompID: 2 ... SurfID: 0 
+
+Surface: 5 exists in triangulation and has OpenVSP Name: VO_upper_C 
+
+CompID: 2 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 2 
+
+Surface: 5 is thin 
+
+Setting ComponentIDForSurface_ to : 3 
+
+Part: 6 ... CompID: 2 ... SurfID: 1 
+
+Surface: 6 exists in triangulation and has OpenVSP Name: VO_upper_C 
+
+CompID: 2 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 2 
+
+Surface: 6 is thin 
+
+Setting ComponentIDForSurface_ to : 3 
+
+Part: 7 ... CompID: 0 ... SurfID: 0 
+
+Surface: 7 exists in triangulation and has OpenVSP Name: VO_lower_C 
+
+CompID: 0 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 0 
+
+Surface: 7 is thin 
+
+Setting ComponentIDForSurface_ to : 1 
+
+Part: 8 ... CompID: 0 ... SurfID: 1 
+
+Surface: 8 exists in triangulation and has OpenVSP Name: VO_lower_C 
+
+CompID: 0 
+
+Setting OpenVSP_ComponentIDForSurface_ to : 0 
+
+Surface: 8 is thin 
+
+Setting ComponentIDForSurface_ to : 1 
+
+Found 8 used surfaces based on parsing VSPGEOM file 
+
+Found 8 used surfaces based on parsing VKEY file ... 
+
+Marking tris on thick and thin surfaces 
+
+Determining the number of thin and thick surfaces 
+
+NumberOfThinSurfaces_: 8 
+
+NumberOfThickSurfaces_: 0 
+
+Renumbering surfaces 
+
+Renumbering surface lists 
+
+Determining number of unique components 
+
+Found 4 unique components 
+
+ComponentIDForComponent_[1]: 4 
+
+ComponentIDForComponent_[2]: 2 
+
+ComponentIDForComponent_[3]: 3 
+
+ComponentIDForComponent_[4]: 1 
+
+ComponentIDForSurface_[1]: 1 
+
+ComponentIDForSurface_[2]: 1 
+
+ComponentIDForSurface_[3]: 2 
+
+ComponentIDForSurface_[4]: 2 
+
+ComponentIDForSurface_[5]: 3 
+
+ComponentIDForSurface_[6]: 3 
+
+ComponentIDForSurface_[7]: 4 
+
+ComponentIDForSurface_[8]: 4 
+
+ComponentIDForComponent_[1]: 4 
+
+ComponentIDForComponent_[2]: 2 
+
+ComponentIDForComponent_[3]: 3 
+
+ComponentIDForComponent_[4]: 1 
+
+Surface: 1 --> Component: 1 --> SurfaceName: Wing_C 
+
+Surface: 2 --> Component: 1 --> SurfaceName: Wing_C 
+
+Surface: 3 --> Component: 2 --> SurfaceName: GO_C 
+
+Surface: 4 --> Component: 2 --> SurfaceName: GO_C 
+
+Surface: 5 --> Component: 3 --> SurfaceName: VO_upper_C 
+
+Surface: 6 --> Component: 3 --> SurfaceName: VO_upper_C 
+
+Surface: 7 --> Component: 4 --> SurfaceName: VO_lower_C 
+
+Surface: 8 --> Component: 4 --> SurfaceName: VO_lower_C 
+
+SurfaceIsThick_[1]: 0 
+
+SurfaceIsThick_[2]: 0 
+
+SurfaceIsThick_[3]: 0 
+
+SurfaceIsThick_[4]: 0 
+
+SurfaceIsThick_[5]: 0 
+
+SurfaceIsThick_[6]: 0 
+
+SurfaceIsThick_[7]: 0 
+
+SurfaceIsThick_[8]: 0 
+
+Component: 1 with ID: 1 is thin 
+
+Component: 2 with ID: 2 is thin 
+
+Component: 3 with ID: 3 is thin 
+
+Component: 4 with ID: 4 is thin 
+
+Pure tri mesh has 1268 tris 
+
+After building ...pure tri mesh has 1268 tris 
+
+Looking for C:/Users/admin/.codex/.chatgpt-projects/g-p-6910508be2a081919b9cb5881a96c92b/acceptance/cert_subset_PN/20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2/probes/vspaero_lifting/M0p8_A0_model/coarse/model.ControlSurfaces.taglist control surface definition file ... 
+
+Did not find any control surface definitions... 
+
+Did not find a groups file... so setting up a single group for steady analysis 
+
+NumberOfComponentGroups_: 1 
+
+AllComponentsAreFixed_: 0 
+
+ThereIsRelativeComponentMotion_: 0 
+
+There are thin 4 components 
+
+Number of thin  tris:        1268 
+
+Number of thick tris:        0 
+
+Number of thin + thick tris: 1268 
+
+Number actual total tris:    1268 
+
+There are thin components... renumbering for edge data structures 
+
+NumberOfThickTris: 0 
+
+ComponentIDForComponent(1): 1 
+
+ComponentIDForComponent(2): 2 
+
+ComponentIDForComponent(3): 3 
+
+ComponentIDForComponent(4): 4 
+
+ComponentIsThick(1): 0 
+
+ComponentIsThick(2): 0 
+
+ComponentIsThick(3): 0 
+
+ComponentIsThick(4): 0 
+
+Surface 1 has 316 tris and is being stored in temp mesh: 1 
+
+Surface 2 has 320 tris and is being stored in temp mesh: 2 
+
+Surface 3 has 316 tris and is being stored in temp mesh: 3 
+
+Surface 4 has 316 tris and is being stored in temp mesh: 4 
+
+Created 4 thin surface mesh structures 
+
+Created 4 total mesh structures 
+
+Searching for thin/thick or thin/thin intersections... 
+
+Number of kutta nodes before trimming: 40 
+
+NumberOfKuttaNodes after trimming: 40 
+
+NumberOfKuttaNodes: 40 
+
+NumberOfKuttaEdges: 34 
+
+Working on VortexSheet: 1 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 69 
+
+Working on CurrentComponentID: 1 
+
+VortexSheet: 1 finished... which has 9 kutta nodes ... and 9 out of 40 kutta nodes are now allocated 
+
+Working on VortexSheet: 2 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 269 
+
+Working on CurrentComponentID: 2 
+
+VortexSheet: 2 finished... which has 11 kutta nodes ... and 20 out of 40 kutta nodes are now allocated 
+
+Working on VortexSheet: 3 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 373 
+
+Working on CurrentComponentID: 3 
+
+VortexSheet: 3 finished... which has 5 kutta nodes ... and 25 out of 40 kutta nodes are now allocated 
+
+Working on VortexSheet: 4 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 473 
+
+Working on CurrentComponentID: 4 
+
+VortexSheet: 4 finished... which has 5 kutta nodes ... and 30 out of 40 kutta nodes are now allocated 
+
+Working on VortexSheet: 5 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 571 
+
+Working on CurrentComponentID: 3 
+
+VortexSheet: 5 finished... which has 5 kutta nodes ... and 35 out of 40 kutta nodes are now allocated 
+
+Working on VortexSheet: 6 
+
+KuttaNodeList[k].IsKuttaNode: 1 
+
+IncidentKuttaEdgesOnNode_[k]: 1 
+
+Found a starting wake sheet node... 671 
+
+Working on CurrentComponentID: 4 
+
+VortexSheet: 6 finished... which has 5 kutta nodes ... and 40 out of 40 kutta nodes are now allocated 
+
+Creating wake grids... 
+
+WakeAngle: 1.000000 0.000000 0.000000 
+
+Xmax_ - Xmin_: 28.350000 
+
+Ymax_ - Ymin_: 32.370000 
+
+Zmax_ - Zmin_: 7.840000 
+
+
+
+Wake FarFieldDist_ set to: 32.370000 
+
+
+
+There are:          6 Vortex Sheets 
+
+NumberOfWakeTrailingNodes_: 24 
+
+NumberOfWakeNodes: 960 
+
+NumberOfWakeLoops: 782 
+
+Merging fine wake grids... 
+
+Merging coarse wake grids... 
+
+Model is a VSPGEOM VLM geometry 
+
+NumberOfComponents_: 4
+
+Total NumberOfNodes:      1730 
+
+Total NumberOfLoops:      2832 
+
+Total NumberOfEdges:      4550 
+
+Total NumberOfKuttaNodes: 40 
+
+NumberOfSurfaces_:        8 
+
+Total surface area: 464.070057 
+
+Minimum loop area constraint set to: 464.070057 
+
+Agglomerating mesh... 
+
+Grid:0 --> # loops:       2832 ...# Edges:       4550 ...# Nodes:       1730  
+
+There are: 1730 coarse grid nodes 
+
+There are: 3140 coarse grid edges 
+
+There are: 1422 coarse grid loops 
+
+Number of Kutta Nodes: 40 
+
+Grid:1 --> # loops:       1422 ...# Edges:       3140 ...# Nodes:       1730  
+
+There are: 1415 coarse grid nodes 
+
+There are: 1816 coarse grid edges 
+
+There are: 413 coarse grid loops 
+
+Number of Kutta Nodes: 40 
+
+Merged: 513 edges that were colinear 
+
+Grid:2 --> # loops:        413 ...# Edges:       1303 ...# Nodes:        902 
+
+There are: 825 coarse grid nodes 
+
+There are: 965 coarse grid edges 
+
+There are: 152 coarse grid loops 
+
+Number of Kutta Nodes: 40 
+
+Merged: 102 edges that were colinear 
+
+Grid:3 --> # loops:        152 ...# Edges:        863 ...# Nodes:        723 
+
+There are: 658 coarse grid nodes 
+
+There are: 717 coarse grid edges 
+
+There are: 71 coarse grid loops 
+
+Number of Kutta Nodes: 40 
+
+Merged: 18 edges that were colinear 
+
+NumberOfGridLevels_: 3 
+
+NumberOfSurfaces_: 8 
+
+WakeAngle: 1.000000 0.000000 0.000000 
+
+Xmax_ - Xmin_: 28.350000 
+
+Ymax_ - Ymin_: 32.370000 
+
+Zmax_ - Zmin_: 7.840000 
+
+
+
+Wake FarFieldDist_ set to: 32.370000 
+
+
+
+There are:          6 Vortex Sheets 
+
+Creating vortex sheet data... 
+
+There are: 9 kutta nodes for sheet: 1 
+
+There are: 11 kutta nodes for sheet: 2 
+
+There are: 5 kutta nodes for sheet: 3 
+
+There are: 5 kutta nodes for sheet: 4 
+
+There are: 5 kutta nodes for sheet: 5 
+
+There are: 5 kutta nodes for sheet: 6 
+
+CoreWidth_: 0.809502 
+
+There are:          9 kutta nodes for vortex sheet:          1  
+
+CoreWidth_: 0.416014 
+
+There are:         11 kutta nodes for vortex sheet:          2  
+
+CoreWidth_: 0.195020 
+
+There are:          5 kutta nodes for vortex sheet:          3  
+
+CoreWidth_: 0.195020 
+
+There are:          5 kutta nodes for vortex sheet:          4  
+
+CoreWidth_: 0.195020 
+
+There are:          5 kutta nodes for vortex sheet:          5  
+
+CoreWidth_: 0.195020 
+
+There are:          5 kutta nodes for vortex sheet:          6  
+
+Done creating vortex sheet data... 
+
+j: 1 --> U1,2: 0.533333 0.600000 
+
+j: 2 --> U1,2: 0.466667 0.533333 
+
+j: 3 --> U1,2: 0.400000 0.466667 
+
+j: 4 --> U1,2: 0.400000 0.333333 
+
+j: 5 --> U1,2: 0.333333 0.400000 
+
+j: 6 --> U1,2: 0.400000 0.466667 
+
+j: 7 --> U1,2: 0.466667 0.533333 
+
+j: 8 --> U1,2: 0.533333 0.600000 
+
+j: 1 --> U1,2: 0.600000 0.666667 
+
+j: 2 --> U1,2: 0.533333 0.600000 
+
+j: 3 --> U1,2: 0.466667 0.533333 
+
+j: 4 --> U1,2: 0.400000 0.466667 
+
+j: 5 --> U1,2: 0.400000 0.333333 
+
+j: 6 --> U1,2: 0.333333 0.400000 
+
+j: 7 --> U1,2: 0.400000 0.466667 
+
+j: 8 --> U1,2: 0.466667 0.533333 
+
+j: 9 --> U1,2: 0.533333 0.600000 
+
+j: 10 --> U1,2: 0.600000 0.666667 
+
+j: 1 --> U1,2: 0.400000 0.333333 
+
+j: 2 --> U1,2: 0.400000 0.466667 
+
+j: 3 --> U1,2: 0.466667 0.533333 
+
+j: 4 --> U1,2: 0.533333 0.600000 
+
+j: 1 --> U1,2: 0.400000 0.333333 
+
+j: 2 --> U1,2: 0.400000 0.466667 
+
+j: 3 --> U1,2: 0.466667 0.533333 
+
+j: 4 --> U1,2: 0.533333 0.600000 
+
+j: 1 --> U1,2: 0.333333 0.400000 
+
+j: 2 --> U1,2: 0.400000 0.466667 
+
+j: 3 --> U1,2: 0.466667 0.533333 
+
+j: 4 --> U1,2: 0.533333 0.600000 
+
+j: 1 --> U1,2: 0.333333 0.400000 
+
+j: 2 --> U1,2: 0.400000 0.466667 
+
+j: 3 --> U1,2: 0.466667 0.533333 
+
+j: 4 --> U1,2: 0.533333 0.600000 
+
+Found 6 wake surfaces for component group: 1 
+
+Found vortex sheet: 1 for component group: 1 
+
+Found vortex sheet: 2 for component group: 1 
+
+Found vortex sheet: 3 for component group: 1 
+
+Found vortex sheet: 4 for component group: 1 
+
+Found vortex sheet: 5 for component group: 1 
+
+Found vortex sheet: 6 for component group: 1 
+
+Xmax_ - Xmin_: 28.350000 
+
+Ymax_ - Ymin_: 32.370000 
+
+Zmax_ - Zmin_: 7.840000 
+
+
+
+Minimum loop area: 1.215800e-02 
+
+Character Minimum loop length: 1.559359e-01 
+
+Setting surface edge cutoff to: 1.000000e-05 
+
+Number Of Trailing Vortices: 40 
+
+Model type: VLM 
+
+Number Of Vortex Loop Equations: 640 
+
+Number Of Wake Node Equations:   2880 
+
+Number Of Stall Equations:       34 
+
+Total Number Of Equations:       3554 
+
+No high lift data file found... 
+
+Creating vortex loop matrix preconditioners data structure... 
+
+Starting at level: 3 with a target of 500 loops 
+
+Level: 3 has MaxLoops of: 16 
+
+Using level: 3 to create matrix preconditioners. 
+
+Created: 2 Matrix preconditioners 
+
+Min matrix: 134 Loops 
+
+Max matrix: 506 Loops 
+
+Avg matrix: 320 Loops 
+
+
+
+Using 640 out of 640 surface loops 
+
+Creating wake nodes matrix preconditioners data structure... 
+
+Starting... Creating vorticity gradient data structure .. 
+
+Finished... Creating vorticity gradient data structure .. 
+
+VSPGeom().Grid(MGLevel_).NumberOfLoops(): 1422 
+
+NumberOfEngineFaces_: 0 
+
+VSPGeom().NumberOfSurfaces(): 8 
+
+Done with setup... 
+
+WakeAngle_: 1.000000 -0.000000 0.000000 
+
+Xmax_ - Xmin_: 28.350000 
+
+Ymax_ - Ymin_: 32.370000 
+
+Zmax_ - Zmin_: 7.840000 
+
+
+
+The wake FarDist set to: 32.370000 
+
+Updating wake grids... 
+
+SigmaAvg_: 1.888859 
+
+Creating interaction lists... 
+
+
+
+Forward sweep... 
+
+1000 / 1422 
+Working on level 2 of 3 
+Working on level 3 of 3 
+Forward Mode: total multipole speed up ratio: 1.494866 
+
+Surface: 1 ... ComponentID: 1 ... Name: Wing_C ... SurfaceGIDList: LQZSHZXSTY 
+
+Surface: 2 ... ComponentID: 1 ... Name: Wing_C ... SurfaceGIDList: LQZSHZXSTY 
+
+Surface: 3 ... ComponentID: 2 ... Name: GO_C ... SurfaceGIDList: NDDSSVUXPL 
+
+Surface: 4 ... ComponentID: 2 ... Name: GO_C ... SurfaceGIDList: NDDSSVUXPL 
+
+Surface: 5 ... ComponentID: 3 ... Name: VO_upper_C ... SurfaceGIDList: MKRWRTCFOU 
+
+Surface: 6 ... ComponentID: 3 ... Name: VO_upper_C ... SurfaceGIDList: MKRWRTCFOU 
+
+Surface: 7 ... ComponentID: 4 ... Name: VO_lower_C ... SurfaceGIDList: RGIJJLNZJJ 
+
+Surface: 8 ... ComponentID: 4 ... Name: VO_lower_C ... SurfaceGIDList: RGIJJLNZJJ 
+
+Solving... Mach: 0.800000 ... Alpha: 0.000000 ... Beta: 0.000000 
+
+
+
+                                                                    Surface Integration Forces and Moments -->                                                  Wake Induced Forces -->  
+
+                                                                    Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-Surf-  Wake-Wake-Wake-Wake-Wake-Wake-Wake-Wake 
+
+    Iter    Mach       AoA      Beta       CLo       CLi      CLtot     CDo        CDi      CDtot      L/D        E       CMxtot    CMytot    Cmztot    CLiw       CDiw    LoDwake    Ewake      T/QS      L2Res    MaxRes  Wall_Time 
+
+Wake Iter:     1 / 8     ... GMRES Iter:     0 ... Red:    0.00000 / -1.00000   ...  Max:  -12.72704 / 1.00000    ... KTRes: 0.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:     1 ... Red:   -0.53270 / -1.00000   ...  Max:  -13.25974 / 1.00000    
+Wake Iter:     1 / 8     ... GMRES Iter:     2 ... Red:   -1.23080 / -1.00000   ...  Max:  -13.95784 / 1.00000    
+        1   0.80000   0.00000   0.00000   0.00000   0.00000   0.00000   0.00694   0.00000   0.00694   0.00000   0.00000   0.00000   0.00079   0.00000   0.00000   0.00000   0.00000   0.00000   0.00000 -14.57143 -13.48345   0.08100 
+
+Creating quad tree velocity survey data structures... 
+
+Xmin_: 17.320000 
+
+Xmax_: 45.670000 
+
+Ymin_: -16.185000 
+
+Ymax_: 16.185000 
+
+Zmin_: -2.020000 
+
+Zmax_: 5.820000 
+
+Working on quad tree: 1 
+
+Direction, Value: 2 0.000000 
+
+Inserted: 5 points 
+
+
+
+Total setup and solve time: 2.550000 seconds 
+
+Done
+ REPAIRMACH_SWEEP_RESULT_ID=GIUJKNT 
+ REPAIRMACH_VSPAERO_COMPLETE=1 

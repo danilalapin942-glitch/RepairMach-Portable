@@ -1,0 +1,18 @@
+﻿{
+    "updated_at":  "2026-09-05T06:59:31.6315970+03:00",
+    "pid":  43928,
+    "elapsed_seconds":  719.2536038,
+    "case":  "retry_wakecone_M1p20_A0_gmres",
+    "state":  "unreliable",
+    "exit_code":  0,
+    "solver_status_code":  0,
+    "started_at":  "2026-09-05T06:47:32.3790001+03:00",
+    "body_file":  "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\diagnostics\\retry_wakecone_M1p20_A0_gmres_body.vtk",
+    "excluded_force_components":  [
+                                      12,
+                                      13
+                                  ],
+    "residual_norm":  0.00588243171140281,
+    "report":  "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\reports\\retry_wakecone_M1p20_A0_gmres_report.json",
+    "log":  "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\logs\\retry_wakecone_M1p20_A0_gmres.log"
+}

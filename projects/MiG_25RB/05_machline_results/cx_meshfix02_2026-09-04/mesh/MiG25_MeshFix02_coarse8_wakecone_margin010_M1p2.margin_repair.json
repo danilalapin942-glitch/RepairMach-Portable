@@ -1,0 +1,57 @@
+{
+  "source": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_wakecone_M1p2.tri",
+  "target": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\diagnostics\\mig25rb_cx_meshfix02_2026-09-04\\mesh\\MiG25_MeshFix02_coarse8_wakecone_margin010_M1p2.tri",
+  "physical_mach": 1.2,
+  "desired_margin": 0.01,
+  "effective_repair_mach": 1.214574898785425,
+  "scan_before": {
+    "panels": 17288,
+    "bad_panels": 0,
+    "near_limit_panels": 2,
+    "maximum_margin": -0.0038074069874072247,
+    "maximum_value": 0.8295259263459261,
+    "bad_panel_ids": []
+  },
+  "repair_log": [
+    {
+      "panel_id": 4105,
+      "status": "REPAIRED",
+      "vertex_id": 1888,
+      "direction": "+X",
+      "step": 0.002,
+      "before_margin": 0.006192593012592784,
+      "after_margin": -0.0035676517821047193
+    }
+  ],
+  "scan_after": {
+    "panels": 17288,
+    "bad_panels": 0,
+    "near_limit_panels": 0,
+    "maximum_margin": -0.013567651782104728,
+    "maximum_value": 0.8197656815512286,
+    "bad_panel_ids": []
+  },
+  "topology_after": {
+    "vertices": 8646,
+    "faces": 17288,
+    "connected_components": 1,
+    "bbox_diagonal": 105.69373880833434,
+    "merge_tolerance": 1.0569373880833435e-08,
+    "invalid_index_faces": 0,
+    "invalid_index_face_ids": [],
+    "repeated_vertex_faces": 0,
+    "repeated_vertex_face_ids": [],
+    "degenerate_faces": 0,
+    "degenerate_face_ids": [],
+    "duplicate_faces": 0,
+    "duplicate_face_ids": [],
+    "duplicate_vertices": 0,
+    "unreferenced_vertices": 0,
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "inconsistent_orientation_edges": 0,
+    "safe_repairs_available": 0,
+    "watertight": true,
+    "machline_safe_topology": true
+  }
+}

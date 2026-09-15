@@ -1,0 +1,42 @@
+{
+  "schema": "repairmach.cy-alpha/1.0",
+  "definition": "Cy_alpha=[Cy(1deg)-Cy(0deg)]/1deg",
+  "coefficient_mapping": "VSPAERO CLtot = RepairMach Cy",
+  "interpolation_used": false,
+  "polar_sources": [
+    "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\polars\\RepairMach91_M160_M170_tail_M0p8_20260828_224715.polar",
+    "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\polars\\RepairMach91_M160_M170_tail_M1p2_20260828_224715.polar",
+    "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\projects\\MiG_29\\06_vspaero_results\\polars\\RepairMach91_M160_M170_tail_M1p7_20260828_224715.polar"
+  ],
+  "points": [
+    {
+      "Mach": 0.8,
+      "alpha_start_deg": 0.0,
+      "alpha_end_deg": 1.0,
+      "Cy_start": 0.0260185676,
+      "Cy_end": 0.080915871924,
+      "Cy_alpha_per_deg": 0.054897304324,
+      "source": "direct_VSPAERO"
+    },
+    {
+      "Mach": 1.2,
+      "alpha_start_deg": 0.0,
+      "alpha_end_deg": 1.0,
+      "Cy_start": 0.046199339387,
+      "Cy_end": 0.11489782908,
+      "Cy_alpha_per_deg": 0.06869848969299999,
+      "source": "direct_VSPAERO"
+    },
+    {
+      "Mach": 1.7,
+      "alpha_start_deg": 0.0,
+      "alpha_end_deg": 1.0,
+      "Cy_start": 0.035967856534,
+      "Cy_end": 0.093346999706,
+      "Cy_alpha_per_deg": 0.05737914317199999,
+      "source": "direct_VSPAERO"
+    }
+  ],
+  "errors": [],
+  "status": "completed"
+}

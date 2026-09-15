@@ -1,0 +1,44 @@
+{
+  "schema": "repairmach.machline-tri-export/1.0",
+  "status": "passed",
+  "source_solver_twin": {
+    "role": "machline_fine",
+    "mesh_level": "fine",
+    "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\cert_subset_PN\\20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2\\machline\\fine\\model.vsp3",
+    "sha256": "fc0978590bc3091891ab9430dc424c244750643a75cdb5b02c5687c0191bd893",
+    "canonical_sha256": "25f8b7e24647aeb787ed7baefaff3d64cf962aeed4712487542c7b47bce05a53"
+  },
+  "certification_bindings": {
+    "master_sha256": "5d8ecd50e765853043050e029d2c5571b593ead411fef9f81fa7f0e9567ddef7",
+    "plan_sha256": "58599235a24eba6d764f2381af5230e81e62a129609d665fe4614cc8ae991638",
+    "base_twin_sha256": "22001303a26f9ad1c55adcdf6cf2ecb17e45f8bad5d7dd621f6b45341036df4d",
+    "fine_twin_sha256": "fc0978590bc3091891ab9430dc424c244750643a75cdb5b02c5687c0191bd893",
+    "fine_mesh_signature_sha256": "d34bf5b291c5fba4d6b78694a269cfd7726f29e0e68d2084c676782c729d8cd3"
+  },
+  "source_unchanged": true,
+  "export": {
+    "format": "OpenVSP_EXPORT_NASCART",
+    "thick_user_set": 1,
+    "thick_api_set": 4,
+    "thin_user_set": 2,
+    "thin_api_set": 5,
+    "include_subsurfaces": true,
+    "raw_path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\cert_subset_PN\\20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2\\machline\\export\\openvsp_nascart_raw.tri",
+    "raw_sha256": "88a687bb5c3927d8e43fd41171a7581a4bf3d59f4106b9c6d41ac0afe7719d8b",
+    "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\cert_subset_PN\\20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2\\machline\\export\\machline_fine_export.tri",
+    "sha256": "4e4c3f8217e6f1dc29dcaeb4092ef59591bd3b30c57e2fb875db2e0d174db851"
+  },
+  "tool": {
+    "vspscript_executable": "C:\\OpenVSP-3.51.0-win64-Python3.13\\OpenVSP-3.51.0-win64\\vspscript.exe",
+    "vspscript_sha256": "79b238c97814e0dd74a6b49839710c8b17406b46d0616f5bd2bf1692a4264088",
+    "script": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\cert_subset_PN\\20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2\\machline\\export\\export_machline_tri.vspscript",
+    "script_sha256": "fe7ebe095ee048dbe93b4f80a5ffd9fcd6d6d2f45921bce14e1336303536678c",
+    "log": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\cert_subset_PN\\20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2\\machline\\export\\export_machline_tri.log",
+    "log_sha256": "6de1e87768a254bf475534383aa7af8f89429debc55d061b5f496cc69adcb64a",
+    "return_code": 0
+  },
+  "legacy_tri_hint": null,
+  "errors": [],
+  "manifest_path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\acceptance\\cert_subset_PN\\20260910_110731_Plane_Naca_f_PlaneNaca_STABLE_M_f9c367e2\\machline\\export\\export_manifest.json",
+  "record_fingerprint": "e37ed63d7e2c144511c664e058af3cdff6d465d5a9dd1cf7817ffa03b0f47411"
+}
