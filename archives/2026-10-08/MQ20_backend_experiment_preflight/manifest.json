@@ -1,0 +1,62 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "MQ20_backend_experiment_preflight",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\q20build\\preflight",
+  "source_files": [
+    {
+      "path": "original/model.csf",
+      "bytes": 20,
+      "mtime_ns": 1790587379227324100,
+      "sha256": "bb29bf526f4379308ca9c271a8df90c39f4df4235f81f63e370f25e714bb797c"
+    },
+    {
+      "path": "original/model.vkey",
+      "bytes": 499,
+      "mtime_ns": 1790587379227324100,
+      "sha256": "7ed859364ce430508eb84ffb49b746c79018be4a4e6b075862bce9742e0b44c9"
+    },
+    {
+      "path": "original/model.vsp3",
+      "bytes": 400189,
+      "mtime_ns": 1790587379175470200,
+      "sha256": "d231790a791b31b25f49ba430737da810c150ed982f5bd27138e1f7a5a001454"
+    },
+    {
+      "path": "original/model.vspaero",
+      "bytes": 1058,
+      "mtime_ns": 1790587379509225700,
+      "sha256": "faf056148cc26a5ab95c76dba0db5d1d3e7ea6cb7f06dd744579e372d368dd06"
+    },
+    {
+      "path": "original/model.vspgeom",
+      "bytes": 850390,
+      "mtime_ns": 1790587379226323800,
+      "sha256": "3a62fff6243579634acd6836499c1bcb1b590e65eb4304158df19eda529f038f"
+    },
+    {
+      "path": "original/preflight.log",
+      "bytes": 1657,
+      "mtime_ns": 1790587379523339000,
+      "sha256": "3b408b83306a661a29b96b034dd3301944580089b0f19415b12a88ddd7f6dcb6"
+    },
+    {
+      "path": "original/preflight.vspscript",
+      "bytes": 24422,
+      "mtime_ns": 1790587378980796400,
+      "sha256": "58b8c26e7dbf250ccd715b0826959fa9787898e269a276065c2fa6adc93205db"
+    }
+  ],
+  "source_bytes": 1278235,
+  "archive_bytes": 199773,
+  "archive_sha256": "2f9f6f77ce2f0da51d316fd4afef2a3a6dfe417ac5f793b7de1cba03a5bf9e68",
+  "parts": [
+    {
+      "file": "MQ20_backend_experiment_preflight.zip",
+      "bytes": 199773,
+      "sha256": "2f9f6f77ce2f0da51d316fd4afef2a3a6dfe417ac5f793b7de1cba03a5bf9e68"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
