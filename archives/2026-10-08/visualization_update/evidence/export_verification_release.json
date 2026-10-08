@@ -1,0 +1,331 @@
+{
+  "aerodynamic_runs": 0,
+  "native_sources_unchanged": {
+    "C:\\RepairMach-Portable\\projects\\Plane_Naca\\06_vspaero_results\\runs\\PlaneNaca_v12_wing_only_vlm_vspaero_20260907_103723\\model.adb": "f14339236f2bbb3365c6f7bb4896387ba5865f8a647438b1c421507742490211",
+    "C:\\RepairMach-Portable\\projects\\Plane_Naca\\06_vspaero_results\\runs\\PlaneNaca_v12_wing_only_vlm_vspaero_20260907_103723\\model.adb.cases": "f91e5683487cb5078fe9788c524737b7d9d6bef9bb8204c8fef5d93d8e3900cc",
+    "C:\\RepairMach-Portable\\projects\\Plane_Naca\\11_geometry_certification\\20260911_234948_Plane_Naca_PlaneNaca_VO_merge_a3973da3\\machline\\solver_probes\\M2p2_A5_body.vtk": "7cc9f4aec109961eeaf7990c07cd144a51edf46ca10b171e3f9d4e01a399a778"
+  },
+  "synthetic": {
+    "schema": "repairmach.pressure-export/1.0",
+    "backend": "vspaero",
+    "status": "exported",
+    "solver_accepted": false,
+    "quality": {},
+    "source": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\fixture.adb",
+    "points": [
+      {
+        "condition": {
+          "mach": 0.4000000059604645,
+          "alpha_deg": 0.0,
+          "beta_deg": 0.0
+        },
+        "solver_accepted": false,
+        "requested_condition": null,
+        "mach_mapping": "identity_or_unverified",
+        "status": "diagnostic_not_accepted",
+        "file": "0001_M0p4_A0_B0\\pressure.vtu",
+        "sha256": "cfbc83c649b1985362b1e044e235cea5486ed36681fd958bd913f2c82ea5f656",
+        "nodes": 3,
+        "triangles": 1,
+        "field_min": -0.125,
+        "field_max": -0.125,
+        "pressure_meaning": "Native Cp on thick panels; pressure jump DeltaCp on thin lifting surfaces. Not absolute pressure.",
+        "qualification": "Solver gate only; not an aircraft ADH certificate",
+        "source_sha256": "089aba3d8cde82ac2c9a3138689e8cc598c4bc95e5047530c381bf9c44f2bcca",
+        "quality": {},
+        "paraview_launcher": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\synthetic_vspaero\\0001_M0p4_A0_B0\\Open_ParaView.cmd"
+      },
+      {
+        "condition": {
+          "mach": 0.4000000059604645,
+          "alpha_deg": 4.99999985454646,
+          "beta_deg": 0.0
+        },
+        "solver_accepted": false,
+        "requested_condition": null,
+        "mach_mapping": "identity_or_unverified",
+        "status": "diagnostic_not_accepted",
+        "file": "0002_M0p4_A5_B0\\pressure.vtu",
+        "sha256": "cfbc83c649b1985362b1e044e235cea5486ed36681fd958bd913f2c82ea5f656",
+        "nodes": 3,
+        "triangles": 1,
+        "field_min": -0.125,
+        "field_max": -0.125,
+        "pressure_meaning": "Native Cp on thick panels; pressure jump DeltaCp on thin lifting surfaces. Not absolute pressure.",
+        "qualification": "Solver gate only; not an aircraft ADH certificate",
+        "source_sha256": "089aba3d8cde82ac2c9a3138689e8cc598c4bc95e5047530c381bf9c44f2bcca",
+        "quality": {},
+        "paraview_launcher": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\synthetic_vspaero\\0002_M0p4_A5_B0\\Open_ParaView.cmd"
+      }
+    ],
+    "mode": null,
+    "axes": "OpenVSP XYZ (unchanged)",
+    "pressure_units": "dimensionless",
+    "pressure_meaning": "Native Cp on thick panels; pressure jump DeltaCp on thin lifting surfaces. Not absolute pressure.",
+    "source_format": "ADB v3, steady",
+    "errors": [],
+    "viewer_export": {
+      "status": "exported",
+      "solver_accepted": false,
+      "qualification": false,
+      "errors": [],
+      "files": [
+        {
+          "file": "model.adb",
+          "sha256": "089aba3d8cde82ac2c9a3138689e8cc598c4bc95e5047530c381bf9c44f2bcca",
+          "source": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\fixture.adb"
+        },
+        {
+          "file": "model.adb.cases",
+          "sha256": "d12c51f7389060ed449a5651e1fb4589bd2f2e6e878379adcf10f78c0f85430c",
+          "source": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\fixture.adb.cases"
+        }
+      ],
+      "launcher": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\synthetic_vspaero\\viewer\\Open_Viewer.cmd"
+    },
+    "source_sha256": "089aba3d8cde82ac2c9a3138689e8cc598c4bc95e5047530c381bf9c44f2bcca",
+    "header": {
+      "model_type": 1,
+      "symmetry": 0,
+      "reference_s_c_b_xyz": [
+        10.0,
+        1.0,
+        5.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "surfaces": {
+        "1": {
+          "name": "Wing",
+          "component_id": 7
+        }
+      }
+    },
+    "manifest": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\synthetic_vspaero\\manifest.json"
+  },
+  "synthetic_machline": {
+    "schema": "repairmach.pressure-export/1.0",
+    "backend": "machline",
+    "condition": {
+      "mach": 1.2
+    },
+    "quality": {
+      "valid": false
+    },
+    "status": "exported",
+    "files": [
+      {
+        "file": "body.vtk",
+        "sha256": "2da318af1d71a424f6a7e2c4cabfc30448e84758522b58b7f81e0802e5b66563",
+        "source": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\body.vtk"
+      }
+    ],
+    "axes": "Native MachLine mesh axes; no implicit axis rotation",
+    "errors": [],
+    "solver_accepted": false,
+    "viewer_export": {
+      "status": "unsupported",
+      "qualification": false,
+      "errors": [
+        "OpenVSP Viewer reads native VSPAERO ADB, not MachLine VTK"
+      ]
+    },
+    "native_mesh": {
+      "nodes": 3,
+      "cells": 1,
+      "pressure_fields": [
+        "C_p"
+      ]
+    },
+    "paraview_launcher": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\synthetic_machline\\Open_ParaView.cmd",
+    "manifest": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\synthetic_machline\\point.json"
+  },
+  "native_vspaero": {
+    "schema": "repairmach.pressure-export/1.0",
+    "backend": "vspaero",
+    "status": "exported",
+    "solver_accepted": false,
+    "quality": {},
+    "source": "C:\\RepairMach-Portable\\projects\\Plane_Naca\\06_vspaero_results\\runs\\PlaneNaca_v12_wing_only_vlm_vspaero_20260907_103723\\model.adb",
+    "points": [
+      {
+        "condition": {
+          "mach": 0.800000011920929,
+          "alpha_deg": 0.0,
+          "beta_deg": 0.0
+        },
+        "solver_accepted": false,
+        "requested_condition": null,
+        "mach_mapping": "identity_or_unverified",
+        "status": "diagnostic_not_accepted",
+        "file": "0001_M0p8_A0_B0\\pressure.vtu",
+        "sha256": "09bcc0e27ba07726abc16277cd8338620c8c0c6cbd2a4d92b2d2916d7dbcd5e0",
+        "nodes": 155,
+        "triangles": 288,
+        "field_min": 0.0,
+        "field_max": 0.0,
+        "pressure_meaning": "Native Cp on thick panels; pressure jump DeltaCp on thin lifting surfaces. Not absolute pressure.",
+        "qualification": "Solver gate only; not an aircraft ADH certificate",
+        "source_sha256": "f14339236f2bbb3365c6f7bb4896387ba5865f8a647438b1c421507742490211",
+        "quality": {},
+        "paraview_launcher": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\native_vspaero\\0001_M0p8_A0_B0\\Open_ParaView.cmd",
+        "wake": {
+          "file": "0001_M0p8_A0_B0\\wake.vtu",
+          "sha256": "2e022552df7dc22a01bf70f395c09727d6d8202995304048f9cc7a64e9aa574f",
+          "triangles": 460,
+          "surface_id": 0,
+          "physical_pressure": false
+        }
+      },
+      {
+        "condition": {
+          "mach": 0.800000011920929,
+          "alpha_deg": 0.9999999922536332,
+          "beta_deg": 0.0
+        },
+        "solver_accepted": false,
+        "requested_condition": null,
+        "mach_mapping": "identity_or_unverified",
+        "status": "diagnostic_not_accepted",
+        "file": "0002_M0p8_A1_B0\\pressure.vtu",
+        "sha256": "e0dbadd3369c6da5e976b6fded7f104e089eb63ccb9ac4febcc0893dfef55db9",
+        "nodes": 155,
+        "triangles": 288,
+        "field_min": -0.5898555517196655,
+        "field_max": -0.0031617842614650726,
+        "pressure_meaning": "Native Cp on thick panels; pressure jump DeltaCp on thin lifting surfaces. Not absolute pressure.",
+        "qualification": "Solver gate only; not an aircraft ADH certificate",
+        "source_sha256": "f14339236f2bbb3365c6f7bb4896387ba5865f8a647438b1c421507742490211",
+        "quality": {},
+        "paraview_launcher": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\native_vspaero\\0002_M0p8_A1_B0\\Open_ParaView.cmd",
+        "wake": {
+          "file": "0002_M0p8_A1_B0\\wake.vtu",
+          "sha256": "b49851e69af92676c460ec3a8649089da0d2a4699ff9d658cd61ab0aa9722912",
+          "triangles": 460,
+          "surface_id": 0,
+          "physical_pressure": false
+        }
+      }
+    ],
+    "mode": null,
+    "axes": "OpenVSP XYZ (unchanged)",
+    "pressure_units": "dimensionless",
+    "pressure_meaning": "Native Cp on thick panels; pressure jump DeltaCp on thin lifting surfaces. Not absolute pressure.",
+    "source_format": "ADB v3, steady",
+    "errors": [],
+    "viewer_export": {
+      "status": "exported",
+      "solver_accepted": false,
+      "qualification": false,
+      "errors": [],
+      "files": [
+        {
+          "file": "model.adb",
+          "sha256": "f14339236f2bbb3365c6f7bb4896387ba5865f8a647438b1c421507742490211",
+          "source": "C:\\RepairMach-Portable\\projects\\Plane_Naca\\06_vspaero_results\\runs\\PlaneNaca_v12_wing_only_vlm_vspaero_20260907_103723\\model.adb"
+        },
+        {
+          "file": "model.adb.cases",
+          "sha256": "f91e5683487cb5078fe9788c524737b7d9d6bef9bb8204c8fef5d93d8e3900cc",
+          "source": "C:\\RepairMach-Portable\\projects\\Plane_Naca\\06_vspaero_results\\runs\\PlaneNaca_v12_wing_only_vlm_vspaero_20260907_103723\\model.adb.cases"
+        },
+        {
+          "file": "model.vsp3",
+          "sha256": "cc97f14eb77615ab6e008e43f05a5781132c111df4a3e89284977d56294e3a05",
+          "source": "C:\\RepairMach-Portable\\projects\\Plane_Naca\\06_vspaero_results\\runs\\PlaneNaca_v12_wing_only_vlm_vspaero_20260907_103723\\model.vsp3"
+        },
+        {
+          "file": "model.vspgeom",
+          "sha256": "6f6a57c916d413d8c5f52ad86bf0662e6398922cdeb72cf46a61a689ae99ce56",
+          "source": "C:\\RepairMach-Portable\\projects\\Plane_Naca\\06_vspaero_results\\runs\\PlaneNaca_v12_wing_only_vlm_vspaero_20260907_103723\\model.vspgeom"
+        },
+        {
+          "file": "model.vkey",
+          "sha256": "997ca658fb6fad140815291142ac9871ac610d00717130dc014a8a5458a6c7ba",
+          "source": "C:\\RepairMach-Portable\\projects\\Plane_Naca\\06_vspaero_results\\runs\\PlaneNaca_v12_wing_only_vlm_vspaero_20260907_103723\\model.vkey"
+        },
+        {
+          "file": "model.vspaero",
+          "sha256": "3948d771b96fda3f0e0496a6b355995223869251492e9cf1ab36eca1d1fdccf9",
+          "source": "C:\\RepairMach-Portable\\projects\\Plane_Naca\\06_vspaero_results\\runs\\PlaneNaca_v12_wing_only_vlm_vspaero_20260907_103723\\model.vspaero"
+        },
+        {
+          "file": "model.polar",
+          "sha256": "69e75969f535b71991762854a69fa2df95c008d595614a444c1e30b44b9492fc",
+          "source": "C:\\RepairMach-Portable\\projects\\Plane_Naca\\06_vspaero_results\\runs\\PlaneNaca_v12_wing_only_vlm_vspaero_20260907_103723\\model.polar"
+        },
+        {
+          "file": "model.history",
+          "sha256": "4d34918aeff480523750720badf70bf9dc68c744bfb6206152a8cac5b0dae90f",
+          "source": "C:\\RepairMach-Portable\\projects\\Plane_Naca\\06_vspaero_results\\runs\\PlaneNaca_v12_wing_only_vlm_vspaero_20260907_103723\\model.history"
+        }
+      ],
+      "launcher": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\native_vspaero\\viewer\\Open_Viewer.cmd"
+    },
+    "source_sha256": "f14339236f2bbb3365c6f7bb4896387ba5865f8a647438b1c421507742490211",
+    "header": {
+      "model_type": 1,
+      "symmetry": 0,
+      "reference_s_c_b_xyz": [
+        349.2723083496094,
+        14.386670112609863,
+        32.369998931884766,
+        29.549999237060547,
+        0.0,
+        0.0
+      ],
+      "surfaces": {
+        "1": {
+          "name": "Wing_C",
+          "component_id": 1
+        },
+        "2": {
+          "name": "Wing_C",
+          "component_id": 1
+        }
+      }
+    },
+    "manifest": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\native_vspaero\\manifest.json"
+  },
+  "native_machline": {
+    "schema": "repairmach.pressure-export/1.0",
+    "backend": "machline",
+    "condition": {
+      "mach": 2.2,
+      "alpha_deg": 5,
+      "beta_deg": 0
+    },
+    "quality": {
+      "valid": false,
+      "purpose": "export-only verification"
+    },
+    "status": "exported",
+    "files": [
+      {
+        "file": "M2p2_A5_body.vtk",
+        "sha256": "7cc9f4aec109961eeaf7990c07cd144a51edf46ca10b171e3f9d4e01a399a778",
+        "source": "C:\\RepairMach-Portable\\projects\\Plane_Naca\\11_geometry_certification\\20260911_234948_Plane_Naca_PlaneNaca_VO_merge_a3973da3\\machline\\solver_probes\\M2p2_A5_body.vtk"
+      }
+    ],
+    "axes": "Native MachLine mesh axes; no implicit axis rotation",
+    "errors": [],
+    "solver_accepted": false,
+    "viewer_export": {
+      "status": "unsupported",
+      "qualification": false,
+      "errors": [
+        "OpenVSP Viewer reads native VSPAERO ADB, not MachLine VTK"
+      ]
+    },
+    "native_mesh": {
+      "nodes": 1562,
+      "cells": 3120,
+      "pressure_fields": [
+        "C_p_ise"
+      ]
+    },
+    "paraview_launcher": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\native_machline\\Open_ParaView.cmd",
+    "manifest": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\visualization_feature\\outputs_release\\native_machline\\point.json"
+  }
+}

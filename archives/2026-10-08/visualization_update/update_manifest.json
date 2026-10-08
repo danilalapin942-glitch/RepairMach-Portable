@@ -1,0 +1,131 @@
+{
+  "state": "DEPLOYED_VERIFIED_PREPARED_NOT_PUBLISHED",
+  "new_aerodynamic_runs": 0,
+  "installed_tests": 323,
+  "stage_checkout_tests": 325,
+  "files": [
+    {
+      "path": "app/pressure_export.py",
+      "sha256": "3e7ad2f8c719d027b4f243d94082c84a2ab38a6b3f20acc9dbad827ebf691b78",
+      "bytes": 20777
+    },
+    {
+      "path": "app/visualization_output.py",
+      "sha256": "7c83a7a659d8f3c01799893358cb912433b93b7ff0e7d1db43daa2949f8c326f",
+      "bytes": 10871
+    },
+    {
+      "path": "app/geometry_certification.py",
+      "sha256": "bec2f6ea116a70ed8410988f2c8c54a461e8ef17b9a21228cb17f34dac69663d",
+      "bytes": 180398
+    },
+    {
+      "path": "app/repairmach_beta.py",
+      "sha256": "937729fcf769b982969371c65718e5bab0567d77b77ee840c196979672c3bd7b",
+      "bytes": 142332
+    },
+    {
+      "path": "docs/PARAVIEW_PRESSURE.md",
+      "sha256": "f2c04aa0d3f93b6008c3867256de500cf454fc17dc3903ce23e2a8e74d0b3de9",
+      "bytes": 10277
+    },
+    {
+      "path": "tests/test_pressure_export.py",
+      "sha256": "cb3d543f53fbb7edb0cab3fc1e79d1ebee70bc5ef4183b523ca988d5852b318d",
+      "bytes": 5937
+    },
+    {
+      "path": "tests/test_visualization_output.py",
+      "sha256": "cd6e40a136cb7fb5a669bfe13e003445b741aa86e62d577a9b9300c5c7930c0c",
+      "bytes": 8309
+    },
+    {
+      "path": "tests/test_repairmach_certified_machline.py",
+      "sha256": "8a727559cac55371ffe53905d5af805fa0df34009fed7b2c0fc1c35e0872ea53",
+      "bytes": 7890
+    }
+  ],
+  "archive": {
+    "file": "code_update.zip",
+    "sha256": "983ce18ee3ce765ef07e26fc2d434e4a2e621910108567b3aa6e0f6da275fa25",
+    "bytes": 95101
+  },
+  "evidence": [
+    {
+      "file": "code_diff.patch",
+      "sha256": "3a6c2d2878f437c522395c46423069a3e40771cf7f0fa71aef82a4a770119cd1"
+    },
+    {
+      "file": "deploy_feature.py",
+      "sha256": "1fd1ea88c3f4ece5dd52a79c9b3c69a283db1aa51ab48a6110e7d82702b365f3"
+    },
+    {
+      "file": "deployment.json",
+      "sha256": "20ed2b687d5d388bf6dc64eb8f2f429b1f953711433a80851ddbe93d0d289a5a"
+    },
+    {
+      "file": "deployment_plan_release.json",
+      "sha256": "6642136db17dd24a59b02c51c816effded49d86b35cb19db545f845a4adaeac2"
+    },
+    {
+      "file": "export_verification_release.json",
+      "sha256": "e5ea58ce28dfe9d85325993725b6e0cc764d3210d452830ec557915f163ff6e9"
+    },
+    {
+      "file": "paraview_verification_release.json",
+      "sha256": "9ea01822a1c01a48618a91cd1ce5ecb9a30002f674a49078e4e89d3abb0c6179"
+    },
+    {
+      "file": "preservation.py",
+      "sha256": "197bc7d17afc0c64671dc0a4b8fe907235539f9a0e22c0c1ffc93550d17268d3"
+    },
+    {
+      "file": "preservation_after.json",
+      "sha256": "173d2bf5353e9a72562b3f63a413a2696b676b13d7a3d38852163e39bb32bed4"
+    },
+    {
+      "file": "preservation_before.json",
+      "sha256": "173d2bf5353e9a72562b3f63a413a2696b676b13d7a3d38852163e39bb32bed4"
+    },
+    {
+      "file": "regression_checkout.json",
+      "sha256": "9edb0de45f2b85e99d4f6790e175149c6497ae790360880863b9d212f6c919af"
+    },
+    {
+      "file": "regression_checkout.log",
+      "sha256": "f354e18177875b74a9f076a44b1b6cff87d0ed1ec7f9807496d3fb6e47a033a9"
+    },
+    {
+      "file": "regression_installed.json",
+      "sha256": "3b38ff0a25108a2317b9ec3cc6627df221b2a696a0cfe5f57b86efdcdfb4fa1c"
+    },
+    {
+      "file": "regression_installed.log",
+      "sha256": "a32dc460b85bfb29f88d5acb4cd98bebb5e9cb4e1adb8c5ffc8014dd0e2c84ef"
+    },
+    {
+      "file": "regression_stage.json",
+      "sha256": "2b438afa373bb14ff735c98e17517d513a37a8a111f36e040ff8bb620d0b0089"
+    },
+    {
+      "file": "regression_stage.log",
+      "sha256": "c2ea3eb6c6132dab253b42d2fffdcb5db85f3bd3d0913139e0f50441eee0a32f"
+    },
+    {
+      "file": "run_regression.py",
+      "sha256": "1a0344d171ed1074ab23fc9c3f77caeaa81816e4dee5915d0843fbb3d7ace214"
+    },
+    {
+      "file": "synthetic_scene_preview.png",
+      "sha256": "ecc77589bfa1994cc6dd2947516115816e44784071a97c4a884bbc57de7aadf7"
+    },
+    {
+      "file": "verify_feature.py",
+      "sha256": "06db0e77dff3ce1158e77c7a2d5623f06859e629e103fe90353f24cd7c2c5666"
+    },
+    {
+      "file": "verify_paraview.py",
+      "sha256": "dac289d30b42da4345fbfcabff5aa4f6ce6d7dd7c012d08a788e87169107d3b2"
+    }
+  ]
+}

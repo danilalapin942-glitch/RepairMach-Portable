@@ -969,6 +969,9 @@ def run_machline() -> None:
     log_path = log_dir / f"machline_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
 
     try:
+        input_payload = json.loads(json_path.read_text(encoding="utf-8"))
+        body_candidate = _resolve_machline_path(input_payload.get("output", {}).get("body_file"), execution_cwd)
+        previous_body = (body_candidate.stat().st_mtime_ns, body_candidate.stat().st_size) if body_candidate.is_file() else None
         child_env = os.environ.copy()
         child_env.setdefault("OMP_NUM_THREADS", "4")
         p = subprocess.run(
@@ -985,6 +988,23 @@ def run_machline() -> None:
         print(p.stdout)
         print(f"\nЛог сохранён: {log_path}")
         print(f"Код завершения: {p.returncode}")
+        # Always retain native fields before status/report/force gates can fail.
+        # A later accepted export is separate; this package remains diagnostic.
+        input_payload = json.loads(json_path.read_text(encoding="utf-8"))
+        current_body = (body_candidate.stat().st_mtime_ns, body_candidate.stat().st_size) if body_candidate.is_file() else None
+        body_is_fresh = current_body is not None and current_body != previous_body
+        diagnostic_dir = project / "05_machline_results" / "paraview" / log_path.stem
+        try:
+            diagnostic = export_machline_pressure(
+                _resolve_machline_path(input_payload.get("output", {}).get("body_file"), execution_cwd),
+                diagnostic_dir, condition={"input": str(json_path.resolve())},
+                quality={"valid": False, "return_code": p.returncode, "status": "pre_gate_diagnostic"},
+                extras=[json_path, log_path],
+                source_is_fresh=body_is_fresh,
+            )
+            print(f"Диагностика давления: {diagnostic['manifest']}")
+        except (OSError, ValueError) as exc:
+            print(f"[ВНИМАНИЕ] Экспорт диагностического давления: {exc}")
         if p.returncode != 0:
             raise RuntimeError(f"MachLine завершился с кодом {p.returncode}")
         input_payload = json.loads(json_path.read_text(encoding="utf-8"))
@@ -1125,6 +1145,7 @@ def run_machline() -> None:
             manifest["pressure_export"] = export_machline_pressure(
                 body_path, project / "05_machline_results" / "paraview" / report_path.stem,
                 condition=manifest["conditions"], quality=manifest["output_quality"], extras=extra_files,
+                source_is_fresh=body_is_fresh,
             )
         except (OSError, ValueError) as exc:
             manifest["pressure_export"] = {"status": "failed", "errors": [str(exc)]}
@@ -1154,14 +1175,20 @@ def _export_run_pressure(run_dir: Path, quality: dict, *, accepted: bool, mode: 
         polar = find_generated_polar(run_dir, "model")
         rows = parse_vspaero_polar(polar) if polar else []
         expected = [{"mach": r["Mach"], "alpha_deg": r.get("Alpha", r.get("AoA")), "beta_deg": r["Beta"]} for r in rows]
+        openvsp_dir = find_openvsp_dir(load_settings().get("openvsp", {}).get("install_dir"))
         result = export_vspaero_pressure(
             run_dir / "model.adb", run_dir / "paraview", accepted=accepted,
             quality=quality, expected_conditions=expected or None, mode=mode,
+            viewer_executable=openvsp_dir / "vspviewer.exe" if openvsp_dir else None,
         )
     except (OSError, ValueError, KeyError, TypeError) as exc:
         result = {"status": "failed", "errors": [str(exc)]}
     if result["status"] != "exported":
         print("[ВНИМАНИЕ] Экспорт давления ParaView: " + "; ".join(result.get("errors", [])))
+    else:
+        print(f"Давление ParaView / Viewer: {result['manifest']}")
+        if result.get("viewer_export", {}).get("status") != "exported":
+            print("[ВНИМАНИЕ] Viewer: " + str(result.get("viewer_export", {}).get("errors", [])))
     return result
 
 
@@ -2911,6 +2938,34 @@ def run_calculation_scenario() -> None:
         prepare_protocol_scenario(scenario)
 
 
+def open_pressure_viewer_workflow() -> None:
+    """Opt-in viewing only: never start a calculation or pop up batch windows."""
+    project = default_project_path().resolve()
+    launchers = sorted(
+        (p for p in project.rglob("Open_*.cmd")
+         if p.name in {"Open_ParaView.cmd", "Open_Viewer.cmd"}
+         and p.resolve().is_relative_to(project)
+         and (p.parent / "open.json").is_file()),
+        key=lambda p: p.stat().st_mtime_ns, reverse=True,
+    )[:40]
+    if not launchers:
+        print("Готовых полей нет. Они сохраняются после расчёта при наличии полного результата.")
+        return
+    print("Последние 40 наборов: просмотр не означает физического допуска.")
+    for index, path in enumerate(launchers, 1):
+        print(f"[{index}] {path.relative_to(project)}")
+    choice = input("Открыть набор (Enter — отмена): ").strip()
+    if not choice:
+        return
+    try:
+        index = int(choice)
+        if not 1 <= index <= len(launchers):
+            raise ValueError("Неверный номер набора")
+        os.startfile(str(launchers[index - 1]))
+    except (OSError, ValueError) as exc:
+        print(f"Просмотр не запущен: {exc}")
+
+
 def menu() -> None:
     while True:
         print_header()
@@ -2930,6 +2985,7 @@ def menu() -> None:
         print("[12] Открыть папку проекта")
         print("[13] Запустить готовый .vspscript (расширенный режим)")
         print("[14] Слепая верификация: запечатать входы и прогноз")
+        print("[15] Распределение давления: ParaView / Viewer OpenVSP")
         print("[0] Выход")
         choice = input("\nВыбор: ").strip()
 
@@ -2961,6 +3017,8 @@ def menu() -> None:
             run_openvsp_script_workflow()
         elif choice == "14":
             blind_study_control_workflow()
+        elif choice == "15":
+            open_pressure_viewer_workflow()
         elif choice == "0":
             return
         else:

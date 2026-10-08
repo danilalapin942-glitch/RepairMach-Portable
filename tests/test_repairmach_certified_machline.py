@@ -16,16 +16,63 @@ from calculation_scenarios import geometry_sha256
 from repairmach_beta import certified_machline_force_contract, _nascart_conditions
 import repairmach_beta as app
 from tri_mesh import TriMesh, write_tri
+from test_pressure_export import vtk_fixture
 
 
 class RepairMachCertifiedMachLineTests(unittest.TestCase):
+    def test_failed_solver_keeps_fresh_diagnostic_pressure_but_not_stale_fields(self):
+        for refresh in (True, False):
+            with self.subTest(refresh=refresh), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                exe, body = root / "machline.exe", root / "body.vtk"
+                exe.write_text("fixture")
+                body.write_text(vtk_fixture())
+                input_path = root / "input.json"
+                input_path.write_text(json.dumps({"output": {"body_file": str(body)}}))
+                with ExitStack() as stack:
+                    for name, value in (("load_settings", {}), ("find_machline", exe),
+                                        ("default_project_path", root), ("machline_working_dir", root)):
+                        stack.enter_context(patch.object(app, name, return_value=value))
+                    stack.enter_context(patch.object(app, "ROOT", root))
+                    stack.enter_context(patch("builtins.input", return_value=str(input_path)))
+                    stack.enter_context(patch("builtins.print"))
+                    def failed_solver(*args, **kwargs):
+                        if refresh:
+                            body.write_text(vtk_fixture() + "\n")
+                        return SimpleNamespace(returncode=2, stdout="failed after output")
+                    stack.enter_context(patch.object(app.subprocess, "run", side_effect=failed_solver))
+                    app.run_machline()
+                manifests = list((root / "05_machline_results/paraview").rglob("point.json"))
+                self.assertEqual(1, len(manifests))
+                record = json.loads(manifests[0].read_text())
+                self.assertFalse(record["solver_accepted"])
+                self.assertEqual("exported" if refresh else "failed", record["status"])
+
+    def test_pressure_menu_only_opens_selected_existing_launcher(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            launcher = root / "run/Open_ParaView.cmd"
+            launcher.parent.mkdir()
+            launcher.write_text("fixture")
+            (launcher.parent / "open.json").write_text("{}")
+            with patch.object(app, "default_project_path", return_value=root), \
+                 patch("builtins.input", return_value="1"), patch("builtins.print"), \
+                 patch.object(app.os, "startfile", create=True) as opened:
+                app.open_pressure_viewer_workflow()
+                opened.assert_called_once_with(str(launcher))
+            with patch.object(app, "default_project_path", return_value=root), \
+                 patch("builtins.input", return_value=""), patch("builtins.print"), \
+                 patch.object(app.os, "startfile", create=True) as opened:
+                app.open_pressure_viewer_workflow()
+                opened.assert_not_called()
+
     def test_completed_run_packages_native_pressure_under_project(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             exe, tri, report_path, body = [root / name for name in ("machline.exe", "mesh.tri", "report.json", "body.vtk")]
             for path in (exe, tri, report_path):
                 path.write_text("fixture", encoding="utf-8")
-            body.write_text("# vtk DataFile Version 3.0\nSCALARS C_p float\n", encoding="utf-8")
+            body.write_text(vtk_fixture(), encoding="utf-8")
             input_path = root / "input.json"
             input_path.write_text(json.dumps({"output": {"report_file": str(report_path), "body_file": str(body)}}))
             report = {"solver_results": {"solver_status_code": 0, "residual": {"norm": 1e-8, "max": 1e-8}},
@@ -39,7 +86,10 @@ class RepairMachCertifiedMachLineTests(unittest.TestCase):
                 stack.enter_context(patch.object(app, "ROOT", root))
                 stack.enter_context(patch("builtins.input", return_value=str(input_path)))
                 stack.enter_context(patch("builtins.print"))
-                stack.enter_context(patch.object(app.subprocess, "run", return_value=SimpleNamespace(returncode=0, stdout="OK")))
+                def completed_solver(*args, **kwargs):
+                    body.write_text(body.read_text() + "\n")
+                    return SimpleNamespace(returncode=0, stdout="OK")
+                stack.enter_context(patch.object(app.subprocess, "run", side_effect=completed_solver))
                 app.run_machline()
             manifest = json.loads((root / "report_manifest.json").read_text())
             self.assertEqual("exported", manifest["pressure_export"]["status"])

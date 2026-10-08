@@ -721,16 +721,15 @@ def _run_machline_geometry_qualification(
                     "errors": [str(exc)],
                     "runtime_seconds": time.monotonic() - started,
                 }
-            if body_path.is_file():
-                try:
-                    record["pressure_export"] = export_machline_pressure(
-                        body_path, probe_dir / "paraview" / token,
-                        condition={"mach": mach, "alpha_deg": alpha, "beta_deg": beta},
-                        quality={"valid": record["valid"], "errors": record["errors"]},
-                        extras=[report_path, log_path, force_mask_path, masked_path],
-                    )
-                except (OSError, ValueError) as exc:
-                    record["pressure_export"] = {"status": "failed", "errors": [str(exc)]}
+            try:
+                record["pressure_export"] = export_machline_pressure(
+                    body_path, probe_dir / "paraview" / token,
+                    condition={"mach": mach, "alpha_deg": alpha, "beta_deg": beta},
+                    quality={"valid": record["valid"], "errors": record["errors"]},
+                    extras=[report_path, log_path, force_mask_path, masked_path],
+                )
+            except (OSError, ValueError) as exc:
+                record["pressure_export"] = {"status": "failed", "errors": [str(exc)]}
             records.append(record)
             if not record["valid"]:
                 errors.extend(
@@ -1698,6 +1697,7 @@ def _run_one_vspaero_probe(
             accepted=valid and not diagnostic_excluded_components, quality=output_quality,
             mode="diagnostic_body_isolation" if diagnostic_excluded_components else mode,
             expected_conditions=[{"mach": requested_mach, "alpha_deg": requested_alpha, "beta_deg": requested_beta}],
+            viewer_executable=Path(vspscript_executable).parent / "vspviewer.exe",
         )
     except OSError as exc:
         pressure = {"status": "failed", "errors": [str(exc)]}

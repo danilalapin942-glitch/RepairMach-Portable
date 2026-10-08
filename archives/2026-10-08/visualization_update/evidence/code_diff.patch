@@ -1,0 +1,822 @@
+diff --git a/app/geometry_certification.py b/app/geometry_certification.py
+index 4f3ed7e..e4847a0 100644
+--- a/app/geometry_certification.py
++++ b/app/geometry_certification.py
+@@ -721,16 +721,15 @@ def _run_machline_geometry_qualification(
+                     "errors": [str(exc)],
+                     "runtime_seconds": time.monotonic() - started,
+                 }
+-            if body_path.is_file():
+-                try:
+-                    record["pressure_export"] = export_machline_pressure(
+-                        body_path, probe_dir / "paraview" / token,
+-                        condition={"mach": mach, "alpha_deg": alpha, "beta_deg": beta},
+-                        quality={"valid": record["valid"], "errors": record["errors"]},
+-                        extras=[report_path, log_path, force_mask_path, masked_path],
+-                    )
+-                except (OSError, ValueError) as exc:
+-                    record["pressure_export"] = {"status": "failed", "errors": [str(exc)]}
++            try:
++                record["pressure_export"] = export_machline_pressure(
++                    body_path, probe_dir / "paraview" / token,
++                    condition={"mach": mach, "alpha_deg": alpha, "beta_deg": beta},
++                    quality={"valid": record["valid"], "errors": record["errors"]},
++                    extras=[report_path, log_path, force_mask_path, masked_path],
++                )
++            except (OSError, ValueError) as exc:
++                record["pressure_export"] = {"status": "failed", "errors": [str(exc)]}
+             records.append(record)
+             if not record["valid"]:
+                 errors.extend(
+@@ -1698,6 +1697,7 @@ def _run_one_vspaero_probe(
+             accepted=valid and not diagnostic_excluded_components, quality=output_quality,
+             mode="diagnostic_body_isolation" if diagnostic_excluded_components else mode,
+             expected_conditions=[{"mach": requested_mach, "alpha_deg": requested_alpha, "beta_deg": requested_beta}],
++            viewer_executable=Path(vspscript_executable).parent / "vspviewer.exe",
+         )
+     except OSError as exc:
+         pressure = {"status": "failed", "errors": [str(exc)]}
+diff --git a/app/pressure_export.py b/app/pressure_export.py
+index 0d4abac..c25f9bb 100644
+--- a/app/pressure_export.py
++++ b/app/pressure_export.py
+@@ -14,6 +14,7 @@ import shutil
+ import struct
+ from xml.sax.saxutils import escape
+ from aero_hybrid import is_vspaero_zero_mach_regularization
++from visualization_output import prepare_paraview_open, prepare_viewer, validate_machline_vtk
+ 
+ 
+ def _sha(path):
+@@ -173,7 +174,7 @@ def _condition_match(actual, expected, quality):
+                for p in (quality or {}).get("points", []))
+ 
+ 
+-def export_vspaero_pressure(adb_path, output_dir, *, accepted=False, quality=None, expected_conditions=None, mode=None):
++def export_vspaero_pressure(adb_path, output_dir, *, accepted=False, quality=None, expected_conditions=None, mode=None, viewer_executable=None):
+     """Export all steady points or record an explicit error; never alter solver validity.
+ 
+     Output directory must be fresh so stale data cannot masquerade as a new run.
+@@ -187,10 +188,14 @@ def export_vspaero_pressure(adb_path, output_dir, *, accepted=False, quality=Non
+               "source": str(adb_path.resolve()), "points": [], "mode": mode,
+               "axes": "OpenVSP XYZ (unchanged)", "pressure_units": "dimensionless",
+               "pressure_meaning": "Native Cp on thick panels; pressure jump DeltaCp on thin lifting surfaces. Not absolute pressure.",
+-              "source_format": "ADB v3, steady", "errors": []}
++              "source_format": "ADB v3, steady", "errors": [],
++              "viewer_export": {"status": "unavailable", "qualification": False,
++                                "errors": ["Complete matched pressure solution not available"]}}
+     try:
+         result["source_sha256"] = _sha(adb_path)
+         header, cases = read_adb_v3(adb_path)
++        if _sha(adb_path) != result["source_sha256"]:
++            raise ValueError("ADB changed while reading pressure; retry only after solver finishes")
+         if expected_conditions is not None:
+             remaining = list(expected_conditions)
+             for case in cases:
+@@ -225,6 +230,8 @@ def export_vspaero_pressure(adb_path, output_dir, *, accepted=False, quality=Non
+                       "pressure_meaning": result["pressure_meaning"],
+                       "qualification": "Solver gate only; not an aircraft ADH certificate",
+                       "source_sha256": result["source_sha256"], "quality": quality or {}}
++            record["paraview_launcher"] = prepare_paraview_open(
++                folder, surface, accepted=bool(accepted), condition=c, field="Cp_or_DeltaCp")
+             if wake_indices:
+                 wake = folder / "wake.vtu"
+                 write_pressure_vtu(wake, _subset(case, wake_indices, "wake"), bool(accepted))
+@@ -233,6 +240,8 @@ def export_vspaero_pressure(adb_path, output_dir, *, accepted=False, quality=Non
+             _json(folder / "point.json", record)
+             result["points"].append(record)
+         result["status"] = "exported"
++        result["viewer_export"] = prepare_viewer(
++            adb_path, output_dir / "viewer", cases, accepted=bool(accepted), executable=viewer_executable)
+     except (OSError, ValueError, struct.error) as exc:
+         result["errors"].append(str(exc))
+     _json(output_dir / "manifest.json", result)
+@@ -247,32 +256,55 @@ def export_vspaero_pressure(adb_path, output_dir, *, accepted=False, quality=Non
+         "Координаты сохранены в осях и единицах исходного решателя. VTK содержит все данные, "
+         "исходный ADB для открытия не нужен. manifest.json перечисляет точки, ошибки и hashes.\n",
+         encoding="utf-8")
++    with (output_dir / "README.md").open("a", encoding="utf-8") as stream:
++        stream.write("\nОткрытие: Open_ParaView.cmd в папке точки загружает давление с цветовой шкалой. "
++                     "viewer/Open_Viewer.cmd открывает весь нативный набор в VSPAERO Viewer OpenVSP; "
++                     "режим выбирается в Viewer. Графические окна сами не запускаются во время серии. "
++                     "Если Viewer недоступен, причина записана в manifest.json.\n")
+     result["manifest"] = str((output_dir / "manifest.json").resolve())
+     return result
+ 
+ 
+-def export_machline_pressure(body_path, output_dir, *, condition, quality, extras=()):
++def export_machline_pressure(body_path, output_dir, *, condition, quality, extras=(), source_is_fresh=True):
+     """Package native VTK fields and provenance per MachLine point, without conversion."""
+     output_dir = Path(output_dir)
+     output_dir.mkdir(parents=True, exist_ok=False)
+     result = {"schema": "repairmach.pressure-export/1.0", "backend": "machline",
+               "condition": condition, "quality": quality, "status": "failed", "files": [],
+-              "axes": "Native MachLine mesh axes; no implicit axis rotation", "errors": []}
++              "axes": "Native MachLine mesh axes; no implicit axis rotation", "errors": [],
++              "solver_accepted": (quality or {}).get("valid") is True,
++              "viewer_export": {"status": "unsupported", "qualification": False,
++                                "errors": ["OpenVSP Viewer reads native VSPAERO ADB, not MachLine VTK"]}}
+     try:
++        if not source_is_fresh:
++            raise ValueError("MachLine body VTK was not refreshed by this run; stale pressure rejected")
+         body_path = Path(body_path)
+-        if not body_path.is_file() or "SCALARS" not in body_path.read_text(encoding="utf-8", errors="replace"):
+-            raise ValueError("MachLine body VTK missing or contains no scalar fields")
+-        for source in (body_path, *extras):
++        result["native_mesh"] = validate_machline_vtk(body_path)
++        sources = [Path(p) for p in (body_path, *extras) if Path(p).is_file()]
++        if len({p.name.casefold() for p in sources}) != len(sources):
++            raise ValueError("Visualization sources have colliding filenames")
++        for source in sources:
+             source = Path(source)
+             if not source.is_file():
+                 continue
+             target = output_dir / source.name
++            before = _sha(source)
+             shutil.copy2(source, target)
+-            result["files"].append({"file": target.name, "sha256": _sha(target), "source": str(source.resolve())})
++            if _sha(target) != before or _sha(source) != before:
++                raise ValueError("MachLine source changed during pressure packaging")
++            result["files"].append({"file": target.name, "sha256": before, "source": str(source.resolve())})
+         result["status"] = "exported"
++        result["paraview_launcher"] = prepare_paraview_open(
++            output_dir, output_dir / body_path.name,
++            accepted=result["solver_accepted"], condition=condition)
+     except (OSError, ValueError) as exc:
+         result["errors"].append(str(exc))
+     _json(output_dir / "point.json", result)
++    (output_dir / "README.md").write_text(
++        "Откройте Open_ParaView.cmd: нативные cell-поля MachLine, без усреднения по узлам.\n"
++        "Если приложение не найдено: open.ps1 -Executable \"полный путь к paraview.exe\".\n"
++        "При valid=false это диагностика, не принятый расчёт. Экспорт не означает физический допуск.\n"
++        "OpenVSP Viewer для MachLine VTK не поддерживается; фиктивный ADB не создаётся.\n", encoding="utf-8")
+     result["manifest"] = str((output_dir / "point.json").resolve())
+     return result
+ 
+diff --git a/app/repairmach_beta.py b/app/repairmach_beta.py
+index 6a67efb..bcd620c 100644
+--- a/app/repairmach_beta.py
++++ b/app/repairmach_beta.py
+@@ -969,6 +969,9 @@ def run_machline() -> None:
+     log_path = log_dir / f"machline_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+ 
+     try:
++        input_payload = json.loads(json_path.read_text(encoding="utf-8"))
++        body_candidate = _resolve_machline_path(input_payload.get("output", {}).get("body_file"), execution_cwd)
++        previous_body = (body_candidate.stat().st_mtime_ns, body_candidate.stat().st_size) if body_candidate.is_file() else None
+         child_env = os.environ.copy()
+         child_env.setdefault("OMP_NUM_THREADS", "4")
+         p = subprocess.run(
+@@ -985,6 +988,23 @@ def run_machline() -> None:
+         print(p.stdout)
+         print(f"\nЛог сохранён: {log_path}")
+         print(f"Код завершения: {p.returncode}")
++        # Always retain native fields before status/report/force gates can fail.
++        # A later accepted export is separate; this package remains diagnostic.
++        input_payload = json.loads(json_path.read_text(encoding="utf-8"))
++        current_body = (body_candidate.stat().st_mtime_ns, body_candidate.stat().st_size) if body_candidate.is_file() else None
++        body_is_fresh = current_body is not None and current_body != previous_body
++        diagnostic_dir = project / "05_machline_results" / "paraview" / log_path.stem
++        try:
++            diagnostic = export_machline_pressure(
++                _resolve_machline_path(input_payload.get("output", {}).get("body_file"), execution_cwd),
++                diagnostic_dir, condition={"input": str(json_path.resolve())},
++                quality={"valid": False, "return_code": p.returncode, "status": "pre_gate_diagnostic"},
++                extras=[json_path, log_path],
++                source_is_fresh=body_is_fresh,
++            )
++            print(f"Диагностика давления: {diagnostic['manifest']}")
++        except (OSError, ValueError) as exc:
++            print(f"[ВНИМАНИЕ] Экспорт диагностического давления: {exc}")
+         if p.returncode != 0:
+             raise RuntimeError(f"MachLine завершился с кодом {p.returncode}")
+         input_payload = json.loads(json_path.read_text(encoding="utf-8"))
+@@ -1125,6 +1145,7 @@ def run_machline() -> None:
+             manifest["pressure_export"] = export_machline_pressure(
+                 body_path, project / "05_machline_results" / "paraview" / report_path.stem,
+                 condition=manifest["conditions"], quality=manifest["output_quality"], extras=extra_files,
++                source_is_fresh=body_is_fresh,
+             )
+         except (OSError, ValueError) as exc:
+             manifest["pressure_export"] = {"status": "failed", "errors": [str(exc)]}
+@@ -1154,14 +1175,20 @@ def _export_run_pressure(run_dir: Path, quality: dict, *, accepted: bool, mode:
+         polar = find_generated_polar(run_dir, "model")
+         rows = parse_vspaero_polar(polar) if polar else []
+         expected = [{"mach": r["Mach"], "alpha_deg": r.get("Alpha", r.get("AoA")), "beta_deg": r["Beta"]} for r in rows]
++        openvsp_dir = find_openvsp_dir(load_settings().get("openvsp", {}).get("install_dir"))
+         result = export_vspaero_pressure(
+             run_dir / "model.adb", run_dir / "paraview", accepted=accepted,
+             quality=quality, expected_conditions=expected or None, mode=mode,
++            viewer_executable=openvsp_dir / "vspviewer.exe" if openvsp_dir else None,
+         )
+     except (OSError, ValueError, KeyError, TypeError) as exc:
+         result = {"status": "failed", "errors": [str(exc)]}
+     if result["status"] != "exported":
+         print("[ВНИМАНИЕ] Экспорт давления ParaView: " + "; ".join(result.get("errors", [])))
++    else:
++        print(f"Давление ParaView / Viewer: {result['manifest']}")
++        if result.get("viewer_export", {}).get("status") != "exported":
++            print("[ВНИМАНИЕ] Viewer: " + str(result.get("viewer_export", {}).get("errors", [])))
+     return result
+ 
+ 
+@@ -2911,6 +2938,34 @@ def run_calculation_scenario() -> None:
+         prepare_protocol_scenario(scenario)
+ 
+ 
++def open_pressure_viewer_workflow() -> None:
++    """Opt-in viewing only: never start a calculation or pop up batch windows."""
++    project = default_project_path().resolve()
++    launchers = sorted(
++        (p for p in project.rglob("Open_*.cmd")
++         if p.name in {"Open_ParaView.cmd", "Open_Viewer.cmd"}
++         and p.resolve().is_relative_to(project)
++         and (p.parent / "open.json").is_file()),
++        key=lambda p: p.stat().st_mtime_ns, reverse=True,
++    )[:40]
++    if not launchers:
++        print("Готовых полей нет. Они сохраняются после расчёта при наличии полного результата.")
++        return
++    print("Последние 40 наборов: просмотр не означает физического допуска.")
++    for index, path in enumerate(launchers, 1):
++        print(f"[{index}] {path.relative_to(project)}")
++    choice = input("Открыть набор (Enter — отмена): ").strip()
++    if not choice:
++        return
++    try:
++        index = int(choice)
++        if not 1 <= index <= len(launchers):
++            raise ValueError("Неверный номер набора")
++        os.startfile(str(launchers[index - 1]))
++    except (OSError, ValueError) as exc:
++        print(f"Просмотр не запущен: {exc}")
++
++
+ def menu() -> None:
+     while True:
+         print_header()
+@@ -2930,6 +2985,7 @@ def menu() -> None:
+         print("[12] Открыть папку проекта")
+         print("[13] Запустить готовый .vspscript (расширенный режим)")
+         print("[14] Слепая верификация: запечатать входы и прогноз")
++        print("[15] Распределение давления: ParaView / Viewer OpenVSP")
+         print("[0] Выход")
+         choice = input("\nВыбор: ").strip()
+ 
+@@ -2961,6 +3017,8 @@ def menu() -> None:
+             run_openvsp_script_workflow()
+         elif choice == "14":
+             blind_study_control_workflow()
++        elif choice == "15":
++            open_pressure_viewer_workflow()
+         elif choice == "0":
+             return
+         else:
+diff --git a/app/visualization_output.py b/app/visualization_output.py
+new file mode 100644
+index 0000000..e612c0f
+--- /dev/null
++++ b/app/visualization_output.py
+@@ -0,0 +1,221 @@
++"""Read-only visualization packages and opt-in launchers; never launch a solver."""
++from __future__ import annotations
++
++import hashlib
++import json
++import math
++from pathlib import Path
++import shutil
++
++
++def _sha(path):
++    with Path(path).open("rb") as stream:
++        return hashlib.file_digest(stream, "sha256").hexdigest()
++
++
++def _write_json(path, value):
++    Path(path).write_text(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
++
++
++def validate_machline_vtk(path):
++    """Validate complete native legacy ASCII POLYDATA, without modifying its fields."""
++    lines = Path(path).read_text(encoding="utf-8", errors="strict").splitlines()
++    if len(lines) < 4 or not lines[0].startswith("# vtk DataFile Version") or lines[2].strip() != "ASCII":
++        raise ValueError("Only native legacy ASCII MachLine VTK is supported")
++    tokens, pos = " ".join(lines[3:]).split(), 0
++    def take():
++        nonlocal pos
++        if pos >= len(tokens):
++            raise ValueError("Truncated MachLine VTK")
++        value = tokens[pos]
++        pos += 1
++        return value
++    def expect(value):
++        if take() != value:
++            raise ValueError(f"MachLine VTK expected {value}")
++    def count():
++        value = int(take())
++        if value <= 0 or value > 100_000_000:
++            raise ValueError("Invalid MachLine VTK count")
++        return value
++    def numbers(n):
++        for _ in range(n):
++            if not math.isfinite(float(take())):
++                raise ValueError("Non-finite MachLine VTK field or coordinate")
++    expect("DATASET")
++    expect("POLYDATA")
++    expect("POINTS")
++    nodes = count()
++    take()  # numeric type
++    numbers(3 * nodes)
++    expect("POLYGONS")
++    cells, total = count(), count()
++    used = 0
++    for _ in range(cells):
++        size = count()
++        if size < 3:
++            raise ValueError("Invalid MachLine polygon")
++        used += 1 + size
++        for _ in range(size):
++            if not 0 <= int(take()) < nodes:
++                raise ValueError("MachLine polygon index out of range")
++    if used != total:
++        raise ValueError("MachLine polygon connectivity count mismatch")
++    association, length, pressure = None, 0, []
++    while pos < len(tokens):
++        tag = take()
++        if tag in ("CELL_DATA", "POINT_DATA"):
++            association, length = tag, count()
++            if length != (cells if tag == "CELL_DATA" else nodes):
++                raise ValueError("MachLine VTK field count mismatch")
++        elif tag in ("SCALARS", "VECTORS", "NORMALS") and association:
++            name = take()
++            take()  # numeric type
++            components = 3
++            if tag == "SCALARS":
++                components = count() if tokens[pos:pos + 1] != ["LOOKUP_TABLE"] else 1
++                expect("LOOKUP_TABLE")
++                take()
++            numbers(components * length)
++            if tag == "SCALARS" and association == "CELL_DATA" and ("cp" in name.lower() or "c_p" in name.lower()):
++                pressure.append(name)
++        else:
++            raise ValueError(f"Unsupported MachLine VTK block: {tag}")
++    if not pressure:
++        raise ValueError("MachLine VTK contains no cell pressure scalar")
++    return {"nodes": nodes, "cells": cells, "pressure_fields": pressure}
++
++
++# Data paths and executable hints are JSON, never interpolated into shell code.
++# The viewer hint is the sibling of the actual vspscript used for this run.
++LAUNCHER = r'''param([string]$Executable)
++$ErrorActionPreference = 'Stop'
++$config = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'open.json') -Raw -Encoding UTF8 | ConvertFrom-Json
++foreach ($entry in $config.files) {
++    $file = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot $entry.file))
++    if (!(Test-Path -LiteralPath $file -PathType Leaf) -or
++        (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant() -ne $entry.sha256) {
++        throw "Visualization file missing or changed: $file"
++    }
++}
++if (!$Executable) { $Executable = $config.executable_hint }
++if (!$Executable -and $config.kind -eq 'paraview') {
++    $found = Get-Command paraview.exe -ErrorAction SilentlyContinue
++    if ($found) { $Executable = $found.Source }
++    elseif ($env:ProgramFiles) {
++        $found = Get-ChildItem -LiteralPath $env:ProgramFiles -Directory -Filter 'ParaView*' |
++            Sort-Object Name -Descending | ForEach-Object { Join-Path $_.FullName 'bin\paraview.exe' } |
++            Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } | Select-Object -First 1
++        $Executable = $found
++    }
++}
++if (!$Executable -or !(Test-Path -LiteralPath $Executable -PathType Leaf)) {
++    throw 'Application not found. Run open.ps1 -Executable "full path to executable".'
++}
++Write-Host $config.notice
++if ($config.kind -eq 'viewer') {
++    & $Executable (Join-Path $PSScriptRoot 'model.adb')
++} else {
++    & $Executable '--script' (Join-Path $PSScriptRoot 'scene.py')
++}
++'''
++
++
++def _launchers(folder, *, kind, files, executable=None, notice=""):
++    folder = Path(folder)
++    config = {"kind": kind, "files": files, "executable_hint": str(Path(executable).resolve()) if executable else None,
++              "notice": notice}
++    if executable and Path(executable).is_file():
++        config["executable_sha256"] = _sha(executable)
++    _write_json(folder / "open.json", config)
++    # UTF-8 BOM for Windows PowerShell 5.1's script encoding.
++    (folder / "open.ps1").write_text(LAUNCHER, encoding="utf-8-sig")
++    name = "Open_Viewer.cmd" if kind == "viewer" else "Open_ParaView.cmd"
++    (folder / name).write_text(
++        '@echo off\r\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0open.ps1"\r\n'
++        'if errorlevel 1 pause\r\n', encoding="ascii")
++    return str((folder / name).resolve())
++
++
++def prepare_paraview_open(folder, data_file, *, accepted=False, condition=None, field=None):
++    """Create a relocatable scene with native cell fields and no point averaging."""
++    folder, data_file = Path(folder), Path(data_file)
++    if data_file.parent.resolve() != folder.resolve():
++        raise ValueError("ParaView dataset must be inside its point folder")
++    notice = ("Solver-accepted; physical qualification is separate." if accepted else
++              "DIAGNOSTIC / NOT ACCEPTED. Export is not proof of convergence.")
++    shown = {k: v for k, v in (condition or {}).items() if k in {"mach", "alpha_deg", "beta_deg"}}
++    label = ("SOLVER-ACCEPTED / NOT PHYSICALLY QUALIFIED" if accepted else "DIAGNOSTIC / NOT ACCEPTED")
++    label += ("\n" + "  ".join(f"{k}={float(v):.6g}" for k, v in shown.items())) if shown else "\nRun details: point.json"
++    scene = (
++        "from pathlib import Path\nimport hashlib\nimport json\n"
++        "from paraview.simple import *\n"
++        "root = Path(__file__).resolve().parent\n"
++        "config = json.loads((root / 'open.json').read_text(encoding='utf-8'))\n"
++        "for item in config['files']:\n"
++        "    if item['file'] == 'scene.py':\n        continue\n"
++        "    path = root / item['file']\n"
++        "    if hashlib.sha256(path.read_bytes()).hexdigest() != item['sha256']:\n"
++        "        raise RuntimeError('Visualization dataset changed')\n"
++        f"source = OpenDataFile(str(root / {data_file.name!r}))\n"
++        "source.UpdatePipeline()\nview = GetActiveViewOrCreate('RenderView')\n"
++        "display = Show(source, view)\ndisplay.Representation = 'Surface'\n"
++        "names = list(source.CellData.keys())\n"
++        f"preferred = {field!r}\n"
++        "chosen = preferred if preferred in names else next((n for n in names if 'cp' in n.lower() or 'c_p' in n.lower()), None)\n"
++        "if chosen:\n"
++        "    ColorBy(display, ('CELLS', chosen))\n"
++        "    display.RescaleTransferFunctionToDataRange(True, False)\n"
++        "    display.SetScalarBarVisibility(view, True)\n"
++        "    if hasattr(display, 'InterpolateScalarsBeforeMapping'):\n"
++        "        display.InterpolateScalarsBeforeMapping = 0\n"
++        f"title = Text()\ntitle.Text = {label!r}\n"
++        "title_display = Show(title, view)\ntitle_display.FontSize = 12\n"
++        "view.ResetCamera()\nRender(view)\n"
++    )
++    (folder / "scene.py").write_text(scene, encoding="utf-8")
++    files = [{"file": p.name, "sha256": _sha(p)} for p in (data_file, folder / "scene.py")]
++    return _launchers(folder, kind="paraview", files=files, notice=notice)
++
++
++def prepare_viewer(adb_path, folder, cases, *, accepted=False, executable=None):
++    """Copy exact native ADB + mandatory native case list, validated in file order.
++
++    OpenVSP_3.51.0 Viewer/glviewer.C LoadSolutionCaseList requires .adb.cases;
++    vspaero_viewer.C accepts the ADB path as its last command-line argument.
++    Missing/inconsistent case lists are never synthesized or guessed.
++    """
++    adb_path, folder = Path(adb_path), Path(folder)
++    result = {"status": "unavailable", "solver_accepted": bool(accepted), "qualification": False,
++              "errors": [], "files": []}
++    try:
++        sidecar = Path(str(adb_path) + ".cases")
++        rows = sidecar.read_text(encoding="utf-8").splitlines()
++        if len(rows) != len(cases):
++            raise ValueError("Native Viewer case count differs from complete ADB solutions")
++        for row, case in zip(rows, cases):
++            values = [float(v) for v in row.split()[:3]]
++            expected = [case["condition"][k] for k in ("mach", "alpha_deg", "beta_deg")]
++            if len(values) != 3 or any(not math.isfinite(v) or abs(v - e) > 1e-5 for v, e in zip(values, expected)):
++                raise ValueError("Native Viewer case order/conditions differ from ADB")
++        folder.mkdir(exist_ok=False)
++        sources = [(adb_path, "model.adb"), (sidecar, "model.adb.cases")]
++        # Exact same-run context, not used to replace missing pressure solutions.
++        for suffix in (".vsp3", ".vspgeom", ".vkey", ".vspaero", ".polar", ".history"):
++            source = adb_path.with_suffix(suffix)
++            if source.is_file():
++                sources.append((source, "model" + suffix))
++        for source, name in sources:
++            target = folder / name
++            before = _sha(source)
++            shutil.copy2(source, target)
++            if _sha(target) != before or _sha(source) != before:
++                raise ValueError("Native Viewer source changed during packaging")
++            result["files"].append({"file": name, "sha256": before, "source": str(source.resolve())})
++        result["launcher"] = _launchers(folder, kind="viewer", files=result["files"], executable=executable,
++            notice="Native Cp/DeltaCp. Solver acceptance is not physical qualification." if accepted else
++                   "DIAGNOSTIC / NOT ACCEPTED. Inspect native Cp/DeltaCp; no physical qualification.")
++        result["status"] = "exported"
++    except (OSError, ValueError) as exc:
++        result["errors"].append(str(exc))
++    return result
+diff --git a/docs/PARAVIEW_PRESSURE.md b/docs/PARAVIEW_PRESSURE.md
+index 99ca5f4..94ec0d2 100644
+--- a/docs/PARAVIEW_PRESSURE.md
++++ b/docs/PARAVIEW_PRESSURE.md
+@@ -5,6 +5,8 @@ RepairMach автоматически сохраняет отдельные па
+ `06_vspaero_results/runs/<run>/paraview/0001_M0p4_A0_B0/`
+ 
+ Такие же папки создаются внутри опорных проб сертификатора и численных повторов.
++После каждого завершившегося вызова выполняется экспорт, в том числе после отказа
++проверки решателя. Экспорт не запускает новый расчёт и не меняет критерии допуска.
+ После переэкспорта старого диагностического запуска папка называется `paraview_surface`.
+ 
+ - `pressure.vtu`: физические поверхности, собственные координаты и исходные значения без сглаживания.
+@@ -13,6 +15,38 @@ RepairMach автоматически сохраняет отдельные па
+ - Родительские `manifest.json` и `README.md`: полный список точек и инструкция.
+ 
+ Открытие: **ParaView → File → Open → pressure.vtu → Apply**. Выбрать Cell Data → `Cp_or_DeltaCp`.
++Или дважды нажать `Open_ParaView.cmd` в папке точки: готовая сцена открывает
++нативные cell-поля с цветовой шкалой, режимом и отметкой диагностического статуса.
++Усреднения по узлам и подмены давления нет; масштаб цветов по данным текущей точки,
++поэтому для сравнения нескольких режимов задайте одинаковую шкалу вручную.
++
++В родительской папке `viewer/` сохраняются **точные** `model.adb` и
++`model.adb.cases`, а также существующие файлы модели, сетки, настроек и истории
++этого запуска. `Open_Viewer.cmd` открывает их штатным **VSPAERO Viewer OpenVSP**;
++нужный режим выбирается в списке случаев Viewer. Viewer берётся рядом с тем
++`vspscript.exe`, которым выполнен расчёт. SHA256 файлов и бинарника записаны.
++Неполный ADB, отсутствующий список случаев или несовпадение его порядка/режимов
++помечаются `viewer_export.status=unavailable`; список случаев не выдумывается.
++
++Во время пакетной серии окна автоматически не всплывают. Данные и кнопки открытия
++сохраняются автоматически — открывайте нужную точку, не прерывая остальные расчёты.
++В главном меню комплекса **[15] Распределение давления** показывает последние
++40 готовых наборов текущего проекта; выбор открывает ParaView или Viewer.
++Запускатели проверяют контрольные суммы набора перед открытием. Если программа
++не найдена или архив перенесён на другой компьютер, выполните в этой папке
++`./open.ps1 -Executable "полный путь к paraview.exe или vspviewer.exe"`.
++Для ParaView также остаётся обычное открытие VTU без запускателя.
++
++MachLine: полный ASCII POLYDATA VTK проверяется по размерам сетки, индексам,
++конечности координат и массивов, наличию cell-поля давления. Повреждённый или
++необновлённый в интерактивном запуске VTK не становится новым полем давления.
++Диагностический набор сохраняется до проверки отчёта и сил; принятый набор —
++отдельно после штатных проверок. Нативный VTK не преобразуется в фиктивный ADB:
++Viewer для MachLine явно `unsupported`, используется ParaView.
++
++Протокол открытия основан на [официальной документации ParaView](https://docs.paraview.org/en/latest/UsersGuide/commandLineArguments.html)
++(`--script`) и исходниках OpenVSP_3.51.0 `Viewer/vspaero_viewer.C`,
++`Viewer/glviewer.C::LoadSolutionCaseList` (нативные ADB + ADB.cases).
+ На тонкой несущей поверхности это **перепад ΔCp**, на толстом теле — **Cp**.
+ Это безразмерные величины, не давление в Па. Поля не содержат полуэмпирического вязкого сопротивления.
+ Состав поверхностей определяется фактической постановкой: например, `lifting` содержит крыло и оперение, а не давление на всём самолёте.
+diff --git a/tests/test_pressure_export.py b/tests/test_pressure_export.py
+index 5897926..9d8cf9a 100644
+--- a/tests/test_pressure_export.py
++++ b/tests/test_pressure_export.py
+@@ -12,6 +12,12 @@ from pressure_export import export_vspaero_pressure, read_adb_v3, export_machlin
+ from pressure_export import _subset
+ 
+ 
++def vtk_fixture(cp=-0.125):
++    return ("# vtk DataFile Version 3.0\nfixture\nASCII\nDATASET POLYDATA\n"
++            "POINTS 3 float\n0 0 0\n1 0 0\n0 1 0\nPOLYGONS 1 4\n3 0 1 2\n"
++            f"CELL_DATA 1\nSCALARS C_p float 1\nLOOKUP_TABLE default\n{cp}\n")
++
++
+ def adb_fixture(endian="<", conditions=((0.4, 0, 0), (0.4, 5, 0)), cp=-0.125):
+     data = bytearray()
+     def pack(fmt, *values):
+@@ -106,7 +112,7 @@ class PressureExportTests(unittest.TestCase):
+         with TemporaryDirectory() as tmp:
+             root = Path(tmp)
+             source = root / "body.vtk"
+-            source.write_text("# vtk DataFile Version 3.0\nSCALARS C_p float\n")
++            source.write_text(vtk_fixture())
+             result = export_machline_pressure(source, root / "out", condition={"mach":1.2}, quality={"valid": True})
+             self.assertEqual("exported", result["status"])
+             self.assertEqual(source.read_bytes(), (root / "out/body.vtk").read_bytes())
+diff --git a/tests/test_repairmach_certified_machline.py b/tests/test_repairmach_certified_machline.py
+index 320cf3b..2b0f9ae 100644
+--- a/tests/test_repairmach_certified_machline.py
++++ b/tests/test_repairmach_certified_machline.py
+@@ -16,16 +16,63 @@ from calculation_scenarios import geometry_sha256
+ from repairmach_beta import certified_machline_force_contract, _nascart_conditions
+ import repairmach_beta as app
+ from tri_mesh import TriMesh, write_tri
++from test_pressure_export import vtk_fixture
+ 
+ 
+ class RepairMachCertifiedMachLineTests(unittest.TestCase):
++    def test_failed_solver_keeps_fresh_diagnostic_pressure_but_not_stale_fields(self):
++        for refresh in (True, False):
++            with self.subTest(refresh=refresh), tempfile.TemporaryDirectory() as tmp:
++                root = Path(tmp)
++                exe, body = root / "machline.exe", root / "body.vtk"
++                exe.write_text("fixture")
++                body.write_text(vtk_fixture())
++                input_path = root / "input.json"
++                input_path.write_text(json.dumps({"output": {"body_file": str(body)}}))
++                with ExitStack() as stack:
++                    for name, value in (("load_settings", {}), ("find_machline", exe),
++                                        ("default_project_path", root), ("machline_working_dir", root)):
++                        stack.enter_context(patch.object(app, name, return_value=value))
++                    stack.enter_context(patch.object(app, "ROOT", root))
++                    stack.enter_context(patch("builtins.input", return_value=str(input_path)))
++                    stack.enter_context(patch("builtins.print"))
++                    def failed_solver(*args, **kwargs):
++                        if refresh:
++                            body.write_text(vtk_fixture() + "\n")
++                        return SimpleNamespace(returncode=2, stdout="failed after output")
++                    stack.enter_context(patch.object(app.subprocess, "run", side_effect=failed_solver))
++                    app.run_machline()
++                manifests = list((root / "05_machline_results/paraview").rglob("point.json"))
++                self.assertEqual(1, len(manifests))
++                record = json.loads(manifests[0].read_text())
++                self.assertFalse(record["solver_accepted"])
++                self.assertEqual("exported" if refresh else "failed", record["status"])
++
++    def test_pressure_menu_only_opens_selected_existing_launcher(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            launcher = root / "run/Open_ParaView.cmd"
++            launcher.parent.mkdir()
++            launcher.write_text("fixture")
++            (launcher.parent / "open.json").write_text("{}")
++            with patch.object(app, "default_project_path", return_value=root), \
++                 patch("builtins.input", return_value="1"), patch("builtins.print"), \
++                 patch.object(app.os, "startfile", create=True) as opened:
++                app.open_pressure_viewer_workflow()
++                opened.assert_called_once_with(str(launcher))
++            with patch.object(app, "default_project_path", return_value=root), \
++                 patch("builtins.input", return_value=""), patch("builtins.print"), \
++                 patch.object(app.os, "startfile", create=True) as opened:
++                app.open_pressure_viewer_workflow()
++                opened.assert_not_called()
++
+     def test_completed_run_packages_native_pressure_under_project(self):
+         with tempfile.TemporaryDirectory() as tmp:
+             root = Path(tmp)
+             exe, tri, report_path, body = [root / name for name in ("machline.exe", "mesh.tri", "report.json", "body.vtk")]
+             for path in (exe, tri, report_path):
+                 path.write_text("fixture", encoding="utf-8")
+-            body.write_text("# vtk DataFile Version 3.0\nSCALARS C_p float\n", encoding="utf-8")
++            body.write_text(vtk_fixture(), encoding="utf-8")
+             input_path = root / "input.json"
+             input_path.write_text(json.dumps({"output": {"report_file": str(report_path), "body_file": str(body)}}))
+             report = {"solver_results": {"solver_status_code": 0, "residual": {"norm": 1e-8, "max": 1e-8}},
+@@ -39,7 +86,10 @@ class RepairMachCertifiedMachLineTests(unittest.TestCase):
+                 stack.enter_context(patch.object(app, "ROOT", root))
+                 stack.enter_context(patch("builtins.input", return_value=str(input_path)))
+                 stack.enter_context(patch("builtins.print"))
+-                stack.enter_context(patch.object(app.subprocess, "run", return_value=SimpleNamespace(returncode=0, stdout="OK")))
++                def completed_solver(*args, **kwargs):
++                    body.write_text(body.read_text() + "\n")
++                    return SimpleNamespace(returncode=0, stdout="OK")
++                stack.enter_context(patch.object(app.subprocess, "run", side_effect=completed_solver))
+                 app.run_machline()
+             manifest = json.loads((root / "report_manifest.json").read_text())
+             self.assertEqual("exported", manifest["pressure_export"]["status"])
+diff --git a/tests/test_visualization_output.py b/tests/test_visualization_output.py
+new file mode 100644
+index 0000000..e4e0917
+--- /dev/null
++++ b/tests/test_visualization_output.py
+@@ -0,0 +1,156 @@
++import hashlib
++import json
++from pathlib import Path
++import shutil
++import sys
++from tempfile import TemporaryDirectory
++import unittest
++from unittest.mock import patch
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "app"))
++from pressure_export import export_vspaero_pressure, export_machline_pressure
++from test_pressure_export import adb_fixture, vtk_fixture
++
++
++class VisualizationOutputTests(unittest.TestCase):
++    def fixture(self, root, rows="0.4 0 0 first\n0.4 5 0 second\n"):
++        adb = root / "a model.adb"
++        adb.write_bytes(adb_fixture())
++        if rows is not None:
++            Path(str(adb) + ".cases").write_text(rows)
++        adb.with_suffix(".vspaero").write_text("Mach = 0.4\n")
++        return adb
++
++    def test_each_case_gets_native_scene_and_no_automatic_gui(self):
++        with TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            adb = self.fixture(root)
++            with patch("subprocess.run", side_effect=AssertionError("GUI/solver not allowed")):
++                result = export_vspaero_pressure(adb, root / "out")
++            self.assertEqual("exported", result["viewer_export"]["status"])
++            for point in result["points"]:
++                folder = (root / "out" / point["file"]).parent
++                self.assertTrue((folder / "Open_ParaView.cmd").is_file())
++                scene = (folder / "scene.py").read_text()
++                compile(scene, str(folder / "scene.py"), "exec")
++                self.assertIn("('CELLS', chosen)", scene)
++                self.assertNotIn("CellDatatoPointData", scene)
++                self.assertIn("DIAGNOSTIC / NOT ACCEPTED", scene)
++                config = json.loads((folder / "open.json").read_text())
++                for entry in config["files"]:
++                    self.assertEqual(entry["sha256"], hashlib.sha256((folder / entry["file"]).read_bytes()).hexdigest())
++
++    def test_viewer_exact_bundle_and_runtime_hint(self):
++        with TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            adb = self.fixture(root)
++            executable = root / "Release & space" / "vspviewer.exe"
++            executable.parent.mkdir()
++            executable.write_bytes(b"not executed")
++            result = export_vspaero_pressure(adb, root / "out", accepted=True, viewer_executable=executable)
++            viewer = root / "out/viewer"
++            self.assertEqual(adb.read_bytes(), (viewer / "model.adb").read_bytes())
++            self.assertEqual(Path(str(adb) + ".cases").read_bytes(), (viewer / "model.adb.cases").read_bytes())
++            self.assertEqual(adb.with_suffix(".vspaero").read_bytes(), (viewer / "model.vspaero").read_bytes())
++            config = json.loads((viewer / "open.json").read_text())
++            self.assertEqual(str(executable.resolve()), config["executable_hint"])
++            self.assertEqual(hashlib.sha256(executable.read_bytes()).hexdigest(), config["executable_sha256"])
++            self.assertFalse(result["viewer_export"]["qualification"])
++            self.assertNotIn(str(executable), (viewer / "open.ps1").read_text(encoding="utf-8-sig"))
++
++    def test_missing_bad_count_wrong_order_nonfinite_sidecar_only_block_viewer(self):
++        for rows in (None, "0.4 0 0\n", "0.4 5 0\n0.4 0 0\n", "NaN 0 0\n0.4 5 0\n", "bad\n0.4 5 0\n"):
++            with self.subTest(rows=rows), TemporaryDirectory() as tmp:
++                root = Path(tmp)
++                result = export_vspaero_pressure(self.fixture(root, rows), root / "out")
++                self.assertEqual("exported", result["status"])
++                self.assertEqual("unavailable", result["viewer_export"]["status"])
++                self.assertTrue(result["viewer_export"]["errors"])
++                self.assertFalse((root / "out/viewer/Open_Viewer.cmd").exists())
++
++    def test_incomplete_adb_never_generates_openable_scene(self):
++        with TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            adb = self.fixture(root)
++            adb.write_bytes(adb.read_bytes()[:-1])
++            result = export_vspaero_pressure(adb, root / "out")
++            self.assertEqual("failed", result["status"])
++            self.assertEqual([], list((root / "out").rglob("*.cmd")))
++            self.assertEqual("unavailable", result["viewer_export"]["status"])
++
++    def test_mismatched_requested_point_cannot_open_native_viewer(self):
++        with TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            result = export_vspaero_pressure(self.fixture(root), root / "out",
++                expected_conditions=[{"mach": .8, "alpha_deg": 0, "beta_deg": 0}])
++            self.assertEqual("failed", result["status"])
++            self.assertFalse((root / "out/viewer").exists())
++
++    def test_relocated_package_uses_relative_dataset_paths(self):
++        with TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            result = export_vspaero_pressure(self.fixture(root), root / "out")
++            shutil.move(root / "out", root / "moved & space")
++            for point in result["points"]:
++                folder = (root / "moved & space" / point["file"]).parent
++                config = json.loads((folder / "open.json").read_text())
++                self.assertTrue(all(not Path(entry["file"]).is_absolute() for entry in config["files"]))
++                self.assertNotIn(str(root), (folder / "scene.py").read_text())
++
++    def test_failed_machline_without_body_has_explicit_manifest(self):
++        with TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            result = export_machline_pressure(root / "missing.vtk", root / "out", condition={}, quality={"valid": False})
++            self.assertEqual("failed", result["status"])
++            self.assertFalse(result["solver_accepted"])
++            self.assertTrue((root / "out/point.json").is_file())
++            self.assertFalse((root / "out/Open_ParaView.cmd").exists())
++
++    def test_machline_native_fields_and_unsupported_viewer(self):
++        with TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            vtk = root / "body.vtk"
++            vtk.write_text(vtk_fixture())
++            result = export_machline_pressure(vtk, root / "out", condition={"mach": 1.2}, quality={"valid": False})
++            self.assertEqual("exported", result["status"])
++            self.assertEqual("unsupported", result["viewer_export"]["status"])
++            self.assertEqual(vtk.read_bytes(), (root / "out/body.vtk").read_bytes())
++            self.assertTrue((root / "out/Open_ParaView.cmd").is_file())
++
++    def test_stale_machline_rejected(self):
++        with TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            vtk = root / "body.vtk"
++            vtk.write_text(vtk_fixture())
++            result = export_machline_pressure(vtk, root / "out", condition={}, quality={}, source_is_fresh=False)
++            self.assertEqual("failed", result["status"])
++            self.assertFalse((root / "out/body.vtk").exists())
++
++    def test_machline_colliding_extras_fail_without_overwriting(self):
++        with TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            vtk = root / "body.vtk"
++            vtk.write_text(vtk_fixture())
++            other = root / "other/body.vtk"
++            other.parent.mkdir()
++            other.write_text("different")
++            result = export_machline_pressure(vtk, root / "out", condition={}, quality={}, extras=[other])
++            self.assertEqual("failed", result["status"])
++            self.assertFalse((root / "out/body.vtk").exists())
++
++    def test_incomplete_nonfinite_unknown_machline_fields_fail_closed(self):
++        for data in (vtk_fixture().rsplit('\n', 2)[0], vtk_fixture(float('nan')),
++                     vtk_fixture().replace('ASCII', 'BINARY'),
++                     vtk_fixture().replace('CELL_DATA 1', 'CELL_DATA 2'),
++                     vtk_fixture().replace('3 0 1 2', '3 0 1 99')):
++            with self.subTest(data=data), TemporaryDirectory() as tmp:
++                root = Path(tmp)
++                vtk = root / 'body.vtk'
++                vtk.write_text(data)
++                result = export_machline_pressure(vtk, root / 'out', condition={}, quality={})
++                self.assertEqual('failed', result['status'])
++                self.assertFalse((root / 'out/Open_ParaView.cmd').exists())
++
++
++if __name__ == "__main__":
++    unittest.main()

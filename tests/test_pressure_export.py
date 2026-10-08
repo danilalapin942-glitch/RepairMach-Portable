@@ -12,6 +12,12 @@ from pressure_export import export_vspaero_pressure, read_adb_v3, export_machlin
 from pressure_export import _subset
 
 
+def vtk_fixture(cp=-0.125):
+    return ("# vtk DataFile Version 3.0\nfixture\nASCII\nDATASET POLYDATA\n"
+            "POINTS 3 float\n0 0 0\n1 0 0\n0 1 0\nPOLYGONS 1 4\n3 0 1 2\n"
+            f"CELL_DATA 1\nSCALARS C_p float 1\nLOOKUP_TABLE default\n{cp}\n")
+
+
 def adb_fixture(endian="<", conditions=((0.4, 0, 0), (0.4, 5, 0)), cp=-0.125):
     data = bytearray()
     def pack(fmt, *values):
@@ -106,7 +112,7 @@ class PressureExportTests(unittest.TestCase):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
             source = root / "body.vtk"
-            source.write_text("# vtk DataFile Version 3.0\nSCALARS C_p float\n")
+            source.write_text(vtk_fixture())
             result = export_machline_pressure(source, root / "out", condition={"mach":1.2}, quality={"valid": True})
             self.assertEqual("exported", result["status"])
             self.assertEqual(source.read_bytes(), (root / "out/body.vtk").read_bytes())

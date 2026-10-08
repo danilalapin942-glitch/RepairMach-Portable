@@ -1,0 +1,338 @@
+{
+  "checked": [
+    {
+      "path": "C:\\RepairMach-Portable\\app\\aero_hybrid.py",
+      "sha256": "915f96224ed3101263d6fc33b50507c03fac0181236c9017ec21176b28c4edc1"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\blind_readiness.py",
+      "sha256": "ca3eb58c4764697f17bcbdf0486b519005d08167bd6b9689eec36391d51805b6"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\blind_study.py",
+      "sha256": "2028d5afcaac72beb2a03df3b0ff6576aa4e7498ce0daadad7fdaf6d597f19bb"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\calculation_scenarios.py",
+      "sha256": "eca931021f93f6a5b9d4f4f16d2fb01aacf6b762395270aad4cc9a6dd3ed3e9f"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\geometry_action_executor.py",
+      "sha256": "bf98c8c2b1b7a2b88ea622c5c30dcad0f09ce29c252f3a568bdc7ef08be98c87"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\geometry_certificate.py",
+      "sha256": "b2aba1935e2fc81ca1f1fa4a88fbd0f73305edf42163f6c1c11db038d1a684bc"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\geometry_delta.py",
+      "sha256": "2699ec2558237cf9b26071f6216e98004cf07d90c9d36be16f2fdf5f98573ce4"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\geometry_manifest.py",
+      "sha256": "66995b4da9355e760cb10500b660a6162eee08cd3ca1c072e687322f1f0a6d3d"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\geometry_preflight.py",
+      "sha256": "d1620d9c5c89190254bd38993ec6ffce8ca262094cdd35bbd71a53ea23e69e2e"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\geometry_remediation.py",
+      "sha256": "fbe3b5bb1548bcb925592245c9055d9516cc3f700398b7f87f9fd1b62a794c1d"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\geometry_rules.py",
+      "sha256": "a908c6b3a1378741d123292c10c073cd56327f04cb784922c3b11c2c3b28192f"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\geometry_twins.py",
+      "sha256": "c0124972515420c73ce2c1d396cc4b39bbb2bd00683414ee46005bab2d5248b5"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\hybrid_pipeline.py",
+      "sha256": "9b5d4d6a790d669d1601064058ec7a11dfebb6d88ff49ea623e43fa2d59ae54c"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\hybrid_workbook.mjs",
+      "sha256": "2994a4e21e918f75d4917798e351cdc6d4a6726e7120862d4aa9022504eeccf7"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\mach_repair.py",
+      "sha256": "339a53c2960f1ea891aefa6c7c7cf422e3fa8472b0adcfee08f43d78cf6e5ea3"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\machline_geometry.py",
+      "sha256": "ff207dc1fe2995b2cabb065d50e4b8382cd3cf1582257a18e1ad6505a2cf1b56"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\machline_open_nozzle.py",
+      "sha256": "fb5d04b8e3c8ff356091bb176265ae22f796315ca9b6ca9831a8f2bb2db46280"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\machline_postprocess.py",
+      "sha256": "f4080b2da96cd6c9ac4fa8b1de7df67b553d3865949191169f60c765e9af805c"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\openvsp_runner.py",
+      "sha256": "73c63ad4ac42580f665154085e2dcecd594898c6c9f304791858dca1d3276af7"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\tri_mesh.py",
+      "sha256": "8d8a4d519c04aeb09fecab1390a60f0e35a8d89325abf1630a7a16e310da54bd"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\validation_metrics.py",
+      "sha256": "46c2e9369ae4fee42f1a93c8d959363f8b6b2d01e57fcc7590b0b2fa054d4d98"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\vspaero_anchor_review.py",
+      "sha256": "1fa9629a155bf65df6067f08b1444e4436ea5441f5faa9ec4af87a7fd9df1137"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\vspaero_runner.py",
+      "sha256": "99455edccb0141a261048b8e53c0c15f6c58834b042738ee863f57d7a3b340e7"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\vspgeom_guard.vspscript",
+      "sha256": "ac4a63b0a5ee32cb257bd49ad780ff7f693e92e33be5380bc373bd7f5a829e77"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\app\\vspgeom_integrity.py",
+      "sha256": "effdc83452162007944233696e94fb5b56ccf6ac57fc247c8050e2bfc8d36742"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\backups\\mq20_subsonic_scope_20260926\\project_config.json",
+      "sha256": "c0005379f89cb8c0ab640446be851f97a90821c33637bc2516f6d230e7a3fe72"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\backups\\mq20_wake_config_20260927_024356\\project_config.json",
+      "sha256": "bea8e85f4a57554e6c34657e3ea01aeacff04c199820a243cb694e41990db8dd"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\config\\calculation_scenarios.json",
+      "sha256": "ebafd1aeb783eb3e9f90a61be1ae49c4aa1ff8648fea7c458a424a1db1c6cbba"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\config\\geometry_certification.json",
+      "sha256": "8dc01c8cb39e77229a1d44f9a285fbe2309c7b1ed1aebb43cee6bc66d619b1a5"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\config\\hybrid_method.json",
+      "sha256": "cda4acd0726b6455b3aa648d3b30ada54ad05f7cf37def071f64ed4867f7f642"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\config\\repairmach_settings.json",
+      "sha256": "aa2f0bfe40d54ef7c680c1c42069e72e3dbaef21e112e64a3c4e499e6a221222"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\common\\helpers.f90",
+      "sha256": "404efeb2ed7841fded6c98285c60e24943b7d87ce2969a628f75094ba5eb5e14"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\common\\json.f90",
+      "sha256": "ab1726ff913eafd456ae0edea8a584ef714df3a38a3aaf49b2b364e395088681"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\common\\json_xtnsn.f90",
+      "sha256": "1fee831d321fb5784869a0a613b9bbc4ac0bd0f27d299bea9ddba3aa185bc4c2"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\common\\linalg.f90",
+      "sha256": "fbe6f366845052b8ab77352256be63d8d1d7dacc935c31d1f0361fbff044178b"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\common\\linked_list.f90",
+      "sha256": "ffe825c397defd2b9bbcf1a907157e042b489393776514c0d57eb16e7aed7fb9"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\common\\linked_list.f90.before_gfortran16",
+      "sha256": "27b438593edb29a2bdf3e132169da8a652059fd159a53bba6802560efafcdbdc"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\common\\math.f90",
+      "sha256": "70847cb245874275dad2ef533f73b0eeb0263b14daa6a41c3b9942ddb9517e2e"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\common\\sort.f90",
+      "sha256": "cd88c4e11f2213822b7e322f786ff53438fb6321f8822e8901f3e34ceaad83fb"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\libgcc_s_seh-1.dll",
+      "sha256": "3de5fee0d649a14b5147dd74caa76b75f68e7b8beae3b7252622faac945af20b"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\libgfortran-5.dll",
+      "sha256": "5116f3faaf0c42f9a2ac2bee9460b42ab0f1541739b0008c67261acb69df7efb"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\libgomp-1.dll",
+      "sha256": "c13023e6a4f686b2a48aa966b1afbbeea488b196be00bfa19aa7f0d39204b87d"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\libquadmath-0.dll",
+      "sha256": "9e4278bf26d369383d9b807704d1be402c0b23bb236b5c46f6a2c751a6bda968"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\libwinpthread-1.dll",
+      "sha256": "ed858c25be05f072fe6dc08bd9b9fc799afe8201b3575bb572b670b9c551184c"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\LICENSE",
+      "sha256": "52e25731feac86f5d8e158f8c5046291d3e8871f6ad289d61d7f267e3b21d5ac"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\machline.exe",
+      "sha256": "9160f4cb0f9fd07d06ddc29c10baff09848e16df4a5437e851edd6a11c01480b"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\machline_before_patch.exe",
+      "sha256": "f11f4f9be82b93953a714998de11d47f8a0fa63332a093362d105aafce04f412"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\machline_patched.exe",
+      "sha256": "9160f4cb0f9fd07d06ddc29c10baff09848e16df4a5437e851edd6a11c01480b"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\Makefile",
+      "sha256": "a4756f745bc009b24c8524b587bf515f10d8657cb9a38f731ca2dd05f313dccb"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\README.md",
+      "sha256": "d047967ac0002882f5a72886d45fbc854b0bc24dbe49a709dd81da15e1a5cca6"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\run_machline.bat",
+      "sha256": "dabcd33c3e870db04147660d95468b2d215c67674d9f80b8f8a580fd2c0c15a2"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src\\base_geom.f90",
+      "sha256": "9420373f10e768f6146bac5c47c69f9a16c7918bf94e1e61cea33a428b51f00f"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src\\flow.f90",
+      "sha256": "62bd626cc676d8d06c6d8a603cf4879e978e58f935596f973edeba20f1a2ce4f"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src\\MachLine_patched_diff.txt",
+      "sha256": "9915357df5146e498f5693ac45618fa8e30d891b0d1d9621348915650d988f6b"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src\\main.f90",
+      "sha256": "e58f1a66ad60c2a962d8ce0ae8c07c3c8d385a5dd0fd0498ce69a06e11d649d7"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src\\mesh.f90",
+      "sha256": "b20ddcbad5ea83bb9d2895cb0f94b477df4b889d81628c8bdc61f6b71f31f35b"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src\\panel.f90",
+      "sha256": "9b4f1d9b2adc9ca9f4306bc9acae1c157f3b54c53a63b491cbb93685fe362127"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src\\panel_solver.f90",
+      "sha256": "1297b4a7279bf93e784e4eca4718c80ce87db5415446d3875da65f866f0d28ba"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src\\stl.f90",
+      "sha256": "648865a34b21f0dd03bda339767490401f3776e8607944a42d59158a9be24e05"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src\\surface_mesh.f90",
+      "sha256": "36265e56eee9672db14e15cafc8da81b37a178cdc50f1e8809a9484b96148d10"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src\\tri.f90",
+      "sha256": "cd3db8b2cd5b032c609dc4f2865eb5cb11b5526f391534ae7500ae1132c47c5a"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src\\vtk.f90",
+      "sha256": "631ed0648898df797d5eb04c6da7934061fe52a56ec84773a144dbb60bb1706d"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src\\wake_mesh.f90",
+      "sha256": "2d3c1dd6cdf65d5bc8ee524f5aeb635d172c5d7ca67612d92842a57cb25fe0f2"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src\\wake_strip.f90",
+      "sha256": "f1cea631e31ec6d781a58cbcd6df5d62b168aeab5e80479ad0e11d37d9c2aa5d"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src_backup\\base_geom.f90",
+      "sha256": "9420373f10e768f6146bac5c47c69f9a16c7918bf94e1e61cea33a428b51f00f"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src_backup\\flow.f90",
+      "sha256": "62bd626cc676d8d06c6d8a603cf4879e978e58f935596f973edeba20f1a2ce4f"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src_backup\\main.f90",
+      "sha256": "cb8ad417ec28a7fd8e2e2a7828d5b3fc0df37bd5a3a72f16cacbda6750880703"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src_backup\\mesh.f90",
+      "sha256": "b20ddcbad5ea83bb9d2895cb0f94b477df4b889d81628c8bdc61f6b71f31f35b"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src_backup\\panel.f90",
+      "sha256": "9b4f1d9b2adc9ca9f4306bc9acae1c157f3b54c53a63b491cbb93685fe362127"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src_backup\\panel_solver.f90",
+      "sha256": "69576ebc5a75a9fa0a13c726f3bb22c10e1461852ef3bba470b7142136c890dd"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src_backup\\stl.f90",
+      "sha256": "648865a34b21f0dd03bda339767490401f3776e8607944a42d59158a9be24e05"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src_backup\\surface_mesh.f90",
+      "sha256": "2982da91a9fbf33b1458a9a32f63a80360870d808109a92c49e347a397fac8d8"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src_backup\\tri.f90",
+      "sha256": "cd3db8b2cd5b032c609dc4f2865eb5cb11b5526f391534ae7500ae1132c47c5a"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src_backup\\vtk.f90",
+      "sha256": "f7660c6ee59a6008f18d7cf6acb162a85d1e05a1e9831c9fc2de59167ee08a1c"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src_backup\\wake_mesh.f90",
+      "sha256": "86b29a008289423dc0f02c82f62f715c2955f478bb575936f5e07d77c1aaecc5"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\engines\\MachLine\\src_backup\\wake_strip.f90",
+      "sha256": "f1cea631e31ec6d781a58cbcd6df5d62b168aeab5e80479ad0e11d37d9c2aa5d"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\projects\\MiG_29\\project_config.json",
+      "sha256": "2565a16ff8ae0a47727f6bed317fc6c1fc37bae1c4f22cd3a241a5ea1c56b34b"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\projects\\MQ20_20260926\\project_config.json",
+      "sha256": "2ad038718ac255401b996863f911d04031d425f23153522e5ec10d0cd79d77f2"
+    },
+    {
+      "path": "C:\\RepairMach-Portable\\projects\\Plane_Naca\\project_config.json",
+      "sha256": "599449198ff52913730e44bf8e5048d608133edb0dbdcd2bff3866f930caecfd"
+    },
+    {
+      "path": "C:/Multifunctional UAV/Boeing MQ-28/MQ28_body_B.vsp3",
+      "sha256": "7b88f468d35c67fb04fcab369b488b245831bf8e594d540dc325d8ea2363dd8a"
+    },
+    {
+      "path": "C:/Multifunctional UAV/MQ-20 Avenger/MQ20_for MachLine.vsp3",
+      "sha256": "5710974615718259376ea2aca54fd14efa1837069e1b031d1461485dac955fbd"
+    },
+    {
+      "path": "C:/OpenVSP-3.51.0-win64-Python3.13/OpenVSP-3.51.0-win64/vspaero.exe",
+      "sha256": "324756878fa0af84bb0d9157ef0896139b636971360a67b3d5163e641988c1e7"
+    },
+    {
+      "path": "C:/OpenVSP-3.51.0-win64-Python3.13/OpenVSP-3.51.0-win64/vspscript.exe",
+      "sha256": "79b238c97814e0dd74a6b49839710c8b17406b46d0616f5bd2bf1692a4264088"
+    }
+  ],
+  "failures": [],
+  "unchanged": true
+}

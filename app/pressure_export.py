@@ -14,6 +14,7 @@ import shutil
 import struct
 from xml.sax.saxutils import escape
 from aero_hybrid import is_vspaero_zero_mach_regularization
+from visualization_output import prepare_paraview_open, prepare_viewer, validate_machline_vtk
 
 
 def _sha(path):
@@ -173,7 +174,7 @@ def _condition_match(actual, expected, quality):
                for p in (quality or {}).get("points", []))
 
 
-def export_vspaero_pressure(adb_path, output_dir, *, accepted=False, quality=None, expected_conditions=None, mode=None):
+def export_vspaero_pressure(adb_path, output_dir, *, accepted=False, quality=None, expected_conditions=None, mode=None, viewer_executable=None):
     """Export all steady points or record an explicit error; never alter solver validity.
 
     Output directory must be fresh so stale data cannot masquerade as a new run.
@@ -187,10 +188,14 @@ def export_vspaero_pressure(adb_path, output_dir, *, accepted=False, quality=Non
               "source": str(adb_path.resolve()), "points": [], "mode": mode,
               "axes": "OpenVSP XYZ (unchanged)", "pressure_units": "dimensionless",
               "pressure_meaning": "Native Cp on thick panels; pressure jump DeltaCp on thin lifting surfaces. Not absolute pressure.",
-              "source_format": "ADB v3, steady", "errors": []}
+              "source_format": "ADB v3, steady", "errors": [],
+              "viewer_export": {"status": "unavailable", "qualification": False,
+                                "errors": ["Complete matched pressure solution not available"]}}
     try:
         result["source_sha256"] = _sha(adb_path)
         header, cases = read_adb_v3(adb_path)
+        if _sha(adb_path) != result["source_sha256"]:
+            raise ValueError("ADB changed while reading pressure; retry only after solver finishes")
         if expected_conditions is not None:
             remaining = list(expected_conditions)
             for case in cases:
@@ -225,6 +230,8 @@ def export_vspaero_pressure(adb_path, output_dir, *, accepted=False, quality=Non
                       "pressure_meaning": result["pressure_meaning"],
                       "qualification": "Solver gate only; not an aircraft ADH certificate",
                       "source_sha256": result["source_sha256"], "quality": quality or {}}
+            record["paraview_launcher"] = prepare_paraview_open(
+                folder, surface, accepted=bool(accepted), condition=c, field="Cp_or_DeltaCp")
             if wake_indices:
                 wake = folder / "wake.vtu"
                 write_pressure_vtu(wake, _subset(case, wake_indices, "wake"), bool(accepted))
@@ -233,6 +240,8 @@ def export_vspaero_pressure(adb_path, output_dir, *, accepted=False, quality=Non
             _json(folder / "point.json", record)
             result["points"].append(record)
         result["status"] = "exported"
+        result["viewer_export"] = prepare_viewer(
+            adb_path, output_dir / "viewer", cases, accepted=bool(accepted), executable=viewer_executable)
     except (OSError, ValueError, struct.error) as exc:
         result["errors"].append(str(exc))
     _json(output_dir / "manifest.json", result)
@@ -247,32 +256,55 @@ def export_vspaero_pressure(adb_path, output_dir, *, accepted=False, quality=Non
         "Координаты сохранены в осях и единицах исходного решателя. VTK содержит все данные, "
         "исходный ADB для открытия не нужен. manifest.json перечисляет точки, ошибки и hashes.\n",
         encoding="utf-8")
+    with (output_dir / "README.md").open("a", encoding="utf-8") as stream:
+        stream.write("\nОткрытие: Open_ParaView.cmd в папке точки загружает давление с цветовой шкалой. "
+                     "viewer/Open_Viewer.cmd открывает весь нативный набор в VSPAERO Viewer OpenVSP; "
+                     "режим выбирается в Viewer. Графические окна сами не запускаются во время серии. "
+                     "Если Viewer недоступен, причина записана в manifest.json.\n")
     result["manifest"] = str((output_dir / "manifest.json").resolve())
     return result
 
 
-def export_machline_pressure(body_path, output_dir, *, condition, quality, extras=()):
+def export_machline_pressure(body_path, output_dir, *, condition, quality, extras=(), source_is_fresh=True):
     """Package native VTK fields and provenance per MachLine point, without conversion."""
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=False)
     result = {"schema": "repairmach.pressure-export/1.0", "backend": "machline",
               "condition": condition, "quality": quality, "status": "failed", "files": [],
-              "axes": "Native MachLine mesh axes; no implicit axis rotation", "errors": []}
+              "axes": "Native MachLine mesh axes; no implicit axis rotation", "errors": [],
+              "solver_accepted": (quality or {}).get("valid") is True,
+              "viewer_export": {"status": "unsupported", "qualification": False,
+                                "errors": ["OpenVSP Viewer reads native VSPAERO ADB, not MachLine VTK"]}}
     try:
+        if not source_is_fresh:
+            raise ValueError("MachLine body VTK was not refreshed by this run; stale pressure rejected")
         body_path = Path(body_path)
-        if not body_path.is_file() or "SCALARS" not in body_path.read_text(encoding="utf-8", errors="replace"):
-            raise ValueError("MachLine body VTK missing or contains no scalar fields")
-        for source in (body_path, *extras):
+        result["native_mesh"] = validate_machline_vtk(body_path)
+        sources = [Path(p) for p in (body_path, *extras) if Path(p).is_file()]
+        if len({p.name.casefold() for p in sources}) != len(sources):
+            raise ValueError("Visualization sources have colliding filenames")
+        for source in sources:
             source = Path(source)
             if not source.is_file():
                 continue
             target = output_dir / source.name
+            before = _sha(source)
             shutil.copy2(source, target)
-            result["files"].append({"file": target.name, "sha256": _sha(target), "source": str(source.resolve())})
+            if _sha(target) != before or _sha(source) != before:
+                raise ValueError("MachLine source changed during pressure packaging")
+            result["files"].append({"file": target.name, "sha256": before, "source": str(source.resolve())})
         result["status"] = "exported"
+        result["paraview_launcher"] = prepare_paraview_open(
+            output_dir, output_dir / body_path.name,
+            accepted=result["solver_accepted"], condition=condition)
     except (OSError, ValueError) as exc:
         result["errors"].append(str(exc))
     _json(output_dir / "point.json", result)
+    (output_dir / "README.md").write_text(
+        "Откройте Open_ParaView.cmd: нативные cell-поля MachLine, без усреднения по узлам.\n"
+        "Если приложение не найдено: open.ps1 -Executable \"полный путь к paraview.exe\".\n"
+        "При valid=false это диагностика, не принятый расчёт. Экспорт не означает физический допуск.\n"
+        "OpenVSP Viewer для MachLine VTK не поддерживается; фиктивный ADB не создаётся.\n", encoding="utf-8")
     result["manifest"] = str((output_dir / "point.json").resolve())
     return result
 

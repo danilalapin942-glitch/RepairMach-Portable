@@ -1,0 +1,118 @@
+{
+  "files": [
+    {
+      "file": "app/pressure_export.py",
+      "new_sha256": "3e7ad2f8c719d027b4f243d94082c84a2ab38a6b3f20acc9dbad827ebf691b78",
+      "destinations": [
+        {
+          "path": "C:\\RepairMach-Portable\\app\\pressure_export.py",
+          "old_sha256": "c557f25cde7312ef4ecdb5cb8ba27e3f52c396b878144cd061c99e95a6ff3255"
+        },
+        {
+          "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\app\\pressure_export.py",
+          "old_sha256": "c557f25cde7312ef4ecdb5cb8ba27e3f52c396b878144cd061c99e95a6ff3255"
+        }
+      ]
+    },
+    {
+      "file": "app/visualization_output.py",
+      "new_sha256": "7c83a7a659d8f3c01799893358cb912433b93b7ff0e7d1db43daa2949f8c326f",
+      "destinations": [
+        {
+          "path": "C:\\RepairMach-Portable\\app\\visualization_output.py",
+          "old_sha256": null
+        },
+        {
+          "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\app\\visualization_output.py",
+          "old_sha256": null
+        }
+      ]
+    },
+    {
+      "file": "app/geometry_certification.py",
+      "new_sha256": "bec2f6ea116a70ed8410988f2c8c54a461e8ef17b9a21228cb17f34dac69663d",
+      "destinations": [
+        {
+          "path": "C:\\RepairMach-Portable\\app\\geometry_certification.py",
+          "old_sha256": "5b67ff836660238c94b601750d84a5ffe18e8469ced23e7c6837144cba85ae97"
+        },
+        {
+          "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\app\\geometry_certification.py",
+          "old_sha256": "5b67ff836660238c94b601750d84a5ffe18e8469ced23e7c6837144cba85ae97"
+        }
+      ]
+    },
+    {
+      "file": "app/repairmach_beta.py",
+      "new_sha256": "937729fcf769b982969371c65718e5bab0567d77b77ee840c196979672c3bd7b",
+      "destinations": [
+        {
+          "path": "C:\\RepairMach-Portable\\app\\repairmach_beta.py",
+          "old_sha256": "922a906aada2713f389083514d408fc04cda89c8bb7277472d352852a8ea8366"
+        },
+        {
+          "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\app\\repairmach_beta.py",
+          "old_sha256": "922a906aada2713f389083514d408fc04cda89c8bb7277472d352852a8ea8366"
+        }
+      ]
+    },
+    {
+      "file": "docs/PARAVIEW_PRESSURE.md",
+      "new_sha256": "f2c04aa0d3f93b6008c3867256de500cf454fc17dc3903ce23e2a8e74d0b3de9",
+      "destinations": [
+        {
+          "path": "C:\\RepairMach-Portable\\docs\\PARAVIEW_PRESSURE.md",
+          "old_sha256": "1c5f50e98fe878b2934a3385b8ff2432563416b88170dffce896ef6916194655"
+        },
+        {
+          "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\docs\\PARAVIEW_PRESSURE.md",
+          "old_sha256": "1c5f50e98fe878b2934a3385b8ff2432563416b88170dffce896ef6916194655"
+        }
+      ]
+    },
+    {
+      "file": "tests/test_pressure_export.py",
+      "new_sha256": "cb3d543f53fbb7edb0cab3fc1e79d1ebee70bc5ef4183b523ca988d5852b318d",
+      "destinations": [
+        {
+          "path": "C:\\RepairMach-Portable\\tests\\test_pressure_export.py",
+          "old_sha256": "260ef54ce9c43fc70a655b25e366479e8bd146eb1147a3ad04029bcf694ab235"
+        },
+        {
+          "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\tests\\test_pressure_export.py",
+          "old_sha256": "260ef54ce9c43fc70a655b25e366479e8bd146eb1147a3ad04029bcf694ab235"
+        }
+      ]
+    },
+    {
+      "file": "tests/test_visualization_output.py",
+      "new_sha256": "cd6e40a136cb7fb5a669bfe13e003445b741aa86e62d577a9b9300c5c7930c0c",
+      "destinations": [
+        {
+          "path": "C:\\RepairMach-Portable\\tests\\test_visualization_output.py",
+          "old_sha256": null
+        },
+        {
+          "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\tests\\test_visualization_output.py",
+          "old_sha256": null
+        }
+      ]
+    },
+    {
+      "file": "tests/test_repairmach_certified_machline.py",
+      "new_sha256": "8a727559cac55371ffe53905d5af805fa0df34009fed7b2c0fc1c35e0872ea53",
+      "destinations": [
+        {
+          "path": "C:\\RepairMach-Portable\\tests\\test_repairmach_certified_machline.py",
+          "old_sha256": "292b3c01f72e92a1e510bfeb4e0e73ccf3782a6f29d9bed77c69402b462b9961"
+        },
+        {
+          "path": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\github_publish\\RepairMach-Portable\\tests\\test_repairmach_certified_machline.py",
+          "old_sha256": "292b3c01f72e92a1e510bfeb4e0e73ccf3782a6f29d9bed77c69402b462b9961"
+        }
+      ]
+    }
+  ],
+  "solver_runs": 0,
+  "scope": "visualization only; no policy, model or backend changes"
+}
