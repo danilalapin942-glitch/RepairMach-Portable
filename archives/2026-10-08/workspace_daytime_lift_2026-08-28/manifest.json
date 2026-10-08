@@ -1,0 +1,140 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "workspace_daytime_lift_2026-08-28",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\daytime_lift_2026-08-28",
+  "source_files": [
+    {
+      "path": "analyze_full_range_lift.py",
+      "bytes": 12221,
+      "mtime_ns": 1787900861184279200,
+      "sha256": "b60a4ceead7761769bccb4e9c65ee04f3a34fa5aab4ada3ff8cd87b32915221b"
+    },
+    {
+      "path": "balanced_validation_points.csv",
+      "bytes": 2729,
+      "mtime_ns": 1787900883449618700,
+      "sha256": "2d5a1261fe5433a09ad716ce833a8f0febcca6f19cc31e0ceb1b7d50a29aadb8"
+    },
+    {
+      "path": "balanced_validation_summary.csv",
+      "bytes": 871,
+      "mtime_ns": 1787900883448616700,
+      "sha256": "7033b9a28a20df9c065474c13d1978f4076e37de18ae6212a5479070b9154a46"
+    },
+    {
+      "path": "cy_alpha_full_range.csv",
+      "bytes": 6299,
+      "mtime_ns": 1787900883448616700,
+      "sha256": "65a157f851224cd9f151d4c791acd88bc77ea6b66a28bd2e37c3d924c4fa2b96"
+    },
+    {
+      "path": "cy_full_range_points.csv",
+      "bytes": 37493,
+      "mtime_ns": 1787900883447616800,
+      "sha256": "3e8cafe2168a925ca2090dc677d5dd569448a4aa8eb37f367fe44295d5480ed6"
+    },
+    {
+      "path": "repairmach_cy_m140_pilot.adb",
+      "bytes": 1032,
+      "mtime_ns": 1787900459155889500,
+      "sha256": "86feaba781128adef7b95537b3736b4ac6094a43ad9404c36175be79e189cc80"
+    },
+    {
+      "path": "repairmach_cy_m140_pilot.adb.cases",
+      "bytes": 0,
+      "mtime_ns": 1787900459153887000,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "repairmach_cy_m140_pilot.csf",
+      "bytes": 20,
+      "mtime_ns": 1787900451465032400,
+      "sha256": "bb29bf526f4379308ca9c271a8df90c39f4df4235f81f63e370f25e714bb797c"
+    },
+    {
+      "path": "repairmach_cy_m140_pilot.group.0",
+      "bytes": 840,
+      "mtime_ns": 1787900459154888700,
+      "sha256": "98fc77f79f41cff378fb9207b7e866c7c2312155ca0f02faf5a6ec12e1bdb26d"
+    },
+    {
+      "path": "repairmach_cy_m140_pilot.group.1",
+      "bytes": 840,
+      "mtime_ns": 1787900459154888700,
+      "sha256": "d47dd5045c56a9a68051f72d50810f3da4b96a6d5920c7d1a051e5d1de185bb9"
+    },
+    {
+      "path": "repairmach_cy_m140_pilot.history",
+      "bytes": 3207,
+      "mtime_ns": 1787900459154888700,
+      "sha256": "747ff3db5a91da83030e9bcd3f4568c340d4441d184d3ae36f9108b554e5d513"
+    },
+    {
+      "path": "repairmach_cy_m140_pilot.lod",
+      "bytes": 1034,
+      "mtime_ns": 1787900459154888700,
+      "sha256": "e0932b6f3a064d1ef00c7e611c7b8865f0abb430f76139a614e0ca7b33c34d5b"
+    },
+    {
+      "path": "repairmach_cy_m140_pilot.quad.cases",
+      "bytes": 18,
+      "mtime_ns": 1787900459154888700,
+      "sha256": "82a501f9cda9e9d183b01aa3369e55a10835bad9b2e78c52edbc98279e94e937"
+    },
+    {
+      "path": "repairmach_cy_m140_pilot.vkey",
+      "bytes": 649,
+      "mtime_ns": 1787900451465032400,
+      "sha256": "f87d1eb1ca47dc4f90d7f89773508cde5b5ca75d7f555d87135e5096e4492721"
+    },
+    {
+      "path": "repairmach_cy_m140_pilot.vsp3",
+      "bytes": 557628,
+      "mtime_ns": 1787900451367723900,
+      "sha256": "1485a75e565a7346ff0b23f8c8fac725691f23e92f30afb8fd3d6ededba44c37"
+    },
+    {
+      "path": "repairmach_cy_m140_pilot.vspaero",
+      "bytes": 978,
+      "mtime_ns": 1787900451466033400,
+      "sha256": "7ad399847f1c20eb754a6113a6472a18f953e8744203009eea561d419db277e9"
+    },
+    {
+      "path": "repairmach_cy_m140_pilot.vspgeom",
+      "bytes": 1720571,
+      "mtime_ns": 1787900451464032300,
+      "sha256": "b7eadae3508fd090deb89c090d9ec711c1e322909a0592e426a56f5db52662d9"
+    },
+    {
+      "path": "repairmach_cy_m140_pilot_solver.log",
+      "bytes": 94975,
+      "mtime_ns": 1787900770857216300,
+      "sha256": "f628a11d0c354636ced03c1b627293ed5f644a05ee03b05dd0d1ce8f3f59aa45"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 4516,
+      "mtime_ns": 1787900883449618700,
+      "sha256": "862feaad3cf48740f3525686dbd10b1b931e91e44c88cb5e6d5ab94034e372c5"
+    },
+    {
+      "path": "vspaero_individual_m14.vspscript",
+      "bytes": 2633,
+      "mtime_ns": 1787900437347896100,
+      "sha256": "f9080077d082bcf2642d62401806b510c8aa92c376972db8d58674c0b5fc3b08"
+    }
+  ],
+  "source_bytes": 2448554,
+  "archive_bytes": 351268,
+  "archive_sha256": "7e25089beb2a7a187ee6610fe73d1d94bd912a2b6fbfb31162e255bfc0f88b9a",
+  "parts": [
+    {
+      "file": "workspace_daytime_lift_2026-08-28.zip",
+      "bytes": 351268,
+      "sha256": "7e25089beb2a7a187ee6610fe73d1d94bd912a2b6fbfb31162e255bfc0f88b9a"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
