@@ -444,12 +444,16 @@ def replace_downstream_axial_caps(
             "closures": [],
             "reason": "positive Sref and cref are required",
         }
-    mach_max = max(
+    mach_values = [
         float(value)
         for lo, hi in scope.get("mach_intervals", [])
         for value in (lo, hi)
         if float(value) > 1.0
-    )
+    ]
+    if not mach_values:
+        return mesh, {"attempted": False, "accepted": False, "closures": [],
+                      "reason": "not_applicable_to_subsonic_scope"}
+    mach_max = max(mach_values)
     alpha_max = max(abs(float(value)) for value in scope.get("alpha_deg", [0.0, 0.0]))
     beta = abs(float(scope.get("beta_deg", 0.0)))
     flow_angle = math.degrees(math.acos(
@@ -580,6 +584,8 @@ def prepare_machline_geometry(
     deduplicated, duplicate_log = remove_redundant_duplicate_skins(mesh)
     repaired, generic_log = repair(deduplicated, merge_duplicate_vertices=False)
     closure_policy = policy.get("solver_surrogate", {}).get("downstream_axial_closure", {})
+    if policy.get("topology_mode", "closed_body") == "open_nozzle":
+        closure_policy = {**closure_policy, "enabled": False}
     prepared, closure_log = replace_downstream_axial_caps(
         repaired,
         scope=scope,

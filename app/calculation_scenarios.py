@@ -17,6 +17,7 @@ READY_EXECUTIONS = {
     "geometry_preflight",
     "geometry_certification",
     "geometry_corrective_action",
+    "vspaero_anchor_review",
 }
 POINT_EXECUTIONS = {"sweep", "independent_alpha", "independent_mach_alpha"}
 PROTOCOL_EXECUTIONS = {

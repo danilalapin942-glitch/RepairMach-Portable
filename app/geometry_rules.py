@@ -348,6 +348,18 @@ def validate_geometry_policy(policy: dict) -> None:
     wake_relax = float(recovery_controls.get("wake_relax", -1.0))
     if not 0.0 < wake_relax <= 1.0:
         raise ValueError("numerical_recovery.controls.wake_relax должен лежать в (0; 1]")
+    # Optional implicit wake must be active during the requested iteration budget.
+    # Validate every stage; accepting an inert or mistyped flag would mislabel
+    # the numerical setup in the certificate.
+    implicit_stages = [probe, recovery_controls, *recovery.get("fallback_controls", [])]
+    for controls in implicit_stages:
+        implicit = controls.get("implicit_wake")
+        if implicit is not None and not isinstance(implicit, bool):
+            raise ValueError("implicit_wake должен быть bool или None")
+        start = controls.get("implicit_wake_start_iter", 8)
+        if (isinstance(start, bool) or not isinstance(start, int) or start < 0
+                or (implicit is True and start >= int(controls.get("wake_num_iter", probe.get("wake_num_iter", 8))))):
+            raise ValueError("implicit_wake_start_iter должен быть целым >= 0 и раньше конца итераций")
     if not any(float(lo) <= probe_mach <= float(hi) for lo, hi in intervals):
         raise ValueError("Контрольный Mach VSPAERO вне области сертификата")
     if not alpha_lo <= probe_alpha <= alpha_hi:
@@ -380,6 +392,15 @@ def validate_geometry_policy(policy: dict) -> None:
                 seen.add(key)
 
     machline = policy.get("machline", {})
+    if machline.get("topology_mode", "closed_body") not in {"closed_body", "open_nozzle"}:
+        raise ValueError("Неизвестный machline.topology_mode")
+    declarations = machline.get("open_nozzles", [])
+    if not isinstance(declarations, list):
+        raise ValueError("machline.open_nozzles должен быть списком")
+    for outlet in declarations:
+        if (not isinstance(outlet, dict) or not str(outlet.get("component_name", "")).strip()
+                or not math.isfinite(float(outlet.get("plane_x", math.nan)))):
+            raise ValueError("Каждому соплу нужны точное имя экспортированной поверхности и конечный plane_x")
     max_changed_panels = machline.get("max_changed_panels")
     if (
         isinstance(max_changed_panels, bool)

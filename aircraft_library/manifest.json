@@ -1,0 +1,524 @@
+[
+  {
+    "path": "Airbus Wingman/airbus-wingman-08.jpg",
+    "bytes": 85822,
+    "mtime_ns": 1758695154000000000,
+    "sha256": "a5602dab4143ccb5113c1a4d4d3d7fa76c606bf44c86c8e10429a8f6db549ce4"
+  },
+  {
+    "path": "Bayraktar-Kizilema/bayraktar-kizilelma-13.jpg",
+    "bytes": 94396,
+    "mtime_ns": 1758695148000000000,
+    "sha256": "9c0684247f4bd25f405130e04c2e5f798f91758c88d12fc080cd31b6e9ea0d2c"
+  },
+  {
+    "path": "Boeing MQ-28/MQ-28.dwg",
+    "bytes": 1694203,
+    "mtime_ns": 1758559252000000000,
+    "sha256": "25a1e73adebfee0ca0854fb8289e7ac4170160146cc9fac9f7a225295e20f543"
+  },
+  {
+    "path": "Boeing MQ-28/MQ-28_recover.dwg",
+    "bytes": 1726635,
+    "mtime_ns": 1758561876000000000,
+    "sha256": "9d067cfee7c264667f7c8f499d390f572a1a83251007905e3784f569d3c13c79"
+  },
+  {
+    "path": "Boeing MQ-28/MQ28_body_B.vsp3",
+    "bytes": 448152,
+    "mtime_ns": 1790452664000000000,
+    "sha256": "7b88f468d35c67fb04fcab369b488b245831bf8e594d540dc325d8ea2363dd8a"
+  },
+  {
+    "path": "Boeing MQ-28/MQ28_body_experiment_v03/MQ28_body_A.vsp3",
+    "bytes": 448152,
+    "mtime_ns": 1790452626000000000,
+    "sha256": "7c065ec2c459e1f437398e89e753d5ebc2778935c1d2313a0527ba560331bceb"
+  },
+  {
+    "path": "Boeing MQ-28/MQ28_body_experiment_v03/MQ28_body_B.vsp3",
+    "bytes": 448152,
+    "mtime_ns": 1790452664000000000,
+    "sha256": "7b88f468d35c67fb04fcab369b488b245831bf8e594d540dc325d8ea2363dd8a"
+  },
+  {
+    "path": "Boeing MQ-28/MQ28_body_experiment_v03/MQ28_body_comparison.png",
+    "bytes": 599603,
+    "mtime_ns": 1790453000000000000,
+    "sha256": "e8f8f80f4fd5a0b9bfe9388d9a14cffaeb0a906285dca4a5ac8bd730bb219d78"
+  },
+  {
+    "path": "Boeing MQ-28/MQ28_body_experiment_v03/MQ28_body_sections.png",
+    "bytes": 229524,
+    "mtime_ns": 1790453000000000000,
+    "sha256": "04f2bfc93bccdf6cfc9ad5ee73c7a3a409f4419148f7d65332cb53d000198a97"
+  },
+  {
+    "path": "Boeing MQ-28/MQ28_calculation_v02.vsp3",
+    "bytes": 448147,
+    "mtime_ns": 1790450650816903600,
+    "sha256": "43f82b40dcdd0707bf322fb0c28820baca644b6cf1aca156794a52f11b8e8d4c"
+  },
+  {
+    "path": "Boeing MQ-28/MQ28_dimensions_ft.jpg",
+    "bytes": 1239079,
+    "mtime_ns": 1790409574417102900,
+    "sha256": "505abda3b7a54a02553c28112eb43ddbe411656ef0d8cf912a429644df17153d"
+  },
+  {
+    "path": "Boeing MQ-28/MQ28_repaired_v01.vsp3",
+    "bytes": 448153,
+    "mtime_ns": 1790411638290336000,
+    "sha256": "b9f8df94971d2e1681faf7373b4650c2921bcad23c4a7b690a4966529262d670"
+  },
+  {
+    "path": "Boeing MQ-28/MQ28_student_rootfit_D.vsp3",
+    "bytes": 450623,
+    "mtime_ns": 1791227919099874600,
+    "sha256": "de060d2ddedbde201c52308270ce3b5ee3bdbc16d88375d831a018e168276682"
+  },
+  {
+    "path": "Boeing MQ-28/OIP.jpeg",
+    "bytes": 10767,
+    "mtime_ns": 1758551672000000000,
+    "sha256": "7d904857a5582b78ba22ce816bd3440c1c7ac6643de3ae0e2666e114b77914af"
+  },
+  {
+    "path": "Boeing MQ-28/OKRUG.vsp3",
+    "bytes": 557206,
+    "mtime_ns": 1791230732907674600,
+    "sha256": "1727aefb626b7f28d9819d89dd08f00e86431dcb9854fba7e683fa6738797f32"
+  },
+  {
+    "path": "Cats Warrior/cats-warrior-08.jpg",
+    "bytes": 59484,
+    "mtime_ns": 1758695148000000000,
+    "sha256": "5d41594b899d0d64ecc0f48610a359acd07f873ab05cd9afccb6d6a06301aaaa"
+  },
+  {
+    "path": "CH-1/CH-1 Общий вид.pdf",
+    "bytes": 132678,
+    "mtime_ns": 1761732796000000000,
+    "sha256": "186e9dee59772ccbd09f1d03e310a7b1392093060a572ea19f2c3c443d897fa8"
+  },
+  {
+    "path": "CH-2/CH-2 Общий вид.pdf",
+    "bytes": 46415,
+    "mtime_ns": 1761732990000000000,
+    "sha256": "e8763e0083286bde74e438d8a7b72db932ca8d9e440d025c5dff247237e2dd8f"
+  },
+  {
+    "path": "CH-3/CH-3 Общий вид.pdf",
+    "bytes": 23450,
+    "mtime_ns": 1761733030000000000,
+    "sha256": "b9e2b9ea5e1937b5939b7e8528257b67feed398267889b92c3db7a8b3667aecd"
+  },
+  {
+    "path": "fafa/YFQ-44/192977-529fcc68ebe0fe57f9f97a266b6f57e9.jpg",
+    "bytes": 74292,
+    "mtime_ns": 1698331202000000000,
+    "sha256": "809c62a688c431e89a0cc01c8ed78b4c505453a4889f8e17aa32993f67b681ff"
+  },
+  {
+    "path": "fafa/YFQ-44/5072692_1.jpg",
+    "bytes": 99023,
+    "mtime_ns": 1757501598000000000,
+    "sha256": "0b8cdfd664d958c385b3358c2ac57c4a10ab92ea1e7254fa5be170f2ad558dc5"
+  },
+  {
+    "path": "fafa/YFQ-44/515532_O.jpg",
+    "bytes": 91132,
+    "mtime_ns": 1757500970000000000,
+    "sha256": "404de92607045ecf3d87c1bf04eefadf3d927d7d65b00d86b8ec6222fe5fa52e"
+  },
+  {
+    "path": "fafa/YFQ-44/AIM_120_2Eng.png",
+    "bytes": 811511,
+    "mtime_ns": 1757500852000000000,
+    "sha256": "b3021cdd1fbe6bd31fb0b044ca794f8d69b1633714fde01c146a5ef23485566a"
+  },
+  {
+    "path": "fafa/YFQ-44/i.jpg",
+    "bytes": 48099,
+    "mtime_ns": 1757500728000000000,
+    "sha256": "3e9a32be3dc4514daa30c20be2a36dfd6fa94ca6225d3358f1b95324e1dabd56"
+  },
+  {
+    "path": "fafa/YFQ-44/scale_1200 (1).jpg",
+    "bytes": 133907,
+    "mtime_ns": 1757501146000000000,
+    "sha256": "1444084cbb55b694a1878aa5227103890071dfd7bc715ffe8251333dafcd03bf"
+  },
+  {
+    "path": "fafa/YFQ-44/silnik_prospekt-2.jpg",
+    "bytes": 84849,
+    "mtime_ns": 1757500632000000000,
+    "sha256": "609e4d0808327fa4a33dffc56b6a41df38336cb07992cbe76142952dd73356b8"
+  },
+  {
+    "path": "fafa/YFQ-44/Snimka-obrazovky-2025-05-30-o-7-52-18.png",
+    "bytes": 1313603,
+    "mtime_ns": 1757500944000000000,
+    "sha256": "548c0227260c56cbf4e393045915f77f0102d9c659e1ebbbb271b124e6235fbc"
+  },
+  {
+    "path": "Feihong FH-97/FH-97.dwg",
+    "bytes": 1655533,
+    "mtime_ns": 1758559232000000000,
+    "sha256": "455f40c3f6a48f1381eea80ab99e0b0e09193741dd64ca84bdecfed745e60ce1"
+  },
+  {
+    "path": "Feihong FH-97/FH-97_recover.dwg",
+    "bytes": 1737560,
+    "mtime_ns": 1758797262000000000,
+    "sha256": "33f455ec73793df8a42ca836b18a65bfe6a8227e60e69e2b60d3b7c15741bc27"
+  },
+  {
+    "path": "Feihong FH-97/OIP (1).jpeg",
+    "bytes": 11774,
+    "mtime_ns": 1758551678000000000,
+    "sha256": "90c1ff49efaae515cb79c96c677e9e5d8928b312443614f4d1cfab107686540b"
+  },
+  {
+    "path": "Gambit 1/gambit-1-uav-10.jpg",
+    "bytes": 105070,
+    "mtime_ns": 1758695164000000000,
+    "sha256": "0b3ebf3bebd31211bbb1a4062aacffca69645e42f2ff7e110b17be93bb31c95f"
+  },
+  {
+    "path": "Gambit 2/gambit-2-ucav-10.jpg",
+    "bytes": 115614,
+    "mtime_ns": 1758695164000000000,
+    "sha256": "33bb6ac53e36a6a615e3aa73c4a1e64725a05bb319409d215ae226bd1ceedc85"
+  },
+  {
+    "path": "Gambit 3/Gambit 3 Общий вид.pdf",
+    "bytes": 24083,
+    "mtime_ns": 1761733126000000000,
+    "sha256": "f2dd8e0a23689538cf0f0388c2ec3f20a53d4747f1a57f68116d65ebf733e1f7"
+  },
+  {
+    "path": "Jeniah UCAV/jeniah-ucav-10 (1).jpg",
+    "bytes": 75395,
+    "mtime_ns": 1758695164000000000,
+    "sha256": "e5efe848f22dbb6721ac8c2b1762ebd7cd522a0fd3effe131dd3a3d71db5f161"
+  },
+  {
+    "path": "MQ-20 Avenger/image_2025-09-24_00-37-39.png",
+    "bytes": 408040,
+    "mtime_ns": 1758695174000000000,
+    "sha256": "0746be85f6a95b2c06cce962f0b3d1e6debd5b4fb609af50fe2206838e87db2d"
+  },
+  {
+    "path": "MQ-20 Avenger/MQ-20.dwg",
+    "bytes": 9679317,
+    "mtime_ns": 1758715664000000000,
+    "sha256": "5e156bcf299d6052fdab10bbb78821807f496fc811cf0de4a6ca1fee35ae9bf9"
+  },
+  {
+    "path": "MQ-20 Avenger/MQ-20_recover.dwg",
+    "bytes": 9495111,
+    "mtime_ns": 1758723512000000000,
+    "sha256": "703256d36e05b55678b6c0e829831ccef8229957c869d434d022fe939e995aac"
+  },
+  {
+    "path": "MQ-20 Avenger/MQ20_for MachLine.vsp3",
+    "bytes": 397826,
+    "mtime_ns": 1790382066142549000,
+    "sha256": "5710974615718259376ea2aca54fd14efa1837069e1b031d1461485dac955fbd"
+  },
+  {
+    "path": "MQ-202013.dwg",
+    "bytes": 9409430,
+    "mtime_ns": 1758698616000000000,
+    "sha256": "52a1a914916db7a65e2011b5bc48dae017221760022ef47bc1dda71de3b37dfd"
+  },
+  {
+    "path": "MQ-202013_recover.dwg",
+    "bytes": 9488502,
+    "mtime_ns": 1758705404000000000,
+    "sha256": "956160c284ab20c87fcfe4362cd6b108a66096ecd157dc847705807de73408ec"
+  },
+  {
+    "path": "SAAB FCAS/MQ-28.dwg",
+    "bytes": 1694203,
+    "mtime_ns": 1758559252000000000,
+    "sha256": "25a1e73adebfee0ca0854fb8289e7ac4170160146cc9fac9f7a225295e20f543"
+  },
+  {
+    "path": "SAAB FCAS/SAAB FCAS.vsp3",
+    "bytes": 359337,
+    "mtime_ns": 1790467833056870800,
+    "sha256": "2ec593f6036cae6b8419b710b0b8c01df61b7c2da86e6014dfdaeb65aef75971"
+  },
+  {
+    "path": "SAAB FCAS/saab-fcas-ucav-1-09.jpg",
+    "bytes": 93413,
+    "mtime_ns": 1758695148000000000,
+    "sha256": "f01b6c5c26b36d6e9ea40425d9349915d6ff2ba658f64bb0a10f28e27df9da47"
+  },
+  {
+    "path": "SAAB FCAS/SAAB_FCAS_3views_ft.jpg",
+    "bytes": 1139960,
+    "mtime_ns": 1790449958731483800,
+    "sha256": "06f2a6697342f5879937891c1ce2c7a8895b84eabe2f9fb2848aa85d2819837c"
+  },
+  {
+    "path": "SAAB FCAS/SAAB_FCAS_repaired_v01.vsp3",
+    "bytes": 392137,
+    "mtime_ns": 1790497708630482500,
+    "sha256": "0bcd5bbf6d3f035d046f2208813b7f3c7344187e4434fceb7a0833628bc44811"
+  },
+  {
+    "path": "Sbornaya13 (1).dwg",
+    "bytes": 17227898,
+    "mtime_ns": 1760000514000000000,
+    "sha256": "6e2649e51adef62276dfe1adc810a8a9a71491256b839138f196a4f57cba6711"
+  },
+  {
+    "path": "Sbornaya13 (1)_recover.dwg",
+    "bytes": 17610730,
+    "mtime_ns": 1761234036000000000,
+    "sha256": "da2dfaf38d43fd04cda1c90e80ed5dad204506f980cbb4b165b84097b434c0e3"
+  },
+  {
+    "path": "Sbornaya13 (1)_recover_recover yk.dwg",
+    "bytes": 18883947,
+    "mtime_ns": 1763355582000000000,
+    "sha256": "5e4748a5b323844a4717e9191fd3d7816b294becd977b8ed9e4ca4e7bdf9eef0"
+  },
+  {
+    "path": "Sbornaya2013.dwg",
+    "bytes": 11809173,
+    "mtime_ns": 1759332258000000000,
+    "sha256": "12da7233b40563017f4c9925fa31900c50c186b3fb197d6b6af76a047636aaeb"
+  },
+  {
+    "path": "Spirit Mosquito/spirit-mosquito-11.jpg",
+    "bytes": 101262,
+    "mtime_ns": 1758695148000000000,
+    "sha256": "da7aeadd8ef791301123f1df201a2ce045cc0e3ef41e28c13d925f159dbb484c"
+  },
+  {
+    "path": "XQ-58A Valkirie/XQ-58 Общий вид — копия.png.pdf",
+    "bytes": 23978,
+    "mtime_ns": 1758796372000000000,
+    "sha256": "e540fac61a73347333b1362cc954227f5fd9c3bb3b8e6ddc5520c47811e1b475"
+  },
+  {
+    "path": "XQ-58A Valkirie/XQ-58 Общий вид.pdf",
+    "bytes": 23978,
+    "mtime_ns": 1758796372000000000,
+    "sha256": "e540fac61a73347333b1362cc954227f5fd9c3bb3b8e6ddc5520c47811e1b475"
+  },
+  {
+    "path": "XQ-58A Valkirie/XQ-58 Расчетная модель.pdf",
+    "bytes": 26813,
+    "mtime_ns": 1758796410000000000,
+    "sha256": "6066ac39a3b2566ec4b771428d749bff0164bc72f74f17b53c30f70f87eee6d6"
+  },
+  {
+    "path": "XQ-58A Valkirie/XQ-58A.dwg",
+    "bytes": 14412137,
+    "mtime_ns": 1758797858000000000,
+    "sha256": "bca055397b14a3e19baabcc7d0fb09b6a8ed0cf75734cb5635a48409eabc9ed6"
+  },
+  {
+    "path": "YFQ 44/YFQ 44.dwg",
+    "bytes": 1131426,
+    "mtime_ns": 1757604628000000000,
+    "sha256": "5d3f7f303e9140d16f78a7066c3e868c8e416ec837188a97e1dd85092eb10c09"
+  },
+  {
+    "path": "YFQ 44/YFQ 44_recover.dwg",
+    "bytes": 3081511,
+    "mtime_ns": 1757605306000000000,
+    "sha256": "deaac18027b1b9ad02a4fa17344b86a30999b02c8da4637cf1e43432107e8155"
+  },
+  {
+    "path": "YFQ 44/YFQ 44_recover_recover.dwg",
+    "bytes": 4039200,
+    "mtime_ns": 1757692536000000000,
+    "sha256": "4be7db7ebbe1edd7ef7585fad43a10a23cf9b0ab6de87308c25c4f0e62f41f0f"
+  },
+  {
+    "path": "YFQ 44/YFQ 44_recover_recover_recover.dwg",
+    "bytes": 3994754,
+    "mtime_ns": 1758197496000000000,
+    "sha256": "dba0bd65cbca8dbb10ab1b824ee02e0f274addfa029a8366308940dc1a84b07a"
+  },
+  {
+    "path": "YFQ 44/YFQ_44 MachLine.vsp3",
+    "bytes": 393062,
+    "mtime_ns": 1789333889715182200,
+    "sha256": "6a2804a0e9789a2707ba29d52a4eef293e6acc27b51388862777d5b35db6cd7b"
+  },
+  {
+    "path": "YFQ 44/YFQ_44.vsp3",
+    "bytes": 393066,
+    "mtime_ns": 1789253689868577300,
+    "sha256": "b95853d609fa50900c6067f343eddf8b56b14232510177083ff31946e27c3032"
+  },
+  {
+    "path": "YFQ-44.jpg",
+    "bytes": 484842,
+    "mtime_ns": 1789158541137658700,
+    "sha256": "c89dab224ed42df57e17616bce9f0d12a95250171ae847affe3ceabd03468234"
+  },
+  {
+    "path": "YFQ-44.png",
+    "bytes": 58199,
+    "mtime_ns": 1789158586767902300,
+    "sha256": "f33e71adf25a8ac3e0f8aaed4021f27b4d7f11452d951a3c57672334dcb3e16b"
+  },
+  {
+    "path": "Общий вид CATS Warrior.pdf",
+    "bytes": 35885,
+    "mtime_ns": 1763355262842140300,
+    "sha256": "f5b3c2b89d2b51058e1c7148db8d622086d98b7a9982bcb91a4cf6a5f23442d9"
+  },
+  {
+    "path": "Общий вид CH-1.pdf",
+    "bytes": 31078,
+    "mtime_ns": 1763355390273835200,
+    "sha256": "87a100f737745106a033e7b77f43efbf9feea8833299bb802ea55823515ac0b8"
+  },
+  {
+    "path": "Общий вид CH-2.pdf",
+    "bytes": 29979,
+    "mtime_ns": 1763355412282653800,
+    "sha256": "28e889b285e8a1d09a40db5a2633602f7b95ef93c39f68957e72c78d78a7f68c"
+  },
+  {
+    "path": "Общий вид CH-3.pdf",
+    "bytes": 37776,
+    "mtime_ns": 1763355431182298700,
+    "sha256": "62f25056f160bc1ae486ddc3455f371a77ca797aec47af5b5b0ce50dc798c1a2"
+  },
+  {
+    "path": "Общий вид FH-97.pdf",
+    "bytes": 32164,
+    "mtime_ns": 1763355567759954200,
+    "sha256": "1b18902a9324c7d26901b3eeeb55b208e964d62f177e6947d8efa9538d4043e4"
+  },
+  {
+    "path": "Общий вид Gambit-1.pdf",
+    "bytes": 38269,
+    "mtime_ns": 1763355299725834600,
+    "sha256": "d0616d0b5cd198367cbc494547ae52f845c8df00801412a428629130885729ea"
+  },
+  {
+    "path": "Общий вид Gambit-2.pdf",
+    "bytes": 40439,
+    "mtime_ns": 1763355323961794800,
+    "sha256": "bdafb8c3a7b7e514d1726cee18ee7edf695a8faf44236e29cf1216a1a877a200"
+  },
+  {
+    "path": "Общий вид Gambit-3.pdf",
+    "bytes": 38457,
+    "mtime_ns": 1763355450237103700,
+    "sha256": "e797160e5ceb53416516b4964b4c0ea52476a63a6a3331bcc22b9346aa78e983"
+  },
+  {
+    "path": "Общий вид Jeniah-UCAV.pdf",
+    "bytes": 39499,
+    "mtime_ns": 1763355131238089400,
+    "sha256": "90461841cc4d1b391b978b5228dda53f33165f1fbea2da7105e94fefa2fe888f"
+  },
+  {
+    "path": "Общий вид MQ-20.pdf",
+    "bytes": 33430,
+    "mtime_ns": 1763355079854425500,
+    "sha256": "4ddabaaddfef39c48e7831d3bd277eb8a94b6b889a3596184969f47df658c42b"
+  },
+  {
+    "path": "Общий вид MQ-28.pdf",
+    "bytes": 36132,
+    "mtime_ns": 1763355353004672400,
+    "sha256": "2a459069f5317c77dc0625c9b8c278767b3e5e2ca1e4daf47b5009dae2367c76"
+  },
+  {
+    "path": "Общий вид SAAB-FCAS.pdf",
+    "bytes": 78352,
+    "mtime_ns": 1790449167169528900,
+    "sha256": "35843d77e11c6b5298e0cc32d0abec87972f4a2b51039d04ece8b2d3a29c080e"
+  },
+  {
+    "path": "Общий вид Spirit Mosquito.pdf",
+    "bytes": 36851,
+    "mtime_ns": 1763355222443364400,
+    "sha256": "f06369857a5b08aca8377398f9f56c7c43627e581840de0dbd0bf9faf2aa0b4f"
+  },
+  {
+    "path": "Общий вид XQ-58 Valkyrie.pdf",
+    "bytes": 37970,
+    "mtime_ns": 1763355509298576600,
+    "sha256": "141b40f53fa938364af19bdcdd9fa4df32c9c6953f2f89ea34446cb57bd3f02a"
+  },
+  {
+    "path": "Общий вид YFQ-44.pdf",
+    "bytes": 33819,
+    "mtime_ns": 1763355476133309500,
+    "sha256": "b1fb3b49c3553547397f303c25f265d2f1d9288b8bff324ac5f9713b4e4299ea"
+  },
+  {
+    "path": "Общий материал/Картинки/192977-529fcc68ebe0fe57f9f97a266b6f57e9.jpg",
+    "bytes": 74292,
+    "mtime_ns": 1698331202000000000,
+    "sha256": "809c62a688c431e89a0cc01c8ed78b4c505453a4889f8e17aa32993f67b681ff"
+  },
+  {
+    "path": "Общий материал/Картинки/5072692_1.jpg",
+    "bytes": 99023,
+    "mtime_ns": 1757501598000000000,
+    "sha256": "0b8cdfd664d958c385b3358c2ac57c4a10ab92ea1e7254fa5be170f2ad558dc5"
+  },
+  {
+    "path": "Общий материал/Картинки/515532_O.jpg",
+    "bytes": 91132,
+    "mtime_ns": 1757500970000000000,
+    "sha256": "404de92607045ecf3d87c1bf04eefadf3d927d7d65b00d86b8ec6222fe5fa52e"
+  },
+  {
+    "path": "Общий материал/Картинки/AIM_120_2Eng.png",
+    "bytes": 811511,
+    "mtime_ns": 1757500852000000000,
+    "sha256": "b3021cdd1fbe6bd31fb0b044ca794f8d69b1633714fde01c146a5ef23485566a"
+  },
+  {
+    "path": "Общий материал/Картинки/i.jpg",
+    "bytes": 48099,
+    "mtime_ns": 1757500728000000000,
+    "sha256": "3e9a32be3dc4514daa30c20be2a36dfd6fa94ca6225d3358f1b95324e1dabd56"
+  },
+  {
+    "path": "Общий материал/Картинки/scale_1200 (1).jpg",
+    "bytes": 133907,
+    "mtime_ns": 1757501146000000000,
+    "sha256": "1444084cbb55b694a1878aa5227103890071dfd7bc715ffe8251333dafcd03bf"
+  },
+  {
+    "path": "Общий материал/Картинки/silnik_prospekt-2.jpg",
+    "bytes": 84849,
+    "mtime_ns": 1757500632000000000,
+    "sha256": "609e4d0808327fa4a33dffc56b6a41df38336cb07992cbe76142952dd73356b8"
+  },
+  {
+    "path": "Общий материал/Картинки/Snimka-obrazovky-2025-05-30-o-7-52-18.png",
+    "bytes": 1313603,
+    "mtime_ns": 1757500944000000000,
+    "sha256": "548c0227260c56cbf4e393045915f77f0102d9c659e1ebbbb271b124e6235fbc"
+  },
+  {
+    "path": "Общий материал/Прочее/A$C3B884D40.dwg",
+    "bytes": 732542,
+    "mtime_ns": 1757605592000000000,
+    "sha256": "09ed5af84d649be2435c5c6c97c45332b9a08fd49defcc78b591686afe81bcd0"
+  },
+  {
+    "path": "Общий материал/Прочее/YFQ 44.dwg",
+    "bytes": 1290678,
+    "mtime_ns": 1757520352000000000,
+    "sha256": "bd1571cf7d3b999d591cfbc37aae7687790c0428fa5c48673c283b2b2b904313"
+  }
+]

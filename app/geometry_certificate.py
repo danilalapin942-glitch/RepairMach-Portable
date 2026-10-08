@@ -87,6 +87,10 @@ def certificate_integrity_errors(certificate: dict) -> list[str]:
 
 def _point_matches(point: dict, mach: float | None, alpha_deg: float | None) -> bool:
     tolerance = 1.0e-8
+    if any(not math.isfinite(float(point.get(key, math.nan))) for key in ("mach", "alpha_deg")):
+        return False
+    if any(value is not None and not math.isfinite(float(value)) for value in (mach, alpha_deg)):
+        return False
     if mach is not None and abs(float(point.get("mach", math.nan)) - float(mach)) > tolerance:
         return False
     if alpha_deg is not None and abs(float(point.get("alpha_deg", math.nan)) - float(alpha_deg)) > tolerance:
@@ -252,12 +256,59 @@ def verify_certificate(
     vspaero_item = backends.get("vspaero")
     vspaero_eligible = isinstance(vspaero_item, dict) and vspaero_item.get("eligible") is True
     solver_eligible = isinstance(flags, dict) and flags.get("solver_eligible") is True
-    if not isinstance(vspaero_item, dict):
-        errors.append("Положительный сертификат не содержит backend VSPAERO")
-    if solver_eligible != vspaero_eligible:
-        errors.append("Флаг solver_eligible не согласован с backend VSPAERO")
-    if not vspaero_eligible:
-        errors.append("Положительный сертификат не подтверждает пригодность VSPAERO")
+    branch = certificate.get("certification_branch", "combined")
+    primary = certificate.get("primary_backend", "vspaero")
+    if branch not in {"combined", "vspaero", "machline_open_nozzle"}:
+        errors.append("Неизвестная ветка сертификации")
+    if primary != ("machline" if branch == "machline_open_nozzle" else "vspaero"):
+        errors.append("Основной решатель не согласован с веткой сертификации")
+    if branch == "machline_open_nozzle":
+        ml = backends.get("machline", {})
+        if not isinstance(ml, dict):
+            ml = {}
+        if not solver_eligible or ml.get("eligible") is not True:
+            errors.append("Независимая ветка не подтверждает пригодность MachLine")
+        if any(isinstance(backends.get(name), dict) and backends[name].get("eligible") is True
+               for name in ("vspaero", "hybrid", "parasite_drag")):
+            errors.append("Допуск независимой ветки MachLine нельзя переносить на другие backends")
+        contract = ml.get("output_contract") or {}
+        outlets = contract.get("declared_open_nozzles") or {}
+        if (contract.get("topology_mode") != "open_nozzle" or outlets.get("valid") is not True
+                or not outlets.get("outlets") or outlets.get("errors")
+                or contract.get("standalone_total_force_eligible") is not False):
+            errors.append("Нет проверенного ограниченного контракта открытых сопел")
+        qualification = ml.get("qualification") or {}
+        probes = qualification.get("probes") or []
+        limits = qualification.get("limits") or {}
+        valid_probes = bool(probes) and qualification.get("valid") is True
+        try:
+            for p in probes:
+                valid_probes &= p.get("valid") is True and not p.get("errors") and p.get("solver_status_code") == 0
+                valid_probes &= p.get("superinclined_panels") == 0
+                valid_probes &= math.isfinite(float(p["mach"])) and float(p["mach"]) > 1
+                valid_probes &= math.isfinite(float(p["alpha_deg"]))
+                for key in ("residual_norm", "residual_max"):
+                    value, limit = float(p[key]), float(limits[key])
+                    valid_probes &= math.isfinite(value) and math.isfinite(limit) and 0 <= value <= limit
+            qualified = ml.get("qualified_scope") or {}
+            actual = {(float(p["mach"]), float(p["alpha_deg"])) for p in probes}
+            declared = {(float(p["mach"]), float(p["alpha_deg"])) for p in qualified.get("points", [])}
+            valid_probes &= qualified.get("coverage_kind") == "exact_points" and actual == declared
+        except (ValueError, TypeError, KeyError):
+            valid_probes = False
+        if not valid_probes:
+            errors.append("Открытое сопло не имеет достоверных проб в заявленных точках")
+        for name in ("force_integration_mask", "audit_geometry"):
+            _verify_portable_artifact(certificate_path, ml.get(name), label=name, errors=errors)
+    else:
+        if not isinstance(vspaero_item, dict):
+            errors.append("Положительный сертификат не содержит backend VSPAERO")
+        if solver_eligible != vspaero_eligible:
+            errors.append("Флаг solver_eligible не согласован с backend VSPAERO")
+        if not vspaero_eligible:
+            errors.append("Положительный сертификат не подтверждает пригодность VSPAERO")
+        if branch == "vspaero" and backends.get("machline", {}).get("eligible") is True:
+            errors.append("Ветка VSPAERO не может выдавать допуск MachLine")
     hybrid_item = backends.get("hybrid")
     if (
         isinstance(hybrid_item, dict)
@@ -490,6 +541,7 @@ def write_certificate_report(path: Path, certificate: dict) -> None:
         f"- Создан: {certificate.get('created_at')}",
         f"- MASTER: `{certificate.get('master', {}).get('sha256_before')}`",
         f"- MASTER неизменён: **{'да' if flags.get('master_unchanged') else 'нет'}**",
+        f"- Ветка: `{certificate.get('certification_branch', 'combined')}`; основной решатель: `{certificate.get('primary_backend', 'vspaero')}`",
         f"- Пригодность для решателя: **{'да' if flags.get('solver_eligible') else 'нет'}**",
         f"- Представлена полная геометрия: **{'да' if flags.get('full_geometry_represented') else 'нет'}**",
         f"- Требуется гибридная замена: **{'да' if flags.get('hybrid_substitution_required') else 'нет'}**",

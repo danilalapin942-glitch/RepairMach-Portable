@@ -86,6 +86,46 @@ def _check_range(start: float, end: float, points: int, label: str) -> None:
         raise ValueError(f"Для одной точки {label} начало и конец должны совпадать")
 
 
+def _wake_iteration_guard_script(wake_num_iter: int) -> str:
+    """Check the loaded OpenVSP backend before it can silently clamp the request.
+
+    Analysis-input readback is insufficient: in OpenVSP 3.51 the input may
+    retain 320 while VSPAEROMgr's WakeNumIter Parm limits the solver to 255.
+    Query the backend limits, not a version-independent hard-coded maximum.
+    This changes only an in-memory solver setting, never the source VSP3.
+    """
+    if isinstance(wake_num_iter, bool) or not isinstance(wake_num_iter, int) or wake_num_iter < 1:
+        raise ValueError("Число итераций следа должно быть положительным целым")
+    return f'''
+    string wake_settings = FindContainer( "VSPAEROSettings", 0 );
+    string wake_iter_parm = FindParm( wake_settings, "WakeNumIter", "VSPAERO" );
+    if ( !ValidParm( wake_iter_parm ) )
+    {{
+        Print( "ERROR=WakeNumIter backend parameter is unavailable; refusing unverified controls" );
+        Print( "REPAIRMACH_ABORTED_NUMERICAL_CONTROLS=1" );
+        return;
+    }}
+    double wake_iter_min = GetParmLowerLimit( wake_iter_parm );
+    double wake_iter_max = GetParmUpperLimit( wake_iter_parm );
+    Print( "REPAIRMACH_WAKE_ITER_LIMITS;REQUESTED={wake_num_iter};MIN=" + wake_iter_min + ";MAX=" + wake_iter_max );
+    if ( !({wake_num_iter} >= wake_iter_min && {wake_num_iter} <= wake_iter_max) )
+    {{
+        Print( "ERROR=Requested WakeNumIter={wake_num_iter} exceeds the loaded OpenVSP backend limits; no automatic clamping" );
+        Print( "REPAIRMACH_ABORTED_NUMERICAL_CONTROLS=1" );
+        return;
+    }}
+    SetParmVal( wake_iter_parm, {wake_num_iter} );
+    double actual_wake_iter = GetParmVal( wake_iter_parm );
+    if ( actual_wake_iter != {wake_num_iter} )
+    {{
+        Print( "ERROR=WakeNumIter backend readback does not match the request" );
+        Print( "REPAIRMACH_ABORTED_NUMERICAL_CONTROLS=1" );
+        return;
+    }}
+    Print( "REPAIRMACH_WAKE_ITER_CONFIRMED;REQUESTED={wake_num_iter};ACTUAL=" + actual_wake_iter );
+'''
+
+
 def generate_vspaero_sweep_script(
     script_path: Path,
     vsp3_path: Path,
@@ -109,6 +149,8 @@ def generate_vspaero_sweep_script(
     wake_num_iter: int = 8,
     num_wake_nodes: int = 24,
     wake_relax: float = 0.8,
+    implicit_wake: bool | None = None,
+    implicit_wake_start_iter: int = 8,
     tail_geometry_name: str | None = None,
     tail_incidence_deg: float = 0.0,
     engine_boundary: str | None = None,
@@ -116,6 +158,7 @@ def generate_vspaero_sweep_script(
     require_canonical_components: bool = False,
     require_nonempty_fuselage_set: bool = True,
     require_all_geometries_assigned: bool = True,
+    diagnostic_excluded_components: list[str] | None = None,
 ) -> None:
     """Generate a self-validating mixed thick/thin VSPAERO sweep script."""
     if not vsp3_path.is_file():
@@ -130,12 +173,18 @@ def generate_vspaero_sweep_script(
         raise ValueError("Число потоков VSPAERO должно быть не меньше 1")
     if forward_gmres_convergence_factor <= 0.0:
         raise ValueError("Коэффициент сходимости GMRES должен быть положительным")
-    if wake_num_iter < 1:
-        raise ValueError("Число итераций следа должно быть не меньше 1")
+    wake_iteration_guard = _wake_iteration_guard_script(wake_num_iter)
     if num_wake_nodes < 2:
         raise ValueError("Число узлов следа должно быть не меньше 2")
     if not 0.0 < wake_relax <= 1.0:
         raise ValueError("Коэффициент релаксации следа должен лежать в (0; 1]")
+    if implicit_wake is not None and not isinstance(implicit_wake, bool):
+        raise ValueError("implicit_wake должен быть bool или None")
+    if (isinstance(implicit_wake_start_iter, bool)
+            or not isinstance(implicit_wake_start_iter, int)
+            or implicit_wake_start_iter < 0
+            or (implicit_wake is True and implicit_wake_start_iter >= wake_num_iter)):
+        raise ValueError("Начало неявного следа должно быть целым >= 0 и раньше конца итераций")
     if fuselage_user_set == wing_user_set:
         raise ValueError("Наборы фюзеляжа и крыла должны различаться")
     if tail_geometry_name is not None and not tail_geometry_name.strip():
@@ -144,6 +193,39 @@ def generate_vspaero_sweep_script(
         raise ValueError("Угол горизонтального оперения должен быть конечным числом")
     if engine_boundary not in {None, "model", "to_face"}:
         raise ValueError("engine_boundary должен быть model, to_face или None")
+    exclusions = diagnostic_excluded_components
+    if exclusions is None:
+        exclusions = []
+    if (not isinstance(exclusions, list)
+            or len(exclusions) > 1
+            or any(name not in ("Fuselage", "Gondola") for name in exclusions)):
+        raise ValueError("Diagnostic exclusion supports exactly one Fuselage or Gondola body")
+    if exclusions and (engine_boundary == "to_face"
+                       or not require_all_geometries_assigned
+                       or not require_nonempty_fuselage_set
+                       or not require_canonical_components):
+        raise ValueError("Diagnostic exclusion requires strict mixed validation and model engine boundary")
+    exclusion_match = 'false' if not exclusions else f'name == "{exclusions[0]}"'
+    diagnostic_validation = ""
+    if exclusions:
+        excluded = exclusions[0]
+        diagnostic_validation = f'''
+    array<string> excluded_bodies = FindGeomsWithName( "{excluded}" );
+    if ( excluded_bodies.size() != 1 )
+    {{
+        Print( "ERROR=Diagnostic excluded body must exist exactly once;NAME={excluded}" );
+        invalid_sets = true;
+    }}
+    else if ( GetGeomTypeName( excluded_bodies[0] ) != "Fuselage" || GetSetFlag( excluded_bodies[0], thick_set ) || GetSetFlag( excluded_bodies[0], thin_set ) )
+    {{
+        Print( "ERROR=Diagnostic excluded body must be Fuselage type and absent from both analysis sets;NAME={excluded}" );
+        invalid_sets = true;
+    }}
+    else
+    {{
+        Print( "REPAIRMACH_DIAGNOSTIC_EXCLUSION;NAME={excluded};CONFIRMED=1;QUALIFICATION_ALLOWED=0" );
+    }}
+'''
     engine_geometry_aliases = list(engine_geometry_aliases or [])
     if (
         any(not isinstance(name, str) or not name.strip() or name != name.strip()
@@ -156,6 +238,30 @@ def generate_vspaero_sweep_script(
     thin_set = user_set_to_api_index(wing_user_set)
     script_path.parent.mkdir(parents=True, exist_ok=True)
     results_csv_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Optional: preserve the original model/default when this is not requested.
+    # This changes the iteration algorithm, not geometry or acceptance limits.
+    implicit_setup = ""
+    if implicit_wake is not None:
+        implicit_setup = f'''
+    array<int> implicit_wake_flag(1, {int(implicit_wake)});
+    array<int> implicit_wake_start(1, {implicit_wake_start_iter});
+    SetIntAnalysisInput( sweep_name, "ImplicitWake", implicit_wake_flag );
+    SetIntAnalysisInput( sweep_name, "ImplicitWakeStartIteration", implicit_wake_start );
+    array<int> actual_implicit = GetIntAnalysisInput( sweep_name, "ImplicitWake" );
+    array<int> actual_implicit_start = GetIntAnalysisInput( sweep_name, "ImplicitWakeStartIteration" );
+    if ( actual_implicit.size() != 1 || actual_implicit_start.size() != 1 )
+    {{
+        Print( "ERROR=Implicit wake analysis inputs are unavailable" );
+        return;
+    }}
+    if ( actual_implicit[0] != {int(implicit_wake)} || actual_implicit_start[0] != {implicit_wake_start_iter} )
+    {{
+        Print( "ERROR=Implicit wake analysis inputs did not match the request" );
+        return;
+    }}
+    Print( "REPAIRMACH_IMPLICIT_WAKE=" + actual_implicit[0] + ";START_ITER=" + actual_implicit_start[0] );
+'''
 
     if tail_geometry_name is None:
         tail_validation = '''
@@ -229,7 +335,7 @@ def generate_vspaero_sweep_script(
         Print( "ERROR=Expected exactly one primary geometry named Fuselage;COUNT=" + required_fuselage.size() );
         invalid_sets = true;
     }}
-    else if ( !GetSetFlag( required_fuselage[0], thick_set ) )
+    else if ( {str('Fuselage' not in exclusions).lower()} && !GetSetFlag( required_fuselage[0], thick_set ) )
     {{
         Print( "ERROR=Fuselage must be assigned to Set_{fuselage_user_set}" );
         invalid_sets = true;
@@ -352,7 +458,7 @@ def generate_vspaero_sweep_script(
 
     if require_all_geometries_assigned:
         unassigned_validation = f'''
-        if ( !in_thick && !in_thin )
+        if ( !in_thick && !in_thin && !({exclusion_match}) )
         {{
             Print( "ERROR=Geometry is not assigned to Set_{fuselage_user_set} or Set_{wing_user_set};ID=" + gid + ";NAME=" + name );
             invalid_sets = true;
@@ -361,8 +467,10 @@ def generate_vspaero_sweep_script(
     else:
         unassigned_validation = ""
 
-    text = f'''void main()
+    native_guard = Path(__file__).with_name("vspgeom_guard.vspscript").read_text(encoding="utf-8")
+    text = native_guard + f'''\nvoid main()
 {{
+    Print( "REPAIRMACH_NATIVE_GUARD_REQUIRED=1" );
     ClearVSPModel();
     ReadVSPFile( "{_vsp_path(vsp3_path)}" );
     Update();
@@ -387,6 +495,7 @@ def generate_vspaero_sweep_script(
         invalid_sets = true;
     }}
 {canonical_validation}
+{diagnostic_validation}
 
     for ( int i = 0; i < int( all_geoms.size() ); ++i )
     {{
@@ -437,6 +546,8 @@ def generate_vspaero_sweep_script(
     Print( "REPAIRMACH_SETUP_VALIDATION=OK" );
     Print( "REPAIRMACH_SET_VALIDATION=OK" );
 
+{wake_iteration_guard}
+
     string compute_name = "VSPAEROComputeGeometry";
     SetAnalysisInputDefaults( compute_name );
     array<int> thick_input(1, thick_set);
@@ -445,6 +556,19 @@ def generate_vspaero_sweep_script(
     SetIntAnalysisInput( compute_name, "ThinGeomSet", thin_input );
     string compute_result = ExecAnalysis( compute_name );
     Print( "REPAIRMACH_COMPUTE_RESULT_ID=" + compute_result );
+
+    array<string> native_files = GetStringResults( compute_result, "VSPGeomFileName" );
+    array<string> native_mesh_ids = GetStringResults( compute_result, "Mesh_GeomID" );
+    bool native_ok = compute_result.length() > 0 && native_files.length() == 1 && native_mesh_ids.length() == 1;
+    if ( native_ok ) native_ok = native_mesh_ids[0].length() > 0 && native_files[0] == "{_vsp_path(vsp3_path.with_suffix('.vspgeom'))}";
+    if ( GetNumTotalErrors() > 0 ) native_ok = false;
+    if ( native_ok ) native_ok = RMNative( native_files[0], "{_vsp_path(vsp3_path.with_suffix('.vkey'))}", thick_geoms, thin_geoms );
+    if ( !native_ok )
+    {{
+        Print( "REPAIRMACH_ABORTED_NATIVE_MESH=1" );
+        return;
+    }}
+    Print( "REPAIRMACH_NATIVE_MESH_VALIDATION=OK" );
 
     string sweep_name = "VSPAEROSweep";
     SetAnalysisInputDefaults( sweep_name );
@@ -496,6 +620,8 @@ def generate_vspaero_sweep_script(
     SetIntAnalysisInput( sweep_name, "WakeNumIter", wake_iterations );
     SetIntAnalysisInput( sweep_name, "NumWakeNodes", wake_nodes );
     SetDoubleAnalysisInput( sweep_name, "WakeRelax", wake_relaxation );
+
+{implicit_setup}
 
     string sweep_result = ExecAnalysis( sweep_name );
     Print( "REPAIRMACH_SWEEP_RESULT_ID=" + sweep_result );
@@ -640,6 +766,15 @@ def parse_set_report(log_text: str) -> dict:
                         f"отсутствует фактическое значение {key}"
                     )
 
+    if "REPAIRMACH_ABORTED_NUMERICAL_CONTROLS=1" in log_text:
+        errors.append("Фактические численные настройки OpenVSP не подтверждены")
+    # Legacy logs remain readable, but cannot claim to have passed this gate.
+    markers = {line.strip() for line in log_text.splitlines()}
+    native_required = "REPAIRMACH_NATIVE_GUARD_REQUIRED=1" in markers
+    native_valid = "REPAIRMACH_NATIVE_MESH_VALIDATION=OK" in markers
+    native_aborted = "REPAIRMACH_ABORTED_NATIVE_MESH=1" in markers
+    if native_aborted or (native_required and not native_valid):
+        errors.append("Полнота фактической сетки VSPGEOM не подтверждена; Sweep запрещён")
     setup_valid = "REPAIRMACH_SETUP_VALIDATION=OK" in log_text and not any(
         marker in log_text for marker in (
             "REPAIRMACH_ABORTED_SETUP_VALIDATION=1",
@@ -657,12 +792,15 @@ def parse_set_report(log_text: str) -> dict:
         "engine_setup": engine_setup,
         "engine_components": engine_components,
         "setup_valid": setup_valid,
+        "native_mesh_guard_required": native_required,
+        "native_mesh_validated": native_required and native_valid and not native_aborted,
         "valid": not errors and "REPAIRMACH_SET_VALIDATION=OK" in log_text and setup_valid,
         "calculation_complete": (
             not errors
             and setup_valid
             and "REPAIRMACH_VSPAERO_COMPLETE=1" in log_text
             and "REPAIRMACH_ABORTED_SOLVER_ERRORS=1" not in log_text
+            and "REPAIRMACH_ABORTED_NUMERICAL_CONTROLS=1" not in log_text
         ),
     }
 

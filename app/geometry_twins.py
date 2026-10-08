@@ -335,6 +335,68 @@ def _action_script(action: dict, twin_name: str) -> str:
     raise ValueError(f"Неизвестное действие плана: {action['action']}")
 
 
+def _final_state_checks(
+    actions: list[dict], twin_name: str, phase: str,
+    empty_thick_user_set: int | None,
+) -> str:
+    """Check the final requested state, not the transient SetParmVal result."""
+    parameters: dict[str, float] = {}
+    assignments: dict[tuple[str, int], bool] = {}
+    for action in actions:
+        if twin_name not in action.get("target_twins", []):
+            continue
+        if action["action"] == "set_parameter":
+            parameters[action["parm_id"]] = float(action["after"])
+        elif action["action"] == "set_assignment":
+            gid = action["geom_id"]
+            assignments[gid, int(action["expected_user_set"]) + 3] = True
+            assignments[gid, int(action["other_user_set"]) + 3] = False
+        elif action["action"] == "clear_sets":
+            for user_set in action["user_sets"]:
+                assignments[action["geom_id"], int(user_set) + 3] = False
+    empty_api = None if empty_thick_user_set is None else int(empty_thick_user_set) + 3
+    fragments = []
+    for index, (pid, expected) in enumerate(parameters.items()):
+        tolerance = 1.0e-10 * max(1.0, abs(expected))
+        var = f"check_{phase}_{index}"
+        fragments.append(f'''
+    if ( !ValidParm( "{pid}" ) )
+    {{
+        Print( "REPAIRMACH_APPLY_ABORT={phase}_PARAMETER_MISSING;PARM_ID={pid}" );
+        return;
+    }}
+    double {var} = GetParmVal( "{pid}" );
+    if ( {var} != {var} || abs( {var} - {expected:.17g} ) > {tolerance:.17g} )
+    {{
+        Print( "REPAIRMACH_APPLY_ABORT={phase}_PARAMETER_MISMATCH;PARM_ID={pid};REQUESTED={expected:.17g};ACTUAL=" + {var} );
+        return;
+    }}
+''')
+    for (gid, api), expected in assignments.items():
+        # Clearing the deliberately empty set is the last operation.
+        expected = False if api == empty_api else expected
+        fragments.append(f'''
+    if ( GetSetFlag( "{gid}", {api} ) != {str(expected).lower()} )
+    {{
+        Print( "REPAIRMACH_APPLY_ABORT={phase}_SET_MISMATCH;GEOM_ID={gid};SET={api}" );
+        return;
+    }}
+''')
+    if empty_api is not None:
+        fragments.append(f'''
+    array<string> empty_geoms_{phase} = FindGeoms();
+    for ( int gi = 0; gi < int( empty_geoms_{phase}.size() ); ++gi )
+    {{
+        if ( GetSetFlag( empty_geoms_{phase}[gi], {empty_api} ) )
+        {{
+            Print( "REPAIRMACH_APPLY_ABORT={phase}_EMPTY_SET_MISMATCH" );
+            return;
+        }}
+    }}
+''')
+    return "".join(fragments)
+
+
 def generate_apply_script(
     script_path: Path,
     source_path: Path,
@@ -347,6 +409,8 @@ def generate_apply_script(
     script_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fragments = "".join(_action_script(action, twin_name) for action in actions)
+    post_update_checks = _final_state_checks(actions, twin_name, "POST_UPDATE", empty_thick_user_set)
+    persisted_checks = _final_state_checks(actions, twin_name, "PERSISTED", empty_thick_user_set)
     empty_fragment = ""
     if empty_thick_user_set is not None:
         api_index = int(empty_thick_user_set) + 3
@@ -372,8 +436,10 @@ def generate_apply_script(
     ClearVSPModel();
     ReadVSPFile( "{_vsp_path(source_path)}" );
     Update();
+    array<string> source_geoms = FindGeoms();
 {fragments}{empty_fragment}
     Update();
+{post_update_checks}
     int apply_error_count = GetNumTotalErrors();
     while ( GetNumTotalErrors() > 0 )
     {{
@@ -395,6 +461,41 @@ def generate_apply_script(
     if ( write_error_count > 0 )
     {{
         Print( "REPAIRMACH_APPLY_ABORT=OPENVSP_ERRORS_DURING_WRITE" );
+        return;
+    }}
+    // A successful write is insufficient: re-read the saved calculation copy.
+    ClearVSPModel();
+    ReadVSPFile( "{_vsp_path(output_path)}" );
+    Update();
+    array<string> persisted_geoms = FindGeoms();
+    if ( persisted_geoms.size() != source_geoms.size() )
+    {{
+        Print( "REPAIRMACH_APPLY_ABORT=PERSISTED_GEOMETRY_COUNT" );
+        return;
+    }}
+    for ( int si = 0; si < int( source_geoms.size() ); ++si )
+    {{
+        bool found = false;
+        for ( int pi = 0; pi < int( persisted_geoms.size() ); ++pi )
+        {{
+            if ( source_geoms[si] == persisted_geoms[pi] ) found = true;
+        }}
+        if ( !found )
+        {{
+            Print( "REPAIRMACH_APPLY_ABORT=PERSISTED_GEOMETRY_ID" );
+            return;
+        }}
+    }}
+{persisted_checks}
+    int readback_error_count = GetNumTotalErrors();
+    while ( GetNumTotalErrors() > 0 )
+    {{
+        ErrorObj err = PopLastError();
+        Print( "OPENVSP_ERROR=" + err.GetErrorString() );
+    }}
+    if ( readback_error_count > 0 )
+    {{
+        Print( "REPAIRMACH_APPLY_ABORT=OPENVSP_ERRORS_DURING_READBACK" );
         return;
     }}
     Print( "REPAIRMACH_APPLY_OK=1" );

@@ -30,6 +30,16 @@ def _vspaero_float(token: str) -> float:
     return float(token)
 
 
+def is_vspaero_zero_mach_regularization(requested: float, effective: float) -> bool:
+    """Exact nominal-zero mapping, NOT a widened Mach tolerance.
+
+    OpenVSP_3.51.0 VSP_SOLVER::InitializeFreeStream replaces Mach <= 0
+    with 0.001. Negative requested Mach is not accepted here. Callers must
+    retain both values; the finite-Mach result is not an exact M=0 solution.
+    """
+    return float(requested) == 0.0 and abs(float(effective) - 0.001) <= 1e-8
+
+
 def parse_vspaero_polar(
     path: Path,
     *,
@@ -181,13 +191,17 @@ def validate_vspaero_run_outputs(
         row = rows[index]
         convergence_matches = [
             item for item in convergence_rows
-            if abs(item["Mach"] - mach) <= mach_tolerance
+            if (abs(item["Mach"] - mach) <= mach_tolerance
+                or is_vspaero_zero_mach_regularization(mach, item["Mach"]))
             and abs(item["alpha_deg"] - alpha) <= alpha_tolerance
         ]
         incompressible_log_exception = (
             allow_zero_mach_without_logged_residual
             and abs(mach) <= mach_tolerance
             and len(convergence_matches) == 0
+            # Legacy no-history evidence must not hide a malformed or
+            # mismatched native Solving block, especially at nominal M=0.
+            and not re.search(r"Solving\.\.\.\s*Mach:", log_text, re.IGNORECASE)
         )
         if len(convergence_matches) != 1 and not incompressible_log_exception:
             raise ValueError(
@@ -215,6 +229,8 @@ def validate_vspaero_run_outputs(
         checked_point = {
             "Beta": float(row["Beta"]),
             "Mach": float(row["Mach"]),
+            "solver_mach": float(convergence.get("solver_mach", convergence["Mach"])) if convergence else None,
+            "mach_mapping": ("zero_to_0.001" if is_vspaero_zero_mach_regularization(mach, convergence.get("solver_mach", convergence["Mach"])) else "identity") if convergence else "unverified",
             "alpha_deg": float(row["AoA"]),
             "CLtot": float(row["CLtot"]),
             "CDi": float(row["CDi"]),
@@ -308,8 +324,12 @@ def _parse_vspaero_log_convergence(log_text: str) -> list[dict[str, float]]:
         final = candidates[-1]
         requested_mach = float(marker.group(1))
         requested_alpha = float(marker.group(2))
-        if abs(final["Mach"] - requested_mach) <= 1.0e-4 and abs(final["alpha_deg"] - requested_alpha) <= 1.0e-4:
-            result.append(final)
+        identity = abs(final["Mach"] - requested_mach) <= 1.0e-4
+        regularized = is_vspaero_zero_mach_regularization(requested_mach, final["Mach"])
+        if (identity or regularized) and abs(final["alpha_deg"] - requested_alpha) <= 1.0e-4:
+            result.append({**final, "Mach": requested_mach if regularized else final["Mach"],
+                           "solver_mach": final["Mach"],
+                           "mach_mapping": "zero_to_0.001" if regularized else "identity"})
     return result
 
 

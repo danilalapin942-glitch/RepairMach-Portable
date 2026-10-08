@@ -249,6 +249,35 @@
       "quality_level": "verification",
       "method_version": "RM91-GEOMETRY-ACTION-1",
       "outputs": ["corrective_execution.json", "certificate.json"]
+    },
+    {
+      "id": "vspaero_anchor_review",
+      "title": "Перепроверка отклонённой опорной точки VSPAERO",
+      "description": "По отдельному запросу оператора: неизменные сеточные двойники и допуски; усиленные численные повторы, Coarse/Medium/Fine и проверка длины итерационного расчёта следа. Не выдаёт сертификат и не снимает FAIL.",
+      "availability": "ready",
+      "execution": "vspaero_anchor_review",
+      "quality_level": "diagnostic",
+      "outputs": ["status.json", "REPORT.md", "paraview"]
+    },
+    {
+      "id": "vspaero_independent_certification",
+      "title": "Независимая сертификация VSPAERO",
+      "description": "MASTER, опоры, Sets и сеточная сходимость VSPAERO; MachLine не запускается и не выдаётся его допуск.",
+      "availability": "ready",
+      "execution": "geometry_certification",
+      "certification_branch": "vspaero",
+      "quality_level": "verification",
+      "outputs": ["certificate.json", "certificate.md", "paraview"]
+    },
+    {
+      "id": "machline_open_nozzle_certification",
+      "title": "Независимая сертификация MachLine — открытое сопло",
+      "description": "Открытие только явно заданных осевых сопел на расчётной копии; аудит отверстий, угловые пробы и маскированные силы. Дозвуковой допуск пока не поддерживается. Не выдаёт полный Cx0 или допуск VSPAERO.",
+      "availability": "ready",
+      "execution": "geometry_certification",
+      "certification_branch": "machline_open_nozzle",
+      "quality_level": "verification",
+      "outputs": ["certificate.json", "certificate.md", "open_nozzle_audit.json", "paraview"]
     }
   ]
 }

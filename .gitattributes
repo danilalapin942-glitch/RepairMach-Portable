@@ -1,0 +1,9 @@
+# Preserve archives and engineering artifacts byte-for-byte.
+archives/** -text -diff
+aircraft_library/** -text -diff
+# Navigation and manifest files remain readable in GitHub.
+archives/**/*.md text eol=lf diff
+archives/**/*.json text eol=lf diff
+archives/**/*.py text eol=lf diff
+aircraft_library/**/*.md text eol=lf diff
+aircraft_library/**/*.json text eol=lf diff

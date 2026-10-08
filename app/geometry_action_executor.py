@@ -219,6 +219,7 @@ def execute_safe_recertification(
                 scope_override=deepcopy(certificate.get("requested_scope", certificate.get("scope"))),
                 policy_overrides=None,
                 run_vspaero_probes=run_vspaero_probes,
+                backend_branch=certificate.get("certification_branch", "combined"),
             )
             status = (
                 "completed_pass"

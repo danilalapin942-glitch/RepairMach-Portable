@@ -61,6 +61,8 @@ from openvsp_runner import run_vspscript
 from tri_mesh import TriMesh, diagnose as diagnose_tri
 from tri_mesh import read_tri, repair as repair_tri, write_tri
 from vspaero_runner import find_generated_polar, generate_vspaero_sweep_script, parse_set_report
+from pressure_export import export_vspaero_pressure, export_machline_pressure
+from machline_open_nozzle import open_declared_nozzles
 
 
 RUN_SCHEMA = "repairmach.geometry-certification-run/1.0"
@@ -489,6 +491,10 @@ def _run_machline_geometry_qualification(
     body and validates a component-masked per-panel force reconstruction.
     """
     settings = policy.get("qualification", {})
+    open_nozzle = policy.get("topology_mode", "closed_body") == "open_nozzle"
+    if open_nozzle and any(float(lo) <= 1.0 for lo, hi in scope.get("mach_intervals", [])):
+        return {"requested": True, "valid": False, "status": "open_nozzle_subsonic_not_qualified",
+                "probes": [], "errors": ["Открытое сопло на дозвуке требует отдельной проверенной solver-постановки; сверхзвуковой допуск не переносится"]}
     if not settings.get("enabled", True):
         return {"requested": False, "valid": False, "status": "disabled", "probes": []}
     if executable is None or not executable.is_file():
@@ -690,6 +696,7 @@ def _run_machline_geometry_qualification(
                         "body_vtk": str(body_path.resolve()),
                         "body_vtk_sha256": sha256_file(body_path),
                         "solver_status_code": status_code,
+                        "superinclined_panels": 0 if re.search(r"Found\s+0\s+superinclined panels", output) else None,
                         "iterations": solver.get("iterations"),
                         "residual_norm": residual_norm,
                         "residual_max": residual_max,
@@ -714,6 +721,16 @@ def _run_machline_geometry_qualification(
                     "errors": [str(exc)],
                     "runtime_seconds": time.monotonic() - started,
                 }
+            if body_path.is_file():
+                try:
+                    record["pressure_export"] = export_machline_pressure(
+                        body_path, probe_dir / "paraview" / token,
+                        condition={"mach": mach, "alpha_deg": alpha, "beta_deg": beta},
+                        quality={"valid": record["valid"], "errors": record["errors"]},
+                        extras=[report_path, log_path, force_mask_path, masked_path],
+                    )
+                except (OSError, ValueError) as exc:
+                    record["pressure_export"] = {"status": "failed", "errors": [str(exc)]}
             records.append(record)
             if not record["valid"]:
                 errors.extend(
@@ -727,7 +744,8 @@ def _run_machline_geometry_qualification(
         "status": "passed" if not errors else "failed",
         "formulation": "neumann-doublet-only-mass-flux",
         "matrix_solver": "GMRES",
-        "mesh_role": "watertight_thick_body_with_tagged_numerical_closure",
+        "mesh_role": ("thick_body_with_declared_open_nozzles" if open_nozzle
+                      else "watertight_thick_body_with_tagged_numerical_closure"),
         "thin_surface_contract": "audited_by_composite_mesh_solved_by_vspaero",
         "force_output": "component_masked_pressure_wave_without_base_drag",
         "limits": {
@@ -1120,6 +1138,19 @@ def _tri_certification(
     }
     solver_component_ids = thick_component_ids | surrogate_component_ids
     solver_mesh = _mesh_component_subset(prepared, solver_component_ids)
+    open_nozzle = policy["machline"].get("topology_mode", "closed_body") == "open_nozzle"
+    nozzle_audit = None
+    if open_nozzle:
+        solver_mesh, nozzle_audit = open_declared_nozzles(
+            solver_mesh, declarations=policy["machline"].get("open_nozzles", []),
+            component_names=component_map, reference=reference, scope=scope,
+            context_mesh=prepared,
+        )
+        write_json(tri_dir / "open_nozzle_audit.json", nozzle_audit)
+        if not nozzle_audit["valid"]:
+            findings.append(finding("GEO-MACH-OUTLET-001", "BLOCKER",
+                "Открытое сопло не прошло проверку объявленных границ", scope="machline",
+                evidence=nozzle_audit))
     final_path = tri_dir / "certified_mesh.tri"
     write_tri(final_path, solver_mesh)
     final = diagnose_tri(solver_mesh)
@@ -1138,8 +1169,10 @@ def _tri_certification(
         "surrogate_component_ids": sorted(surrogate_component_ids),
         "solver_component_ids": sorted(solver_component_ids),
         "solver_mesh_diagnostics": final,
-        "intentional_open_boundaries_allowed_only_on_thin_components": True,
+        "intentional_open_boundaries_allowed_only_on_thin_components": not open_nozzle,
         "solver_mesh_is_watertight_thick_body": thick_watertight,
+        "topology_mode": "open_nozzle" if open_nozzle else "closed_body",
+        "declared_open_nozzles": nozzle_audit,
         "thin_surfaces_audited_but_not_solved_by_machline": True,
         "pressure_wave_component_coverage": pressure_wave_coverage,
         "delegated_thin_component_coverage": delegated_thin_coverage,
@@ -1148,7 +1181,7 @@ def _tri_certification(
     topology_ok = bool(
         audit_final["machline_safe_topology"]
         and final["machline_safe_topology"]
-        and thick_watertight
+        and (bool(nozzle_audit and nozzle_audit["valid"]) if open_nozzle else thick_watertight)
     )
     if not topology_ok:
         findings.append(finding(
@@ -1173,7 +1206,19 @@ def _tri_certification(
             },
         ))
 
-    mach_scans = scan_scope(prepared, scope, component_map)
+    scan_mesh = prepared
+    if open_nozzle and nozzle_audit and nozzle_audit["valid"]:
+        # Audit exactly the surviving thick panels plus delegated thin panels;
+        # the removed disk must not fail the superinclined-panel check.
+        thin_mesh = _mesh_component_subset(prepared, set(topology_contract["thin_component_ids"]))
+        offset = len(solver_mesh.vertices)
+        scan_mesh = TriMesh(
+            solver_mesh.vertices + thin_mesh.vertices,
+            solver_mesh.faces + [tuple(v + offset for v in f) for f in thin_mesh.faces],
+            solver_mesh.components + thin_mesh.components,
+        )
+        write_tri(tri_dir / "open_nozzle_scan_mesh.tri", scan_mesh)
+    mach_scans = scan_scope(scan_mesh, scope, component_map)
     mach_ok = all(not scan["bad_panels"] for scan in mach_scans)
     write_json(tri_dir / "mach_criterion.json", {
         "coordinate_convention": COORDINATE_CONVENTION,
@@ -1201,6 +1246,8 @@ def _tri_certification(
             and delegated_thin_coverage["complete"]
         ),
         "output_kind": "masked_thick_body_pressure_wave",
+        "topology_mode": "open_nozzle" if open_nozzle else "closed_body",
+        "open_nozzle_audit": nozzle_audit,
     }
     force_mask_path = tri_dir / "force_integration_mask.json"
     write_json(force_mask_path, {
@@ -1256,10 +1303,13 @@ def _tri_certification(
             },
         ))
     elif not qualification.get("valid"):
+        unsupported_scope = qualification.get("status") == "open_nozzle_subsonic_not_qualified"
         findings.append(finding(
-            "GEO-MACH-SOLVER-001", "BLOCKER",
-            "Подготовленная толстотельная сетка не прошла реальные угловые "
-            "пробы MachLine и проверку маскированных сил",
+            "GEO-MACH-SCOPE-001" if unsupported_scope else "GEO-MACH-SOLVER-001", "BLOCKER",
+            ("Дозвуковая постановка MachLine с открытым соплом ещё не квалифицирована"
+             if unsupported_scope else "Пробы MachLine не запущены: геометрия не допущена"
+             if qualification.get("status") == "geometry_not_eligible"
+             else "Не подтверждены реальные угловые пробы MachLine и проверка маскированных сил"),
             scope="machline", evidence={
                 "status": qualification.get("status"),
                 "errors": qualification.get("errors", []),
@@ -1295,7 +1345,7 @@ def _tri_certification(
         "geometry_eligible": geometry_eligible,
         "force_output_eligible": force_contract_ok,
         "standalone_total_force_eligible": bool(
-            force_contract_ok and not force_contract["base_drag_replacement_required"]
+            force_contract_ok and not force_contract["base_drag_replacement_required"] and not open_nozzle
         ),
         "hybrid_pressure_wave_eligible": force_contract_ok,
         "status": status,
@@ -1426,7 +1476,10 @@ def _run_one_vspaero_probe(
     engine_boundary: str | None = None,
     diagnostic_ignore_fixed_tail: bool = False,
     numerical_overrides: dict | None = None,
+    diagnostic_excluded_components: list[str] | None = None,
 ) -> dict:
+    if diagnostic_excluded_components and (mode != "mixed" or diagnostic_ignore_fixed_tail):
+        raise ValueError("Body exclusion is diagnostic mixed-only; fixed tail must remain enforced")
     probe_dir.mkdir(parents=True, exist_ok=True)
     probe_model = probe_dir / "model.vsp3"
     shutil.copy2(model, probe_model)
@@ -1441,6 +1494,8 @@ def _run_one_vspaero_probe(
             "wake_num_iter",
             "num_wake_nodes",
             "wake_relax",
+            "implicit_wake",
+            "implicit_wake_start_iter",
         }
         unknown_controls = sorted(set(numerical_overrides) - allowed_controls)
         if unknown_controls:
@@ -1488,6 +1543,8 @@ def _run_one_vspaero_probe(
         wake_num_iter=int(settings.get("wake_num_iter", 8)),
         num_wake_nodes=int(settings.get("num_wake_nodes", 24)),
         wake_relax=float(settings.get("wake_relax", 0.8)),
+        implicit_wake=settings.get("implicit_wake"),
+        implicit_wake_start_iter=settings.get("implicit_wake_start_iter", 8),
         tail_geometry_name=tail_name,
         tail_incidence_deg=tail_incidence,
         engine_boundary=requested_boundary,
@@ -1499,6 +1556,7 @@ def _run_one_vspaero_probe(
         require_canonical_components=(mode == "mixed"),
         require_nonempty_fuselage_set=(mode == "mixed"),
         require_all_geometries_assigned=(mode == "mixed"),
+        diagnostic_excluded_components=diagnostic_excluded_components,
     )
     started = time.monotonic()
     code = run_vspscript(
@@ -1533,6 +1591,11 @@ def _run_one_vspaero_probe(
         tail_geometry_name=tail_name,
         tail_incidence_deg=tail_incidence,
     )
+    if diagnostic_excluded_components:
+        marker = ("REPAIRMACH_DIAGNOSTIC_EXCLUSION;NAME=" + diagnostic_excluded_components[0]
+                  + ";CONFIRMED=1;QUALIFICATION_ALLOWED=0")
+        if sum(line.strip() == marker for line in log_text.splitlines()) != 1:
+            condition_errors.append("Diagnostic body exclusion lacks unique OpenVSP readback confirmation")
     actual_betas = []
     for row in rows:
         try:
@@ -1629,11 +1692,21 @@ def _run_one_vspaero_probe(
                 f"VSPAERO вернул M={values['Mach']:g}, alpha={values['Alpha']:g} вместо "
                 f"M={requested_mach:g}, alpha={requested_alpha:g}"
             )
+    try:
+        pressure = export_vspaero_pressure(
+            probe_model.with_suffix(".adb"), probe_dir / "paraview",
+            accepted=valid and not diagnostic_excluded_components, quality=output_quality,
+            mode="diagnostic_body_isolation" if diagnostic_excluded_components else mode,
+            expected_conditions=[{"mach": requested_mach, "alpha_deg": requested_alpha, "beta_deg": requested_beta}],
+        )
+    except OSError as exc:
+        pressure = {"status": "failed", "errors": [str(exc)]}
     return {
         "mode": mode,
         "level": level,
         "valid": valid,
         "return_code": code,
+        "pressure_export": pressure,
         "elapsed_seconds": round(elapsed, 3),
         "set_validation": set_report,
         "health_signals": health_signals,
@@ -1660,9 +1733,13 @@ def _run_one_vspaero_probe(
             "wake_num_iter": int(settings.get("wake_num_iter", 8)),
             "num_wake_nodes": int(settings.get("num_wake_nodes", 24)),
             "wake_relax": float(settings.get("wake_relax", 0.8)),
+            "implicit_wake": settings.get("implicit_wake"),
+            "implicit_wake_start_iter": settings.get("implicit_wake_start_iter", 8),
         },
         "diagnostic_overrides": {
             "ignore_fixed_tail": bool(diagnostic_ignore_fixed_tail),
+            "excluded_components": list(diagnostic_excluded_components or []),
+            "qualification_allowed": not bool(diagnostic_excluded_components),
         },
         "model": str(model.resolve()),
         "model_sha256": sha256_file(model),
@@ -1785,8 +1862,9 @@ def _run_vspaero_component_isolation(
         "variants": variants,
         "groups_whose_exclusion_restored_solution": restored,
         "interpretation": (
-            "Указанные группы или их сопряжения вызывают нечисловой VLM-режим; "
-            "диагностическое исключение не разрешено переносить в расчётную модель"
+            "Исключение указанных групп восстановило численную проверку в этой точке; "
+            "причина может быть в следе, сетке или взаимодействии поверхностей. "
+            "Это не доказывает дефект геометрии; диагностическое исключение не разрешено переносить в расчётную модель"
             if restored
             else "Изоляция отдельных семантических групп не восстановила решение"
         ),
@@ -2140,8 +2218,12 @@ def _run_vspaero_ladder(
         and convergence.get("valid")
         and not convergence.get("converged")
         and (not convergence.get("oscillating") or recoverable_oscillation)
-        and failed_relative_changes
-        and max(failed_relative_changes) <= retry_limit
+        # A bounded oscillation may be the only failed quantity. An empty
+        # list of non-oscillating failures must not suppress the verification
+        # mesh. This changes routing only: mesh_convergence still rejects
+        # oscillation until the additional grid evidence resolves it.
+        and (failed_relative_changes or recoverable_oscillation)
+        and all(change <= retry_limit for change in failed_relative_changes)
     )
     retry_probe = None
     if should_retry:
@@ -2658,7 +2740,7 @@ def _probe_repeatability(probes: list[dict], policy: dict) -> dict:
     }
 
 
-def _recover_vspaero_residual_failure(
+def _recover_vspaero_residual_stage(
     *,
     failed_probe: dict,
     model: Path,
@@ -2723,6 +2805,37 @@ def _recover_vspaero_residual_failure(
         "values": deepcopy(selected.get("values")),
     }
     return {**record, "selected": selected}
+
+
+def _recover_vspaero_residual_failure(**kwargs) -> dict:
+    """Bounded recovery stages, never a relaxed acceptance criterion.
+
+    Stronger wake convergence is attempted only after a residual-only failure.
+    Each stage must independently pass two repeats on the SAME mesh and setup.
+    Geometry, missing outputs and non-finite failures never advance this ladder.
+    """
+    policy = kwargs["policy"]
+    settings = policy.get("probes", {}).get("vspaero", {}).get("numerical_recovery", {})
+    result = _recover_vspaero_residual_stage(**kwargs)
+    stages = []
+    for index, controls in enumerate(settings.get("fallback_controls", []), 1):
+        if result.get("valid") or not result.get("attempted"):
+            break
+        repeats = result.get("repeat_probes", [])
+        if not repeats or not _is_residual_quality_failure(repeats[-1]):
+            break
+        stages.append(deepcopy(result))
+        stage_policy = deepcopy(policy)
+        stage_policy["probes"]["vspaero"]["numerical_recovery"]["controls"] = deepcopy(controls)
+        result = _recover_vspaero_residual_stage(**{
+            **kwargs, "policy": stage_policy,
+            "probe_root": kwargs["probe_root"].parent / f"nr{index + 1}",
+        })
+    if stages:
+        result["prior_stages"] = stages
+        if result.get("selected"):
+            result["selected"]["numerical_recovery"]["prior_stages"] = deepcopy(stages)
+    return result
 
 
 def _run_vspaero_probe_with_recovery(
@@ -2970,6 +3083,7 @@ def certify_geometry(
     scope_override: dict | None = None,
     policy_overrides: dict | None = None,
     run_vspaero_probes: bool | None = None,
+    backend_branch: str = "combined",
 ) -> dict:
     """Run G0--G8 and return paths plus the final certificate."""
     master_path = master_path.resolve()
@@ -2985,6 +3099,14 @@ def certify_geometry(
     }
     base_policy = load_geometry_policy(policy_path)
     policy = effective_policy(base_policy, policy_overrides)
+    if backend_branch not in {"combined", "vspaero", "machline_open_nozzle"}:
+        raise ValueError("Неизвестная независимая ветка сертификации")
+    if backend_branch != "combined":
+        policy["certification_branch"] = backend_branch
+    if backend_branch == "machline_open_nozzle":
+        policy["machline"]["topology_mode"] = "open_nozzle"
+    elif policy["machline"].get("topology_mode", "closed_body") != "closed_body":
+        raise ValueError("Открытое сопло разрешено только в отдельной ветке MachLine")
     scope = _validate_scope(scope_override or policy["scope"])
     policy["scope"] = deepcopy(scope)
     reference = {
@@ -3105,6 +3227,10 @@ def certify_geometry(
             ),
             "machline": (run_dir / "machline" / "source_model.vsp3", None),
         }
+        if backend_branch == "vspaero":
+            twin_specs.pop("machline")
+        elif backend_branch == "machline_open_nozzle":
+            twin_specs = {"machline": twin_specs["machline"]}
         for twin_name, (destination, empty_set) in twin_specs.items():
             twins[twin_name] = apply_model_actions(
                 source_path=frozen,
@@ -3152,7 +3278,7 @@ def certify_geometry(
                 findings.append(finding("GEO-DELTA-001", "BLOCKER", error, scope="twins"))
 
         # G7 -- create all three repeatable mesh levels for both VSPAERO modes and MachLine export.
-        for twin_name in ("vspaero_mixed", "vspaero_lifting", "machline"):
+        for twin_name in twin_specs:
             mesh_records[twin_name] = {}
             base_inventory = post_inventories[twin_name]
             base_audit = semantic_audit(base_inventory, reference, policy)
@@ -3265,8 +3391,8 @@ def certify_geometry(
 
         machline_executable = executables.get("machline")
         machline_requested = bool(
-            tri_path is not None
-            or (machline_executable is not None and machline_executable.is_file())
+            backend_branch != "vspaero" and (tri_path is not None
+            or (machline_executable is not None and machline_executable.is_file()))
         )
         if machline_requested:
             fine_machline_record = mesh_records.get("machline", {}).get("fine", {})
@@ -3304,6 +3430,8 @@ def certify_geometry(
         enabled = bool(policy["probes"]["vspaero"].get("enabled", True))
         if run_vspaero_probes is not None:
             enabled = bool(run_vspaero_probes)
+        if backend_branch == "machline_open_nozzle":
+            enabled = False
         if enabled:
             probes["requested"] = True
             has_gondola = any(
@@ -3378,9 +3506,10 @@ def certify_geometry(
                     findings.append(finding(
                         "GEO-VSP-004",
                         "WARNING",
-                        "Нечисловой отказ локализован по компонентам; подбор одной "
-                        "проходящей сетки запрещён, требуется исправление MASTER или "
-                        "явный физически обоснованный гибридный контракт",
+                        "Отказ критериев качества локализован по компонентам; это не "
+                        "доказывает дефект геометрии. Подбор одной проходящей сетки "
+                        "запрещён; требуется численная/геометрическая диагностика и "
+                        "повторная квалификация либо обоснованный гибридный контракт",
                         scope=f"vspaero_{ladder_name}",
                         evidence={"localized_failures": localized_failures},
                     ))
@@ -3407,7 +3536,9 @@ def certify_geometry(
             probes = {
                 "requested": False,
                 "status": "skipped",
-                "reason": "Backend probes disabled: no solver-eligible certificate can be issued",
+                "reason": ("Independent MachLine branch: VSPAERO is not requested"
+                           if backend_branch == "machline_open_nozzle" else
+                           "Backend probes disabled: no solver-eligible certificate can be issued"),
             }
         _write_transformation_log(transformation_log, plan, twins)
 
@@ -3507,6 +3638,17 @@ def certify_geometry(
             vspaero_eligible = False
             selected_mode = None
 
+        # An isolated MachLine certificate does not borrow VSPAERO eligibility.
+        # Common provenance/geometry failures still block every branch.
+        if backend_branch == "machline_open_nozzle":
+            branch_ok = (error_message is None and master_unchanged and delta_ok_final
+                         and tri_result.get("eligible")
+                         and (tri_result.get("machline_qualification") or {}).get("valid")
+                         and (tri_result.get("machline_qualification") or {}).get("probes")
+                         and (tri_result.get("topology_contract", {}).get("declared_open_nozzles") or {}).get("valid")
+                         and not any(_is_backend_blocker(item, "machline") for item in findings))
+            verdict = ("PASS_REGULARIZED" if transformations else "PASS_NATIVE") if branch_ok else "FAIL"
+
         run_complete = error_message is None
         machline_blockers = [
             item for item in findings if _is_backend_blocker(item, "machline")
@@ -3534,7 +3676,7 @@ def certify_geometry(
             verdict=verdict,
         )
         parasite_eligible = _backend_eligible(
-            local_eligible=bool(twins.get("parasite", {}).get("valid")),
+            local_eligible=bool(twins.get("parasite", {}).get("valid")) and backend_branch != "machline_open_nozzle",
             blockers=parasite_blockers,
             master_unchanged=master_unchanged,
             run_complete=run_complete,
@@ -3578,6 +3720,22 @@ def certify_geometry(
             qualification=selected_qualification,
             eligible=vspaero_eligible,
         )
+        machline_scope = {
+            "coverage_kind": "solver_envelope" if machline_eligible else "none",
+            "mach_intervals": deepcopy(scope["mach_intervals"]) if machline_eligible else [],
+            "alpha_deg": deepcopy(scope["alpha_deg"]) if machline_eligible else [],
+            "beta_deg": scope.get("beta_deg") if machline_eligible else None,
+        }
+        if backend_branch == "machline_open_nozzle":
+            # This new branch certifies only executed probes, not an inferred
+            # envelope, total aircraft forces, or a VSPAERO/hybrid scenario.
+            machline_scope = {
+                "coverage_kind": "exact_points" if machline_eligible else "none",
+                "points": [{"mach": p["mach"], "alpha_deg": p["alpha_deg"],
+                            "beta_deg": scope.get("beta_deg", 0.0)}
+                           for p in (tri_result.get("machline_qualification") or {}).get("probes", [])]
+                          if machline_eligible else [],
+            }
         scenario_eligibility = _derive_scenario_eligibility(qualified_scope, scope)
         eligible_scenarios = [
             name for name, item in scenario_eligibility.items() if item.get("eligible")
@@ -3585,7 +3743,7 @@ def certify_geometry(
 
         # A failed optional MachLine request does not revoke an independently valid VSPAERO certificate.
         flags = {
-            "solver_eligible": vspaero_eligible,
+            "solver_eligible": machline_eligible if backend_branch == "machline_open_nozzle" else vspaero_eligible,
             "full_geometry_represented": bool(vspaero_eligible and selected_mode == "mixed" and not vspaero_exclusions),
             "hybrid_substitution_required": bool(
                 vspaero_eligible and hybrid_replacements_required
@@ -3635,6 +3793,8 @@ def certify_geometry(
 
         payload = {
             "schema": "repairmach.geometry-certificate/1.1",
+            "certification_branch": backend_branch,
+            "primary_backend": "machline" if backend_branch == "machline_open_nozzle" else "vspaero",
             "method_version": policy["method_version"],
             "run_status": "complete" if run_complete else "failed",
             "verdict": verdict,
@@ -3737,6 +3897,8 @@ def certify_geometry(
                         ),
                     },
                     "output_contract": {
+                        "topology_mode": tri_result.get("topology_contract", {}).get("topology_mode", "closed_body"),
+                        "declared_open_nozzles": tri_result.get("topology_contract", {}).get("declared_open_nozzles"),
                         "hybrid_pressure_wave_eligible": tri_result.get(
                             "hybrid_pressure_wave_eligible", False
                         ),
@@ -3754,12 +3916,7 @@ def certify_geometry(
                         ),
                     },
                     "qualification": tri_result.get("machline_qualification"),
-                    "qualified_scope": {
-                        "coverage_kind": "solver_envelope" if machline_eligible else "none",
-                        "mach_intervals": deepcopy(scope["mach_intervals"]) if machline_eligible else [],
-                        "alpha_deg": deepcopy(scope["alpha_deg"]) if machline_eligible else [],
-                        "beta_deg": scope.get("beta_deg") if machline_eligible else None,
-                    },
+                    "qualified_scope": machline_scope,
                     "blockers": machline_blockers,
                 },
                 "parasite_drag": {
@@ -3818,6 +3975,15 @@ def certify_geometry(
             },
             "error": error_message,
         }
+        if backend_branch == "machline_open_nozzle":
+            payload["qualified_scope"] = machline_scope
+            payload["qualification"] = {
+                "profile": "machline_open_nozzle_exact_probes",
+                "selected_mode": "open_nozzle",
+                "coverage_kind": machline_scope["coverage_kind"],
+                "anchors": (tri_result.get("machline_qualification") or {}).get("probes", []),
+                "qualified_anchor_count": len(machline_scope["points"]),
+            }
         payload["evidence_files"] = _collect_evidence_files(run_dir)
         certificate, certificate_path, markdown_path = emit_certificate(run_dir, payload)
         source_manifest["status"] = "complete" if verdict != "FAIL" else "failed"

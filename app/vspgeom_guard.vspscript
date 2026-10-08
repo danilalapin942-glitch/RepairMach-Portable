@@ -1,0 +1,274 @@
+// Read-only native V3/one-level integrity gate. No remeshing or aero acceptance.
+// Kept separate for real-backend regression; embedded in each generated script.
+bool RMFail(string why)
+{
+    Print("ERROR=Native mesh integrity: " + why);
+    return false;
+}
+string RMTrim(string s)
+{
+    uint a=0, b=s.length();
+    while(a<b && s[a]<=32) a++;
+    while(b>a && s[b-1]<=32) b--;
+    return s.substr(a,b-a);
+}
+array<string> RMTokens(string s)
+{
+    array<string> r;
+    uint i=0;
+    while(i<s.length())
+    {
+        while(i<s.length() && s[i]<=32) i++;
+        uint a=i;
+        while(i<s.length() && s[i]>32) i++;
+        if(i>a) r.insertLast(s.substr(a,i-a));
+    }
+    return r;
+}
+class RMReader
+{
+    file@ f;
+    bool good=false;
+    RMReader(string path)
+    {
+        @f=file();
+        good=f.open(path,"r")>=0;
+    }
+    ~RMReader() { f.close(); }
+    string line()
+    {
+        while(good && !f.isEndOfFile())
+        {
+            string s=RMTrim(f.readLine());
+            if(s.length()>0) return s;
+        }
+        good=false;
+        return "";
+    }
+    array<string> row() { return RMTokens(line()); }
+}
+bool RMInt(string s)
+{
+    if(s.length()==0 || s.length()>9) return false;
+    for(uint i=0;i<s.length();i++) if(s[i]<48 || s[i]>57) return false;
+    return true;
+}
+bool RMInts(const array<string> &in r)
+{
+    for(uint i=0;i<r.length();i++) if(!RMInt(r[i])) return false;
+    return true;
+}
+bool RMFloat(string s)
+{
+    // Strict decimal grammar, not parseFloat's permissive prefix conversion.
+    uint i=0, digits=0;
+    if(s.length()>0 && (s[0]==43 || s[0]==45)) i++;
+    while(i<s.length() && s[i]>=48 && s[i]<=57) {i++;digits++;}
+    if(i<s.length() && s[i]==46)
+    {
+        i++;
+        while(i<s.length() && s[i]>=48 && s[i]<=57) {i++;digits++;}
+    }
+    if(digits==0) return false;
+    if(i<s.length() && (s[i]==69 || s[i]==101))
+    {
+        i++; digits=0;
+        if(i<s.length() && (s[i]==43 || s[i]==45)) i++;
+        while(i<s.length() && s[i]>=48 && s[i]<=57) {i++;digits++;}
+        if(digits==0) return false;
+    }
+    double v=parseFloat(s);
+    return i==s.length() && v-v==0;
+}
+bool RMFloats(const array<string> &in r, uint start)
+{
+    for(uint i=start;i<r.length();i++) if(!RMFloat(r[i])) return false;
+    return true;
+}
+bool RMSingle(const array<string> &in r, int value)
+{
+    return r.length()==1 && RMInt(r[0]) && parseInt(r[0])==value;
+}
+bool RMHas(const array<string> &in a,string s)
+{
+    for(uint i=0;i<a.length();i++) if(a[i]==s) return true;
+    return false;
+}
+bool RMHasNode(const array<int> &in a,int n)
+{
+    for(uint i=0;i<a.length();i++) if(a[i]==n) return true;
+    return false;
+}
+string RMEdge(int part,int a,int b)
+{
+    int lo=a,hi=b;
+    if(a>b) {lo=b;hi=a;}
+    return ""+part+":"+lo+":"+hi+":"+(a<b ? "0" : "1");
+}
+string RMEdgeBase(string e) { return e.substr(0,e.length()-1); }
+bool RMClosed(array<string> edges)
+{
+    edges.sortAsc();
+    if(edges.length()%2!=0) return false;
+    for(uint i=0;i<edges.length();i+=2)
+    {
+        if(RMEdgeBase(edges[i])!=RMEdgeBase(edges[i+1]) || edges[i]==edges[i+1]) return false;
+        if(i+2<edges.length() && RMEdgeBase(edges[i])==RMEdgeBase(edges[i+2])) return false;
+    }
+    return true;
+}
+vec3d RMArea(const array<int> &in nodes,const array<vec3d> &in points)
+{
+    vec3d origin=points[nodes[0]-1], total(0,0,0);
+    for(uint j=0;j<nodes.length();j++)
+    {
+        vec3d a=points[nodes[j]-1]-origin;
+        vec3d b=points[nodes[(j+1)%nodes.length()]-1]-origin;
+        total=total+cross(a,b)*0.5;
+    }
+    return total;
+}
+class RMFace
+{
+    array<int> nodes;
+    int sid=0;
+    int patch=0;
+    int ntri=0;
+}
+bool RMNative(string meshpath,string keypath,array<string> thick,array<string> thin)
+{
+    // No inference from consecutive SID or human names: verify VKEY against Sets.
+    // Deliberately fail closed on unsupported subsurface/tag mappings.
+    RMReader key(keypath);
+    if(!key.good || key.line()!="# VSPGEOM v3 Tag Key File") return RMFail("missing/unsupported VKEY");
+    if(key.line()!=meshpath) return RMFail("VKEY path mismatch");
+    array<string> r=key.row();
+    if(r.length()!=1 || !RMInts(r)) return RMFail("VKEY part count");
+    int np=int(parseInt(r[0]));
+    if(np<1 || np>100000) return RMFail("unsupported VKEY count");
+    if(key.line()!="# part#,geom#,surf#,gname,gid,thick,plate,copy#,geomcopy#") return RMFail("unsupported VKEY columns");
+    array<bool> isthick(np+1,false), used(np+1,false);
+    array<string> gids;
+    for(int p=1;p<=np;p++)
+    {
+        r=key.line().split(",");
+        if(r.length()!=9) return RMFail("unsupported VKEY part row");
+        for(uint j=0;j<r.length();j++) r[j]=RMTrim(r[j]);
+        array<int> numeric={0,1,2,5,6,7,8};
+        for(uint j=0;j<numeric.length();j++) if(!RMInt(r[numeric[j]])) return RMFail("VKEY integer");
+        if(parseInt(r[0])!=p || (r[5]!="0" && r[5]!="1")) return RMFail("VKEY part identity");
+        bool t=r[5]=="1";
+        if(t ? (!RMHas(thick,r[4]) || RMHas(thin,r[4])) : (!RMHas(thin,r[4]) || RMHas(thick,r[4]))) return RMFail("VKEY/Set mismatch");
+        isthick[p]=t; gids.insertLast(r[4]);
+    }
+    for(uint j=0;j<thick.length();j++) if(!RMHas(gids,thick[j])) return RMFail("thick component missing from VKEY");
+    for(uint j=0;j<thin.length();j++) if(!RMHas(gids,thin[j])) return RMFail("thin component missing from VKEY");
+    if(!RMSingle(key.row(),np)) return RMFail("unsupported VKEY tag count");
+    if(key.line()!="# tag#,part#,ssname1,ssname2,...,ssid1,ssid2,...") return RMFail("unsupported VKEY tags");
+    for(int p=1;p<=np;p++)
+    {
+        r=key.line().split(",");
+        if(r.length()!=2 || !RMInts(r) || parseInt(r[0])!=p || parseInt(r[1])!=p) return RMFail("unsupported VKEY tag mapping");
+    }
+    if(key.line()!="") return RMFail("trailing VKEY records");
+    RMReader mesh(meshpath);
+    if(!mesh.good || mesh.line()!="# vspgeom v3" || !RMSingle(mesh.row(),1)) return RMFail("unsupported mesh version/levels");
+    r=mesh.row();
+    if(r.length()!=3 || !RMInts(r)) return RMFail("mesh counts");
+    int nn=int(parseInt(r[0])), nf=int(parseInt(r[1])), nw=int(parseInt(r[2]));
+    if(nn<1 || nf<1 || nn>10000000 || nf>10000000 || nw>nn) return RMFail("unsupported mesh counts");
+    array<vec3d> points;
+    for(int n=0;n<nn;n++)
+    {
+        r=mesh.row();
+        if(r.length()!=3 || !RMFloats(r,0)) return RMFail("invalid/nonfinite vertex");
+        points.insertLast(vec3d(parseFloat(r[0]),parseFloat(r[1]),parseFloat(r[2])));
+    }
+    if(!RMSingle(mesh.row(),nf)) return RMFail("polygon count mismatch");
+    array<RMFace> faces(nf);
+    for(int f=0;f<nf;f++)
+    {
+        r=mesh.row();
+        if(r.length()<4 || !RMInts(r) || parseInt(r[0])+1!=int(r.length())) return RMFail("polygon record");
+        for(uint j=1;j<r.length();j++)
+        {
+            int node=int(parseInt(r[j]));
+            if(node<1 || node>nn || RMHasNode(faces[f].nodes,node)) return RMFail("polygon vertex range/duplicate");
+            faces[f].nodes.insertLast(node);
+        }
+    }
+    array<string> bodyPoly,bodyTri;
+    for(int f=0;f<nf;f++)
+    {
+        r=mesh.row();
+        if(r.length()!=2+2*faces[f].nodes.length() || !RMInt(r[0]) || !RMInt(r[1]) || !RMFloats(r,2)) return RMFail("polygon UV record");
+        int sid=int(parseInt(r[0])), patch=int(parseInt(r[1]));
+        if(sid<1 || sid>np || patch!=sid) return RMFail("unsupported surface/tag mapping");
+        faces[f].sid=sid; faces[f].patch=patch; used[sid]=true;
+        if(isthick[sid]) for(uint j=0;j<faces[f].nodes.length();j++)
+            bodyPoly.insertLast(RMEdge(sid,faces[f].nodes[j],faces[f].nodes[(j+1)%faces[f].nodes.length()]));
+    }
+    for(int p=1;p<=np;p++) if(!used[p]) return RMFail("VKEY part has no faces");
+    for(int f=1;f<=nf;f++)
+    {
+        r=mesh.row();
+        if(r.length()!=2 || !RMInts(r) || parseInt(r[0])!=f || parseInt(r[1])!=f) return RMFail("refinement transfer");
+    }
+    if(!RMSingle(mesh.row(),nw)) return RMFail("wake count");
+    for(int w=0;w<nw;w++)
+    {
+        r=mesh.row();
+        if(r.length()<2 || !RMInts(r) || parseInt(r[0])<1 || parseInt(r[0])>nn) return RMFail("wake header");
+        uint need=uint(parseInt(r[0]))+2;
+        while(r.length()<need)
+        {
+            array<string> more=mesh.row();
+            if(more.length()==0 || !RMInts(more)) return RMFail("truncated wake");
+            for(uint j=0;j<more.length();j++) r.insertLast(more[j]);
+        }
+        if(r.length()!=need) return RMFail("wake length");
+        for(uint j=2;j<r.length();j++) if(parseInt(r[j])<1 || parseInt(r[j])>nn) return RMFail("wake vertex");
+    }
+    int ntotal=0;
+    for(int f=0;f<nf;f++)
+    {
+        r=mesh.row();
+        if(r.length()<2 || !RMInts(r) || parseInt(r[0])!=f+1 || int(r.length())!=2+3*parseInt(r[1])) return RMFail("triangle record owner/length face="+(f+1));
+        int nt=int(parseInt(r[1])); faces[f].ntri=nt; ntotal+=nt;
+        if(nt!=int(faces[f].nodes.length())-2) return RMFail("triangle_count face="+(f+1));
+        vec3d pa=RMArea(faces[f].nodes,points);
+        if(!(dot(pa,pa)>0) || dot(pa,pa)-dot(pa,pa)!=0) return RMFail("zero/nonfinite polygon area");
+        array<string> edges;
+        for(int t=0;t<nt;t++)
+        {
+            array<int> nodes;
+            for(int j=0;j<3;j++)
+            {
+                int node=int(parseInt(r[2+3*t+j]));
+                if(!RMHasNode(faces[f].nodes,node) || RMHasNode(nodes,node)) return RMFail("triangle parent/duplicate vertex");
+                nodes.insertLast(node);
+            }
+            vec3d ta=RMArea(nodes,points);
+            if(!(dot(ta,ta)>0) || !(dot(pa,ta)>0) || dot(ta,ta)-dot(ta,ta)!=0) return RMFail("zero/reversed/nonfinite triangle area");
+            for(int j=0;j<3;j++)
+            {
+                edges.insertLast(RMEdge(0,nodes[j],nodes[(j+1)%3]));
+                if(isthick[faces[f].sid]) bodyTri.insertLast(RMEdge(faces[f].sid,nodes[j],nodes[(j+1)%3]));
+            }
+        }
+        // Cancel parent boundary backwards; every edge must pair exactly once.
+        for(uint j=0;j<faces[f].nodes.length();j++)
+            edges.insertLast(RMEdge(0,faces[f].nodes[(j+1)%faces[f].nodes.length()],faces[f].nodes[j]));
+        if(!RMClosed(edges)) return RMFail("triangle boundary/orientation/duplicate face="+(f+1));
+    }
+    for(int f=0;f<nf;f++)
+    {
+        r=mesh.row();
+        if(int(r.length())!=3+6*faces[f].ntri || !RMInt(r[0]) || !RMInt(r[1]) || !RMInt(r[2]) || !RMFloats(r,3)) return RMFail("triangle UV record");
+        if(parseInt(r[0])!=f+1 || parseInt(r[1])!=faces[f].sid || parseInt(r[2])!=faces[f].patch) return RMFail("triangle UV owner");
+    }
+    if(mesh.line()!="") return RMFail("trailing mesh records");
+    if(!RMClosed(bodyPoly) || !RMClosed(bodyTri)) return RMFail("thick topology open/nonmanifold/orientation");
+    Print("REPAIRMACH_NATIVE_MESH_COUNTS;NODES="+nn+";POLYGONS="+nf+";TRIANGLES="+ntotal);
+    return true;
+}

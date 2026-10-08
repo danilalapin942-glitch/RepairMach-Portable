@@ -69,6 +69,7 @@ from hybrid_pipeline import (
 )
 from geometry_certification import certify_geometry
 from geometry_action_executor import execute_safe_recertification
+from pressure_export import export_vspaero_pressure, export_machline_pressure
 from geometry_certificate import resolve_certificate_artifact, verify_certificate
 from geometry_manifest import sha256_payload
 from geometry_preflight import run_geometry_preflight
@@ -386,6 +387,12 @@ def executable_fingerprints(paths: dict[str, Path | None]) -> dict[str, dict[str
     return result
 
 
+def certificate_pointer_candidates(project: Path, backend_name: str) -> list[Path]:
+    root = project / "11_geometry_certification"
+    branch = "machline" if backend_name == "machline" else "vspaero"
+    return [root / f"latest_{branch}_certificate.json", root / "latest_certificate.json"]
+
+
 def certified_solver_geometry(
     project: Path,
     master_path: Path,
@@ -401,18 +408,20 @@ def certified_solver_geometry(
     MASTER is fail-closed: an invalid backend binding must be corrected by a
     fresh certification instead of silently falling back to the user's file.
     """
-    pointer_path = project / "11_geometry_certification" / "latest_certificate.json"
-    if not pointer_path.is_file():
-        return None
-    pointer = json.loads(pointer_path.read_text(encoding="utf-8"))
-    certificate_path = Path(pointer["certificate_path"]).resolve()
-    if not certificate_path.is_file():
-        raise FileNotFoundError(
-            f"Последний сертификат ссылается на отсутствующий файл: {certificate_path}"
-        )
-    certificate = json.loads(certificate_path.read_text(encoding="utf-8"))
     master_hash = geometry_sha256(master_path)
-    if master_hash != certificate.get("master", {}).get("sha256_before"):
+    certificate = None
+    for pointer_path in certificate_pointer_candidates(project, backend_name):
+        if not pointer_path.is_file():
+            continue
+        pointer = json.loads(pointer_path.read_text(encoding="utf-8"))
+        candidate_path = Path(pointer["certificate_path"]).resolve()
+        if not candidate_path.is_file():
+            raise FileNotFoundError(f"Последний сертификат ссылается на отсутствующий файл: {candidate_path}")
+        candidate = json.loads(candidate_path.read_text(encoding="utf-8"))
+        if master_hash == candidate.get("master", {}).get("sha256_before"):
+            certificate, certificate_path = candidate, candidate_path
+            break
+    if certificate is None:
         return None
     verification = verify_certificate(
         certificate_path,
@@ -918,6 +927,7 @@ def build_machline_json() -> None:
 
 def run_machline() -> None:
     settings = load_settings()
+    project = default_project_path()
     mach = find_machline(settings)
     cwd = machline_working_dir(settings)
 
@@ -1107,6 +1117,19 @@ def run_machline() -> None:
             manifest["outputs"]["force_mask"] = str(force_mask_path.resolve())
             manifest["output_sha256"]["masked_force"] = geometry_sha256(masked_record_path)
             manifest["output_sha256"]["force_mask"] = geometry_sha256(force_mask_path)
+        extra_files = [report_path, log_path]
+        if masked_record_path:
+            extra_files.extend([masked_record_path, force_mask_path])
+        try:
+            body_path = _resolve_machline_path(input_payload.get("output", {}).get("body_file"), execution_cwd)
+            manifest["pressure_export"] = export_machline_pressure(
+                body_path, project / "05_machline_results" / "paraview" / report_path.stem,
+                condition=manifest["conditions"], quality=manifest["output_quality"], extras=extra_files,
+            )
+        except (OSError, ValueError) as exc:
+            manifest["pressure_export"] = {"status": "failed", "errors": [str(exc)]}
+        if manifest["pressure_export"]["status"] != "exported":
+            print("[ВНИМАНИЕ] Давление ParaView не экспортировано: " + str(manifest["pressure_export"].get("errors")))
         save_report(manifest_path, manifest)
         print(f"Манифест запуска: {manifest_path}")
         if masked:
@@ -1123,6 +1146,23 @@ def run_machline() -> None:
                 )
     except Exception as e:
         print(f"Ошибка запуска MachLine: {e}")
+
+
+def _export_run_pressure(run_dir: Path, quality: dict, *, accepted: bool, mode: str = "mixed") -> dict:
+    """Keep visualization failures visible without changing aerodynamic acceptance."""
+    try:
+        polar = find_generated_polar(run_dir, "model")
+        rows = parse_vspaero_polar(polar) if polar else []
+        expected = [{"mach": r["Mach"], "alpha_deg": r.get("Alpha", r.get("AoA")), "beta_deg": r["Beta"]} for r in rows]
+        result = export_vspaero_pressure(
+            run_dir / "model.adb", run_dir / "paraview", accepted=accepted,
+            quality=quality, expected_conditions=expected or None, mode=mode,
+        )
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        result = {"status": "failed", "errors": [str(exc)]}
+    if result["status"] != "exported":
+        print("[ВНИМАНИЕ] Экспорт давления ParaView: " + "; ".join(result.get("errors", [])))
+    return result
 
 
 def import_vsp3_and_run_vspaero() -> None:
@@ -1282,6 +1322,7 @@ def import_vsp3_and_run_vspaero() -> None:
         )
     except (OSError, ValueError) as exc:
         print(f"\n[ОШИБКА] Результат VSPAERO не прошёл контроль полноты: {exc}")
+        _export_run_pressure(run_dir, {"valid": False, "errors": [str(exc)]}, accepted=False)
         print(f"Лог: {log_path}")
         return
     polar_output.parent.mkdir(parents=True, exist_ok=True)
@@ -1333,6 +1374,7 @@ def import_vsp3_and_run_vspaero() -> None:
         "vspscript_return_code": return_code,
         "status": "completed",
     }
+    manifest["pressure_export"] = _export_run_pressure(run_dir, output_quality, accepted=True)
     save_report(manifest_path, manifest)
 
     print("\nVSPAERO завершён успешно")
@@ -1446,6 +1488,8 @@ def _run_standard_vspaero_case(
                 solver_controls.get("forward_gmres_convergence_factor", 1.0)
             ),
             "wake_num_iter": int(solver_controls.get("wake_num_iter", 8)),
+            "implicit_wake": solver_controls.get("implicit_wake"),
+            "implicit_wake_start_iter": solver_controls.get("implicit_wake_start_iter", 8),
             "num_wake_nodes": int(solver_controls.get("num_wake_nodes", 24)),
             "wake_relax": float(solver_controls.get("wake_relax", 0.8)),
             "point_timeout_seconds": float(solver_controls.get("point_timeout_seconds", 900.0)),
@@ -1483,6 +1527,8 @@ def _run_standard_vspaero_case(
             wake_num_iter=manifest["numerical_controls"]["wake_num_iter"],
             num_wake_nodes=manifest["numerical_controls"]["num_wake_nodes"],
             wake_relax=manifest["numerical_controls"]["wake_relax"],
+            implicit_wake=manifest["numerical_controls"]["implicit_wake"],
+            implicit_wake_start_iter=manifest["numerical_controls"]["implicit_wake_start_iter"],
             tail_geometry_name=tail_geometry_name,
             tail_incidence_deg=tail_incidence_deg,
             engine_boundary=case.get("engine_boundary"),
@@ -1580,6 +1626,9 @@ def _run_standard_vspaero_case(
     except (OSError, ValueError) as exc:
         manifest["status"] = "output_validation_failed"
         manifest["error"] = str(exc)
+        manifest["pressure_export"] = _export_run_pressure(
+            run_dir, {"valid": False, "errors": [str(exc)]}, accepted=False, mode=solver_mode,
+        )
         manifest["output_sha256"] = output_sha256({
             "polar": polar_output,
             "results_csv": results_csv,
@@ -1597,6 +1646,9 @@ def _run_standard_vspaero_case(
         "script": script,
     })
     manifest["status"] = "completed"
+    manifest["pressure_export"] = _export_run_pressure(
+        run_dir, manifest["output_quality"], accepted=True, mode=solver_mode,
+    )
     save_report(manifest_path, manifest)
     manifest["manifest_path"] = str(manifest_path.resolve())
     print(f"Готово: {polar_output}")
@@ -2123,7 +2175,8 @@ def build_hybrid_report_workflow() -> None:
     policy_path = Path(policy_text) if policy_text else HYBRID_POLICY_PATH
 
     latest_certificate = None
-    latest_pointer = project / "11_geometry_certification" / "latest_certificate.json"
+    latest_pointer = next((p for p in certificate_pointer_candidates(project, "hybrid") if p.is_file()),
+                          project / "11_geometry_certification" / "latest_certificate.json")
     if latest_pointer.is_file():
         try:
             candidate = Path(
@@ -2285,7 +2338,8 @@ def prepare_blind_study_workflow() -> None:
         print(f"Не найдена модель VSP3: {geometry}")
         return
     latest_certificate = None
-    latest_pointer = project / "11_geometry_certification" / "latest_certificate.json"
+    latest_pointer = next((p for p in certificate_pointer_candidates(project, "vspaero") if p.is_file()),
+                          project / "11_geometry_certification" / "latest_certificate.json")
     if latest_pointer.is_file():
         try:
             pointer = json.loads(latest_pointer.read_text(encoding="utf-8"))
@@ -2636,6 +2690,12 @@ def geometry_corrective_action_workflow(scenario: dict | None = None) -> None:
 def geometry_certification_workflow(scenario: dict | None = None) -> None:
     """Certify one immutable VSP3 MASTER and create backend-specific twins."""
     settings = load_settings()
+    backend_branch = (scenario or {}).get("certification_branch", "combined")
+    branch_roots = {"combined": "11_geometry_certification", "vspaero": "11_cert_vspaero",
+                    "machline_open_nozzle": "11_cert_machline"}
+    if backend_branch not in branch_roots:
+        print("Неизвестная ветка сертификации.")
+        return
     project = default_project_path()
     project_config_path = project / "project_config.json"
     if not project_config_path.is_file():
@@ -2653,6 +2713,7 @@ def geometry_certification_workflow(scenario: dict | None = None) -> None:
     print("\nАвтоматическая сертификация геометрии G0–G8")
     print("-" * 58)
     print("MASTER останется неизменным; все исправления выполняются только в двойниках.")
+    print(f"Ветка: {backend_branch}. Допуск других решателей не подразумевается.")
     source_text = input("Полный путь к MASTER OpenVSP .vsp3: ").strip().strip('"')
     source = Path(source_text) if source_text else Path()
     if not source_text or not source.is_file() or source.suffix.lower() != ".vsp3":
@@ -2664,6 +2725,10 @@ def geometry_certification_workflow(scenario: dict | None = None) -> None:
         cert_config = project_payload.get("geometry_certification", {})
         if not isinstance(cert_config, dict):
             raise ValueError("project_config.geometry_certification должен быть объектом")
+        branch_config = cert_config.get("branches", {}).get(backend_branch, {})
+        if not isinstance(branch_config, dict):
+            raise ValueError("Настройки независимой ветки должны быть объектом")
+        cert_config = {**cert_config, **branch_config}
         policy_overrides = cert_config.get("policy_overrides") or {}
         scope_override = cert_config.get("scope_override")
         if not isinstance(policy_overrides, dict):
@@ -2675,7 +2740,7 @@ def geometry_certification_workflow(scenario: dict | None = None) -> None:
         tri_prompt = "TRI для сертификации MachLine или Enter"
         if tri_default:
             tri_prompt += f", по умолчанию {tri_default}"
-        tri_text = input(tri_prompt + ": ").strip().strip('"') or str(tri_default or "")
+        tri_text = (input(tri_prompt + ": ").strip().strip('"') or str(tri_default or "")) if backend_branch == "combined" else ""
         tri_path = None
         if tri_text:
             tri_path = Path(tri_text)
@@ -2691,7 +2756,7 @@ def geometry_certification_workflow(scenario: dict | None = None) -> None:
             "bref": project_reference["lateral_length"],
             "center": project_reference["center"],
         }
-        run_probes = bool(cert_config.get("run_vspaero_probes", True))
+        run_probes = bool(cert_config.get("run_vspaero_probes", True)) and backend_branch != "machline_open_nozzle"
         machline = find_machline(settings)
         executables = {
             "vspscript": tools["vspscript"],
@@ -2706,7 +2771,7 @@ def geometry_certification_workflow(scenario: dict | None = None) -> None:
         print(f"Проба VSPAERO: {'да' if run_probes else 'нет (диагностический пакет без допуска)'}")
         result = certify_geometry(
             master_path=source,
-            output_root=project / "11_geometry_certification",
+            output_root=project / branch_roots[backend_branch],
             project_name=project.name,
             reference=reference,
             policy_path=GEOMETRY_POLICY_PATH,
@@ -2715,13 +2780,16 @@ def geometry_certification_workflow(scenario: dict | None = None) -> None:
             scope_override=scope_override,
             policy_overrides=policy_overrides,
             run_vspaero_probes=run_probes,
+            backend_branch=backend_branch,
         )
     except Exception as exc:
         print(f"[ОШИБКА] Сертификация не запущена или аварийно завершилась: {exc}")
         return
 
     certificate = result["certificate"]
-    pointer_name = "latest_certificate.json" if certificate.get("verdict") != "FAIL" else "latest_failed_certificate.json"
+    branch_token = {"combined": "", "vspaero": "vspaero_", "machline_open_nozzle": "machline_"}[backend_branch]
+    failure_token = "failed_" if certificate.get("verdict") == "FAIL" else ""
+    pointer_name = f"latest_{branch_token}{failure_token}certificate.json"
     latest_path = project / "11_geometry_certification" / pointer_name
     save_report(latest_path, {
         "certificate_id": certificate.get("certificate_id"),
@@ -2784,6 +2852,23 @@ def geometry_certification_workflow(scenario: dict | None = None) -> None:
     print(f"Последний ID : {latest_path}")
 
 
+def vspaero_anchor_review_workflow() -> None:
+    from vspaero_anchor_review import review_anchor
+    print("Диагностика одной точки. FAIL не снимается; MASTER и допуски неизменны.")
+    try:
+        source = Path(input("Путь к исходному certificate.json: ").strip().strip('"'))
+        mode = input("Режим lifting/mixed, Enter=lifting: ").strip() or "lifting"
+        mach = float(input("Mach: ").strip())
+        alpha = float(input("Alpha, град: ").strip())
+        root, result = review_anchor(
+            certificate_path=source, output_root=default_project_path() / "12_anchor_review",
+            policy_path=GEOMETRY_POLICY_PATH, mode=mode, mach=mach, alpha_deg=alpha,
+        )
+        print(f"Подтверждение точки: {result.get('point_verified', False)}; отчёт: {root / 'REPORT.md'}")
+    except Exception as exc:
+        print(f"Перепроверка остановлена: {exc}")
+
+
 def run_calculation_scenario() -> None:
     try:
         catalog = load_scenario_catalog(SCENARIOS_PATH)
@@ -2820,6 +2905,8 @@ def run_calculation_scenario() -> None:
         geometry_certification_workflow(scenario)
     elif execution == "geometry_corrective_action":
         geometry_corrective_action_workflow(scenario)
+    elif execution == "vspaero_anchor_review":
+        vspaero_anchor_review_workflow()
     else:
         prepare_protocol_scenario(scenario)
 

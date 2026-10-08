@@ -170,7 +170,14 @@
           "wake_num_iter": 16,
           "num_wake_nodes": 24,
           "wake_relax": 0.5
-        }
+        },
+        "fallback_controls": [{
+          "ncpu": 1,
+          "forward_gmres_convergence_factor": 0.01,
+          "wake_num_iter": 64,
+          "num_wake_nodes": 24,
+          "wake_relax": 0.3
+        }]
       },
       "allow_zero_mach_without_logged_residual": true,
       "fallback_to_lifting": true,
