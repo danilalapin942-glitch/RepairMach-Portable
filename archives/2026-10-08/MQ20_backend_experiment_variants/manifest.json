@@ -1,0 +1,614 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "MQ20_backend_experiment_variants",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\q20build\\variants",
+  "source_files": [
+    {
+      "path": "original/Solver/.goutputstream-XOB48X",
+      "bytes": 18518,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "3d416dd5a8b502ecc727506e0c0346453cea8300670330ab4cdfaf39607f8864"
+    },
+    {
+      "path": "original/Solver/.vsptime",
+      "bytes": 10,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "f021d85068542baa5aa681dbc509d0175c8d33d2db3d5a91fbf00bf01ed2cf79"
+    },
+    {
+      "path": "original/Solver/AdjointGradient.C",
+      "bytes": 4674,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "88b9a8eaa4b358656211ce5c18f08ae03157b86579471b26324c7b78ae56efff"
+    },
+    {
+      "path": "original/Solver/AdjointGradient.H",
+      "bytes": 2645,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "8172b06deb3c086cb30c2e2a2e12e85b46fd01f0f9a8602d47ad4f9c286aa2db"
+    },
+    {
+      "path": "original/Solver/binaryio.C",
+      "bytes": 10784,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "d77a73f86feb8772ad3589cbb9e078cc72dfaf2562d2d6b8c39cb4aa2dfd4ea3"
+    },
+    {
+      "path": "original/Solver/binaryio.H",
+      "bytes": 2244,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "93b24d4e92b8518f6f8ff1e74a1ed5fcdab593d497a947f157829f705b7f96eb"
+    },
+    {
+      "path": "original/Solver/BoundaryConditionData.C",
+      "bytes": 2755,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "28228a60b766ebd434242f90228e6ac8299f999ec091969e4ab0db9f48f4708e"
+    },
+    {
+      "path": "original/Solver/BoundaryConditionData.H",
+      "bytes": 1430,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "07ffd421542fec8a7f5dec74558b8486f5106dee81f896e32bfd3bfe3b995c7a"
+    },
+    {
+      "path": "original/Solver/CharSizes.H",
+      "bytes": 391,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "ac214192b4f891c6fe94db053a33b97077d01693538691e66b8d08d31c8eab8f"
+    },
+    {
+      "path": "original/Solver/CMakeLists.txt",
+      "bytes": 5397,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "102bcadab0ea5860fbdec28b82e978c2a2b141b58a41e5c1a3b2a0d3471e98b7"
+    },
+    {
+      "path": "original/Solver/ComponentGroup.C",
+      "bytes": 50929,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "fc3d078066b28f38a310f85dd8e68fa4ae8e12c579556f3cbe2fe5337f697951"
+    },
+    {
+      "path": "original/Solver/ComponentGroup.H",
+      "bytes": 22405,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "1101496628723cb9f03b96b275e29312cff5d8b6ad282a9990986af49be2ca52"
+    },
+    {
+      "path": "original/Solver/ControlSurface.C",
+      "bytes": 13745,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "a355691d5d675a6c96716856b7f73b4b952585c287ddaa52df33e4ab7d0d82b5"
+    },
+    {
+      "path": "original/Solver/ControlSurface.H",
+      "bytes": 7345,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "3f1da0dc18c05e2cd4e90c86b736669c55209e35450191952146fb9373a6f464"
+    },
+    {
+      "path": "original/Solver/ControlSurfaceGroup.C",
+      "bytes": 5365,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "2b2dbbbe9560c6e999e41edee179f8dded0a61c4b4995cfd0d67d4be070c8082"
+    },
+    {
+      "path": "original/Solver/ControlSurfaceGroup.H",
+      "bytes": 5420,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "3514bac00269687cf4167401bcfd36d4a918ea439112d874ec8dcc90300388c8"
+    },
+    {
+      "path": "original/Solver/DoxConfigFile",
+      "bytes": 117045,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "a8e76ecc0fbebbfeb74d0302ee991758f646164d74334493feb2fb4406eb2eea"
+    },
+    {
+      "path": "original/Solver/END_NAME_SPACE.H",
+      "bytes": 2,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451"
+    },
+    {
+      "path": "original/Solver/EngineFace.C",
+      "bytes": 9348,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "e074e0d06d87106a3e748e6d4f7ce42a8e90c5586a6280f561d5d168e282fe61"
+    },
+    {
+      "path": "original/Solver/EngineFace.H",
+      "bytes": 2899,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "6c37a1c0414adfce15bf9ee319f69c53a90fab029d729dfe8a6fe5c616ce4ec0"
+    },
+    {
+      "path": "original/Solver/FastMatrix.C",
+      "bytes": 58157,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "226737e53ebabca645231a3de24ea78fbc8b1d18db08533a39c7332ae8760c80"
+    },
+    {
+      "path": "original/Solver/FastMatrix.H",
+      "bytes": 5850,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "8be14ac76b4f1de6450042de4fa0ea9d7e32540f01051893a1713f0d6da6d606"
+    },
+    {
+      "path": "original/Solver/FEM_Node.C",
+      "bytes": 10549,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "8437237fa6580ba92ac148df883c10c70ccb0c9c474559e8d4cc9c49c4fed2e7"
+    },
+    {
+      "path": "original/Solver/FEM_Node.H",
+      "bytes": 3101,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "b19b448a54abd7d5327975b8ee77f04939301a46d5f632dd6e38ea7ea39c9d5f"
+    },
+    {
+      "path": "original/Solver/GlobalWakeLoop.C",
+      "bytes": 2915,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "12a3673fcd80edb2fca6a8cf55abcf404f82abb94ee8094a3b146945430439cb"
+    },
+    {
+      "path": "original/Solver/GlobalWakeLoop.H",
+      "bytes": 2816,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "4556b252e06211ed72e6898eae5aaa86386010df623cee8d6b9bd9033eca3f1b"
+    },
+    {
+      "path": "original/Solver/Gradient.C",
+      "bytes": 5429,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "fb68ee126fa42d7cd3c7a472af379f5c18c2da659485aa3261ecd1e97b892a2c"
+    },
+    {
+      "path": "original/Solver/Gradient.H",
+      "bytes": 2398,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "e616a724154156fe16aadab2dbe5ac21abf92df1521c406eaf3fb6bc51e62ec6"
+    },
+    {
+      "path": "original/Solver/Interaction.H",
+      "bytes": 1874,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "2d71b84ca25c102e7cf1d957a45d84aca7a858b1bacf465d78deced7d7d0dbe4"
+    },
+    {
+      "path": "original/Solver/InteractionLoop.C",
+      "bytes": 10499,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "27e94e349441140e6947f8a90c9e236c9afb0e484694db031d85c1d55199c5aa"
+    },
+    {
+      "path": "original/Solver/InteractionLoop.H",
+      "bytes": 3428,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "e2bd494048f7667d772def370f59eec1b376607f2848367dbb21c30e25b02ab2"
+    },
+    {
+      "path": "original/Solver/MatPrecon.C",
+      "bytes": 5987,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "8b400c177ec0071f5e6690511a2d81459b07852207d8c606686ebea534aee443"
+    },
+    {
+      "path": "original/Solver/MatPrecon.H",
+      "bytes": 3293,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "33f10f700176e4962766d5c85fdebfcc01386348464994cd49d97691e4b4038b"
+    },
+    {
+      "path": "original/Solver/matrix.C",
+      "bytes": 36436,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "a575dacc442c54d46c997fceca5262f9bbc2e614779b3026a5fa8518780ac00b"
+    },
+    {
+      "path": "original/Solver/matrix.H",
+      "bytes": 3421,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "90cc8d41a7a295b65bc1b63c2d90bce7b2a5613e0d1a9ce963901090570c3277"
+    },
+    {
+      "path": "original/Solver/memory.C",
+      "bytes": 704,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "acc4118254317025737e92791109fcbb964e91b3df6ada221471cef62e365fd0"
+    },
+    {
+      "path": "original/Solver/memory.H",
+      "bytes": 212,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "ec0952711fd1198d495ae0e05f54a3aba37e0c2fa6efbe069e9b03ef287b9a39"
+    },
+    {
+      "path": "original/Solver/MergeSort.C",
+      "bytes": 8809,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "6e85d02ed119b6d5faf5971f33b2070859e5b2d145ad620cf4912e3dd1c4e7ab"
+    },
+    {
+      "path": "original/Solver/MergeSort.H",
+      "bytes": 955,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "256ce1216b394e25f811372fa5f81151f5e72f34781330d959136f76aaf246ee"
+    },
+    {
+      "path": "original/Solver/MeshGradient.C",
+      "bytes": 2264,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "9c1c76187a8504cfbd276f273c0fff9c88a99ed78879db9a73131edf87429add"
+    },
+    {
+      "path": "original/Solver/MeshGradient.H",
+      "bytes": 900,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "7dd1a8218653fd78d034b74a9649b3908ec1c6be9534b8a0a1433776c1ed3abb"
+    },
+    {
+      "path": "original/Solver/OptimizationFunction.C",
+      "bytes": 5045,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "e43d8b5444da4e1bd59f97e6f326aa3944e9a57c81f808501c89918aa8df9429"
+    },
+    {
+      "path": "original/Solver/OptimizationFunction.H",
+      "bytes": 9709,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "d99759ae7215992772516251a31a0a9f916586d414e78be31bdcdbec5ad2e656"
+    },
+    {
+      "path": "original/Solver/OptimizationGradientData.H",
+      "bytes": 413,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "d869ebe896827c1fe80170808da32fd2deb0b5a8d3fed2a0d2315e70371f8b26"
+    },
+    {
+      "path": "original/Solver/OptimizationParameterData.C",
+      "bytes": 11330,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "9ec13c1603044e41b0989cb321cd881f1cc528602275b73e7b12de48a02b62fd"
+    },
+    {
+      "path": "original/Solver/OptimizationParameterData.H",
+      "bytes": 2330,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "526299f45131c8df9cc4a08ae40b005d7dee6a6f55b2f92a08a3a5f588165ab3"
+    },
+    {
+      "path": "original/Solver/QuadCell.C",
+      "bytes": 2512,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "0f13aec48d4d1f30a2862de07c48aa32d9653124ae893c762b5d1097e4911e65"
+    },
+    {
+      "path": "original/Solver/QuadCell.H",
+      "bytes": 1752,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "c864894b93cf70aa46b7c854ae93aa96211b033fa24811b8d297be16b5624447"
+    },
+    {
+      "path": "original/Solver/QuadEdge.C",
+      "bytes": 1810,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "06feb6f5755355e90265b43b9887fe9dfcdacc03cfca1219821c1d8402537c7a"
+    },
+    {
+      "path": "original/Solver/QuadEdge.H",
+      "bytes": 700,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "d81f6e3247e398d6723857d6abcd5ece614dddb3eea2685425af0dfc783f2dd9"
+    },
+    {
+      "path": "original/Solver/QuadNode.C",
+      "bytes": 2025,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "c645e929b8394bc9a0104dbedb92b80d2b3db8e97e63e024e9f975ec04d8848e"
+    },
+    {
+      "path": "original/Solver/QuadNode.H",
+      "bytes": 1325,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "427041ef38b1b1e0b69cdd7174553409cac5b5ef8bfe78f607c442a580ea8bd9"
+    },
+    {
+      "path": "original/Solver/QuadTree.C",
+      "bytes": 37876,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "12b698d05d86dfb19b28c5c7d49f8cf5a8d9c2dcabc08d14e4b5e7e7e4f8f786"
+    },
+    {
+      "path": "original/Solver/QuadTree.H",
+      "bytes": 3432,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "841acf3b344f922052f030e5dd20865e049069186ad4a0b778a434ed8d6d36b0"
+    },
+    {
+      "path": "original/Solver/quat.C",
+      "bytes": 8205,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "09441fdb47d3a10332a90724545ee9e7c781ccc606eb077016df2293286ffa0f"
+    },
+    {
+      "path": "original/Solver/quat.H",
+      "bytes": 2109,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "3192051da1a4d69364eff0e69fe37651e442aa1a885c61057016cd4a5cb7ce51"
+    },
+    {
+      "path": "original/Solver/RotorDisk.C",
+      "bytes": 32966,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "6090c9bb5d3e21e371c1b6cbaeb7a6fb96118b99b5d654f4b695c7f386a2ceb8"
+    },
+    {
+      "path": "original/Solver/RotorDisk.H",
+      "bytes": 6447,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "95d2d69c7a31ad5b0431bf6e1f2f7144ebc27c928de82f2486f60ffb8e88c328"
+    },
+    {
+      "path": "original/Solver/SaveState.C",
+      "bytes": 6528,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "61d0c0aa84baf42e57e66dc0abd9f8e9273f17488920c9ac0af242345daa4489"
+    },
+    {
+      "path": "original/Solver/SaveState.H",
+      "bytes": 2092,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "02dd4618f0be975b083deb26aaa253f60558bd74810c8bc8012a3e29cea081ad"
+    },
+    {
+      "path": "original/Solver/Search.C",
+      "bytes": 15102,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "b38c5979ec939c6fc51f808fefb3d207373e3029921f6cf8bc682332d4947821"
+    },
+    {
+      "path": "original/Solver/Search.H",
+      "bytes": 1565,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "1ce023e9762aaab68f704b4ae60c34e5207e8c159219e3dbe5295192ed7028aa"
+    },
+    {
+      "path": "original/Solver/SearchLeaf.C",
+      "bytes": 2140,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "39fb478cc9fc4cdde0eca83131ae40a6eccfb9d0da0bcf904db06924f68f8edf"
+    },
+    {
+      "path": "original/Solver/SearchLeaf.H",
+      "bytes": 1251,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "8b2a2296630250f0c60e921216f5a2f0dd94fd54e259c62c86865e8c8dee64b5"
+    },
+    {
+      "path": "original/Solver/START_NAME_SPACE.H",
+      "bytes": 28,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "c62b0c8eeb798a76b2e99cf8dd1176b6b53d2aaf76bb8b199596afc1bfddc4da"
+    },
+    {
+      "path": "original/Solver/time.C",
+      "bytes": 1401,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "57ac8af2bd80a801c40cefe2f2758ba2c8e5736d94173aa261a4b6b8316628f1"
+    },
+    {
+      "path": "original/Solver/time.H",
+      "bytes": 276,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "5964d2067507c8c86a9ea37d4dc9134eaee24630463868bd25679977efd98e46"
+    },
+    {
+      "path": "original/Solver/utils.C",
+      "bytes": 48313,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "05aee9ced6d0854f7028818c13d14abbbe8d91bbe758ff85ea872792a29dd245"
+    },
+    {
+      "path": "original/Solver/utils.H",
+      "bytes": 5348,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "c87ac5152314cfdadad355e83375d359e09aead63e092a5c6c00687f5450c8df"
+    },
+    {
+      "path": "original/Solver/Vortex_Sheet.C",
+      "bytes": 22769,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "55cd06160ede55d5ebd36cc3e27d6a5ecd3d2731379ca81350a8bf3e17d3e9ea"
+    },
+    {
+      "path": "original/Solver/Vortex_Sheet.H",
+      "bytes": 6596,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "3d6b299292bec6387f2df8d9bd3804f69d9d4272a654bd2b966d2d26472caafe"
+    },
+    {
+      "path": "original/Solver/Vortex_Trail.C",
+      "bytes": 33029,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "13f48292e4a15b361c90bff5bfa0ea1edb26e555daae99721b445d0496a97425"
+    },
+    {
+      "path": "original/Solver/Vortex_Trail.H",
+      "bytes": 17973,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "9c3d75fd326db64be03093a2ccad9926ae046aa7df7837a0664da238299221f9"
+    },
+    {
+      "path": "original/Solver/VortexSheetInteractionLoop.C",
+      "bytes": 5812,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "72e1b20ae6d3275230b0dc7e35cadbbfaeedf851528178592053c2b3f5720f16"
+    },
+    {
+      "path": "original/Solver/VortexSheetInteractionLoop.H",
+      "bytes": 2533,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "0107af5cdef1d85a2f61513d72e0a632663e5131e87b7a63b3f8e07a20c48126"
+    },
+    {
+      "path": "original/Solver/VortexSheetVortex_To_VortexInteractionSet.C",
+      "bytes": 4183,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "7e31d25448a92aef5967e95423c21e2d1b4285b1b983ba2a1da25e4e0ef9c18d"
+    },
+    {
+      "path": "original/Solver/VortexSheetVortex_To_VortexInteractionSet.H",
+      "bytes": 2128,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "544beb396d26fff8ea0f2d7247c9655fb37c50cda07b88da51adc9ab4c0ae4ce"
+    },
+    {
+      "path": "original/Solver/VSP_Agglom.C",
+      "bytes": 207685,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "f78efd8e16b9de9f1d510b93aebea159e33912cd827143ae755eeb89cd54c88c"
+    },
+    {
+      "path": "original/Solver/VSP_Agglom.H",
+      "bytes": 5284,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "9911f3330fd26b9324b066edbc97a38084e32563883c906e72f98e041ac4ce61"
+    },
+    {
+      "path": "original/Solver/VSP_Edge.C",
+      "bytes": 419350,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "3985060fc63430eef5a0ac6140b17e869f13eb20306d4dc1d9a03cefd095c8f9"
+    },
+    {
+      "path": "original/Solver/VSP_Edge.H",
+      "bytes": 48221,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "f8533f4c605be9ada39fe4630af53b21266ab8f37270d7bfbde44b2c7b50eaae"
+    },
+    {
+      "path": "original/Solver/VSP_Geom.C",
+      "bytes": 292474,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "8cd3080ed8ff4385fc8b06b981c8b8cb70b84ee4249f372452ac5d2ddf3ced4c"
+    },
+    {
+      "path": "original/Solver/VSP_Geom.H",
+      "bytes": 26817,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "e8c1a49393a59fe0f829dccba25e4b679cbf474bb2d6acd37017f2682cb6a20e"
+    },
+    {
+      "path": "original/Solver/VSP_Grid.C",
+      "bytes": 47443,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "af965d1b9129ec265c2002ceed0e58d2ad2b1da5176849f75c7dcf192498a2b7"
+    },
+    {
+      "path": "original/Solver/VSP_Grid.H",
+      "bytes": 7973,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "ba0442e5764324f8011fb3bf26cb801d924b7921e38f712b12c93d4918b6079f"
+    },
+    {
+      "path": "original/Solver/VSP_Loop.C",
+      "bytes": 15358,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "4542fcf0fe8d94aa35b3fceb7494517c9331a043aa33cea810bb49e1d20b9043"
+    },
+    {
+      "path": "original/Solver/VSP_Loop.H",
+      "bytes": 22142,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "faf972cc977ebf6446c0a73ca28a986dcfe0c8ca6b4c7662cd50adcf44c1f2c6"
+    },
+    {
+      "path": "original/Solver/VSP_Node.C",
+      "bytes": 12345,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "f1d245490d7d005c5a9690f2f4fa9f64b3f7e777f36e18ee4d75f084c5726323"
+    },
+    {
+      "path": "original/Solver/VSP_Node.H",
+      "bytes": 44785,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "ca521f918d10b543048094ab7a1873db985459c07523e9411f13ba438c6c11b0"
+    },
+    {
+      "path": "original/Solver/VSP_Solver.C",
+      "bytes": 1548578,
+      "mtime_ns": 1790587197574289400,
+      "sha256": "460b7669592d0d096411a1f19bec4622a68f3412fd5b46780435aeb1fabb00b5"
+    },
+    {
+      "path": "original/Solver/VSP_Solver.H",
+      "bytes": 100231,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "002b1eb1710ad97b2001b6acbe04546df4c47efa70cb4f8370d7755d3f721a54"
+    },
+    {
+      "path": "original/Solver/vspaero.C",
+      "bytes": 339443,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "586e683b5eeea7c4c9691bf59de6752fd9e6b71381fa356dcd55b8f2e823f7b3"
+    },
+    {
+      "path": "original/Solver/vspaero.H",
+      "bytes": 10344,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "af04e24ce198399fafa2993fa400cac5c388988c5324167b0b1f2d1646c55af0"
+    },
+    {
+      "path": "original/Solver/VSPAERO_OMP.H",
+      "bytes": 382,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "9c14285cd570772d0e3dbae1fde6d4d4133122f7ebd202907d080c7083d0cb1e"
+    },
+    {
+      "path": "original/Solver/vspaero_opt.i",
+      "bytes": 538,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "bbb31cde6deea743d51982f3f4ae5449caf8d506ecca8cb0b3c001edc8009442"
+    },
+    {
+      "path": "original/Solver/WakeEdgeData.C",
+      "bytes": 2923,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "186744e776b387c7660195301d1755623da1358ba1ecbc0b5df4daf8629a3743"
+    },
+    {
+      "path": "original/Solver/WakeEdgeData.H",
+      "bytes": 2850,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "5d81e5263d3eeb0e50e7d2e58562f70cb1c946b323d84d990cb3d053efff4141"
+    },
+    {
+      "path": "original/Solver/WOPWOP.C",
+      "bytes": 193562,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "502d6cebc0c08e58493d8db6c8da298329d45eee2bc1050ba5f084fcdd28cd88"
+    },
+    {
+      "path": "original/Solver/WOPWOP.H",
+      "bytes": 8712,
+      "mtime_ns": 1782764482000000000,
+      "sha256": "594092a10fa49ad4318256d93bd05b0042f2c90cdf02043804fe45961eef6d34"
+    }
+  ],
+  "source_bytes": 4119841,
+  "archive_bytes": 537895,
+  "archive_sha256": "50dca4ba517a47dfe2aa3ffcbaad1f7d48fe6d5ff72e91923e975bf12a4a3572",
+  "parts": [
+    {
+      "file": "MQ20_backend_experiment_variants.zip",
+      "bytes": 537895,
+      "sha256": "50dca4ba517a47dfe2aa3ffcbaad1f7d48fe6d5ff72e91923e975bf12a4a3572"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
