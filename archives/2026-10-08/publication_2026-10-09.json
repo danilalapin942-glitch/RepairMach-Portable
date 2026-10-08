@@ -1,0 +1,187 @@
+{
+  "verified_at_utc": "2026-10-08T22:21:06.449889+00:00",
+  "human_confirmation_date": "2026-10-09 Europe/Moscow",
+  "target_repository": "https://github.com/danilalapin942-glitch/RepairMach-Portable.git",
+  "visibility": "public",
+  "archives": [
+    {
+      "name": "installed",
+      "sha256": "7f20894e6c89a9842e4ad50ded8115b36091d7260dddebe7be0fac52708cbf71",
+      "verified": true
+    },
+    {
+      "name": "aircraft_models_drawings",
+      "sha256": "5dda346d12e6303611fad123f9737bf1e5a559d114ccc44424e7280ab2788dee",
+      "verified": true
+    },
+    {
+      "name": "YFQ44_calculations",
+      "sha256": "d95b11af5c097aa51da25ff4b66ee53ff46b38625bfdbfd4ea44cb67fabf1541",
+      "verified": true
+    },
+    {
+      "name": "YFQ44_report",
+      "sha256": "da67b599460eb46ca4a3f30431a13f64c1671f149e2563878651b7790bf89376",
+      "verified": true
+    },
+    {
+      "name": "workspace_acceptance",
+      "sha256": "043bc69e85eb7ab45ca2892a8d09102a61524416f0f548329d841bb38bb0638e",
+      "verified": true
+    },
+    {
+      "name": "workspace_diagnostics",
+      "sha256": "33caa46d25f75d588109b6469fb7593981892ccc33256bf4ce54924557fd46c2",
+      "verified": true
+    },
+    {
+      "name": "workspace_outputs",
+      "sha256": "eddabbc01b9cc342cab2a35b510582690448a0f633ec80b5dd13e558c26bb60d",
+      "verified": true
+    },
+    {
+      "name": "workspace_daytime_lift_2026-08-28",
+      "sha256": "7e25089beb2a7a187ee6610fe73d1d94bd912a2b6fbfb31162e255bfc0f88b9a",
+      "verified": true
+    },
+    {
+      "name": "workspace_mig25rb_refinement_2026-09-01",
+      "sha256": "3d2b44bba7c7114a428836aab50282b0ca18aeff8c450efc35ad221c17358f39",
+      "verified": true
+    },
+    {
+      "name": "workspace_overnight_m14_m16_2026-08-31",
+      "sha256": "5300a573fc1cf69b4004598cc21f7b3cf821876a0e3d1db72c0007bda3ac7b84",
+      "verified": true
+    },
+    {
+      "name": "workspace_overnight_mig25rb_2026-08-31",
+      "sha256": "0f57f700a9c96d236da0f3f7f226e55cd64be98ab722cc537d2ff35eef947745",
+      "verified": true
+    },
+    {
+      "name": "workspace_overnight_refinement_2026-08-27",
+      "sha256": "df2e4a5d4b8551b36f8e17a67925583423febe4fa9b5fbff8360e1d8a60a784e",
+      "verified": true
+    },
+    {
+      "name": "workspace_overnight_sweep",
+      "sha256": "c7cc807f22418720cf3dd98a70f964be6a1ca581722c71b8bf4bbbf7f3c0f894",
+      "verified": true
+    },
+    {
+      "name": "workspace_q20c",
+      "sha256": "6ac2d7a2bcd455a850bf9441d0a5ba75aee73f1dfd499f3edb52d2157088aa94",
+      "verified": true
+    },
+    {
+      "name": "workspace_q20go",
+      "sha256": "cc2650855f5e10513c6099c5f113645a83a12927a958f920d2793877debff751",
+      "verified": true
+    },
+    {
+      "name": "workspace_q20p",
+      "sha256": "4973ae3164199dcb1c814234339d3e3a248df2bcd9a8cc2aeeaa0880b12cbb7f",
+      "verified": true
+    },
+    {
+      "name": "workspace_q28",
+      "sha256": "6f1bcd872c21ae7515d0b3cd4190b7d78883b82e1cb5a902de79f59e7c9b02c1",
+      "verified": true
+    },
+    {
+      "name": "workspace_repeat_mig25rb_2026-09-01",
+      "sha256": "caf4971e2ff5abf3476339e1d48bcd8c1c4b150a485deda61264edc33ae2b5a7",
+      "verified": true
+    },
+    {
+      "name": "workspace_short_hybrid_sweep",
+      "sha256": "638a19e2abfac74b6cd0966fd31b563352a6d741d1c8582645dcb8bb703c624a",
+      "verified": true
+    },
+    {
+      "name": "workspace_YFQ_44A_blank",
+      "sha256": "ca2c3053d06665764c5ac54a70c43f8bd485f4400c1da6c72afef37814dd565e",
+      "verified": true
+    },
+    {
+      "name": "workspace_generated_inputs",
+      "sha256": "cdd6a4f57471a5b0b1accdb369a5ee9158e1b5c60699a5252cc025ad2ff6aaaa",
+      "verified": true
+    },
+    {
+      "name": "workspace_RepairMach_9_Local",
+      "sha256": "84511591c0c48d9a677474bdeae6b9e6d95b47becb0b00e8c16e6644dee7d03a",
+      "verified": true
+    },
+    {
+      "name": "workspace_RepairMach_Portable_Candidate",
+      "sha256": "ce24bc94aaf1b5c85525df980b21d31c45b4730a6db03b4840deeea9cf286966",
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_runs",
+      "sha256": "5415663b297dd16be827a049297584fffb339ddc85c20def3c73a9c39adcb43f",
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_bundles",
+      "sha256": "6ae34fca096f370c21121f00ff4d40398e6b14919c28053499ca7b24ba4884b3",
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_preflight",
+      "sha256": "2f9f6f77ce2f0da51d316fd4afef2a3a6dfe417ac5f793b7de1cba03a5bf9e68",
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_postprocessor_check",
+      "sha256": "bbaf137e2087e26813f483dc16e1c00eb8a751eab4e2e60a6f59498c7f9e649b",
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_postprocessor_routes",
+      "sha256": "82364abec5d0db8d2e30e5af8d61d902dc87a2d65e14b161f49726df68abd85e",
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_postprocessor_routes_v2",
+      "sha256": "7422f9c5d2fc943f6246ee429ddb1e5693e0fda8d0b0b1bf0def7c159997d4a0",
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_variants",
+      "sha256": "50dca4ba517a47dfe2aa3ffcbaad1f7d48fe6d5ff72e91923e975bf12a4a3572",
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_source_3510",
+      "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85",
+      "verified": true
+    },
+    {
+      "name": "workspace_root_calculation_files",
+      "sha256": "b9a545d34ecdc3947b8f091a7e70014709586b52698047afa2ce6ce452f09201",
+      "verified": true
+    }
+  ],
+  "archive_bytes": 2246268062,
+  "parts": 49,
+  "source_files": 44807,
+  "readable_library_files": 87,
+  "visualization_update_verified": true,
+  "payload_head": "048177d6efcf457d05231c0b53c4cbf40cbdc63b",
+  "state": "PUBLIC_BRANCH_PAYLOAD_VERIFIED",
+  "published_client_date": "2026-10-09 Europe/Moscow",
+  "uploaded_at_utc": "2026-10-08T23:00:05.543262+00:00",
+  "remote_branch": "refs/heads/publication/2026-10-08",
+  "remote_payload_head": "233de77775fa59f341ca88f93f0eaf31ff6db44b",
+  "all_36_upload_steps_verified": true,
+  "original_prepared_tree_preserved": true,
+  "program_test_results": {
+    "publication_checkout": 325,
+    "installed": 323
+  },
+  "historical_fail_results_preserved": true,
+  "new_aerodynamic_runs": 0
+}
