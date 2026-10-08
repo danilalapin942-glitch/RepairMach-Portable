@@ -1,0 +1,902 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "workspace_q20c",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\q20c",
+  "source_files": [
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/certificate.json",
+      "bytes": 490734,
+      "mtime_ns": 1790382443315884900,
+      "sha256": "e3c2cec9d8daa9e5ddaababdadbd688e738b69c247d76eaad2d829f5ebacb6e9"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/certificate.md",
+      "bytes": 6231,
+      "mtime_ns": 1790382443317276700,
+      "sha256": "267b8e418df515953ba5ea23a86b261767ad34ae1a616f14e6a33400391c54a8"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/corrective_action_plan.json",
+      "bytes": 64153,
+      "mtime_ns": 1790382442874260100,
+      "sha256": "4da3b233d7ba217089711a1f10671003cda4fb709dbf7c558e326a85b6f9916a"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/frozen_master.vsp3",
+      "bytes": 397826,
+      "mtime_ns": 1790382424444419200,
+      "sha256": "5710974615718259376ea2aca54fd14efa1837069e1b031d1461485dac955fbd"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/geometry_deltas.json",
+      "bytes": 13746,
+      "mtime_ns": 1790382427488148800,
+      "sha256": "beba8e338d4aecc58006529c41e04348f7f9e182d1dc8762f333df92b40df40b"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/inventory/inventory.log",
+      "bytes": 313145,
+      "mtime_ns": 1790382424809049400,
+      "sha256": "81c09a00b7b070d6c4700175dfba75f8351a5014da9e725c05c839b5882d12f4"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/inventory/inventory.vspscript",
+      "bytes": 2018,
+      "mtime_ns": 1790382424458089800,
+      "sha256": "9abca06cb9ede4cab9c8802399bcdfc5a4965d0f8e7233e7725ba75b59b892d7"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/inventory/master_inventory.json",
+      "bytes": 16269,
+      "mtime_ns": 1790382424841159800,
+      "sha256": "8079e1c0ba53cd75a09ae164d9d0224b787df1fe6a05572ee838aac9f81304d4"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/audit_diagnostics.json",
+      "bytes": 638,
+      "mtime_ns": 1790382440810019700,
+      "sha256": "7654012602f8df3917eba60a4ab820bab98a6e93bdb66394c1cbb3d8bf673b09"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/certified_audit_mesh.tri",
+      "bytes": 588980,
+      "mtime_ns": 1790382440669020800,
+      "sha256": "7632bd9cb8c25432452927f47fb2dc6fb2875ae71950b019f6226ead22671547"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/certified_mesh.tri",
+      "bytes": 389405,
+      "mtime_ns": 1790382440830281800,
+      "sha256": "a2701899346fe68382c6f4ad8661e32d761e6e5ba2ce693114fb7153195baa96"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/coarse/model.vsp3",
+      "bytes": 400198,
+      "mtime_ns": 1790382435765518700,
+      "sha256": "31d056ddc13fa0ce45bab41ca6a6dbc4e1fe6dbb27ef2eb6d9a5f0a2bd1cbe93"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/export/export_machline_tri.log",
+      "bytes": 332,
+      "mtime_ns": 1790382439887772700,
+      "sha256": "d4f3a4fddbc46a289e731a611f8100a6b23476f28bba02f1465fba5894a99a71"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/export/export_machline_tri.vspscript",
+      "bytes": 1760,
+      "mtime_ns": 1790382439447445700,
+      "sha256": "f0d13b780dc348050682e0fbd1731024fec79bbf5bb90f7f213846e18a9da740"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/export/export_manifest.json",
+      "bytes": 5140,
+      "mtime_ns": 1790382439990748100,
+      "sha256": "4f8d6575a0b159908a13ecd20e04c2e592672a4a6c26a2a8bc741b2e5094524b"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/export/machline_fine_export.tri",
+      "bytes": 588980,
+      "mtime_ns": 1790382439959937500,
+      "sha256": "7632bd9cb8c25432452927f47fb2dc6fb2875ae71950b019f6226ead22671547"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/export/openvsp_nascart_raw.key",
+      "bytes": 81,
+      "mtime_ns": 1790382439814534600,
+      "sha256": "993dc3fe49c71d2be14a4e88db93e5a12bddd09c25e1911f746e2a1b284d4951"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/export/openvsp_nascart_raw.tkey",
+      "bytes": 236,
+      "mtime_ns": 1790382439816841100,
+      "sha256": "6f0805b3729eef53a047544cd0faefaf27a578924e5ae0550f0effed88cfb694"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/export/openvsp_nascart_raw.tri",
+      "bytes": 473437,
+      "mtime_ns": 1790382439814534600,
+      "sha256": "dadc810d858e6449e2beb34ba972dcda6a0baf956228b63f7e09914d34f38e7e"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/export/openvsp_thin_model.csf",
+      "bytes": 20,
+      "mtime_ns": 1790382439882081000,
+      "sha256": "bb29bf526f4379308ca9c271a8df90c39f4df4235f81f63e370f25e714bb797c"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/export/openvsp_thin_model.vkey",
+      "bytes": 471,
+      "mtime_ns": 1790382439882081000,
+      "sha256": "db4d3e2c013084f2907b5d8a8cda45d10b43648334bc29a7b8b1f661eefa8522"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/export/openvsp_thin_model.vsp3",
+      "bytes": 400198,
+      "mtime_ns": 1790382437373081700,
+      "sha256": "fd5a869408703d3c925ec01cf0f82a7e2d4510215d159f147dd5e8523faddbde"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/export/openvsp_thin_model.vspgeom",
+      "bytes": 1192452,
+      "mtime_ns": 1790382439881079800,
+      "sha256": "9fe3e9f1c7ac1b3b4ff3538822066c6ab02206ef12816b5bd0cf8767da39a7f4"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/extra_fine/model.vsp3",
+      "bytes": 400198,
+      "mtime_ns": 1790382438192163100,
+      "sha256": "3c65de8290fc12de52b472dc36f18237686d690e02647ca3db284beb58e01a8e"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/final_diagnostics.json",
+      "bytes": 635,
+      "mtime_ns": 1790382440906541700,
+      "sha256": "160af73aceec783a6da1b6326c281d1f6384850de2905ed4cd93f77544dfa617"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/fine/model.vsp3",
+      "bytes": 400198,
+      "mtime_ns": 1790382437373081700,
+      "sha256": "fd5a869408703d3c925ec01cf0f82a7e2d4510215d159f147dd5e8523faddbde"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/force_integration_mask.json",
+      "bytes": 1479,
+      "mtime_ns": 1790382442847494300,
+      "sha256": "52b07e69a90006a9b8ae2fcbef96a0d9234efd1c12d47346954c7955dfafd016"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/mach_criterion.json",
+      "bytes": 46067,
+      "mtime_ns": 1790382442828662700,
+      "sha256": "4e4d920b49afb9e85a936f1ad8a0c5a70ce0d93b2dbd190950924a4335e16ef3"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/medium/model.vsp3",
+      "bytes": 400198,
+      "mtime_ns": 1790382436575846400,
+      "sha256": "53a98902b94375858d2d4ea6b3fdffd0fee63b43a9070a2ab628d31bbe115d28"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/native_diagnostics.json",
+      "bytes": 638,
+      "mtime_ns": 1790382440189542900,
+      "sha256": "7654012602f8df3917eba60a4ab820bab98a6e93bdb66394c1cbb3d8bf673b09"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/preparation_log.json",
+      "bytes": 1798,
+      "mtime_ns": 1790382440811020400,
+      "sha256": "76eeb32e4d0b910bdb02e207c23e8f3fb10f2d162c01e6ac665e8e89e96228d6"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/source_mesh.tri",
+      "bytes": 588980,
+      "mtime_ns": 1790382439959937500,
+      "sha256": "7632bd9cb8c25432452927f47fb2dc6fb2875ae71950b019f6226ead22671547"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/source_model.vsp3",
+      "bytes": 400198,
+      "mtime_ns": 1790382425906373400,
+      "sha256": "0275815d8124bebe5dd100b12e88941094a48a301b322905ac3790e620dc8281"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/topology_contract.json",
+      "bytes": 2189,
+      "mtime_ns": 1790382440908618100,
+      "sha256": "62df6bc32b816e91dc01af505acf37c6706e0361ff2c303a9256ac8a4ff7c29c"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/machline/ultra_fine/model.vsp3",
+      "bytes": 400198,
+      "mtime_ns": 1790382438999243200,
+      "sha256": "314c76fd1991305ca5ef06db5c7dde29c342a167f644b505df59a9f7abdbe173"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_c/inventory.json",
+      "bytes": 16279,
+      "mtime_ns": 1790382436223493800,
+      "sha256": "ea2469b97537620839fe7dac5d75d281eccd18d35a7f451d92f983e78c9171e7"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_c/inventory.log",
+      "bytes": 313145,
+      "mtime_ns": 1790382436158484900,
+      "sha256": "f0d6f553dde7fcee8b8f9f1d63006124a8a83e2596541d8b200f312583496d49"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_c/inventory.vspscript",
+      "bytes": 2026,
+      "mtime_ns": 1790382435811105600,
+      "sha256": "bbceb4b094be8a704033846442dfb4b0ec555d3547056a2604919b48e6bb86d7"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_f/inventory.json",
+      "bytes": 16294,
+      "mtime_ns": 1790382437840499600,
+      "sha256": "009d32b6f43eaf1608326f118a2b41bff4517290b51ce24c138dd7264417bfef"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_f/inventory.log",
+      "bytes": 313162,
+      "mtime_ns": 1790382437777654800,
+      "sha256": "c75e4a6b3799aee03f969ec1f524ee795f1e0935da3af5864b86625d29591d36"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_f/inventory.vspscript",
+      "bytes": 2024,
+      "mtime_ns": 1790382437417285200,
+      "sha256": "a951e3acb1d1790c9b0932dbac70bbb47a36af984d48b2e3bf64118de46274eb"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_m/inventory.json",
+      "bytes": 16296,
+      "mtime_ns": 1790382437018691300,
+      "sha256": "54037f7c427b096c88fb97fdbcea3e3f8644adfb235ff215a5e0fc41c132cf25"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_m/inventory.log",
+      "bytes": 313162,
+      "mtime_ns": 1790382436962127000,
+      "sha256": "7cba1c37af85c24005b9979eefc637f40383818c48152b8ea2e9adb30eee00da"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_m/inventory.vspscript",
+      "bytes": 2026,
+      "mtime_ns": 1790382436616448000,
+      "sha256": "13da92727671c693c9b9ec0a98ad93e9b4c327ca8e97bad9b3c234155dc7167f"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_u/inventory.json",
+      "bytes": 16300,
+      "mtime_ns": 1790382439444435500,
+      "sha256": "a8a92bb062423799440851e109c0d8785bf635980156cbe8ee5181265649f1bc"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_u/inventory.log",
+      "bytes": 313164,
+      "mtime_ns": 1790382439390348500,
+      "sha256": "3020938a6f1d447a335ef57aac70370ca452ae24e22ec65e05fc132be8cbaa35"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_u/inventory.vspscript",
+      "bytes": 2030,
+      "mtime_ns": 1790382439042031700,
+      "sha256": "77106fb55e1d4a2c95bc5e00fcbd83091da20fc05facaf7f0a25217f6dd6cb5f"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_x/inventory.json",
+      "bytes": 16300,
+      "mtime_ns": 1790382438643250200,
+      "sha256": "c57e14beaeefeaad70d2141c7f2f1967f59055d300a27383b58e48b12ca2570e"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_x/inventory.log",
+      "bytes": 313164,
+      "mtime_ns": 1790382438579460500,
+      "sha256": "1072823f87bd9996effc313ed3e87e04b6aba0d154884d72419701730c5b06e4"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/ml_x/inventory.vspscript",
+      "bytes": 2030,
+      "mtime_ns": 1790382438231810000,
+      "sha256": "32fe2485308dbdd5bbdaec9cc67571bbd4fe28f0ad3dd3b73f8a7bdea23021a9"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_c/inventory.json",
+      "bytes": 16287,
+      "mtime_ns": 1790382432229911100,
+      "sha256": "176db551c149a2883a4aff8150401c8ce890091e0cbec9881d13e6a2ea51a4f4"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_c/inventory.log",
+      "bytes": 313145,
+      "mtime_ns": 1790382432167701500,
+      "sha256": "f0d6f553dde7fcee8b8f9f1d63006124a8a83e2596541d8b200f312583496d49"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_c/inventory.vspscript",
+      "bytes": 2033,
+      "mtime_ns": 1790382431833533900,
+      "sha256": "e094d2e01aa2cd1d1bcbec12f4632a33638fbac67dbbc3fa1b3f50af118f0503"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_f/inventory.json",
+      "bytes": 16302,
+      "mtime_ns": 1790382433817234500,
+      "sha256": "ceccbcd1ee337b15dc987e8738df2bbe7b5574fa9527dc3029ad9b95e2cd53c4"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_f/inventory.log",
+      "bytes": 313162,
+      "mtime_ns": 1790382433744397000,
+      "sha256": "c75e4a6b3799aee03f969ec1f524ee795f1e0935da3af5864b86625d29591d36"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_f/inventory.vspscript",
+      "bytes": 2031,
+      "mtime_ns": 1790382433405530200,
+      "sha256": "8764829e8105e99868a302c2ded10678f4d9b0c4dafe408daf3ed66fd49c0d41"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_m/inventory.json",
+      "bytes": 16304,
+      "mtime_ns": 1790382433020738400,
+      "sha256": "bb37ce33ba7694c6873cb026869ed60146ec73aa5423a1fe72655d850517f4a9"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_m/inventory.log",
+      "bytes": 313162,
+      "mtime_ns": 1790382432964192200,
+      "sha256": "7cba1c37af85c24005b9979eefc637f40383818c48152b8ea2e9adb30eee00da"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_m/inventory.vspscript",
+      "bytes": 2033,
+      "mtime_ns": 1790382432628068100,
+      "sha256": "525aa2eed0c4aa303e38050441d196c7bf67b3a1a06a725621cb64910f983d0d"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_u/inventory.json",
+      "bytes": 16308,
+      "mtime_ns": 1790382435414362000,
+      "sha256": "11605e7f771581f44901d7d2914f96e8cf8f1ae2b646763708ef68134edabd3e"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_u/inventory.log",
+      "bytes": 313164,
+      "mtime_ns": 1790382435360598700,
+      "sha256": "3020938a6f1d447a335ef57aac70370ca452ae24e22ec65e05fc132be8cbaa35"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_u/inventory.vspscript",
+      "bytes": 2037,
+      "mtime_ns": 1790382435009205500,
+      "sha256": "19fededbf4d8495b7244b9e8c3e298c10eedaa754b043a75aa50eb1254befe7c"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_x/inventory.json",
+      "bytes": 16308,
+      "mtime_ns": 1790382434606453300,
+      "sha256": "6f4d0eb300f91a59edfa843bde5e8fa3f701a5086c6562561a8b8d4daa1e29b3"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_x/inventory.log",
+      "bytes": 313164,
+      "mtime_ns": 1790382434549496000,
+      "sha256": "1072823f87bd9996effc313ed3e87e04b6aba0d154884d72419701730c5b06e4"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vl_x/inventory.vspscript",
+      "bytes": 2037,
+      "mtime_ns": 1790382434205415000,
+      "sha256": "4487a8dc60a472767d67b47e5e2b8d1a753ebcdaf326b52e41899663d66ae009"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_c/inventory.json",
+      "bytes": 16285,
+      "mtime_ns": 1790382428271150900,
+      "sha256": "e8ebdab74f78660fb6c3e9369cccc3c3a42c64f47525592c85368215618d923e"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_c/inventory.log",
+      "bytes": 313145,
+      "mtime_ns": 1790382428219502100,
+      "sha256": "f0d6f553dde7fcee8b8f9f1d63006124a8a83e2596541d8b200f312583496d49"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_c/inventory.vspscript",
+      "bytes": 2031,
+      "mtime_ns": 1790382427874680800,
+      "sha256": "6962b51eee1180a70d810ff4e0ff05ae417177a13be72af023c3c52daf01fe85"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_f/inventory.json",
+      "bytes": 16300,
+      "mtime_ns": 1790382429866905700,
+      "sha256": "6bab511c16b3d73953e56ebd4ce216b7c1e0ba435943c6285ca3d690be23e7b6"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_f/inventory.log",
+      "bytes": 313162,
+      "mtime_ns": 1790382429806633100,
+      "sha256": "c75e4a6b3799aee03f969ec1f524ee795f1e0935da3af5864b86625d29591d36"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_f/inventory.vspscript",
+      "bytes": 2029,
+      "mtime_ns": 1790382429454304200,
+      "sha256": "ec479b67f34f3404fc860dc3bb311e1101087a142ee2ad984ea2425671afa5d1"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_m/inventory.json",
+      "bytes": 16302,
+      "mtime_ns": 1790382429073482800,
+      "sha256": "138b6fc14eb85a127b32b5a5a36487ebaf11b22804c0e7ab0156e81d888d0d1c"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_m/inventory.log",
+      "bytes": 313162,
+      "mtime_ns": 1790382429015993400,
+      "sha256": "7cba1c37af85c24005b9979eefc637f40383818c48152b8ea2e9adb30eee00da"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_m/inventory.vspscript",
+      "bytes": 2031,
+      "mtime_ns": 1790382428672989400,
+      "sha256": "e3311a89c1b4e3faa7d8959a8eeb0443bc7ee6b1a06abca42b8cd28f8be68a4f"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_u/inventory.json",
+      "bytes": 16306,
+      "mtime_ns": 1790382431460173100,
+      "sha256": "0092cf4099286d6d13607235d8cfc0722a3b827c857df2792aad190d0fc8e8f2"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_u/inventory.log",
+      "bytes": 313164,
+      "mtime_ns": 1790382431412419500,
+      "sha256": "3020938a6f1d447a335ef57aac70370ca452ae24e22ec65e05fc132be8cbaa35"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_u/inventory.vspscript",
+      "bytes": 2035,
+      "mtime_ns": 1790382431055070500,
+      "sha256": "4ffda0084ccb617ff3237bcef1b86c9ad0bfac328e3852494b4ca9a94d705ea6"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_x/inventory.json",
+      "bytes": 16306,
+      "mtime_ns": 1790382430649401300,
+      "sha256": "6295ebceb38a86cfa5287c8169a951fc773793f3654528d0d2771621e152e16d"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_x/inventory.log",
+      "bytes": 313164,
+      "mtime_ns": 1790382430594573800,
+      "sha256": "1072823f87bd9996effc313ed3e87e04b6aba0d154884d72419701730c5b06e4"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/mesh_diag/vm_x/inventory.vspscript",
+      "bytes": 2035,
+      "mtime_ns": 1790382430261614300,
+      "sha256": "eea9b90decb08968fcbf04470b0c1221f9b05c1064f838214a78a53f2db15c73"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/mlc/apply_machline.log",
+      "bytes": 391,
+      "mtime_ns": 1790382435771173500,
+      "sha256": "f21e53802a3d3d5fc47287d2887bc14a2aabd67b457fb0c5f96f24069db69612"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/mlc/apply_machline.vspscript",
+      "bytes": 5224,
+      "mtime_ns": 1790382435418503000,
+      "sha256": "d7fd09d0effb94d6167baabe0576bfa3376b9ecea0e3b8d1dbe5d01f268e22c1"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/mlf/apply_machline.log",
+      "bytes": 1550,
+      "mtime_ns": 1790382437378614500,
+      "sha256": "8af56b0df6c2fdab3c620d148f25247a5f8807e8c3659268d2842132911e2343"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/mlf/apply_machline.vspscript",
+      "bytes": 18018,
+      "mtime_ns": 1790382437023207700,
+      "sha256": "ae7bb29f6b9f1d07a1513c7967aa35e7725a245042838e989336303bb6551d0f"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/mlm/apply_machline.log",
+      "bytes": 1428,
+      "mtime_ns": 1790382436581095700,
+      "sha256": "ad718697c0ce828c14a3efa788051f07670305097939d6eb356488c317203785"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/mlm/apply_machline.vspscript",
+      "bytes": 16644,
+      "mtime_ns": 1790382436227166200,
+      "sha256": "24d21699a6c795b7c6cbecc32dd9dce2f73e2079c69040d228db38fa85c1b6b7"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/mlu/apply_machline.log",
+      "bytes": 1550,
+      "mtime_ns": 1790382439004751300,
+      "sha256": "ea2926fd3868479e3a7548c3d708aaae167de6b02f8a6ecd77e197351e10897a"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/mlu/apply_machline.vspscript",
+      "bytes": 18054,
+      "mtime_ns": 1790382438647409000,
+      "sha256": "fd9fb9b53ccc6b703cbe9221cf52a50f43540e319b3a977922e09367b79838cf"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/mlx/apply_machline.log",
+      "bytes": 1550,
+      "mtime_ns": 1790382438197172600,
+      "sha256": "0af915ca01c6be605e813482b9abd658101bd1d4cba42c1b6d89ec3451efc7b5"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/mlx/apply_machline.vspscript",
+      "bytes": 17739,
+      "mtime_ns": 1790382437845185700,
+      "sha256": "4a5d60990d2497ed9af4e41a4f0555ab024e1e0db48d74609d0e3d1211e10bd9"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vlc/apply_vspaero_lifting.log",
+      "bytes": 437,
+      "mtime_ns": 1790382431793136300,
+      "sha256": "dcc848730ed5328c6f3129b99a42ff32ae5d5bfe321242915a5dbd3c42438332"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vlc/apply_vspaero_lifting.vspscript",
+      "bytes": 5763,
+      "mtime_ns": 1790382431463681700,
+      "sha256": "82f7449f9896b00ceec5127c1fed13c9d01edc46a1f4e219b4b67a93908a3f06"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vlf/apply_vspaero_lifting.log",
+      "bytes": 1596,
+      "mtime_ns": 1790382433366454300,
+      "sha256": "e11f6ac52089795c4c072cbcce80431a2baf3a2625206c953c16c43f2c32688e"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vlf/apply_vspaero_lifting.vspscript",
+      "bytes": 18557,
+      "mtime_ns": 1790382433023984500,
+      "sha256": "f407030dbd9d33d609bc7e43aebc23d4965e603b46cc8c499549893765039652"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vlm/apply_vspaero_lifting.log",
+      "bytes": 1474,
+      "mtime_ns": 1790382432592170700,
+      "sha256": "de78e69df39edf9e796fd3ad54abe714926dda24407d617fa0ab1a34d572fcd5"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vlm/apply_vspaero_lifting.vspscript",
+      "bytes": 17183,
+      "mtime_ns": 1790382432235531200,
+      "sha256": "3112b73b7313554ce3182bdd2f2e9d6f50368f91abb51058b6cc093b2989c6b7"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vlu/apply_vspaero_lifting.log",
+      "bytes": 1596,
+      "mtime_ns": 1790382434966663900,
+      "sha256": "783c049aab1d39ee5f0193c16c10bd0b4d95ff6f4c9060024acf03453dec3a90"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vlu/apply_vspaero_lifting.vspscript",
+      "bytes": 18593,
+      "mtime_ns": 1790382434609450300,
+      "sha256": "0652927d89312a3a85153cf4824c8d11832a9fc22c4385f3f7e2701538b4dfc2"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vlx/apply_vspaero_lifting.log",
+      "bytes": 1596,
+      "mtime_ns": 1790382434165366800,
+      "sha256": "b34f665886b1b5198c6cc26e8307ac276505883d02f2c9de7baf8a06e4936204"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vlx/apply_vspaero_lifting.vspscript",
+      "bytes": 18278,
+      "mtime_ns": 1790382433820730800,
+      "sha256": "4ec588c8d8fa603353a467cff99d7f19540d147be27aa67741bcecf0c4865a8f"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vmc/apply_vspaero_mixed.log",
+      "bytes": 391,
+      "mtime_ns": 1790382427833246300,
+      "sha256": "f21e53802a3d3d5fc47287d2887bc14a2aabd67b457fb0c5f96f24069db69612"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vmc/apply_vspaero_mixed.vspscript",
+      "bytes": 5227,
+      "mtime_ns": 1790382427490146800,
+      "sha256": "ac7b374382d1044ac2b6e8af9f1f8bfa8b8297f76f1b954b411a63a6dc0a438e"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vmf/apply_vspaero_mixed.log",
+      "bytes": 1550,
+      "mtime_ns": 1790382429415444200,
+      "sha256": "8af56b0df6c2fdab3c620d148f25247a5f8807e8c3659268d2842132911e2343"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vmf/apply_vspaero_mixed.vspscript",
+      "bytes": 18021,
+      "mtime_ns": 1790382429076510300,
+      "sha256": "e8bb06913d69eb7337e6cf93e014be4f395b0fdd87885c2c963df102edff2b8a"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vmm/apply_vspaero_mixed.log",
+      "bytes": 1428,
+      "mtime_ns": 1790382428631554100,
+      "sha256": "ad718697c0ce828c14a3efa788051f07670305097939d6eb356488c317203785"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vmm/apply_vspaero_mixed.vspscript",
+      "bytes": 16647,
+      "mtime_ns": 1790382428275185200,
+      "sha256": "8010b92d4d8b9f8d851248d838d5c08e7fcb0ad4c59bcb8703ffca3d7f3178b8"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vmu/apply_vspaero_mixed.log",
+      "bytes": 1550,
+      "mtime_ns": 1790382431012701200,
+      "sha256": "ea2926fd3868479e3a7548c3d708aaae167de6b02f8a6ecd77e197351e10897a"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vmu/apply_vspaero_mixed.vspscript",
+      "bytes": 18057,
+      "mtime_ns": 1790382430653407700,
+      "sha256": "0977e164c0c1fa484fe9b0f08f84b8ee4874896ca62d49a7bc63dcd9916719e1"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vmx/apply_vspaero_mixed.log",
+      "bytes": 1550,
+      "mtime_ns": 1790382430224476800,
+      "sha256": "0af915ca01c6be605e813482b9abd658101bd1d4cba42c1b6d89ec3451efc7b5"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/ms/vmx/apply_vspaero_mixed.vspscript",
+      "bytes": 17742,
+      "mtime_ns": 1790382429870904500,
+      "sha256": "fc9d8ce3cc36a8a5712c42389fe7e3b26d3dafdde126567720b2f31cea294b08"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/native_diagnostics.json",
+      "bytes": 3647,
+      "mtime_ns": 1790382424842159800,
+      "sha256": "c5295cf1ced7d8251faac9b7a4672537f946460cc5d2c46da12469f0cc36bc68"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/parasite/model.vsp3",
+      "bytes": 397826,
+      "mtime_ns": 1790382424444419200,
+      "sha256": "5710974615718259376ea2aca54fd14efa1837069e1b031d1461485dac955fbd"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/policy_snapshot.json",
+      "bytes": 8016,
+      "mtime_ns": 1790382424456587500,
+      "sha256": "ebc7472aa6742a3872450e95cb3a1299cd0542d22ff2b7ede52e0c20f7215eff"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/post_diagnostics/machline/inventory.json",
+      "bytes": 16278,
+      "mtime_ns": 1790382427085220300,
+      "sha256": "ff331c7c04f20919e9f9aca67ec3eb74145dbacfba588e2e174a602223c80f57"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/post_diagnostics/machline/inventory.log",
+      "bytes": 313145,
+      "mtime_ns": 1790382427047774300,
+      "sha256": "81c09a00b7b070d6c4700175dfba75f8351a5014da9e725c05c839b5882d12f4"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/post_diagnostics/machline/inventory.vspscript",
+      "bytes": 2026,
+      "mtime_ns": 1790382426705281400,
+      "sha256": "3561084c5f76e8830d31360fcd6133f186f8ba20ea59e773aa5a6cb4f8122c35"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/post_diagnostics/parasite/inventory.json",
+      "bytes": 16271,
+      "mtime_ns": 1790382427487140600,
+      "sha256": "f2347356072e3e5e961e64dc7a1cf77b9ea11fde761003d4acb6a85a71433344"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/post_diagnostics/parasite/inventory.log",
+      "bytes": 313145,
+      "mtime_ns": 1790382427432088200,
+      "sha256": "81c09a00b7b070d6c4700175dfba75f8351a5014da9e725c05c839b5882d12f4"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/post_diagnostics/parasite/inventory.vspscript",
+      "bytes": 2019,
+      "mtime_ns": 1790382427085913200,
+      "sha256": "7ea9d2e73c401e2e3ba8b89b1fe5b515bdd161c23c62638b312f4fdc733e6f22"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/post_diagnostics/vspaero_lifting/inventory.json",
+      "bytes": 16279,
+      "mtime_ns": 1790382426704277200,
+      "sha256": "5ad64ea00590fd63cbd151ab3de5f01c2de6d8c3dc8446183cf09384dc4faee9"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/post_diagnostics/vspaero_lifting/inventory.log",
+      "bytes": 313145,
+      "mtime_ns": 1790382426669664400,
+      "sha256": "81c09a00b7b070d6c4700175dfba75f8351a5014da9e725c05c839b5882d12f4"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/post_diagnostics/vspaero_lifting/inventory.vspscript",
+      "bytes": 2026,
+      "mtime_ns": 1790382426329870300,
+      "sha256": "585a253a42911f8144a0d45f3b63e6ed8d635c006b0fcce6a37f6e6b3e4c20ec"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/post_diagnostics/vspaero_mixed/inventory.json",
+      "bytes": 16277,
+      "mtime_ns": 1790382426329870300,
+      "sha256": "b5d6a06a8fcbb491e282f4cb5b4326311c1dd7c02742ce199bf511369990c01d"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/post_diagnostics/vspaero_mixed/inventory.log",
+      "bytes": 313145,
+      "mtime_ns": 1790382426295285700,
+      "sha256": "81c09a00b7b070d6c4700175dfba75f8351a5014da9e725c05c839b5882d12f4"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/post_diagnostics/vspaero_mixed/inventory.vspscript",
+      "bytes": 2024,
+      "mtime_ns": 1790382425959478400,
+      "sha256": "1b0c86cd16803df79165a9c57ccfe49e8af514823c74f7e5a29d2e442758f3a6"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/scripts/apply_machline.log",
+      "bytes": 25,
+      "mtime_ns": 1790382425910968000,
+      "sha256": "5ddb2ac0e2f7469a68d86003d27a99a6dacc57a84f821d3573e89d52865620d9"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/scripts/apply_machline.vspscript",
+      "bytes": 1148,
+      "mtime_ns": 1790382425572620400,
+      "sha256": "5673bf0af548c873aed6c683e3e6703aea00512d67f56f3e46d4d4bd142d352b"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/scripts/apply_vspaero_lifting.log",
+      "bytes": 71,
+      "mtime_ns": 1790382425547421400,
+      "sha256": "46d547692598978c22ab69e779f03a69fab12642356a290d3ac554a3bd85bd54"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/scripts/apply_vspaero_lifting.vspscript",
+      "bytes": 1680,
+      "mtime_ns": 1790382425198002500,
+      "sha256": "0a557945672f2c8eabef5c2247e35dc7d558c28cbaf93c6a7c05b26c18688ed2"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/scripts/apply_vspaero_mixed.log",
+      "bytes": 25,
+      "mtime_ns": 1790382425174337800,
+      "sha256": "5ddb2ac0e2f7469a68d86003d27a99a6dacc57a84f821d3573e89d52865620d9"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/scripts/apply_vspaero_mixed.vspscript",
+      "bytes": 1146,
+      "mtime_ns": 1790382424845199300,
+      "sha256": "5755f77686c31e53dc37c98f7241b57b6854f05ffcc2a7165aebf25eef476b99"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/semantic_audit.json",
+      "bytes": 16552,
+      "mtime_ns": 1790382424842159800,
+      "sha256": "d060138c9f09e6c6d2c29df9db7575942e4787c9b190a08980a90d587c50e7ed"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/source_manifest.json",
+      "bytes": 1855,
+      "mtime_ns": 1790382443318780400,
+      "sha256": "08ea2163e1060e916879d623ee3477e96c07bb06e3725af21d2354a22667c810"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/transformation_log.jsonl",
+      "bytes": 1629,
+      "mtime_ns": 1790382442853000500,
+      "sha256": "7e85e389182440f844c5de5b45204292a7d3d7842e7cd5920282026dd0f39ff5"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/transformation_plan.json",
+      "bytes": 636,
+      "mtime_ns": 1790382424843159700,
+      "sha256": "458f97f495553d0b990512ffd299e321718c19c619ffed8e36a17d8561e0fa70"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/vspaero/lifting/coarse/model.vsp3",
+      "bytes": 400212,
+      "mtime_ns": 1790382431788630300,
+      "sha256": "7a697fd0fa27878a35096f87f9f6e8a54abcfee8306a2fb5cc610fd5e1a77bb9"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/vspaero/lifting/extra_fine/model.vsp3",
+      "bytes": 400212,
+      "mtime_ns": 1790382434160337300,
+      "sha256": "f8acd498f238355fd56b2332fbc7cc8d9baefb9ec00da4e9ca4038b190783c71"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/vspaero/lifting/fine/model.vsp3",
+      "bytes": 400212,
+      "mtime_ns": 1790382433361507900,
+      "sha256": "ebecbf7149737c318e7b7bc88c7a543404b6512952922928cc3376d5c510a969"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/vspaero/lifting/medium/model.vsp3",
+      "bytes": 400212,
+      "mtime_ns": 1790382432587170000,
+      "sha256": "7e962fdbf5ad66e24d984a3ce8adc7d6fe2c39617fb04968a3e7e3bdf2229c20"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/vspaero/lifting/model.vsp3",
+      "bytes": 400212,
+      "mtime_ns": 1790382425542410500,
+      "sha256": "c3b97eea4a812685f33d0488d062ced4b21e6847e86ec75b48b3442b4724a01e"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/vspaero/lifting/ultra_fine/model.vsp3",
+      "bytes": 400212,
+      "mtime_ns": 1790382434959484600,
+      "sha256": "cb726b8ca02402ce85fbb62f2e67640ef6f828fa94ae98e3b59363fdf315a341"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/vspaero/mixed/coarse/model.vsp3",
+      "bytes": 400198,
+      "mtime_ns": 1790382427827268700,
+      "sha256": "6b0631574203a4a1d6f5fd2c40af5eb76dd331bc9ab49fe4bb192186329b7262"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/vspaero/mixed/extra_fine/model.vsp3",
+      "bytes": 400198,
+      "mtime_ns": 1790382430217937700,
+      "sha256": "abcdb786369f436752b9fd6c18b272595291af340ab1cba039601f37d5ab7798"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/vspaero/mixed/fine/model.vsp3",
+      "bytes": 400198,
+      "mtime_ns": 1790382429411390800,
+      "sha256": "8b3cd4a4e9f080a1c008cc59616e6f48b28be26c7c2485cd8e0f1abdf6196675"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/vspaero/mixed/medium/model.vsp3",
+      "bytes": 400198,
+      "mtime_ns": 1790382428626521100,
+      "sha256": "884e7453cd6ed9b160dbb98744f832cc0e0ea7d378a31d13a6b9294bff87a774"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/vspaero/mixed/model.vsp3",
+      "bytes": 400198,
+      "mtime_ns": 1790382425169329900,
+      "sha256": "99ff7655798143854b6c4795dc8cb74c5842a7da15eed435caf793d66f9ad611"
+    },
+    {
+      "path": "20260926_032704_MQ-20_MQ20_for_MachLine_a984f1c1/vspaero/mixed/ultra_fine/model.vsp3",
+      "bytes": 400198,
+      "mtime_ns": 1790382431006549700,
+      "sha256": "66eaeb584c6b6822baf9abe8410e29de65e6e2fae52012df3736aaaee7b46cea"
+    }
+  ],
+  "source_bytes": 19773442,
+  "archive_bytes": 3555909,
+  "archive_sha256": "6ac2d7a2bcd455a850bf9441d0a5ba75aee73f1dfd499f3edb52d2157088aa94",
+  "parts": [
+    {
+      "file": "workspace_q20c.zip",
+      "bytes": 3555909,
+      "sha256": "6ac2d7a2bcd455a850bf9441d0a5ba75aee73f1dfd499f3edb52d2157088aa94"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
