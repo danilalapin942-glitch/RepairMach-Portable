@@ -1,0 +1,104 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "MQ20_backend_experiment_postprocessor_routes_v2",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\q20build\\postprocessor_routes_v2",
+  "source_files": [
+    {
+      "path": "helper_present/model.adb",
+      "bytes": 1602936,
+      "mtime_ns": 1790590330974561700,
+      "sha256": "56ffa716e100bdc7db4877caf9196711377735e7a3d4e62e383341b7d9f624cf"
+    },
+    {
+      "path": "helper_present/model.adb.cases",
+      "bytes": 239,
+      "mtime_ns": 1790590330974561700,
+      "sha256": "ca613a29470b699f4bdcb12a846069a43e03f5801d8bfb3454725386e0db451f"
+    },
+    {
+      "path": "helper_present/model.cuts",
+      "bytes": 15,
+      "mtime_ns": 1790590831119382500,
+      "sha256": "d56341ce2dd170a0d4d2e466fa2c16d409f82167b66bd4bddaf48bf5bd0052be"
+    },
+    {
+      "path": "helper_present/model.slc",
+      "bytes": 23393,
+      "mtime_ns": 1790590837502994900,
+      "sha256": "6a4c0d27900907140d6b87c3c031e8c6f68c406cf07cd733554ad42f0a869eb3"
+    },
+    {
+      "path": "helper_present/model.vsp3",
+      "bytes": 400189,
+      "mtime_ns": 1790587567254064800,
+      "sha256": "d231790a791b31b25f49ba430737da810c150ed982f5bd27138e1f7a5a001454"
+    },
+    {
+      "path": "helper_present/postprocess.csv",
+      "bytes": 196,
+      "mtime_ns": 1790590838796458000,
+      "sha256": "c0a7ba09ee9db00db30c07a051591c3d19228e7a0ecf2c6adc091436aaa34482"
+    },
+    {
+      "path": "helper_present/postprocess.log",
+      "bytes": 1752,
+      "mtime_ns": 1790590838806057900,
+      "sha256": "92b4d68f99f54acf7f709b977379c80641a7d387ae5d1e6a31380bac035eb713"
+    },
+    {
+      "path": "helper_present/postprocess_only.vspscript",
+      "bytes": 752,
+      "mtime_ns": 1790590830998748000,
+      "sha256": "34cfaa13e4380c2c826b309e8cce9fa776c20b2e6e70979c6f84b1f0d319a15c"
+    },
+    {
+      "path": "missing_helper/model.adb",
+      "bytes": 1602936,
+      "mtime_ns": 1790590330974561700,
+      "sha256": "56ffa716e100bdc7db4877caf9196711377735e7a3d4e62e383341b7d9f624cf"
+    },
+    {
+      "path": "missing_helper/model.adb.cases",
+      "bytes": 239,
+      "mtime_ns": 1790590330974561700,
+      "sha256": "ca613a29470b699f4bdcb12a846069a43e03f5801d8bfb3454725386e0db451f"
+    },
+    {
+      "path": "missing_helper/model.cuts",
+      "bytes": 15,
+      "mtime_ns": 1790590819027121300,
+      "sha256": "d56341ce2dd170a0d4d2e466fa2c16d409f82167b66bd4bddaf48bf5bd0052be"
+    },
+    {
+      "path": "missing_helper/model.vsp3",
+      "bytes": 400189,
+      "mtime_ns": 1790587567254064800,
+      "sha256": "d231790a791b31b25f49ba430737da810c150ed982f5bd27138e1f7a5a001454"
+    },
+    {
+      "path": "missing_helper/postprocess.log",
+      "bytes": 0,
+      "mtime_ns": 1790590830983368800,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "missing_helper/postprocess_only.vspscript",
+      "bytes": 752,
+      "mtime_ns": 1790590818948967400,
+      "sha256": "47a8168aef996217c87d9e68df2bd40870dacfc6f3cffec1180d54a39a06f0ab"
+    }
+  ],
+  "source_bytes": 4033603,
+  "archive_bytes": 1299256,
+  "archive_sha256": "7422f9c5d2fc943f6246ee429ddb1e5693e0fda8d0b0b1bf0def7c159997d4a0",
+  "parts": [
+    {
+      "file": "MQ20_backend_experiment_postprocessor_routes_v2.zip",
+      "bytes": 1299256,
+      "sha256": "7422f9c5d2fc943f6246ee429ddb1e5693e0fda8d0b0b1bf0def7c159997d4a0"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
