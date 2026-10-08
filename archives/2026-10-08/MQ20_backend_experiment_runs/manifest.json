@@ -1,0 +1,200 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "MQ20_backend_experiment_runs",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\q20build\\runs",
+  "source_files": [
+    {
+      "path": "original/passive_trace.csv",
+      "bytes": 117755064,
+      "mtime_ns": 1790590330301922400,
+      "sha256": "96a45e104c7cfbea4a06452fd814a052a9522d67c62067aed2ef4f3a3f632a82"
+    },
+    {
+      "path": "original/probe/diagnostic_pressure/0001_M0p4_A0_B0/point.json",
+      "bytes": 1217,
+      "mtime_ns": 1790591167932029400,
+      "sha256": "d27f3362f20b194dd063de2581375240ef2077b9d10203e260f4c19b19b6800a"
+    },
+    {
+      "path": "original/probe/diagnostic_pressure/0001_M0p4_A0_B0/pressure.vtu",
+      "bytes": 368743,
+      "mtime_ns": 1790591167891111100,
+      "sha256": "2e1c828f3073a967d5489cf3022f03aca06d8031b02e8609bd82d440ebd4cadc"
+    },
+    {
+      "path": "original/probe/diagnostic_pressure/0001_M0p4_A0_B0/wake.vtu",
+      "bytes": 705029,
+      "mtime_ns": 1790591167921101400,
+      "sha256": "46ba0358745e7cd861a031cde032fea21fe457ad49e2b6041cc435fad6a5df96"
+    },
+    {
+      "path": "original/probe/diagnostic_pressure/manifest.json",
+      "bytes": 2966,
+      "mtime_ns": 1790591167932029400,
+      "sha256": "a1dbd79f708636ce9886f666684e0174f59bf3f3ef0e7ccd9cb06e05d00ecefa"
+    },
+    {
+      "path": "original/probe/diagnostic_pressure/pressure_oblique.png",
+      "bytes": 147253,
+      "mtime_ns": 1790591226399766500,
+      "sha256": "c0e04c3211c656d0098718e7dc430dd7fd9eb7f00ce5cf85b5dfa777241b23ac"
+    },
+    {
+      "path": "original/probe/diagnostic_pressure/pressure_top.png",
+      "bytes": 184234,
+      "mtime_ns": 1790591226377227400,
+      "sha256": "03490a196bc37e30b416526c7c6738b651e214e4cd1aedcfcc1b45c832f7fe42"
+    },
+    {
+      "path": "original/probe/diagnostic_pressure/README.md",
+      "bytes": 1232,
+      "mtime_ns": 1790591167933024100,
+      "sha256": "90a32df33b4b79a83b58481304563eb2ee48178928b28dd941971198e937631c"
+    },
+    {
+      "path": "original/probe/model.adb",
+      "bytes": 1602936,
+      "mtime_ns": 1790590330974561700,
+      "sha256": "56ffa716e100bdc7db4877caf9196711377735e7a3d4e62e383341b7d9f624cf"
+    },
+    {
+      "path": "original/probe/model.adb.cases",
+      "bytes": 239,
+      "mtime_ns": 1790590330974561700,
+      "sha256": "ca613a29470b699f4bdcb12a846069a43e03f5801d8bfb3454725386e0db451f"
+    },
+    {
+      "path": "original/probe/model.case.1.quad.1.dat",
+      "bytes": 109419,
+      "mtime_ns": 1790590330811591500,
+      "sha256": "6228805db71d664ea488f73769122a26f674e4caf027ac9632db00805c9671fd"
+    },
+    {
+      "path": "original/probe/model.csf",
+      "bytes": 20,
+      "mtime_ns": 1790587567309287200,
+      "sha256": "bb29bf526f4379308ca9c271a8df90c39f4df4235f81f63e370f25e714bb797c"
+    },
+    {
+      "path": "original/probe/model.cuts",
+      "bytes": 15,
+      "mtime_ns": 1790590331201394400,
+      "sha256": "d56341ce2dd170a0d4d2e466fa2c16d409f82167b66bd4bddaf48bf5bd0052be"
+    },
+    {
+      "path": "original/probe/model.group.0",
+      "bytes": 109946,
+      "mtime_ns": 1790590330302936100,
+      "sha256": "eb37c43f3915da4014aa5bca771897094576483beb2fc452429bc31bd38d2a91"
+    },
+    {
+      "path": "original/probe/model.group.1",
+      "bytes": 109946,
+      "mtime_ns": 1790590330302936100,
+      "sha256": "06dc7fba20be8d590acc6c48460ba874822106fe8f67eaf54866cac84cf26f2d"
+    },
+    {
+      "path": "original/probe/model.history",
+      "bytes": 142349,
+      "mtime_ns": 1790590330302936100,
+      "sha256": "b3c5579063a0fdc22f2539c5ea7508c0ba96775bbab0a84a32f12fa902da3247"
+    },
+    {
+      "path": "original/probe/model.lod",
+      "bytes": 23297,
+      "mtime_ns": 1790590330974561700,
+      "sha256": "6d8e7a1bb4ef41becf368886b291bccb56976dff20119dbe49c5859f1af548e5"
+    },
+    {
+      "path": "original/probe/model.polar",
+      "bytes": 3025,
+      "mtime_ns": 1790590330848680300,
+      "sha256": "06f0ed89e8469bc59ae8aa81a9c7ba5fbe014018b1e309d47f24877049bc8361"
+    },
+    {
+      "path": "original/probe/model.quad.cases",
+      "bytes": 18,
+      "mtime_ns": 1790587573176027700,
+      "sha256": "82a501f9cda9e9d183b01aa3369e55a10835bad9b2e78c52edbc98279e94e937"
+    },
+    {
+      "path": "original/probe/model.vkey",
+      "bytes": 500,
+      "mtime_ns": 1790587567309287200,
+      "sha256": "d8ea0f1b1eac23d84253bc41591c30b78c36cdff44f855b5078c9b218e4f4715"
+    },
+    {
+      "path": "original/probe/model.vsp3",
+      "bytes": 400189,
+      "mtime_ns": 1790587567254064800,
+      "sha256": "d231790a791b31b25f49ba430737da810c150ed982f5bd27138e1f7a5a001454"
+    },
+    {
+      "path": "original/probe/model.vspaero",
+      "bytes": 1058,
+      "mtime_ns": 1790587567577546200,
+      "sha256": "faf056148cc26a5ab95c76dba0db5d1d3e7ea6cb7f06dd744579e372d368dd06"
+    },
+    {
+      "path": "original/probe/model.vspgeom",
+      "bytes": 850390,
+      "mtime_ns": 1790587567309287200,
+      "sha256": "3a62fff6243579634acd6836499c1bcb1b590e65eb4304158df19eda529f038f"
+    },
+    {
+      "path": "original/probe/paraview/0001_M0p4_A0_B0/point.json",
+      "bytes": 1265,
+      "mtime_ns": 1790591167856572000,
+      "sha256": "19efd51faae3eb66dd240900db760af1ac3920ab4a349cac5cc2ddb7eab11d64"
+    },
+    {
+      "path": "original/probe/paraview/0001_M0p4_A0_B0/pressure.vtu",
+      "bytes": 368743,
+      "mtime_ns": 1790591167822186700,
+      "sha256": "2e1c828f3073a967d5489cf3022f03aca06d8031b02e8609bd82d440ebd4cadc"
+    },
+    {
+      "path": "original/probe/paraview/0001_M0p4_A0_B0/wake.vtu",
+      "bytes": 705029,
+      "mtime_ns": 1790591167847370100,
+      "sha256": "46ba0358745e7cd861a031cde032fea21fe457ad49e2b6041cc435fad6a5df96"
+    },
+    {
+      "path": "original/probe/paraview/manifest.json",
+      "bytes": 3038,
+      "mtime_ns": 1790591167856572000,
+      "sha256": "58b9c184a8f4bdf1efc10f3286bdf4e7ec2d5f628c8c13d765f0007597fc14fe"
+    },
+    {
+      "path": "original/probe/paraview/README.md",
+      "bytes": 1232,
+      "mtime_ns": 1790591167857574700,
+      "sha256": "90a32df33b4b79a83b58481304563eb2ee48178928b28dd941971198e937631c"
+    },
+    {
+      "path": "original/probe/probe.log",
+      "bytes": 2927171,
+      "mtime_ns": 1790591167471633100,
+      "sha256": "4462c4a6a01cc31419ff2a10cb24a8dc5c3f25a53febf7111e43e33135ee5ce0"
+    },
+    {
+      "path": "original/probe/probe.vspscript",
+      "bytes": 23773,
+      "mtime_ns": 1790587566964539500,
+      "sha256": "41f7b19b9d926ac0930890882964999a534fbc00396e2401b46f0758647a6fb9"
+    }
+  ],
+  "source_bytes": 126549336,
+  "archive_bytes": 49759109,
+  "archive_sha256": "5415663b297dd16be827a049297584fffb339ddc85c20def3c73a9c39adcb43f",
+  "parts": [
+    {
+      "file": "MQ20_backend_experiment_runs.zip",
+      "bytes": 49759109,
+      "sha256": "5415663b297dd16be827a049297584fffb339ddc85c20def3c73a9c39adcb43f"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
