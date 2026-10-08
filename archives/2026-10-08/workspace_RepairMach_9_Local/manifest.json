@@ -1,0 +1,848 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "workspace_RepairMach_9_Local",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\RepairMach_9_Local",
+  "source_files": [
+    {
+      "path": ".gitignore",
+      "bytes": 343,
+      "mtime_ns": 1787644474632602700,
+      "sha256": "b8b4b128c2b93691ace501a1ff84c08a1f5b4ce34729280519d4007407b0ebee"
+    },
+    {
+      "path": "app/aero_hybrid.py",
+      "bytes": 9133,
+      "mtime_ns": 1787776116397444400,
+      "sha256": "6bd4a3c91344185fbeae2feb83574f155c0c0c75590499ec20ac3a1fd94d78e8"
+    },
+    {
+      "path": "app/mach_repair.py",
+      "bytes": 8553,
+      "mtime_ns": 1787686581738595600,
+      "sha256": "1090f963ec9c271c744a22ea19e5bb4ebe4d103d04708859db30cbfae87356b4"
+    },
+    {
+      "path": "app/openvsp_runner.py",
+      "bytes": 4856,
+      "mtime_ns": 1787776116858552500,
+      "sha256": "e827363211af0f5099544d116570d8e0e3e54051af92a9056645f3570c3f7652"
+    },
+    {
+      "path": "app/repairmach_beta.py",
+      "bytes": 58104,
+      "mtime_ns": 1787780398870996800,
+      "sha256": "5c7fdd55c7f07ce77b74912c74a25f8e9c5b0803862aa532999bc40524164372"
+    },
+    {
+      "path": "app/tri_mesh.py",
+      "bytes": 13958,
+      "mtime_ns": 1787686045012450400,
+      "sha256": "fdf452930293ce4da055f2c1d872e2cdcc1ad0b3f42c545bdca7db4a1a3f0b61"
+    },
+    {
+      "path": "app/vspaero_runner.py",
+      "bytes": 14387,
+      "mtime_ns": 1787780353265782300,
+      "sha256": "decb78e0ca4033cbf3bfe4bcc8e0d97d6d16195913f76591d93e85c405a16f90"
+    },
+    {
+      "path": "CHANGELOG_9.md",
+      "bytes": 2823,
+      "mtime_ns": 1787780478069565000,
+      "sha256": "f8f67eb69ac49dfad267d200cef02626fda352ccf802ba5dd7b8465eaff802a0"
+    },
+    {
+      "path": "config/repairmach_settings.json",
+      "bytes": 1535,
+      "mtime_ns": 1787780404938777300,
+      "sha256": "58335b884252f014ed8188607c1dbc5131afaebea5fba57c43072f02966b90c5"
+    },
+    {
+      "path": "engines/MachLine/common/helpers.f90",
+      "bytes": 3150,
+      "mtime_ns": 1787078606077284600,
+      "sha256": "758033895d8d0086aa1810c6b78b2adff4d5dbe5f9ad4b14ef077f4a511da5fa"
+    },
+    {
+      "path": "engines/MachLine/common/json.f90",
+      "bytes": 121419,
+      "mtime_ns": 1786830034075083500,
+      "sha256": "ab1726ff913eafd456ae0edea8a584ef714df3a38a3aaf49b2b364e395088681"
+    },
+    {
+      "path": "engines/MachLine/common/json_xtnsn.f90",
+      "bytes": 6645,
+      "mtime_ns": 1786830034075569200,
+      "sha256": "1fee831d321fb5784869a0a613b9bbc4ac0bd0f27d299bea9ddba3aa185bc4c2"
+    },
+    {
+      "path": "engines/MachLine/common/linalg.f90",
+      "bytes": 44734,
+      "mtime_ns": 1787078606210357900,
+      "sha256": "637fb0a5e75eb5544aa7b7c2246f2d9cfafb251262ea45066e8dd5bbcc2e23cb"
+    },
+    {
+      "path": "engines/MachLine/common/linked_list.f90",
+      "bytes": 32134,
+      "mtime_ns": 1787602269895800000,
+      "sha256": "399b8e8bdaedb44714d9e75c3178a9a8f896408983a35dff10a9ada638c61e79"
+    },
+    {
+      "path": "engines/MachLine/common/linked_list.f90.before_gfortran16",
+      "bytes": 32144,
+      "mtime_ns": 1787078606261256600,
+      "sha256": "d2c8368d8884c36dc6251774438defc9001933fe433c5346c6b5a5daa933d0a2"
+    },
+    {
+      "path": "engines/MachLine/common/math.f90",
+      "bytes": 5367,
+      "mtime_ns": 1786830034079445200,
+      "sha256": "70847cb245874275dad2ef533f73b0eeb0263b14daa6a41c3b9942ddb9517e2e"
+    },
+    {
+      "path": "engines/MachLine/common/sort.f90",
+      "bytes": 20903,
+      "mtime_ns": 1787078606304641400,
+      "sha256": "e8590d075ae1ec3af5546a4bbad07e3b698b85b1667a30cde92ee62591f460f2"
+    },
+    {
+      "path": "engines/MachLine/libgcc_s_seh-1.dll",
+      "bytes": 805920,
+      "mtime_ns": 1763716918000000000,
+      "sha256": "3de5fee0d649a14b5147dd74caa76b75f68e7b8beae3b7252622faac945af20b"
+    },
+    {
+      "path": "engines/MachLine/libgfortran-5.dll",
+      "bytes": 3776169,
+      "mtime_ns": 1786261495000000000,
+      "sha256": "5116f3faaf0c42f9a2ac2bee9460b42ab0f1541739b0008c67261acb69df7efb"
+    },
+    {
+      "path": "engines/MachLine/libgomp-1.dll",
+      "bytes": 328614,
+      "mtime_ns": 1786261495000000000,
+      "sha256": "c13023e6a4f686b2a48aa966b1afbbeea488b196be00bfa19aa7f0d39204b87d"
+    },
+    {
+      "path": "engines/MachLine/libquadmath-0.dll",
+      "bytes": 999856,
+      "mtime_ns": 1763716926000000000,
+      "sha256": "9e4278bf26d369383d9b807704d1be402c0b23bb236b5c46f6a2c751a6bda968"
+    },
+    {
+      "path": "engines/MachLine/libwinpthread-1.dll",
+      "bytes": 64191,
+      "mtime_ns": 1786223389000000000,
+      "sha256": "ed858c25be05f072fe6dc08bd9b9fc799afe8201b3575bb572b670b9c551184c"
+    },
+    {
+      "path": "engines/MachLine/LICENSE",
+      "bytes": 1069,
+      "mtime_ns": 1787078605912994400,
+      "sha256": "99b27532470fad7506d9ccb617f44b03de41074bbb211be35886521d121a852c"
+    },
+    {
+      "path": "engines/MachLine/machline.exe",
+      "bytes": 781905,
+      "mtime_ns": 1787602311538303800,
+      "sha256": "9160f4cb0f9fd07d06ddc29c10baff09848e16df4a5437e851edd6a11c01480b"
+    },
+    {
+      "path": "engines/MachLine/machline_before_patch.exe",
+      "bytes": 684691,
+      "mtime_ns": 1787084072651606100,
+      "sha256": "f11f4f9be82b93953a714998de11d47f8a0fa63332a093362d105aafce04f412"
+    },
+    {
+      "path": "engines/MachLine/machline_patched.exe",
+      "bytes": 781905,
+      "mtime_ns": 1787602311538303800,
+      "sha256": "9160f4cb0f9fd07d06ddc29c10baff09848e16df4a5437e851edd6a11c01480b"
+    },
+    {
+      "path": "engines/MachLine/machline_union_fallback_experimental.exe",
+      "bytes": 782929,
+      "mtime_ns": 1787727850763919100,
+      "sha256": "0e9fcb41d85b5bb54bb964642ed8e954dd8f128fd847eb672ddefa5f059ba472"
+    },
+    {
+      "path": "engines/MachLine/Makefile",
+      "bytes": 1490,
+      "mtime_ns": 1787078605965796500,
+      "sha256": "c4716aec1fb8a433bee140ce9ac5e8ad4ec9be50db9d330e93240a202164b03b"
+    },
+    {
+      "path": "engines/MachLine/README.md",
+      "bytes": 1193,
+      "mtime_ns": 1787078605992561500,
+      "sha256": "c2c0cd304b1909ce7087a6b62b9a55626498e6328e46ef6bb2d7293333119a42"
+    },
+    {
+      "path": "engines/MachLine/run_machline.bat",
+      "bytes": 98,
+      "mtime_ns": 1787642080107374200,
+      "sha256": "427acad88853809cf884da95b73dc5690fb4997ef4ff2fe5667e775191bedf39"
+    },
+    {
+      "path": "engines/MachLine/src/base_geom.f90",
+      "bytes": 18392,
+      "mtime_ns": 1787588560000000000,
+      "sha256": "5de8358216bcbc5eb65bf704dcedcfbdd3021b1ff657559c57a77a2a428bce9e"
+    },
+    {
+      "path": "engines/MachLine/src/flow.f90",
+      "bytes": 17051,
+      "mtime_ns": 1787588560000000000,
+      "sha256": "a06c540c59cf06e4d0b9aecdf95bf64f8ef5d9cb3dc2f82843225846d1c77834"
+    },
+    {
+      "path": "engines/MachLine/src/MachLine_patched_diff.txt",
+      "bytes": 9604,
+      "mtime_ns": 1787588560000000000,
+      "sha256": "23f50950b915ba365d473a65a2cc08e38ceb4df22cb2a4e2137085275f9e7a26"
+    },
+    {
+      "path": "engines/MachLine/src/main.f90",
+      "bytes": 6756,
+      "mtime_ns": 1787588560000000000,
+      "sha256": "d178628f409871b483aecebd8236ad4a685f3762619d9d9c78ab0733ce214e44"
+    },
+    {
+      "path": "engines/MachLine/src/mesh.f90",
+      "bytes": 5417,
+      "mtime_ns": 1787588560000000000,
+      "sha256": "49b166c1e2ef28387f431d633614b79ad8dc197da282c6b5b0003304c4591095"
+    },
+    {
+      "path": "engines/MachLine/src/panel.f90",
+      "bytes": 134060,
+      "mtime_ns": 1787588560000000000,
+      "sha256": "746366071cf291e8cc5992a016356ef4ab8ad24f6be3068bd6dd498aaf3097ce"
+    },
+    {
+      "path": "engines/MachLine/src/panel_solver.f90",
+      "bytes": 118076,
+      "mtime_ns": 1787588560000000000,
+      "sha256": "7645b311b40356353252064300ebbd5aa129a68aac8af43dc95c9ea9d3cc508a"
+    },
+    {
+      "path": "engines/MachLine/src/stl.f90",
+      "bytes": 7226,
+      "mtime_ns": 1787588560000000000,
+      "sha256": "cf82288b0f4fa95df485dc24d04b9c9666d758e1f390f3cd963b572275d8fa92"
+    },
+    {
+      "path": "engines/MachLine/src/surface_mesh.f90",
+      "bytes": 109237,
+      "mtime_ns": 1787727828662096800,
+      "sha256": "3289ea1863e9b58e0f9aaa37cae60cad9c8b6bbfeea7ee22952d769a7fdee530"
+    },
+    {
+      "path": "engines/MachLine/src/surface_mesh.f90.before_union_fallback",
+      "bytes": 107950,
+      "mtime_ns": 1787588560000000000,
+      "sha256": "e5b9a7b31b131a6c0212652326c0c3bf8ea7ea805ed93e62827fd75ccadcdde7"
+    },
+    {
+      "path": "engines/MachLine/src/tri.f90",
+      "bytes": 2955,
+      "mtime_ns": 1787588560000000000,
+      "sha256": "765c2930f74f6b54b6f22729e725b584cb6a8197c658d056c3cceccd6b9cf040"
+    },
+    {
+      "path": "engines/MachLine/src/vtk.f90",
+      "bytes": 22094,
+      "mtime_ns": 1787588560000000000,
+      "sha256": "4644d896ea2c5be56ec8f3d5dc48df40cb8f3578bd6441e7a9cea5ce6e7f0224"
+    },
+    {
+      "path": "engines/MachLine/src/wake_mesh.f90",
+      "bytes": 8032,
+      "mtime_ns": 1787588560000000000,
+      "sha256": "c1bb4843269be6c714b15ecce0a0b93d27ec79b3210cd72263c39c8e5d6a3353"
+    },
+    {
+      "path": "engines/MachLine/src/wake_strip.f90",
+      "bytes": 9467,
+      "mtime_ns": 1787588560000000000,
+      "sha256": "0aab7c69e3e806c8bedea74e848d3040a7b5456d699f221e7fcf66d06ba72654"
+    },
+    {
+      "path": "engines/MachLine/src_backup/base_geom.f90",
+      "bytes": 18392,
+      "mtime_ns": 1787078614531532900,
+      "sha256": "5de8358216bcbc5eb65bf704dcedcfbdd3021b1ff657559c57a77a2a428bce9e"
+    },
+    {
+      "path": "engines/MachLine/src_backup/flow.f90",
+      "bytes": 17051,
+      "mtime_ns": 1787078614558588600,
+      "sha256": "a06c540c59cf06e4d0b9aecdf95bf64f8ef5d9cb3dc2f82843225846d1c77834"
+    },
+    {
+      "path": "engines/MachLine/src_backup/main.f90",
+      "bytes": 6756,
+      "mtime_ns": 1787078614578452500,
+      "sha256": "b5c84d6b08ebd6f6639d3e0afff461961484edc0193d6e7c46a53ffc19d6db57"
+    },
+    {
+      "path": "engines/MachLine/src_backup/mesh.f90",
+      "bytes": 5417,
+      "mtime_ns": 1787078614616021800,
+      "sha256": "49b166c1e2ef28387f431d633614b79ad8dc197da282c6b5b0003304c4591095"
+    },
+    {
+      "path": "engines/MachLine/src_backup/panel.f90",
+      "bytes": 134060,
+      "mtime_ns": 1787078614640903100,
+      "sha256": "746366071cf291e8cc5992a016356ef4ab8ad24f6be3068bd6dd498aaf3097ce"
+    },
+    {
+      "path": "engines/MachLine/src_backup/panel_solver.f90",
+      "bytes": 118076,
+      "mtime_ns": 1787078614684870300,
+      "sha256": "fff5c784c13e9166aadeb477e73ec0363a0de72d5836a67293be0a8dd3fc9bdf"
+    },
+    {
+      "path": "engines/MachLine/src_backup/stl.f90",
+      "bytes": 7226,
+      "mtime_ns": 1787078614721896100,
+      "sha256": "cf82288b0f4fa95df485dc24d04b9c9666d758e1f390f3cd963b572275d8fa92"
+    },
+    {
+      "path": "engines/MachLine/src_backup/surface_mesh.f90",
+      "bytes": 106982,
+      "mtime_ns": 1787078614748277600,
+      "sha256": "6ef53e4f20f679c58f279bf5f86d0b0b887b454c865d7d54b4701987bbe96ae3"
+    },
+    {
+      "path": "engines/MachLine/src_backup/tri.f90",
+      "bytes": 2955,
+      "mtime_ns": 1787078614770138800,
+      "sha256": "765c2930f74f6b54b6f22729e725b584cb6a8197c658d056c3cceccd6b9cf040"
+    },
+    {
+      "path": "engines/MachLine/src_backup/vtk.f90",
+      "bytes": 22094,
+      "mtime_ns": 1787078614802535400,
+      "sha256": "028ae50142d4c025d1a30358122217718be258a35323cac7ded6d25fb31df0a6"
+    },
+    {
+      "path": "engines/MachLine/src_backup/wake_mesh.f90",
+      "bytes": 8032,
+      "mtime_ns": 1787078614822638700,
+      "sha256": "5214d766fe205cc1b63b01f0dcf1c34653afb385ba0ce852af4c1e55c6edd153"
+    },
+    {
+      "path": "engines/MachLine/src_backup/wake_strip.f90",
+      "bytes": 9467,
+      "mtime_ns": 1787078614842824800,
+      "sha256": "0aab7c69e3e806c8bedea74e848d3040a7b5456d699f221e7fcf66d06ba72654"
+    },
+    {
+      "path": "projects/MiG_29/00_original/vsp/MIG29_full_closed.vsp3",
+      "bytes": 557626,
+      "mtime_ns": 1787721960933050300,
+      "sha256": "f81d12499a2f515f91fe60be2d8515667147c6a5c6a457fcc905e22b415fcfa1"
+    },
+    {
+      "path": "projects/MiG_29/01_geometry_cases/full_aircraft/MIG5_auto.tri",
+      "bytes": 1463064,
+      "mtime_ns": 1787524732099355200,
+      "sha256": "95f6e0ff5e1fd2a689d5fb122e9f62c3b55d1a31fa717f356ee47b83978dba2f"
+    },
+    {
+      "path": "projects/MiG_29/01_geometry_cases/full_aircraft/MIG5_original.tri",
+      "bytes": 1932701,
+      "mtime_ns": 1787524674726819400,
+      "sha256": "1ffe1088c67bbe524379bba6b63a86d9ee38ef3ca24a503c49ce3b07cff69f30"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/final/MIG_eng_auto.tri",
+      "bytes": 972971,
+      "mtime_ns": 1787389382578052200,
+      "sha256": "95e66731c516cb9a7290360a59693c0d27e7638a00d7ac63fb8c03c07d86d754"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/final/MIG_full_auto.tri",
+      "bytes": 1463064,
+      "mtime_ns": 1787524732099355200,
+      "sha256": "95f6e0ff5e1fd2a689d5fb122e9f62c3b55d1a31fa717f356ee47b83978dba2f"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/final/MIG_full_light_auto.tri",
+      "bytes": 1485399,
+      "mtime_ns": 1787331791731773300,
+      "sha256": "2c46c62f04a0c9e998dca3679f589e47df23e4e8d34ba23a1d0cafe643a9de80"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/final/MIG_fuselage_wing_auto.tri",
+      "bytes": 1312238,
+      "mtime_ns": 1787255737635807700,
+      "sha256": "b403361cc8cda61f6e0e08e165b8b37e00e3d95d7222ed57eb5135eb9e32df8d"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/final/MIG_fuselage_wing_go_auto.tri",
+      "bytes": 1478979,
+      "mtime_ns": 1787261853258177900,
+      "sha256": "f4221228cf136747eebb470b35c8b89b2aa061f856c968678b654802a9a86cd7"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/final/MIG_fuselage_wing_go_vo_auto.tri",
+      "bytes": 1146989,
+      "mtime_ns": 1787267526124082800,
+      "sha256": "82ae01fd69d1df8294b1f10ffde5c34bf1037fa47b839921d90a8a0c54f6cce3"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/input/MIG_eng.tri",
+      "bytes": 1293124,
+      "mtime_ns": 1787385953594165400,
+      "sha256": "2d6fbee4dc9fdc4c0ff52154e858a3fe31e61352ec483b013f80deeee647953d"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/input/MIG_eng_auto.tri",
+      "bytes": 972971,
+      "mtime_ns": 1787389382578052200,
+      "sha256": "95e66731c516cb9a7290360a59693c0d27e7638a00d7ac63fb8c03c07d86d754"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/input/MIG_full.tri",
+      "bytes": 1905502,
+      "mtime_ns": 1787404031598532100,
+      "sha256": "15119f6ab8b936b03936b3ed77d6763fa17fee844d2979ce16cb29d1c53a2c6b"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/input/MIG_full_auto.tri",
+      "bytes": 1442512,
+      "mtime_ns": 1787420074629690100,
+      "sha256": "6b3b33a274d254b9053eddf6631afa79eb7fdea51824454257c64591fa9f8372"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/input/MIG_full_bezeng.tri",
+      "bytes": 3349003,
+      "mtime_ns": 1787400682630336000,
+      "sha256": "0ab890054730e4bd4398086fa5c450c89ed125e15a444868e45ad9a6bd74549c"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/input/MIG_full_bezeng_auto.tri",
+      "bytes": 2551675,
+      "mtime_ns": 1787400992826049000,
+      "sha256": "bccf0fc15d8bcd26ae5a4be3a11435877a299171806b1f41036a6a71ffc636f5"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/input/MIG_full_light.tri",
+      "bytes": 1966721,
+      "mtime_ns": 1787331450005476300,
+      "sha256": "442f715ee44d8c1eea8d59b5de4ddcae6a4210ce84259e66f2db36e0f18b45d5"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/input/MIG_fuselage_wing.tri",
+      "bytes": 1728859,
+      "mtime_ns": 1787255481138542400,
+      "sha256": "c54d351a5f63412ec756e6f36a14e21138de78a6ca61b165cbe61169f2aba0f4"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/input/MIG_fuselage_wing_go.tri",
+      "bytes": 1945233,
+      "mtime_ns": 1787261598687947500,
+      "sha256": "1e3b0abf4fc98f14737dbbe7c71c780ca5b9ae275e50efa75110cd1d1e680d39"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/input/MIG_fuselage_wing_go_vo.tri",
+      "bytes": 1517369,
+      "mtime_ns": 1787267294211490400,
+      "sha256": "a5c310e380e6eda532718eb92cfa2f85400e8ba14bfe249aca5a24624f5c608c"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/repaired/MIG_eng_auto.tri",
+      "bytes": 972971,
+      "mtime_ns": 1787389382578052200,
+      "sha256": "95e66731c516cb9a7290360a59693c0d27e7638a00d7ac63fb8c03c07d86d754"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/repaired/MIG_full_auto.tri",
+      "bytes": 1442512,
+      "mtime_ns": 1787420074629690100,
+      "sha256": "6b3b33a274d254b9053eddf6631afa79eb7fdea51824454257c64591fa9f8372"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/repaired/MIG_full_light_auto.tri",
+      "bytes": 1485399,
+      "mtime_ns": 1787331791731773300,
+      "sha256": "2c46c62f04a0c9e998dca3679f589e47df23e4e8d34ba23a1d0cafe643a9de80"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/repaired/MIG_fuselage_wing_auto.tri",
+      "bytes": 1312238,
+      "mtime_ns": 1787255737635807700,
+      "sha256": "b403361cc8cda61f6e0e08e165b8b37e00e3d95d7222ed57eb5135eb9e32df8d"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/repaired/MIG_fuselage_wing_go_auto.tri",
+      "bytes": 1478979,
+      "mtime_ns": 1787261853258177900,
+      "sha256": "f4221228cf136747eebb470b35c8b89b2aa061f856c968678b654802a9a86cd7"
+    },
+    {
+      "path": "projects/MiG_29/02_working_meshes/repaired/MIG_fuselage_wing_go_vo_auto.tri",
+      "bytes": 1146989,
+      "mtime_ns": 1787267526124082800,
+      "sha256": "82ae01fd69d1df8294b1f10ffde5c34bf1037fa47b839921d90a8a0c54f6cce3"
+    },
+    {
+      "path": "projects/MiG_29/04_machline_input/json/MIG_eng_M15_a0.json",
+      "bytes": 1004,
+      "mtime_ns": 1787383054622868900,
+      "sha256": "f3c81d11ef9a530f0dbabe40d887eeaf3d065ac66d3d704ad46acde1ab76e75b"
+    },
+    {
+      "path": "projects/MiG_29/04_machline_input/json/MIG_full_light_M15_a0.json",
+      "bytes": 1015,
+      "mtime_ns": 1787332506381955100,
+      "sha256": "3da3b821a792dbc704b9d4636395347d73ab29056758a65ab323b3c6b2b7c224"
+    },
+    {
+      "path": "projects/MiG_29/04_machline_input/json/MIG_full_M15_a0.json",
+      "bytes": 1009,
+      "mtime_ns": 1787525981986971600,
+      "sha256": "b72e52caec6f9564a4c81a113020607733bc4fc1791b2e5f7c4076a7fae92e19"
+    },
+    {
+      "path": "projects/MiG_29/04_machline_input/json/MIG_full_M15_a0_FQRUP.json",
+      "bytes": 1072,
+      "mtime_ns": 1787633236064923300,
+      "sha256": "c0f375ffe0ea147f6821c329da7b026e1450e5929b0779139b4da12673494f6c"
+    },
+    {
+      "path": "projects/MiG_29/04_machline_input/json/MIG_full_M15_a0_QRUP.json",
+      "bytes": 1067,
+      "mtime_ns": 1787607095058684300,
+      "sha256": "cb4db77a18814edbebbf2149a5ccb61e4b9cf4be0d0ca1a41e9547dad3a499ce"
+    },
+    {
+      "path": "projects/MiG_29/04_machline_input/json/MIG_fuselage_wing_go_M15_a0.json",
+      "bytes": 1041,
+      "mtime_ns": 1787262345440572400,
+      "sha256": "f4b7a3804d623d9b552c4ebb4f8750e1099c9c24081373cccff57373aee1fc2e"
+    },
+    {
+      "path": "projects/MiG_29/04_machline_input/json/MIG_fuselage_wing_go_vo_M15_a0.json",
+      "bytes": 1056,
+      "mtime_ns": 1787267824900941700,
+      "sha256": "0963745bef97790f0a62024514c691a661942ad6ae5daa5ed32abad401e6af31"
+    },
+    {
+      "path": "projects/MiG_29/04_machline_input/json/MIG_fuselage_wing_M15_a0.json",
+      "bytes": 1041,
+      "mtime_ns": 1787262323061622900,
+      "sha256": "f4b7a3804d623d9b552c4ebb4f8750e1099c9c24081373cccff57373aee1fc2e"
+    },
+    {
+      "path": "projects/MiG_29/05_machline_results/reports/MIG_eng_M15_a0_report.json",
+      "bytes": 2780,
+      "mtime_ns": 1787390201654879300,
+      "sha256": "68ee3737485e97af27e5b36b0fe44953c55ad43865f84af3465a35712fd281fb"
+    },
+    {
+      "path": "projects/MiG_29/05_machline_results/reports/MIG_full_M15_a0_report.json",
+      "bytes": 2819,
+      "mtime_ns": 1787604349208864300,
+      "sha256": "b23b0bdc4ad6ab258c42912311618b0796dc38f8ef815093f6d6c809029f92b6"
+    },
+    {
+      "path": "projects/MiG_29/05_machline_results/reports/MIG_fuselage_wing_go_M15_a0_report.json",
+      "bytes": 2815,
+      "mtime_ns": 1787263892868879900,
+      "sha256": "8f37af88c525cafce311e831355cd71da9ec3b7cba4c3b459da84b4afef698db"
+    },
+    {
+      "path": "projects/MiG_29/05_machline_results/reports/MIG_fuselage_wing_M15_a0_report.json",
+      "bytes": 2691,
+      "mtime_ns": 1787256648807382800,
+      "sha256": "8dd8e412f709fdf4033e4a37956bf555daf066bf14b2d7cde3bc09909808a88a"
+    },
+    {
+      "path": "projects/MiG_29/99_archive/MiGS/MIG4_archive.tri",
+      "bytes": 1728859,
+      "mtime_ns": 1787255481138542400,
+      "sha256": "c54d351a5f63412ec756e6f36a14e21138de78a6ca61b165cbe61169f2aba0f4"
+    },
+    {
+      "path": "projects/MiG_29/99_archive/MiGS/Output/MIG.tri",
+      "bytes": 1473596,
+      "mtime_ns": 1787175972926491200,
+      "sha256": "bbdf5a937abbaad5a2fecacd8c6b8a6d68f62e40ebb3559ce2c76f6569628867"
+    },
+    {
+      "path": "projects/MiG_29/project_config.json",
+      "bytes": 888,
+      "mtime_ns": 1787777244299417800,
+      "sha256": "6d9076bb10ffeb985473f854a5213beeec91462a1dadf0dcc21cf9d8386b764e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 9383,
+      "mtime_ns": 1787780477606399000,
+      "sha256": "6cfa462071d20fa10293eb835e347872209c21ebd570f93af2f165f2b7bdd008"
+    },
+    {
+      "path": "README_BETA.txt",
+      "bytes": 2219,
+      "mtime_ns": 1787780478528361400,
+      "sha256": "f1058cddbe7f1f0cfea12750fae6e991735e5af799c40adce98bfe2f90be6863"
+    },
+    {
+      "path": "RepairMach.bat",
+      "bytes": 144,
+      "mtime_ns": 1787776177283301500,
+      "sha256": "9359e3483deda8e4b3a2ee8b9291ff48f6213f6ccb7f3031a4ac2f8b3f63b871"
+    },
+    {
+      "path": "runtime/python/_asyncio.pyd",
+      "bytes": 72928,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "6941e2aeed3aad1a4658774ecb60309170066a040c2118a5efd16458ac3bed00"
+    },
+    {
+      "path": "runtime/python/_bz2.pyd",
+      "bytes": 86752,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "261545bd24f15a783fc0c82568b766a4ab569dde14507a81701cccf5293e6e54"
+    },
+    {
+      "path": "runtime/python/_ctypes.pyd",
+      "bytes": 134368,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "9d6dccb4cd84a44a107f9b06b91c0a44e85766d9bf4debb6abbde8fda7494c2c"
+    },
+    {
+      "path": "runtime/python/_decimal.pyd",
+      "bytes": 286944,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "1e6a5707163d3c103e0eb4695eefedbea4b855fb227c61cc265b168970d6c6f0"
+    },
+    {
+      "path": "runtime/python/_elementtree.pyd",
+      "bytes": 135904,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "26c5c2f3f2b8dac1499f07a50d7afd14315c20a6a541abbe4e306bcd9df404f1"
+    },
+    {
+      "path": "runtime/python/_hashlib.pyd",
+      "bytes": 69344,
+      "mtime_ns": 1785928100000000000,
+      "sha256": "79a26289aef0d92545a082507c7021f10e219621d137cb726c4d0fbbfd4b46ae"
+    },
+    {
+      "path": "runtime/python/_lzma.pyd",
+      "bytes": 159456,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "ee224aacf5cf9c9974a1b842aac8d89d5d9b7eeebbf4d76619ae0ce4da8ecd96"
+    },
+    {
+      "path": "runtime/python/_multiprocessing.pyd",
+      "bytes": 38112,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "db19972cf033b598f5826f8219bc2608412b84061d294f5972b43c2ab95f7af5"
+    },
+    {
+      "path": "runtime/python/_overlapped.pyd",
+      "bytes": 57568,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "9db08b5449e18088754ce57e315657d00b46575e0151cd379efef8847488a606"
+    },
+    {
+      "path": "runtime/python/_queue.pyd",
+      "bytes": 35552,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "4404c2569443ffb54e7cfffdca8ddf58c9a609175305970728ec12bc1c147b43"
+    },
+    {
+      "path": "runtime/python/_socket.pyd",
+      "bytes": 86752,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "ccbd0f83df3784da08147b8e8765e28c978de28b5c0eddcfba5567b59d43fef9"
+    },
+    {
+      "path": "runtime/python/_sqlite3.pyd",
+      "bytes": 131296,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "4c5fa9341a76ac525fd36e2cb23260934ad9b9f6825725ff139b26c8dc72436d"
+    },
+    {
+      "path": "runtime/python/_ssl.pyd",
+      "bytes": 181984,
+      "mtime_ns": 1785928100000000000,
+      "sha256": "8d2f51fa1dc929073a2ad8d1c7c0c911e8f695870dcf4dda2846f4b75a7f77fb"
+    },
+    {
+      "path": "runtime/python/_uuid.pyd",
+      "bytes": 27872,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "b93832742a2348d6659fd62e8a8aff061594693fc537da74c7d2d1cdf83a8475"
+    },
+    {
+      "path": "runtime/python/_wmi.pyd",
+      "bytes": 39648,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "db45362354fd4965329cb14bd974e60b26525045d09fb4fdfb1674a93b79d60c"
+    },
+    {
+      "path": "runtime/python/_zoneinfo.pyd",
+      "bytes": 50912,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "6650db91accc05e625d3c5d8a40e15127a040ea1135e40e875fd78d8a7665a84"
+    },
+    {
+      "path": "runtime/python/libcrypto-3.dll",
+      "bytes": 5238520,
+      "mtime_ns": 1785928100000000000,
+      "sha256": "09499e186cf0e434ffa17ad153aa9a66d6048c54a2c03b823e2a06c49d9affe4"
+    },
+    {
+      "path": "runtime/python/libffi-8.dll",
+      "bytes": 39696,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "eff52743773eb550fcc6ce3efc37c85724502233b6b002a35496d828bd7b280a"
+    },
+    {
+      "path": "runtime/python/libssl-3.dll",
+      "bytes": 794872,
+      "mtime_ns": 1785928100000000000,
+      "sha256": "28c395290279fa4f4f54a57b85cd66d853895f925fefb8f6fdebc0d8b1cdd07c"
+    },
+    {
+      "path": "runtime/python/LICENSE.txt",
+      "bytes": 33861,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "62bec384df47b0328307db41455ff6ea2559e5546b394ac69148561b21703120"
+    },
+    {
+      "path": "runtime/python/pyexpat.pyd",
+      "bytes": 221920,
+      "mtime_ns": 1785928100000000000,
+      "sha256": "b9c9c5a9f52af559a7eb4e8ddfd60558185bfc7794f32840bed1747d1ec9026a"
+    },
+    {
+      "path": "runtime/python/python.cat",
+      "bytes": 578418,
+      "mtime_ns": 1785928100000000000,
+      "sha256": "49eb507453b924ff70c19c8b8940b033ac5865f11cdd637447024725ed105bef"
+    },
+    {
+      "path": "runtime/python/python.exe",
+      "bytes": 105696,
+      "mtime_ns": 1785928100000000000,
+      "sha256": "85b71d8c6ec1905935f74be0c9869aae198d00e98f39df699ec66f9c5a84cecd"
+    },
+    {
+      "path": "runtime/python/python3.dll",
+      "bytes": 72416,
+      "mtime_ns": 1785928100000000000,
+      "sha256": "76e7fd69a01081726308317d6e502721c2ba6792b48880dc1ef649c755788db7"
+    },
+    {
+      "path": "runtime/python/python313._pth",
+      "bytes": 79,
+      "mtime_ns": 1787517191382239600,
+      "sha256": "6f230f01e18429c383477763de66951745acda9c70aa5885eba4c4f0fb0fbb62"
+    },
+    {
+      "path": "runtime/python/python313.dll",
+      "bytes": 6135008,
+      "mtime_ns": 1785928100000000000,
+      "sha256": "e820bf024efd2b56bb2b82791e6b6ddc7303f070f8e72cba7637482a8a906238"
+    },
+    {
+      "path": "runtime/python/python313.zip",
+      "bytes": 3825631,
+      "mtime_ns": 1785928140000000000,
+      "sha256": "1916abd946d2044ec8c04c3319f96c8415d5b6fce01e125622827f2b7756cbab"
+    },
+    {
+      "path": "runtime/python/pythonw.exe",
+      "bytes": 104160,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "146c01e5448a084ff15d63113a790b9aa75250baf862d984c51dd695ac4775bc"
+    },
+    {
+      "path": "runtime/python/select.pyd",
+      "bytes": 32992,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "024f955349fe46cf1bb2c22c6b57fcf38cf5755d46166fbf63e7e5b92433b111"
+    },
+    {
+      "path": "runtime/python/sqlite3.dll",
+      "bytes": 1584864,
+      "mtime_ns": 1785928100000000000,
+      "sha256": "c6812eaf0f8605df273b9bf7e359b83fd65038ecc66455c3f7a933768cb92f3f"
+    },
+    {
+      "path": "runtime/python/unicodedata.pyd",
+      "bytes": 712928,
+      "mtime_ns": 1785928100000000000,
+      "sha256": "111e0fdfeef9887c04f6ebf1972ce1ccbec55b226012e4a288c2d4a0b17b216b"
+    },
+    {
+      "path": "runtime/python/vcruntime140.dll",
+      "bytes": 178616,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "d1f4225df2cd877dbf130d5668a021dce3f94118455ff5ec952061c30afc9ce7"
+    },
+    {
+      "path": "runtime/python/vcruntime140_1.dll",
+      "bytes": 50112,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "a7146c08f89fe5b04541ab507cdb59ff7b44534d4ba3c668a426c6450a03434e"
+    },
+    {
+      "path": "runtime/python/winsound.pyd",
+      "bytes": 31968,
+      "mtime_ns": 1785928098000000000,
+      "sha256": "b078b7f5c53efd3c4201b63fa34a17c6747142e37298293f52c3a9ad643e69e2"
+    },
+    {
+      "path": "tests/test_aero_hybrid.py",
+      "bytes": 3647,
+      "mtime_ns": 1787776199758049200,
+      "sha256": "1235ba012b8e9b350a58871c728efce351e10911a538d0981412f4b08ac0e967"
+    },
+    {
+      "path": "tests/test_tri_mesh.py",
+      "bytes": 3677,
+      "mtime_ns": 1787776304931477200,
+      "sha256": "8b471b45db8c8615e62343dc12f4d3894180d1cbaa081d9bb88827fcd2f1816b"
+    },
+    {
+      "path": "tests/test_vspaero_runner.py",
+      "bytes": 4891,
+      "mtime_ns": 1787780366585031800,
+      "sha256": "001e4a13f4206274e384dec10d642927fa299e34e2c7cce679bf52d3df548989"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 746,
+      "mtime_ns": 1787642764591882400,
+      "sha256": "e577f0a2d9924abdd242ef4e6e95a118d96c7a5bc0713e4c18746eb5fcb319df"
+    },
+    {
+      "path": "VERSION.txt",
+      "bytes": 89,
+      "mtime_ns": 1787776334701889800,
+      "sha256": "803e0c037863e624ec71ca8e27df832e1f07601c8ba9ef03e281078b999bb44e"
+    }
+  ],
+  "source_bytes": 73332829,
+  "archive_bytes": 29067880,
+  "archive_sha256": "84511591c0c48d9a677474bdeae6b9e6d95b47becb0b00e8c16e6644dee7d03a",
+  "parts": [
+    {
+      "file": "workspace_RepairMach_9_Local.zip",
+      "bytes": 29067880,
+      "sha256": "84511591c0c48d9a677474bdeae6b9e6d95b47becb0b00e8c16e6644dee7d03a"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
