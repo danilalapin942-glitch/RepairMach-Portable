@@ -1,0 +1,1340 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "workspace_outputs",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\outputs",
+  "source_files": [
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/hybrid_cy_alpha.csv",
+      "bytes": 237,
+      "mtime_ns": 1788550923851130600,
+      "sha256": "1e52838a7f33ad0828b19332d1b34f53e266afeec0ee6462cd6011e296bd3e3b"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/hybrid_points.csv",
+      "bytes": 477,
+      "mtime_ns": 1788550923851130600,
+      "sha256": "1c95775ef592bb2be86c7d7591983d83cf68a5f38385e97973009e7a96427efd"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/hybrid_result.json",
+      "bytes": 6593,
+      "mtime_ns": 1788550923850129100,
+      "sha256": "c5114140e02a48a4cd108838646dc6fffa1146ec914be6ba856efc08eef2ae57"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/previews/Cy_.png",
+      "bytes": 33942,
+      "mtime_ns": 1788550925518588300,
+      "sha256": "93a6d84f2a8420109f5719b836d40749db4f85efdfddf6b9fc2f8871f248d49f"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/previews/АДХ.png",
+      "bytes": 55452,
+      "mtime_ns": 1788550925480696200,
+      "sha256": "9b499d5d549b2609df9bdc081d1f521c2d4f2bfe8f718001f34069ac8d187188"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/previews/Источники.png",
+      "bytes": 58406,
+      "mtime_ns": 1788550925605770000,
+      "sha256": "66020557de2e8e7656350367547e57ad1965b211d6cd1d7273550600026a047a"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/previews/Методика.png",
+      "bytes": 140557,
+      "mtime_ns": 1788550925707498300,
+      "sha256": "ea6ffa4b6cec007b2ef0f2bd09215d34e79cc6e53d0cae849914674771113915"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/previews/Полуэмпирика.png",
+      "bytes": 22783,
+      "mtime_ns": 1788550925551918300,
+      "sha256": "55af04d0a4b7136736e9190015ed3d6f8d6ceaf49591ff933b683cb1268a6b91"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/previews/Сводка.png",
+      "bytes": 99960,
+      "mtime_ns": 1788550925396230400,
+      "sha256": "d06cbe48344e5158b17bdcb2b42bf92491e3a3e3d51a870acb7a590d043b615b"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/RepairMach91_Cx0_Cy_Cya_final.xlsx",
+      "bytes": 65268,
+      "mtime_ns": 1788147577610148800,
+      "sha256": "c4bd32ab80b968ede83e0be5446a41528d33ddcd310dc3ddf7bff173fa707091"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/RepairMach91_Cx0_Cy_Cya_final.xlsx.inspect.ndjson",
+      "bytes": 1691915,
+      "mtime_ns": 1788147577613662400,
+      "sha256": "373b157e1ec1e7dc413f7874983a3b352df30f5dd9b270c7d71a521bed0ba590"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/RepairMach_hybrid_results.xlsx",
+      "bytes": 17784,
+      "mtime_ns": 1788550924746497100,
+      "sha256": "d7c078cf68ead6b27b47ab2d61713cdc86d0c4d27a9d6caf0ede60abe12b2502"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/RepairMach_hybrid_results.xlsx.inspect.ndjson",
+      "bytes": 133683,
+      "mtime_ns": 1788550924747496200,
+      "sha256": "57951ef0ac6609e36af07098bb536c6bd3e4764c48a61093f93cb4ad926ab67c"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/RepairMach_night_graphs.xlsx",
+      "bytes": 35561,
+      "mtime_ns": 1787811890390555400,
+      "sha256": "8d2d1023f0d79ce6d947f3d823839d7566c4c50c49b92c2a7b685c20b8af0fd8"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/RepairMach_night_graphs.xlsx.inspect.ndjson",
+      "bytes": 772654,
+      "mtime_ns": 1787811890391555800,
+      "sha256": "5c81d27519ee794b27961c5ceb4e2d6abb38371e7c8fee236ed87bc9699dfa6f"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/RepairMach_overnight_refinement.xlsx",
+      "bytes": 151580,
+      "mtime_ns": 1787942427512057700,
+      "sha256": "3110ce2febbf75af6df247505aa93a793428272808d776618b25d667892c2ff5"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/RepairMach_overnight_refinement.xlsx.inspect.ndjson",
+      "bytes": 4299334,
+      "mtime_ns": 1787942427518311000,
+      "sha256": "c0a23a385cfa641f1b00da640e7622fe40a5659cd268d6ad70a6a16eacf28bb6"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/workbook.log",
+      "bytes": 905,
+      "mtime_ns": 1788550925821565600,
+      "sha256": "fa4e7ae598f1847124611e905d1e1e3aacb414aa2af282a35e0c06c1f4728a69"
+    },
+    {
+      "path": "01a0354f-59ac-7e63-af78-2b654a52d736/workbook_verification.json",
+      "bytes": 2886,
+      "mtime_ns": 1788550925822765300,
+      "sha256": "3716083b58cc1cb31c2f2da9b7833fb2dc9fbfa5186c8a9b9d16606b65a1f5cc"
+    },
+    {
+      "path": "cy_cya_unified_2026-08-30/build_workbook.mjs",
+      "bytes": 50923,
+      "mtime_ns": 1788121483566073600,
+      "sha256": "d7471f9ff7736b22c85f5a87f89b38d141d8a50d73be1d50548908b1769fdfd6"
+    },
+    {
+      "path": "cy_cya_unified_2026-08-30/preview_Cx0 книга.png",
+      "bytes": 125091,
+      "mtime_ns": 1788115316382940900,
+      "sha256": "a203444fb4137cddc320d73627f735271a401b6f957be8e9626f906ce765324e"
+    },
+    {
+      "path": "cy_cya_unified_2026-08-30/preview_Cx0.png",
+      "bytes": 253862,
+      "mtime_ns": 1788115316244124400,
+      "sha256": "5a703756996ac785d3c24fc9e3c9a6404727c256740473602afcd2ee47482d17"
+    },
+    {
+      "path": "cy_cya_unified_2026-08-30/preview_Cy_alpha.png",
+      "bytes": 685019,
+      "mtime_ns": 1788115316057151500,
+      "sha256": "9d396083808e09db6110a558deb4b24412c6d29d2556c2a9c8307efa63fe1ba6"
+    },
+    {
+      "path": "cy_cya_unified_2026-08-30/preview_Cyalpha книга.png",
+      "bytes": 108981,
+      "mtime_ns": 1788115316310760200,
+      "sha256": "73fc9fdc8ee7d1f9f0f1eebc1f492357fe0bbf8cef6a8164704ab30b2c0e2672"
+    },
+    {
+      "path": "cy_cya_unified_2026-08-30/preview_Cyalpha.png",
+      "bytes": 301243,
+      "mtime_ns": 1788115315698122500,
+      "sha256": "4b7763987da78b71b3df1aa136b26159322ae3e2abda816969aa1d75c27f5476"
+    },
+    {
+      "path": "cy_cya_unified_2026-08-30/preview_Методика.png",
+      "bytes": 141976,
+      "mtime_ns": 1788115316487474700,
+      "sha256": "b01a87af542a3231fc387201d037489c24cc8f1e8fda094d589acc72d6f5496c"
+    },
+    {
+      "path": "cy_cya_unified_2026-08-30/preview_Сводка.png",
+      "bytes": 208001,
+      "mtime_ns": 1788115315410995300,
+      "sha256": "ba11ceb49f187717f3435b5b02396b0f8481b7c039105f0aac8d8d99f89f11e0"
+    },
+    {
+      "path": "cy_cya_unified_2026-08-30/RepairMach91_Cx0_Cy_Cya_unified.xlsx",
+      "bytes": 39979,
+      "mtime_ns": 1788113163820855700,
+      "sha256": "e59824f538b0992c764878af41b456e2902292f7bfc1db5c63a275e18078fe2a"
+    },
+    {
+      "path": "cy_cya_unified_2026-08-30/RepairMach91_Cx0_Cy_Cya_unified.xlsx.inspect.ndjson",
+      "bytes": 783046,
+      "mtime_ns": 1788113163821859100,
+      "sha256": "37a7322d7294d7b9c98a1d0aee500aca07c8618d5cc434a8313105acf3e0a9e7"
+    },
+    {
+      "path": "cy_cya_unified_2026-08-30/RepairMach91_Cx0_Cy_Cya_unified_digitized.xlsx",
+      "bytes": 42941,
+      "mtime_ns": 1788115317022177100,
+      "sha256": "1ae6c6ea58e2037604cd55d56d20ec572e34a6931103991330c43d76c7cae9c5"
+    },
+    {
+      "path": "cy_cya_unified_2026-08-30/RepairMach91_Cx0_Cy_Cya_unified_digitized.xlsx.inspect.ndjson",
+      "bytes": 867924,
+      "mtime_ns": 1788115317024178300,
+      "sha256": "55684eddf17b10ff8438cc1e34e89bd3b5cf82343c04f86516726e34f46386d0"
+    },
+    {
+      "path": "cy_cya_unified_2026-08-30/workbook_verification.json",
+      "bytes": 20482,
+      "mtime_ns": 1788115317027177600,
+      "sha256": "3d04a06983b0e9e129ea1a8df5c9bd41a4decd7462ccea297a8d95ab3c0d7180"
+    },
+    {
+      "path": "cya_hybrid_2026-08-30/preview_Cx0.png",
+      "bytes": 253862,
+      "mtime_ns": 1788121495448333800,
+      "sha256": "5a703756996ac785d3c24fc9e3c9a6404727c256740473602afcd2ee47482d17"
+    },
+    {
+      "path": "cya_hybrid_2026-08-30/preview_Cx0_книга.png",
+      "bytes": 125091,
+      "mtime_ns": 1788121495593841100,
+      "sha256": "a203444fb4137cddc320d73627f735271a401b6f957be8e9626f906ce765324e"
+    },
+    {
+      "path": "cya_hybrid_2026-08-30/preview_Cy_alpha.png",
+      "bytes": 685019,
+      "mtime_ns": 1788121495260199600,
+      "sha256": "9d396083808e09db6110a558deb4b24412c6d29d2556c2a9c8307efa63fe1ba6"
+    },
+    {
+      "path": "cya_hybrid_2026-08-30/preview_Cyalpha.png",
+      "bytes": 301243,
+      "mtime_ns": 1788121494919234200,
+      "sha256": "4b7763987da78b71b3df1aa136b26159322ae3e2abda816969aa1d75c27f5476"
+    },
+    {
+      "path": "cya_hybrid_2026-08-30/preview_Cyalpha_гибрид.png",
+      "bytes": 299024,
+      "mtime_ns": 1788121494684846900,
+      "sha256": "a6ed4c6c923780fe753c7852b7ad0496f48337bef8d8d220d301d453c4f7ffb8"
+    },
+    {
+      "path": "cya_hybrid_2026-08-30/preview_Cyalpha_книга.png",
+      "bytes": 108981,
+      "mtime_ns": 1788121495518655000,
+      "sha256": "73fc9fdc8ee7d1f9f0f1eebc1f492357fe0bbf8cef6a8164704ab30b2c0e2672"
+    },
+    {
+      "path": "cya_hybrid_2026-08-30/preview_Методика.png",
+      "bytes": 164146,
+      "mtime_ns": 1788121495706465300,
+      "sha256": "da6e784c806a7103e439d641c38ef98c3d9090b717a8bbb02b22b2e95bbd4e75"
+    },
+    {
+      "path": "cya_hybrid_2026-08-30/preview_Сводка.png",
+      "bytes": 216670,
+      "mtime_ns": 1788121494396393300,
+      "sha256": "fcdede839a7c61886b77f2f34eddcdca30a57f4916c2d8e46afc657cb32583cb"
+    },
+    {
+      "path": "cya_hybrid_2026-08-30/RepairMach91_Cx0_Cy_Cya_hybrid.xlsx",
+      "bytes": 52435,
+      "mtime_ns": 1788121496292626900,
+      "sha256": "fed0f3c95473b7ebfb2589cf0495a4986260f62f7419311e27725dde638c43b0"
+    },
+    {
+      "path": "cya_hybrid_2026-08-30/RepairMach91_Cx0_Cy_Cya_hybrid.xlsx.inspect.ndjson",
+      "bytes": 1100846,
+      "mtime_ns": 1788121496294623300,
+      "sha256": "cd60442082c1b288c577df4eea9e449dcbdc7cb788974d33b5c5990906c15d94"
+    },
+    {
+      "path": "cya_hybrid_2026-08-30/workbook.log",
+      "bytes": 301,
+      "mtime_ns": 1788121496299622200,
+      "sha256": "8f7745c16a354550fcbc8dd0b1279be9a36ad8fec3b809c0ed03eea96c5f8fac"
+    },
+    {
+      "path": "cya_hybrid_2026-08-30/workbook_verification.json",
+      "bytes": 35431,
+      "mtime_ns": 1788121496298621100,
+      "sha256": "cade386e81363c1f95fdf166b9c7a04f713fd12e8797f08fc00618c66f37983a"
+    },
+    {
+      "path": "mig25rb_book_comparison_2026-09-02/cx0_available_vs_book.csv",
+      "bytes": 1458,
+      "mtime_ns": 1788381519688453000,
+      "sha256": "0d1786468d9d8303574f50a84767c88aa1f94fd5668faff92f1892dce36e9550"
+    },
+    {
+      "path": "mig25rb_book_comparison_2026-09-02/cya_rm921_vs_book.csv",
+      "bytes": 443,
+      "mtime_ns": 1788381519687460400,
+      "sha256": "d883aa24dfaf085b2ca8d71ddd05693bb1008d176754eda3139705aa85825863"
+    },
+    {
+      "path": "mig25rb_book_comparison_2026-09-02/mig25rb_calculation_vs_book_combined.png",
+      "bytes": 362525,
+      "mtime_ns": 1788381519932667300,
+      "sha256": "288b1f1efcd8f89b8c152f82edff1aab92fb4c90a2cb97b92316ba617f493c59"
+    },
+    {
+      "path": "mig25rb_book_comparison_2026-09-02/mig25rb_cx0_vs_book.png",
+      "bytes": 86850,
+      "mtime_ns": 1788381519802008600,
+      "sha256": "3da87c03af503e651423ef0e1234aeec5eb8fa26b27bef2c53703042f6ab280c"
+    },
+    {
+      "path": "mig25rb_book_comparison_2026-09-02/mig25rb_cya_vs_book.png",
+      "bytes": 104860,
+      "mtime_ns": 1788381519754032600,
+      "sha256": "b6bfbc05d299a623d6c872dbd6694fdd1df596d27e01a4415d3517207b3b99d0"
+    },
+    {
+      "path": "mig25rb_book_comparison_2026-09-02/plot_comparison.py",
+      "bytes": 16123,
+      "mtime_ns": 1788381501448536700,
+      "sha256": "0a46ca66fdd2c0541014444a990cf06715f13d4f17b117b90376f10f79312d55"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/audit_report.py",
+      "bytes": 2390,
+      "mtime_ns": 1789506879790584900,
+      "sha256": "5587c519a8e51f86ba8e5f39a6abfe2940c646a1a60e876f8c38f5120741c0e2"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/build_report.py",
+      "bytes": 38005,
+      "mtime_ns": 1789507056603902300,
+      "sha256": "8111e327c5fc79957f4306642c4b176ff82c4a537cf00596c04aa83519374b82"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/figures/mig29_cya.pdf",
+      "bytes": 58636,
+      "mtime_ns": 1789507057831204100,
+      "sha256": "aa6eca489cf6aabc9b36617831b636a3532c96d2366506591f93a0ad9d2ce003"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/figures/mig29_cya.png",
+      "bytes": 70531,
+      "mtime_ns": 1789507057987846800,
+      "sha256": "ed5b53a68409309a5c172cce7b5984342374c774644ebfaff6d79142a4cbcbf4"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/figures/mig29_cya.svg",
+      "bytes": 11822,
+      "mtime_ns": 1789507057821204600,
+      "sha256": "cab90972a9fdfd85bb193417346bb6993f92cf06ce3cf1ea4ff94d7538b106b9"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/figures/naca_convergence.pdf",
+      "bytes": 55079,
+      "mtime_ns": 1789507057843226200,
+      "sha256": "8ee9075de7781304c2d438795a6641c6833a712c08543fd8dc6da765cc9037b8"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/figures/naca_convergence.png",
+      "bytes": 62809,
+      "mtime_ns": 1789507058099592100,
+      "sha256": "b7f3972543703a3a3ca947e884b99c83616520754d09e59310dbff110d17d9e8"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/figures/naca_convergence.svg",
+      "bytes": 7924,
+      "mtime_ns": 1789507057835713300,
+      "sha256": "5425db7ac026f78331eb5649079b42004efecb033125f9a9ef0d9b32b76a4b03"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-01.png",
+      "bytes": 47899,
+      "mtime_ns": 1789507288855680400,
+      "sha256": "21c4945d9bf7bc4c4b0fc354de42b1f674da2608ec21e28ea54154b58966640a"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-02.png",
+      "bytes": 212817,
+      "mtime_ns": 1789507288986937200,
+      "sha256": "bce4188d687aaa8f187795293cfc09b29ac827a57d54a90b06fe04fe96ea224a"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-03.png",
+      "bytes": 149518,
+      "mtime_ns": 1789507289094330500,
+      "sha256": "f4cb9a7aa096f931de56f1a61991d1f2846ea8fbe0fd7425da3792871d1b1f56"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-04.png",
+      "bytes": 159837,
+      "mtime_ns": 1789507289205476600,
+      "sha256": "e277fa86a489a96a8ffa0423a057e7a168a6584725e050d14583be9890571107"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-05.png",
+      "bytes": 168664,
+      "mtime_ns": 1789507289321810600,
+      "sha256": "bd8fdbb34a0b3d8d7af48272aecc43aa6db5c562e284e67bbcd195f5841ade50"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-06.png",
+      "bytes": 162033,
+      "mtime_ns": 1789507289435160600,
+      "sha256": "934e4217a0c397abd12245ad10fcb0956dd9adf9303d60ef5ee30247b8b66f5a"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-07.png",
+      "bytes": 153414,
+      "mtime_ns": 1789507289544820100,
+      "sha256": "a2f91f36a16c8be067003f91d14db1ad332510eece5159cc489fcf3122d02f36"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-08.png",
+      "bytes": 137607,
+      "mtime_ns": 1789507289642555700,
+      "sha256": "a81ddc17f5a2c0163da8bcacf6d6dfbcfa459208ac30503bf979e9f535991cec"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-09.png",
+      "bytes": 139454,
+      "mtime_ns": 1789507289742430100,
+      "sha256": "dc54646705fec3d25f194169091c7dc75b13687d88c262634b40f4eb67f6953a"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-10.png",
+      "bytes": 35890,
+      "mtime_ns": 1789507289778184600,
+      "sha256": "816a8a44159b33353b35873752609225d3a326428807783fd28498a6be1a10b2"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-11.png",
+      "bytes": 199852,
+      "mtime_ns": 1789507289897933900,
+      "sha256": "fadd7edffbfd502c89f5256420cefea8dee60d334853ae826bfae2b120db80eb"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-12.png",
+      "bytes": 208972,
+      "mtime_ns": 1789507290025447600,
+      "sha256": "0f364c3f3e84811544ed1f2ad7bff7e3ff83ad93c765fe79b25331c2963c0546"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-13.png",
+      "bytes": 222424,
+      "mtime_ns": 1789507290159307100,
+      "sha256": "d59a7d2149c7c2950d1af2fdf9064df183adb5aaf62bb4e19e101b41b2db9c12"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-14.png",
+      "bytes": 72376,
+      "mtime_ns": 1789507290212863900,
+      "sha256": "52e68ec4e12f261ae7f5bd8145c697dd8f0e9241b23878a61bea2f6c15430457"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-15.png",
+      "bytes": 177263,
+      "mtime_ns": 1789507290326743600,
+      "sha256": "ae8b54cc8158d3276e8c5069ed1b734fc2c8fecdd90df355cb07f5ba7789faa5"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-16.png",
+      "bytes": 219583,
+      "mtime_ns": 1789507290455541800,
+      "sha256": "5bbc8ff572db9e00990369fb0d96e2c5655b9eb986b181a5cf1d8c0479cf0ab6"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-17.png",
+      "bytes": 201384,
+      "mtime_ns": 1789507290580406200,
+      "sha256": "82366911d668b3929d19699b5082a0f4c41c1183deee2a3e85f9ec1f1060e2f8"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-18.png",
+      "bytes": 172412,
+      "mtime_ns": 1789507290685918300,
+      "sha256": "d22b880afdaa5af6ecd0b959060428429dc2fd0010ff43179ff901b698c2cd24"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-19.png",
+      "bytes": 211396,
+      "mtime_ns": 1789507290812272500,
+      "sha256": "1825165b03d97da54c8d549c6e911d30b91dd62fd2020738bcc8295f40517856"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-20.png",
+      "bytes": 210825,
+      "mtime_ns": 1789507290941636700,
+      "sha256": "96958a5d9ced0167fbde35f2b3cc33fd5099b7dcc97b3519124bb168e6fff168"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-21.png",
+      "bytes": 208032,
+      "mtime_ns": 1789507291066488800,
+      "sha256": "b494dda7a8612bccc4fa062e7efacb7ffc175b42014adbb00d7716556a8f6959"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-22.png",
+      "bytes": 119515,
+      "mtime_ns": 1789507291145299500,
+      "sha256": "b0f5830a3bb798460058a533f22e7e4014e4e7c9b45e8f78ef31d78247ee9e03"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-23.png",
+      "bytes": 208946,
+      "mtime_ns": 1789507291269711300,
+      "sha256": "83f65a7c9f8ffd5e1e7458f9d9501cfdcfd6499190d229fa388d177328d4fa45"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-24.png",
+      "bytes": 207631,
+      "mtime_ns": 1789507291394156000,
+      "sha256": "149cf257676b344de59da39efd3184cdedc178a4c40bc4a534f1dbd7dd66a6cd"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-25.png",
+      "bytes": 215208,
+      "mtime_ns": 1789507291527512800,
+      "sha256": "e14a6783a60a021d02d452c4e0eed2c0b2a7ebf5ca977d06353a8b4ee5c80514"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-26.png",
+      "bytes": 113347,
+      "mtime_ns": 1789507291603228700,
+      "sha256": "073f860be1844576ebe0808524b9003bb317f4057b6995cdb47a7f88552ae370"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-27.png",
+      "bytes": 211190,
+      "mtime_ns": 1789507291732952900,
+      "sha256": "13a0eb8ffb2d6a8102011139b98108af21bdcf70bc0a324bdbfaf54d6aaab987"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-28.png",
+      "bytes": 216680,
+      "mtime_ns": 1789507291870234500,
+      "sha256": "8437297ad9cc5cee6b2157c90548a6ea62ed79babc8d5087e2b541c6c55b6c3d"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-29.png",
+      "bytes": 227229,
+      "mtime_ns": 1789507292010486700,
+      "sha256": "ff6deb27c489a9a5391c88fcce04a9da92a8839374d755f010eacbce8155bf45"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-30.png",
+      "bytes": 128016,
+      "mtime_ns": 1789507292092807200,
+      "sha256": "43e57961015dc16c7207127f39b5b18a2d00e3ca3065dfba6e732c413963f925"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-31.png",
+      "bytes": 206523,
+      "mtime_ns": 1789507292217848300,
+      "sha256": "49f2af14004a245ab7acf804e4ac1c8d82a87e7134de1951c2d6844452c510fd"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-32.png",
+      "bytes": 209167,
+      "mtime_ns": 1789507292343981900,
+      "sha256": "f913b04a51bf32438296d4a280701666959e3930abfef030a40e9a53a59cd4c4"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-33.png",
+      "bytes": 221044,
+      "mtime_ns": 1789507292478457700,
+      "sha256": "8fb8bc335742f665646adbc576ac9e0ef395898f2ca7980a9d7c4d3ffd733f40"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-34.png",
+      "bytes": 210888,
+      "mtime_ns": 1789507292608166000,
+      "sha256": "df4d32626be9528a3e35364b1f47daea22d484bc78ca5ac4f202f5a8b128fd1b"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-35.png",
+      "bytes": 214098,
+      "mtime_ns": 1789507292733839400,
+      "sha256": "94b243a16b2e3ffa5502b4837f7f9b9a2130d474e166bf9591abbc2007402d55"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-36.png",
+      "bytes": 186167,
+      "mtime_ns": 1789507292849717900,
+      "sha256": "7fbab77f3e703b3123097ddfb112fcd840d65262ddc5b4822ef94bf358cdc171"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-37.png",
+      "bytes": 195525,
+      "mtime_ns": 1789507292972271900,
+      "sha256": "b855363766f3d41e3fa1102337defd79fcd5f89d74c8e0ad7a8db1d3d9ce7e94"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-38.png",
+      "bytes": 201657,
+      "mtime_ns": 1789507293093498800,
+      "sha256": "f72625b676433c9f46a52b7acabf2bc17d127e716be72a835c19c2a7975ae802"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-39.png",
+      "bytes": 150083,
+      "mtime_ns": 1789507293186669900,
+      "sha256": "44deda0d5a03d3f4d5509846a49dfc416fe55cf81705973a5959d234e5dc1dd8"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-40.png",
+      "bytes": 210928,
+      "mtime_ns": 1789507293316403500,
+      "sha256": "f1f4d9221912f795cdae44f69bcb7383cb70361e5f32b827387325ca616321bd"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-41.png",
+      "bytes": 213461,
+      "mtime_ns": 1789507293443944500,
+      "sha256": "1530ae1d17a11dc371e6a2849393ae409aa6f443077a651938f2aa9999b7bac4"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-42.png",
+      "bytes": 207640,
+      "mtime_ns": 1789507293568934900,
+      "sha256": "130ebcf1babb06753e834688adb1fc1a31fd562fe8f1200bb90b24a82122cf05"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-43.png",
+      "bytes": 124792,
+      "mtime_ns": 1789507293649125800,
+      "sha256": "09f683e690750ed5925e7cb4bc1be68cc3429ab4c3a3843047ebc3f878c85dfd"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-44.png",
+      "bytes": 198037,
+      "mtime_ns": 1789507293764479000,
+      "sha256": "d54bf9813dadd19f5b470da8d1222f7f3f29b69dfceeb4b23d8fd25b7cb9d62f"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-45.png",
+      "bytes": 189277,
+      "mtime_ns": 1789507293880455300,
+      "sha256": "3297032cb0f233c324e7b8bba8179941fdfc17abcb6e2d69c726e2029279530f"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-46.png",
+      "bytes": 197778,
+      "mtime_ns": 1789507293994566600,
+      "sha256": "0d65aa7683a5102737f209f11b093a66eb1f004501a1097320482e18bbc5670c"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-47.png",
+      "bytes": 133531,
+      "mtime_ns": 1789507294079896300,
+      "sha256": "d5652ad8791464c643aad2dd8f3f96f06cdf4b000fb14a14d4776891952034ad"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-48.png",
+      "bytes": 218257,
+      "mtime_ns": 1789507294211311500,
+      "sha256": "3067e98794771ca485e4abdbc10257a2e6dc89820fcbe3c62583f2620ac261cf"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-49.png",
+      "bytes": 111926,
+      "mtime_ns": 1789507294307875300,
+      "sha256": "5ed2e6d835396819ba8457dbe0846de9cebddbfa0e0562072d921ab7be251a40"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-50.png",
+      "bytes": 211291,
+      "mtime_ns": 1789507294442350200,
+      "sha256": "901649f3bcd64f2526750ee350fa7f013afc642b5d80c31cbe3e09699a52ffce"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-51.png",
+      "bytes": 171946,
+      "mtime_ns": 1789507294562992400,
+      "sha256": "9602e6913cf5e1f285a627982cf877f2da1c5e20595dc26a165bab0e913847f6"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-52.png",
+      "bytes": 177691,
+      "mtime_ns": 1789507294682905800,
+      "sha256": "243d327281ab29af899a3993c683bdd612df6372ed5b3864f30e5c3929c2d4b9"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-53.png",
+      "bytes": 191423,
+      "mtime_ns": 1789507294803832700,
+      "sha256": "5f674b5989518cbf13fb58f29ed384ed0cc47c26aa29c4e8acf1d0a9a3b69098"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-54.png",
+      "bytes": 161834,
+      "mtime_ns": 1789507294902919900,
+      "sha256": "c2d862498ba48f997b68d6e374685fc7dd1d5d725b5f86a8f7eaff4aac7a9d33"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-55.png",
+      "bytes": 206318,
+      "mtime_ns": 1789507295026840400,
+      "sha256": "0c69cc1bbb7efdd4653cdfc8ab6403f34fd165da33af6a51d91a6d3d6cf80311"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-56.png",
+      "bytes": 198664,
+      "mtime_ns": 1789507295145174600,
+      "sha256": "ddcfa4b4e1908e5684819d618a8cd5432aa6648bb8b67358ea0ae14eac82a30e"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-57.png",
+      "bytes": 211578,
+      "mtime_ns": 1789507295271331000,
+      "sha256": "e3e40a65aeb8086266c0df7517ce9c727bcae8d60369afaa1878afea8be8627b"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-58.png",
+      "bytes": 146927,
+      "mtime_ns": 1789507295363737700,
+      "sha256": "87a317de6c10bd885aa7dd3a9dd6d93d90e768501faf39e9ef1e04b0db6d48c4"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-59.png",
+      "bytes": 205068,
+      "mtime_ns": 1789507295484077100,
+      "sha256": "12d14bfe6f52e7866b90faad78e9a7303d61e72ef70e5876dcb4edf02e2dddeb"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-60.png",
+      "bytes": 201554,
+      "mtime_ns": 1789507295616464100,
+      "sha256": "7134906e73427c5fd5b6433757afb1639f671893ed62b90b243b35e6e60d6ab3"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-61.png",
+      "bytes": 192415,
+      "mtime_ns": 1789507295739514100,
+      "sha256": "508602460a759523db4cee7dff82fd61fda464160d53b3eff11990e164bc71d1"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-62.png",
+      "bytes": 195248,
+      "mtime_ns": 1789507295865594100,
+      "sha256": "803f4d7018186cfb6e10952ad684fe8d9ad2a0f8248c3a2c75eb4392d16cd180"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-63.png",
+      "bytes": 189746,
+      "mtime_ns": 1789507295994923500,
+      "sha256": "4b896ea8055836decfa5d310c5e368be768b7e5a1bf8685cd72673124ed3e818"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-64.png",
+      "bytes": 183938,
+      "mtime_ns": 1789507296117456300,
+      "sha256": "65586618b2c2dbbd337c7808cbbe29b44cdda8d48d7936af5cef604c6de2ece4"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-65.png",
+      "bytes": 160956,
+      "mtime_ns": 1789507296225233500,
+      "sha256": "e911cd0a7306bf0b44b3d4a4a73b22db169e354a578cd990f0f7265b13dad9d5"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-66.png",
+      "bytes": 114878,
+      "mtime_ns": 1789507296310150900,
+      "sha256": "ec0777ace1540762273dc31634af03fa1da5c8c2c13deafae0f2dd1e2c3cb7f5"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-67.png",
+      "bytes": 117973,
+      "mtime_ns": 1789507296387023100,
+      "sha256": "fa572be4f93ee779b313ec0e4b4228651ce382ca9653bc6dd1dd942efef3ef16"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-68.png",
+      "bytes": 133845,
+      "mtime_ns": 1789507296485433600,
+      "sha256": "030410d8eed1354f268f9086e864869eea5304abf76d521a21e8272d098d6bfe"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-69.png",
+      "bytes": 108193,
+      "mtime_ns": 1789507296561082400,
+      "sha256": "a7f3da23d3ff4cde72ab203bc2153cfc1248e65a7b3ced6a6d698fc3187fe673"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-70.png",
+      "bytes": 61203,
+      "mtime_ns": 1789507296608166400,
+      "sha256": "9b23f70ad52be695c536736a533428fd94392a1c47500b5fe97a377a2c7380f9"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-71.png",
+      "bytes": 107454,
+      "mtime_ns": 1789507296677892800,
+      "sha256": "5518528b5dc7e226fe9a38b15a7d7e2c42fe713f84fe95dc175170434786f8f1"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/final/page-72.png",
+      "bytes": 148859,
+      "mtime_ns": 1789507296783383900,
+      "sha256": "45787a168a5ff727645939aab9f01b745600bedc208b51993799fd229a2e5645"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-01.png",
+      "bytes": 47899,
+      "mtime_ns": 1789507108430688600,
+      "sha256": "21c4945d9bf7bc4c4b0fc354de42b1f674da2608ec21e28ea54154b58966640a"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-02.png",
+      "bytes": 212817,
+      "mtime_ns": 1789507108562241900,
+      "sha256": "bce4188d687aaa8f187795293cfc09b29ac827a57d54a90b06fe04fe96ea224a"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-03.png",
+      "bytes": 149357,
+      "mtime_ns": 1789507108670342800,
+      "sha256": "c39fd9f21ce381d37da9483518ed5996ca584bff02d1a6a7709d71d486c46312"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-04.png",
+      "bytes": 160153,
+      "mtime_ns": 1789507108781118100,
+      "sha256": "06478ec75513b0b66164bb115ea343b1777aeddb81b765059ac78eae32053850"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-05.png",
+      "bytes": 168880,
+      "mtime_ns": 1789507108900950800,
+      "sha256": "b54fb7c1d09238442dff40fbee36a149043441e9f28846b47675e9844165bc88"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-06.png",
+      "bytes": 161776,
+      "mtime_ns": 1789507109016322200,
+      "sha256": "44378dbc15b26eece59d99afb49513c509a5563f1a7eb1f1a9484dac9e7a2a36"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-07.png",
+      "bytes": 154139,
+      "mtime_ns": 1789507109128169100,
+      "sha256": "a1ef252845af0f449d208f19d3c7c58724e7dfe9238da79ec547b66824dfa0b1"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-08.png",
+      "bytes": 137698,
+      "mtime_ns": 1789507109228254500,
+      "sha256": "f59a59c9d0c2996cfbfebaf16ea3e45d8c64c25520076db8363644c12ee74220"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-09.png",
+      "bytes": 139454,
+      "mtime_ns": 1789507109327829500,
+      "sha256": "dc54646705fec3d25f194169091c7dc75b13687d88c262634b40f4eb67f6953a"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-10.png",
+      "bytes": 35890,
+      "mtime_ns": 1789507109364373000,
+      "sha256": "816a8a44159b33353b35873752609225d3a326428807783fd28498a6be1a10b2"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-11.png",
+      "bytes": 199852,
+      "mtime_ns": 1789507109485625400,
+      "sha256": "fadd7edffbfd502c89f5256420cefea8dee60d334853ae826bfae2b120db80eb"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-12.png",
+      "bytes": 208972,
+      "mtime_ns": 1789507109614708200,
+      "sha256": "0f364c3f3e84811544ed1f2ad7bff7e3ff83ad93c765fe79b25331c2963c0546"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-13.png",
+      "bytes": 222424,
+      "mtime_ns": 1789507109765140000,
+      "sha256": "d59a7d2149c7c2950d1af2fdf9064df183adb5aaf62bb4e19e101b41b2db9c12"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-14.png",
+      "bytes": 72376,
+      "mtime_ns": 1789507109822291300,
+      "sha256": "52e68ec4e12f261ae7f5bd8145c697dd8f0e9241b23878a61bea2f6c15430457"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-15.png",
+      "bytes": 177263,
+      "mtime_ns": 1789507109938832800,
+      "sha256": "ae8b54cc8158d3276e8c5069ed1b734fc2c8fecdd90df355cb07f5ba7789faa5"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-16.png",
+      "bytes": 219583,
+      "mtime_ns": 1789507110068653900,
+      "sha256": "5bbc8ff572db9e00990369fb0d96e2c5655b9eb986b181a5cf1d8c0479cf0ab6"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-17.png",
+      "bytes": 201384,
+      "mtime_ns": 1789507110193904800,
+      "sha256": "82366911d668b3929d19699b5082a0f4c41c1183deee2a3e85f9ec1f1060e2f8"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-18.png",
+      "bytes": 172412,
+      "mtime_ns": 1789507110299188700,
+      "sha256": "d22b880afdaa5af6ecd0b959060428429dc2fd0010ff43179ff901b698c2cd24"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-19.png",
+      "bytes": 213437,
+      "mtime_ns": 1789507110427442400,
+      "sha256": "d8914bbc4cb83d20f5d314c90d83551779227601be9e0cc8e09bff946877a4e8"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-20.png",
+      "bytes": 19360,
+      "mtime_ns": 1789507110452144400,
+      "sha256": "2fd19a918715ccdcd1d0a0c3db3a8556c67e20de7dca92523602f2eb5ed4407d"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-21.png",
+      "bytes": 210628,
+      "mtime_ns": 1789507110582795500,
+      "sha256": "cbe74172365068b90c004f586523e6835911a0d7eeea41275ed87d0f8bd37639"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-22.png",
+      "bytes": 208175,
+      "mtime_ns": 1789507110710064800,
+      "sha256": "bcc1e58590408aac1294cb35b9cba7abe281012e7818947de6b41b6c73ebbe2a"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-23.png",
+      "bytes": 119281,
+      "mtime_ns": 1789507110789082500,
+      "sha256": "256883c23e244262dcb04d32c09a079d8325c939b81851b09b9540d36185ad32"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-24.png",
+      "bytes": 208683,
+      "mtime_ns": 1789507110915787800,
+      "sha256": "6dc01efc3e62df76f723613c24e45894b2987b781ec718a3c1df7ee8374e650d"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-25.png",
+      "bytes": 207712,
+      "mtime_ns": 1789507111042895300,
+      "sha256": "a36f680203af21477d22014c3f7795bb31c377f1dd5971f75ccaa9887f72d9d3"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-26.png",
+      "bytes": 215255,
+      "mtime_ns": 1789507111173525100,
+      "sha256": "7f8e825b324a5f590ae460cee595b96a1cfb230528a1408c997d2a2f2ab1ab91"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-27.png",
+      "bytes": 113052,
+      "mtime_ns": 1789507111250071400,
+      "sha256": "cb1a3f8546725cc4d9bb899f28cee8ccfbdd05c9d3ab873ff4d8046079ae43d0"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-28.png",
+      "bytes": 211333,
+      "mtime_ns": 1789507111379344300,
+      "sha256": "087cfdd0e59440fe3f40c3141a7b5ba84b5d8c69cf3386513fe8d9b5d5e69c26"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-29.png",
+      "bytes": 216645,
+      "mtime_ns": 1789507111564649000,
+      "sha256": "aedd1b82a3c5542ad286f67b7b378aaa3e4f6125446e336ae0f3eaf1526f9582"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-30.png",
+      "bytes": 227228,
+      "mtime_ns": 1789507111767818100,
+      "sha256": "70e03309c94045b128307c8395fdb9adb4cda6a72c7cf2bce870886f9469d9b2"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-31.png",
+      "bytes": 127228,
+      "mtime_ns": 1789507111890261500,
+      "sha256": "c42681b3cdc9ac97ed35c54f1e230ebe03b047477982d662a164d3bd3159eb16"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-32.png",
+      "bytes": 206689,
+      "mtime_ns": 1789507112072818100,
+      "sha256": "ab62ebe6de4a1f03ff868c0cdcba03614b27388031c2c56ef7ff44d89d3341b6"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-33.png",
+      "bytes": 209183,
+      "mtime_ns": 1789507112255984900,
+      "sha256": "e052d81c7bfe8affe93b3591e365970dc89f0c63c77d44739a4197ee7cd33d90"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-34.png",
+      "bytes": 217948,
+      "mtime_ns": 1789507112452403500,
+      "sha256": "4f1207cdfcd14c70f501335821f2b84a84b5aa1c2a76d36e08ec970b55008a6f"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-35.png",
+      "bytes": 33670,
+      "mtime_ns": 1789507112504472300,
+      "sha256": "47c17609c1c95ff5ffb70781509fc2681aa2b49f1e0a990042974e632bb9b16e"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-36.png",
+      "bytes": 211168,
+      "mtime_ns": 1789507112689790300,
+      "sha256": "3a1d5a5213e6e94969d1fbc09a00e90b37e6b4b867b9f859dde9eb057de3bcf6"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-37.png",
+      "bytes": 214432,
+      "mtime_ns": 1789507112874084400,
+      "sha256": "0fc6083d32e3b48d3d38a2e8b3f885bf0289b3123d8686a9e4ad3eee89d00600"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-38.png",
+      "bytes": 186180,
+      "mtime_ns": 1789507113043750900,
+      "sha256": "38e6ac60e9806fb9d04b0b66a6668baf81d105ed475091aac3d1601849c89eed"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-39.png",
+      "bytes": 195806,
+      "mtime_ns": 1789507113220702500,
+      "sha256": "5359239ae18a188e847e0ea47441c01b083011308b4ccca1bfa1271b148c23ca"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-40.png",
+      "bytes": 201537,
+      "mtime_ns": 1789507113400584100,
+      "sha256": "f37a53faeea96bc75dcd350838ff9e484768c3873b9ac47c2dd091a7c24a34ca"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-41.png",
+      "bytes": 149760,
+      "mtime_ns": 1789507113540553100,
+      "sha256": "263e3a17f21e9573d8ffb3f360a4922e3a69170b3772428a181b4265aa98adb8"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-42.png",
+      "bytes": 210903,
+      "mtime_ns": 1789507113731445200,
+      "sha256": "a3b21e63ffc3ae8a95259c2a9db1caf8b0994b6c73cbc0f3f5f0f99521411210"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-43.png",
+      "bytes": 213877,
+      "mtime_ns": 1789507113917222100,
+      "sha256": "0444495e4904a0b9ecec1c5b0893034a3739fd374234b1c12a53771d980aaaf1"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-44.png",
+      "bytes": 207453,
+      "mtime_ns": 1789507114097744000,
+      "sha256": "1c72265e63f78ca8c95a6dac0229f64eeff8e1ca2f687ee7c20404f77e07e4f2"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-45.png",
+      "bytes": 124781,
+      "mtime_ns": 1789507114218912700,
+      "sha256": "9c3cddfafd810d27f111d36357d1e65874a727552eda4113d658fb96aa3ed2b1"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-46.png",
+      "bytes": 198176,
+      "mtime_ns": 1789507114390090000,
+      "sha256": "4f147c60f6213b85f54c545780b2d60f4fd6d872fcf573071dd8ce179f65ed79"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-47.png",
+      "bytes": 188866,
+      "mtime_ns": 1789507114561785200,
+      "sha256": "05a70707343618ca62a508e64578b23543ef3e85829ba996c3535181eeaef3df"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-48.png",
+      "bytes": 197821,
+      "mtime_ns": 1789507114739113400,
+      "sha256": "f1dcd1151b37cfcda77998602d96e1243e17f7a39b83f60f438f4c489ba193cb"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-49.png",
+      "bytes": 133640,
+      "mtime_ns": 1789507114867940900,
+      "sha256": "645e9281aa80111b3a676bd2b2bbdf7cf45d499ea8622e4a03879f314b735f83"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-50.png",
+      "bytes": 218469,
+      "mtime_ns": 1789507115060145200,
+      "sha256": "27809d112c0abf294c9d4a7104554fcff70636716d5bcc95f8a7aef6202b9c38"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-51.png",
+      "bytes": 112125,
+      "mtime_ns": 1789507115209495500,
+      "sha256": "7f5fc61e1fe93900d681b76555bf714b3476de28caca8ecebcddfeaaf4b837c6"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-52.png",
+      "bytes": 211287,
+      "mtime_ns": 1789507115418203000,
+      "sha256": "7c280bba414265135e3bdf08954b1b0a2cee14b68e834bfa3591f4ffb8ff5db8"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-53.png",
+      "bytes": 172205,
+      "mtime_ns": 1789507115605285200,
+      "sha256": "a05d953e7103b9b240b3fceb430d115c147c1d5b2b7db06a0022dd14a97f75d2"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-54.png",
+      "bytes": 177624,
+      "mtime_ns": 1789507115789045300,
+      "sha256": "45abfbe5a141946dd83b734979090166f0553021fbf803006dd7bc44554b51f1"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-55.png",
+      "bytes": 191349,
+      "mtime_ns": 1789507115980056900,
+      "sha256": "82618d195ec2c0e7ec50b951ff341729a0b2ef4a5f1c7d71eb940dde1845cc24"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-56.png",
+      "bytes": 161984,
+      "mtime_ns": 1789507116128216900,
+      "sha256": "dd21944770697ee9603b1966a9fb9d0b99721d6774546f11e5a19581d602899d"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-57.png",
+      "bytes": 205946,
+      "mtime_ns": 1789507116310560500,
+      "sha256": "2da94e86435e13e2b637a4690518e25b5ce553c9fea663c714aafb1f41f789d0"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-58.png",
+      "bytes": 198688,
+      "mtime_ns": 1789507116486318700,
+      "sha256": "81b2ad621a53297fd47f4dc70a4aa464e5b9fc5a12529c7af315b80467835b39"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-59.png",
+      "bytes": 211685,
+      "mtime_ns": 1789507116671759600,
+      "sha256": "4722c22fcb663baeaf01d7b8d723734c616fc504c9d010d18f59254227da57a3"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-60.png",
+      "bytes": 146931,
+      "mtime_ns": 1789507116810403800,
+      "sha256": "46917f5533dd2c5beaa6a3c1bc1cc1fc880594e39bb938c774a269aeb9917555"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-61.png",
+      "bytes": 204868,
+      "mtime_ns": 1789507116979358300,
+      "sha256": "8f6296dc3f310a62978a2dc732c0b5f8c847231804f13e38b3fa93422bac3559"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-62.png",
+      "bytes": 201276,
+      "mtime_ns": 1789507117178886100,
+      "sha256": "4b37afb287a5055292e84b3bdf2fa1aed14c9fb8eee7efbaa10f92f6ea55b415"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-63.png",
+      "bytes": 192588,
+      "mtime_ns": 1789507117365403500,
+      "sha256": "b75310d63c535a790c87ef038d287770f72d30f2b38463033a7c29faab80b585"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-64.png",
+      "bytes": 195455,
+      "mtime_ns": 1789507117552099100,
+      "sha256": "e147df71f03ffaf6084b281771a96c988d4de8785703c5832cdff9ed9be4ba0d"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-65.png",
+      "bytes": 190160,
+      "mtime_ns": 1789507117741653300,
+      "sha256": "83a98c98321a581b0424239c801c35cbb5284ea756730b43e380c15cf94ed7d3"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-66.png",
+      "bytes": 184020,
+      "mtime_ns": 1789507117927919900,
+      "sha256": "51c7e7d3b9a6479ba1847d2add57843343bc80c972d716f86d6d4717bb5706fe"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-67.png",
+      "bytes": 160643,
+      "mtime_ns": 1789507118090907700,
+      "sha256": "9fff4babdb8eef744abfa2afbefff286f428a847147c6ed19c40ebe53eb75ba4"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-68.png",
+      "bytes": 114917,
+      "mtime_ns": 1789507118225962300,
+      "sha256": "28823cf742023d1cdbd5ec5ca4ddc78ceb528554d23eaa1962f5a9533aaa8d1e"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-69.png",
+      "bytes": 118099,
+      "mtime_ns": 1789507118350250000,
+      "sha256": "d0fa7278d5146ae3bcaf69d2bd7c7347632ae0b173e8d91954967b866bec593b"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-70.png",
+      "bytes": 133717,
+      "mtime_ns": 1789507118517876700,
+      "sha256": "af219b057bc8e213abb7f5848bfd1ebfc7a799e95ef2bf33d3a0232c36213e84"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-71.png",
+      "bytes": 107812,
+      "mtime_ns": 1789507118639548300,
+      "sha256": "269d0b109a95d50d6ad5feaffe0d8e9699bab52e1a6334691feecba02c988fae"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-72.png",
+      "bytes": 61147,
+      "mtime_ns": 1789507118718082800,
+      "sha256": "3470a836326ecb1b817716283711c25a9481e4b8dcd17f3a59cbb4cdda3b17c6"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-73.png",
+      "bytes": 107666,
+      "mtime_ns": 1789507118830501800,
+      "sha256": "3cfcdeb1c128172d35e4743845a83d1b5fbb802042a71fc51fde55cdded1217a"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-74.png",
+      "bytes": 148767,
+      "mtime_ns": 1789507118998847500,
+      "sha256": "c218847d915790228cbb7f711d2c6ef80717b2d4600cdebbf8459d9d61b41866"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-75.png",
+      "bytes": 117546,
+      "mtime_ns": 1789506939215161900,
+      "sha256": "5567fd5450c07fb4bd4edbd627fedf7882a9c1d9d0dc3930b7ac75e1b0d444ea"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/page-76.png",
+      "bytes": 46837,
+      "mtime_ns": 1789506939283229300,
+      "sha256": "9a85743a8dd77c2b5a1fa71f9995bb2304a99b6d6772d1332ebf026958c51926"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/rendered_text.txt",
+      "bytes": 202650,
+      "mtime_ns": 1789507288735627300,
+      "sha256": "d728d947a7bd59f04693bc1a03c6a3ab4cbcb988aff433bd3fbd928d08a665f5"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/RepairMach_report_2026-09-15.pdf",
+      "bytes": 918691,
+      "mtime_ns": 1789507263110169500,
+      "sha256": "11311f6e2b6be31d19a1ef8143a8e67f7827a7553dde60eba651117daee45610"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/qa/structural_audit.json",
+      "bytes": 42841,
+      "mtime_ns": 1789507288734625800,
+      "sha256": "6eed34a93b09727a7a36b39a5efd68fac66d477a3f44e9736bc4626d62224542"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/render_word.ps1",
+      "bytes": 1578,
+      "mtime_ns": 1789506878885395600,
+      "sha256": "d6bfc0476cc88db1dab69ddd6056e54c6150d123a1fd46d50ef13d83635963d2"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/RepairMach_report_2026-09-15.docx",
+      "bytes": 249607,
+      "mtime_ns": 1789507256039711600,
+      "sha256": "f855f248ea50e99f3556bd7be1da222f6bb6454532c1daa1e40c2b9d8648e5c6"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/report.md",
+      "bytes": 151405,
+      "mtime_ns": 1789507221389582700,
+      "sha256": "8673fb7c8af1efe34bccf04b63277a2399a15fea28342f9c697fad018b0d1d74"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/source_outline.txt",
+      "bytes": 12050,
+      "mtime_ns": 1789504670342550900,
+      "sha256": "0474dcf8196621a0a606a92b41f6641ee65409367d52b2f344b9ec899ce5ae35"
+    },
+    {
+      "path": "repairmach_report_2026-09-15/source_register.json",
+      "bytes": 9383,
+      "mtime_ns": 1789507223428171300,
+      "sha256": "741de4b89ae1c555e265d34e417693412c9924bebe5d0abcd262c5d8aabd9248"
+    },
+    {
+      "path": "unified_sub_sup_2026-08-29/build_unified_chart.mjs",
+      "bytes": 12254,
+      "mtime_ns": 1788029778168174800,
+      "sha256": "1b097ec52b1f9fefaffcebb9bb6b03f08fc8e440dabaed759bc1757fa6820da9"
+    },
+    {
+      "path": "unified_sub_sup_2026-08-29/RepairMach_unified_sub_sup_Cx0.png",
+      "bytes": 224741,
+      "mtime_ns": 1788029789881393200,
+      "sha256": "11269fc2effdffcc05bdfda0372b158a31c38679a4666b29a23338dc0f614e7d"
+    },
+    {
+      "path": "unified_sub_sup_2026-08-29/RepairMach_unified_sub_sup_Cx0.xlsx",
+      "bytes": 13357,
+      "mtime_ns": 1788029790476260900,
+      "sha256": "b78a566cc15e65d39d771f4b894973975003649ef888779cb35eaf8af377d225"
+    },
+    {
+      "path": "unified_sub_sup_2026-08-29/RepairMach_unified_sub_sup_Cx0.xlsx.inspect.ndjson",
+      "bytes": 220113,
+      "mtime_ns": 1788029790476782700,
+      "sha256": "9b2c9d8e84037065d81417c4115ceb29ca2bc70d44c6c82871b3c9f6205d2482"
+    },
+    {
+      "path": "unified_sub_sup_2026-08-29/RepairMach_unified_sub_sup_data.png",
+      "bytes": 216611,
+      "mtime_ns": 1788029790024430100,
+      "sha256": "50b0f0d113bb1b5c6d21024f21264dd43270584f5cfe60a24ff30f8e7b098f21"
+    },
+    {
+      "path": "unified_sub_sup_2026-08-29/verification.txt",
+      "bytes": 2597,
+      "mtime_ns": 1788029790479313700,
+      "sha256": "ef14858054029fe4b42005385f69407da70b102df709b1dd94234a0b1104c366"
+    }
+  ],
+  "source_bytes": 42975069,
+  "archive_bytes": 29643275,
+  "archive_sha256": "eddabbc01b9cc342cab2a35b510582690448a0f633ec80b5dd13e558c26bb60d",
+  "parts": [
+    {
+      "file": "workspace_outputs.zip",
+      "bytes": 29643275,
+      "sha256": "eddabbc01b9cc342cab2a35b510582690448a0f633ec80b5dd13e558c26bb60d"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
