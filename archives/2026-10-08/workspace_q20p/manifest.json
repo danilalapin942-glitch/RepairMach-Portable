@@ -1,0 +1,68 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "workspace_q20p",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\q20p",
+  "source_files": [
+    {
+      "path": "20260926_032542_MQ-20-ML_MQ20_for_MachLine_c37bbced/frozen_master.vsp3",
+      "bytes": 397826,
+      "mtime_ns": 1790382342721866200,
+      "sha256": "5710974615718259376ea2aca54fd14efa1837069e1b031d1461485dac955fbd"
+    },
+    {
+      "path": "20260926_032542_MQ-20-ML_MQ20_for_MachLine_c37bbced/inventory/inventory.log",
+      "bytes": 313145,
+      "mtime_ns": 1790382343098404800,
+      "sha256": "81c09a00b7b070d6c4700175dfba75f8351a5014da9e725c05c839b5882d12f4"
+    },
+    {
+      "path": "20260926_032542_MQ-20-ML_MQ20_for_MachLine_c37bbced/inventory/inventory.vspscript",
+      "bytes": 2021,
+      "mtime_ns": 1790382342736163900,
+      "sha256": "74fd2d4b599b9a3d9e83ff098097d16bcca1d2c3b0eda72dcf7126164b052b1a"
+    },
+    {
+      "path": "20260926_032542_MQ-20-ML_MQ20_for_MachLine_c37bbced/policy_snapshot.json",
+      "bytes": 8016,
+      "mtime_ns": 1790382342734430500,
+      "sha256": "ebc7472aa6742a3872450e95cb3a1299cd0542d22ff2b7ede52e0c20f7215eff"
+    },
+    {
+      "path": "20260926_032542_MQ-20-ML_MQ20_for_MachLine_c37bbced/preflight.json",
+      "bytes": 40707,
+      "mtime_ns": 1790382343166245700,
+      "sha256": "0d3bda65e745cc764d362b23b07a0c6e6e50b1baa8bcb04e5c1c0e40d7005056"
+    },
+    {
+      "path": "20260926_032542_MQ-20-ML_MQ20_for_MachLine_c37bbced/preflight.md",
+      "bytes": 1491,
+      "mtime_ns": 1790382343167250200,
+      "sha256": "95889655a2e59bc5a31964c2d809039729212925af2152c68db3ad328a161abc"
+    },
+    {
+      "path": "20260926_032542_MQ-20-ML_MQ20_for_MachLine_c37bbced/reference_snapshot.json",
+      "bytes": 173,
+      "mtime_ns": 1790382342735436000,
+      "sha256": "705a11143808f00a1b2f575f6a70219ac48f8c4e0b3ef3c020b4b4bf4c1c74ff"
+    },
+    {
+      "path": "20260926_032542_MQ-20-ML_MQ20_for_MachLine_c37bbced/scope_snapshot.json",
+      "bytes": 276,
+      "mtime_ns": 1790382342735436000,
+      "sha256": "eaf37329910bfbe88169d00a1dbf77b3799c23e88f967b2875c73dc0d69072cd"
+    }
+  ],
+  "source_bytes": 763655,
+  "archive_bytes": 131199,
+  "archive_sha256": "4973ae3164199dcb1c814234339d3e3a248df2bcd9a8cc2aeeaa0880b12cbb7f",
+  "parts": [
+    {
+      "file": "workspace_q20p.zip",
+      "bytes": 131199,
+      "sha256": "4973ae3164199dcb1c814234339d3e3a248df2bcd9a8cc2aeeaa0880b12cbb7f"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
