@@ -1,0 +1,182 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "MQ20_backend_experiment_bundles",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\q20build\\bundles",
+  "source_files": [
+    {
+      "path": "original/concrt140.dll",
+      "bytes": 324208,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "2405355f0a58067b258f8df33c327e3a3d716eaac5a3a5aebb757842d85bd376"
+    },
+    {
+      "path": "original/LICENSE",
+      "bytes": 13996,
+      "mtime_ns": 1782764531000000000,
+      "sha256": "e4412fe27818ba6314bf45ef990adb6fb4e9f4001a27d163d42a58b1e18ceac0"
+    },
+    {
+      "path": "original/msvcp140.dll",
+      "bytes": 557728,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "0f885b509a685d2bbfa652fed26b5fb31d88fbdab0a978c641d1c7b8aa460aa9"
+    },
+    {
+      "path": "original/msvcp140_1.dll",
+      "bytes": 35952,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "bfad5aef4c63a669e3c140655cdfdf395b6c979b400a447bd5dcb65ed8826c3d"
+    },
+    {
+      "path": "original/msvcp140_2.dll",
+      "bytes": 280200,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "3ea06f0ee098b4823cb79599df3780e7f23cce52c19aac31d2a0d47efe33a5e9"
+    },
+    {
+      "path": "original/msvcp140_atomic_wait.dll",
+      "bytes": 50304,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "640b2aefced484d0368eea5bdd06addd0658a3a70a49256e560d6923b404a479"
+    },
+    {
+      "path": "original/msvcp140_codecvt_ids.dll",
+      "bytes": 31872,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "f2069a52880ec885ee7f0511186100eb7fada0411a2b4948fafea7735b878a18"
+    },
+    {
+      "path": "original/README.md",
+      "bytes": 17534,
+      "mtime_ns": 1782764532000000000,
+      "sha256": "b9e47ae9c7d751b3393d0d26c50658d61366828728d4f7354ac31f197aa773b0"
+    },
+    {
+      "path": "original/vcomp140.dll",
+      "bytes": 193152,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "55aba23cdcd6484fbb06f4155b8ca75adfce7a881f10afd0c49457165e677164"
+    },
+    {
+      "path": "original/vcruntime140.dll",
+      "bytes": 124544,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+    },
+    {
+      "path": "original/vcruntime140_1.dll",
+      "bytes": 49792,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f"
+    },
+    {
+      "path": "original/vspaero.exe",
+      "bytes": 788992,
+      "mtime_ns": 1790587363525378500,
+      "sha256": "88a4c1f5039ad53d710ad38732a66e067da648d927f93722e1d43e504af97342"
+    },
+    {
+      "path": "original/vspscript.exe",
+      "bytes": 28762112,
+      "mtime_ns": 1782765852000000000,
+      "sha256": "79b238c97814e0dd74a6b49839710c8b17406b46d0616f5bd2bf1692a4264088"
+    },
+    {
+      "path": "original_packaging_checked/concrt140.dll",
+      "bytes": 324208,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "2405355f0a58067b258f8df33c327e3a3d716eaac5a3a5aebb757842d85bd376"
+    },
+    {
+      "path": "original_packaging_checked/LICENSE",
+      "bytes": 13996,
+      "mtime_ns": 1782764531000000000,
+      "sha256": "e4412fe27818ba6314bf45ef990adb6fb4e9f4001a27d163d42a58b1e18ceac0"
+    },
+    {
+      "path": "original_packaging_checked/msvcp140.dll",
+      "bytes": 557728,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "0f885b509a685d2bbfa652fed26b5fb31d88fbdab0a978c641d1c7b8aa460aa9"
+    },
+    {
+      "path": "original_packaging_checked/msvcp140_1.dll",
+      "bytes": 35952,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "bfad5aef4c63a669e3c140655cdfdf395b6c979b400a447bd5dcb65ed8826c3d"
+    },
+    {
+      "path": "original_packaging_checked/msvcp140_2.dll",
+      "bytes": 280200,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "3ea06f0ee098b4823cb79599df3780e7f23cce52c19aac31d2a0d47efe33a5e9"
+    },
+    {
+      "path": "original_packaging_checked/msvcp140_atomic_wait.dll",
+      "bytes": 50304,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "640b2aefced484d0368eea5bdd06addd0658a3a70a49256e560d6923b404a479"
+    },
+    {
+      "path": "original_packaging_checked/msvcp140_codecvt_ids.dll",
+      "bytes": 31872,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "f2069a52880ec885ee7f0511186100eb7fada0411a2b4948fafea7735b878a18"
+    },
+    {
+      "path": "original_packaging_checked/README.md",
+      "bytes": 17534,
+      "mtime_ns": 1782764532000000000,
+      "sha256": "b9e47ae9c7d751b3393d0d26c50658d61366828728d4f7354ac31f197aa773b0"
+    },
+    {
+      "path": "original_packaging_checked/vcomp140.dll",
+      "bytes": 193152,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "55aba23cdcd6484fbb06f4155b8ca75adfce7a881f10afd0c49457165e677164"
+    },
+    {
+      "path": "original_packaging_checked/vcruntime140.dll",
+      "bytes": 124544,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+    },
+    {
+      "path": "original_packaging_checked/vcruntime140_1.dll",
+      "bytes": 49792,
+      "mtime_ns": 1782130560000000000,
+      "sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f"
+    },
+    {
+      "path": "original_packaging_checked/vspaero.exe",
+      "bytes": 788992,
+      "mtime_ns": 1790587363525378500,
+      "sha256": "88a4c1f5039ad53d710ad38732a66e067da648d927f93722e1d43e504af97342"
+    },
+    {
+      "path": "original_packaging_checked/vsploads.exe",
+      "bytes": 90112,
+      "mtime_ns": 1782765845000000000,
+      "sha256": "20c26c9122301d2d56afc52b6586a5f3ae522d5fd0e741d06a8eb84249934312"
+    },
+    {
+      "path": "original_packaging_checked/vspscript.exe",
+      "bytes": 28762112,
+      "mtime_ns": 1782765852000000000,
+      "sha256": "79b238c97814e0dd74a6b49839710c8b17406b46d0616f5bd2bf1692a4264088"
+    }
+  ],
+  "source_bytes": 62550884,
+  "archive_bytes": 38222059,
+  "archive_sha256": "6ae34fca096f370c21121f00ff4d40398e6b14919c28053499ca7b24ba4884b3",
+  "parts": [
+    {
+      "file": "MQ20_backend_experiment_bundles.zip",
+      "bytes": 38222059,
+      "sha256": "6ae34fca096f370c21121f00ff4d40398e6b14919c28053499ca7b24ba4884b3"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
