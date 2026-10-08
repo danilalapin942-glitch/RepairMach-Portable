@@ -1,0 +1,50 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "MQ20_backend_experiment_postprocessor_routes",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\q20build\\postprocessor_routes",
+  "source_files": [
+    {
+      "path": "missing_helper/model.adb",
+      "bytes": 1602936,
+      "mtime_ns": 1790590330974561700,
+      "sha256": "56ffa716e100bdc7db4877caf9196711377735e7a3d4e62e383341b7d9f624cf"
+    },
+    {
+      "path": "missing_helper/model.adb.cases",
+      "bytes": 239,
+      "mtime_ns": 1790590330974561700,
+      "sha256": "ca613a29470b699f4bdcb12a846069a43e03f5801d8bfb3454725386e0db451f"
+    },
+    {
+      "path": "missing_helper/model.vsp3",
+      "bytes": 400189,
+      "mtime_ns": 1790587567254064800,
+      "sha256": "d231790a791b31b25f49ba430737da810c150ed982f5bd27138e1f7a5a001454"
+    },
+    {
+      "path": "missing_helper/postprocess.log",
+      "bytes": 174,
+      "mtime_ns": 1790590791579580200,
+      "sha256": "5b563ea9c7c91389d04923de67f0624cd867166c13c8b25f9ca61b6ff3949ee9"
+    },
+    {
+      "path": "missing_helper/postprocess_only.vspscript",
+      "bytes": 877,
+      "mtime_ns": 1790590791548801800,
+      "sha256": "0f39f8b88bb224d15e0db413b9301e85787b6e83dc3ca9d740c06973509b9399"
+    }
+  ],
+  "source_bytes": 2004415,
+  "archive_bytes": 648078,
+  "archive_sha256": "82364abec5d0db8d2e30e5af8d61d902dc87a2d65e14b161f49726df68abd85e",
+  "parts": [
+    {
+      "file": "MQ20_backend_experiment_postprocessor_routes.zip",
+      "bytes": 648078,
+      "sha256": "82364abec5d0db8d2e30e5af8d61d902dc87a2d65e14b161f49726df68abd85e"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
