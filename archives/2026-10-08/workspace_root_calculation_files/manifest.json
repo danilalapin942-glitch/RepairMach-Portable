@@ -1,0 +1,56 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "workspace_root_calculation_files",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b",
+  "source_files": [
+    {
+      "path": "audit_mig_mesh.py",
+      "bytes": 3851,
+      "mtime_ns": 1787607026555890100,
+      "sha256": "f628a612fd8b3df8b0e6fe7f833fa770c6036229150663ef44ae4826f87d4d39"
+    },
+    {
+      "path": "convert_machline_vtk.py",
+      "bytes": 2144,
+      "mtime_ns": 1787605569399931200,
+      "sha256": "9de6332d2807f8b1b4196e2f64711cfb14578daa6a4cec82f8480ff5464d91b9"
+    },
+    {
+      "path": "MIG_full_M15_a0_body.vtp",
+      "bytes": 2868343,
+      "mtime_ns": 1787605577418578900,
+      "sha256": "92a17a74f21cdf0dc4906509b1cd393454be966d845ec7e197547b0794276343"
+    },
+    {
+      "path": "MIG_full_M15_a0_body_repaired.vtk",
+      "bytes": 2705226,
+      "mtime_ns": 1787605419689935800,
+      "sha256": "bdb9e4c4dde627343fdb9f9d5b1f79aec161efbb25ae5dce38a9657556c3d402"
+    },
+    {
+      "path": "MIG_full_M15_a0_FQRUP.json",
+      "bytes": 1072,
+      "mtime_ns": 1787633236064923300,
+      "sha256": "c0f375ffe0ea147f6821c329da7b026e1450e5929b0779139b4da12673494f6c"
+    },
+    {
+      "path": "MIG_full_M15_a0_QRUP.json",
+      "bytes": 1067,
+      "mtime_ns": 1787607095058684300,
+      "sha256": "cb4db77a18814edbebbf2149a5ccb61e4b9cf4be0d0ca1a41e9547dad3a499ce"
+    }
+  ],
+  "source_bytes": 5581703,
+  "archive_bytes": 1316162,
+  "archive_sha256": "b9a545d34ecdc3947b8f091a7e70014709586b52698047afa2ce6ce452f09201",
+  "parts": [
+    {
+      "file": "workspace_root_calculation_files.zip",
+      "bytes": 1316162,
+      "sha256": "b9a545d34ecdc3947b8f091a7e70014709586b52698047afa2ce6ce452f09201"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
