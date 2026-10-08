@@ -1,0 +1,535 @@
+[
+  {
+    "name": "installed",
+    "source_bytes": 1472520122,
+    "archive_bytes": 307482097,
+    "archive_sha256": "7f20894e6c89a9842e4ad50ded8115b36091d7260dddebe7be0fac52708cbf71",
+    "parts": [
+      {
+        "file": "installed.zip.part001",
+        "bytes": 94371840,
+        "sha256": "fe6d71781c0f9f421e8204922210567acd7df105cb36a9220804d8ebd2a64ab7"
+      },
+      {
+        "file": "installed.zip.part002",
+        "bytes": 94371840,
+        "sha256": "ef64014a6ad10ce97f7ffe4dad7df13920bf0051c282c86a1b191e6d775621db"
+      },
+      {
+        "file": "installed.zip.part003",
+        "bytes": 94371840,
+        "sha256": "259f40f7ea454167c54aa2439517f46ac08ab7f12e5fb8c8372f5060783a9ebe"
+      },
+      {
+        "file": "installed.zip.part004",
+        "bytes": 24366577,
+        "sha256": "bf5a9de9b886077f05980a0357dae7baa3dc7e42983a0522bd5b1ea1743fc215"
+      }
+    ],
+    "file_count": 13739
+  },
+  {
+    "name": "aircraft_models_drawings",
+    "source_bytes": 460311884,
+    "archive_bytes": 344326085,
+    "archive_sha256": "5dda346d12e6303611fad123f9737bf1e5a559d114ccc44424e7280ab2788dee",
+    "parts": [
+      {
+        "file": "aircraft_models_drawings.zip.part001",
+        "bytes": 94371840,
+        "sha256": "49c4133cf4021a32b216cd0cbcec64c08525da57af08e07f718b7794a7ee1b11"
+      },
+      {
+        "file": "aircraft_models_drawings.zip.part002",
+        "bytes": 94371840,
+        "sha256": "96e1eb6deabd214086c55c7d1947cb5f4232790a6036492455a392649b8fd4ee"
+      },
+      {
+        "file": "aircraft_models_drawings.zip.part003",
+        "bytes": 94371840,
+        "sha256": "2ab275f99c8ee9a30594d24bf7bb3385b7626e90784077389d9e873e3831a15e"
+      },
+      {
+        "file": "aircraft_models_drawings.zip.part004",
+        "bytes": 61210565,
+        "sha256": "4a1541c2a68e42a119a198f513dbf1a41dbbfaaee385d75c7ad75cf4f24fd867"
+      }
+    ],
+    "file_count": 149
+  },
+  {
+    "name": "YFQ44_calculations",
+    "source_bytes": 177432111,
+    "archive_bytes": 48059717,
+    "archive_sha256": "d95b11af5c097aa51da25ff4b66ee53ff46b38625bfdbfd4ea44cb67fabf1541",
+    "parts": [
+      {
+        "file": "YFQ44_calculations.zip",
+        "bytes": 48059717,
+        "sha256": "d95b11af5c097aa51da25ff4b66ee53ff46b38625bfdbfd4ea44cb67fabf1541"
+      }
+    ],
+    "file_count": 1324
+  },
+  {
+    "name": "YFQ44_report",
+    "source_bytes": 8385681,
+    "archive_bytes": 7693804,
+    "archive_sha256": "da67b599460eb46ca4a3f30431a13f64c1671f149e2563878651b7790bf89376",
+    "parts": [
+      {
+        "file": "YFQ44_report.zip",
+        "bytes": 7693804,
+        "sha256": "da67b599460eb46ca4a3f30431a13f64c1671f149e2563878651b7790bf89376"
+      }
+    ],
+    "file_count": 43
+  },
+  {
+    "name": "workspace_acceptance",
+    "source_bytes": 1449849404,
+    "archive_bytes": 283925403,
+    "archive_sha256": "043bc69e85eb7ab45ca2892a8d09102a61524416f0f548329d841bb38bb0638e",
+    "parts": [
+      {
+        "file": "workspace_acceptance.zip.part001",
+        "bytes": 94371840,
+        "sha256": "f29216ddcb3d0eab0e41682d745002003559f59a97e0704dac62a70d2c82f4be"
+      },
+      {
+        "file": "workspace_acceptance.zip.part002",
+        "bytes": 94371840,
+        "sha256": "651e9db863680a8fea2e7f3c67dfab4f57ddab1a40d872df862658a48e6377b3"
+      },
+      {
+        "file": "workspace_acceptance.zip.part003",
+        "bytes": 94371840,
+        "sha256": "4ed8a77fb12072a9084f8ecb1d77a434ccd1f20763e4b3011a079177869807e2"
+      },
+      {
+        "file": "workspace_acceptance.zip.part004",
+        "bytes": 809883,
+        "sha256": "6076b6351578c76cb26f5b3643aafd650ee70fa1fc864b929241c1bd72e3b9eb"
+      }
+    ],
+    "file_count": 10149
+  },
+  {
+    "name": "workspace_diagnostics",
+    "source_bytes": 1784079198,
+    "archive_bytes": 525927999,
+    "archive_sha256": "33caa46d25f75d588109b6469fb7593981892ccc33256bf4ce54924557fd46c2",
+    "parts": [
+      {
+        "file": "workspace_diagnostics.zip.part001",
+        "bytes": 94371840,
+        "sha256": "1558981ebc22d92461ed98190c4c140e5490b821cda78b234df2778379c37040"
+      },
+      {
+        "file": "workspace_diagnostics.zip.part002",
+        "bytes": 94371840,
+        "sha256": "bfe62e47bd93caea733139f9d62882b50749bfddbea1b1ed4c0023b2a886e400"
+      },
+      {
+        "file": "workspace_diagnostics.zip.part003",
+        "bytes": 94371840,
+        "sha256": "3f86d3f09d8d597c08b2167aa8447d39aa560ea6699f096f274e48b18f0e2ed6"
+      },
+      {
+        "file": "workspace_diagnostics.zip.part004",
+        "bytes": 94371840,
+        "sha256": "0334753d575ae1ab8f08759ebe021cbb114ed5c1db3a92c5431d4b8d0e706099"
+      },
+      {
+        "file": "workspace_diagnostics.zip.part005",
+        "bytes": 94371840,
+        "sha256": "68d4a7bef3cc55e0291f07dfeef4f9e6948b2b664eaef67833714a0f8d84ae07"
+      },
+      {
+        "file": "workspace_diagnostics.zip.part006",
+        "bytes": 54068799,
+        "sha256": "0928ea9f59abc4972401b2f47f70f22cc925f582edaaf9777f8ac2922e665e8c"
+      }
+    ],
+    "file_count": 6294
+  },
+  {
+    "name": "workspace_outputs",
+    "source_bytes": 42975069,
+    "archive_bytes": 29643275,
+    "archive_sha256": "eddabbc01b9cc342cab2a35b510582690448a0f633ec80b5dd13e558c26bb60d",
+    "parts": [
+      {
+        "file": "workspace_outputs.zip",
+        "bytes": 29643275,
+        "sha256": "eddabbc01b9cc342cab2a35b510582690448a0f633ec80b5dd13e558c26bb60d"
+      }
+    ],
+    "file_count": 220
+  },
+  {
+    "name": "workspace_daytime_lift_2026-08-28",
+    "source_bytes": 2448554,
+    "archive_bytes": 351268,
+    "archive_sha256": "7e25089beb2a7a187ee6610fe73d1d94bd912a2b6fbfb31162e255bfc0f88b9a",
+    "parts": [
+      {
+        "file": "workspace_daytime_lift_2026-08-28.zip",
+        "bytes": 351268,
+        "sha256": "7e25089beb2a7a187ee6610fe73d1d94bd912a2b6fbfb31162e255bfc0f88b9a"
+      }
+    ],
+    "file_count": 20
+  },
+  {
+    "name": "workspace_mig25rb_refinement_2026-09-01",
+    "source_bytes": 99597054,
+    "archive_bytes": 17200159,
+    "archive_sha256": "3d2b44bba7c7114a428836aab50282b0ca18aeff8c450efc35ad221c17358f39",
+    "parts": [
+      {
+        "file": "workspace_mig25rb_refinement_2026-09-01.zip",
+        "bytes": 17200159,
+        "sha256": "3d2b44bba7c7114a428836aab50282b0ca18aeff8c450efc35ad221c17358f39"
+      }
+    ],
+    "file_count": 1199
+  },
+  {
+    "name": "workspace_overnight_m14_m16_2026-08-31",
+    "source_bytes": 225490922,
+    "archive_bytes": 35065848,
+    "archive_sha256": "5300a573fc1cf69b4004598cc21f7b3cf821876a0e3d1db72c0007bda3ac7b84",
+    "parts": [
+      {
+        "file": "workspace_overnight_m14_m16_2026-08-31.zip",
+        "bytes": 35065848,
+        "sha256": "5300a573fc1cf69b4004598cc21f7b3cf821876a0e3d1db72c0007bda3ac7b84"
+      }
+    ],
+    "file_count": 1273
+  },
+  {
+    "name": "workspace_overnight_mig25rb_2026-08-31",
+    "source_bytes": 138271981,
+    "archive_bytes": 29121329,
+    "archive_sha256": "0f57f700a9c96d236da0f3f7f226e55cd64be98ab722cc537d2ff35eef947745",
+    "parts": [
+      {
+        "file": "workspace_overnight_mig25rb_2026-08-31.zip",
+        "bytes": 29121329,
+        "sha256": "0f57f700a9c96d236da0f3f7f226e55cd64be98ab722cc537d2ff35eef947745"
+      }
+    ],
+    "file_count": 1420
+  },
+  {
+    "name": "workspace_overnight_refinement_2026-08-27",
+    "source_bytes": 52028913,
+    "archive_bytes": 17558906,
+    "archive_sha256": "df2e4a5d4b8551b36f8e17a67925583423febe4fa9b5fbff8360e1d8a60a784e",
+    "parts": [
+      {
+        "file": "workspace_overnight_refinement_2026-08-27.zip",
+        "bytes": 17558906,
+        "sha256": "df2e4a5d4b8551b36f8e17a67925583423febe4fa9b5fbff8360e1d8a60a784e"
+      }
+    ],
+    "file_count": 1146
+  },
+  {
+    "name": "workspace_overnight_sweep",
+    "source_bytes": 1355796025,
+    "archive_bytes": 359315641,
+    "archive_sha256": "c7cc807f22418720cf3dd98a70f964be6a1ca581722c71b8bf4bbbf7f3c0f894",
+    "parts": [
+      {
+        "file": "workspace_overnight_sweep.zip.part001",
+        "bytes": 94371840,
+        "sha256": "c4c35f51c320924a602430e3b0031e9554bb948cf3e6724115e8816a674d3e71"
+      },
+      {
+        "file": "workspace_overnight_sweep.zip.part002",
+        "bytes": 94371840,
+        "sha256": "a053db91ebde20b8a9641540e62e0e7bc3aeeaae8bb0b796c5bbcb216bdee60b"
+      },
+      {
+        "file": "workspace_overnight_sweep.zip.part003",
+        "bytes": 94371840,
+        "sha256": "632cba168d0a41e5f654cf3d816278fec9a5a43fa74dd530bfa5a9743df1d263"
+      },
+      {
+        "file": "workspace_overnight_sweep.zip.part004",
+        "bytes": 76200121,
+        "sha256": "8a4d989b759545004f58d9182ca2cfe54cb093c70d0c6318ca56fce2dc5e0dc2"
+      }
+    ],
+    "file_count": 4118
+  },
+  {
+    "name": "workspace_q20c",
+    "source_bytes": 19773442,
+    "archive_bytes": 3555909,
+    "archive_sha256": "6ac2d7a2bcd455a850bf9441d0a5ba75aee73f1dfd499f3edb52d2157088aa94",
+    "parts": [
+      {
+        "file": "workspace_q20c.zip",
+        "bytes": 3555909,
+        "sha256": "6ac2d7a2bcd455a850bf9441d0a5ba75aee73f1dfd499f3edb52d2157088aa94"
+      }
+    ],
+    "file_count": 147
+  },
+  {
+    "name": "workspace_q20go",
+    "source_bytes": 193518895,
+    "archive_bytes": 44370612,
+    "archive_sha256": "cc2650855f5e10513c6099c5f113645a83a12927a958f920d2793877debff751",
+    "parts": [
+      {
+        "file": "workspace_q20go.zip",
+        "bytes": 44370612,
+        "sha256": "cc2650855f5e10513c6099c5f113645a83a12927a958f920d2793877debff751"
+      }
+    ],
+    "file_count": 818
+  },
+  {
+    "name": "workspace_q20p",
+    "source_bytes": 763655,
+    "archive_bytes": 131199,
+    "archive_sha256": "4973ae3164199dcb1c814234339d3e3a248df2bcd9a8cc2aeeaa0880b12cbb7f",
+    "parts": [
+      {
+        "file": "workspace_q20p.zip",
+        "bytes": 131199,
+        "sha256": "4973ae3164199dcb1c814234339d3e3a248df2bcd9a8cc2aeeaa0880b12cbb7f"
+      }
+    ],
+    "file_count": 8
+  },
+  {
+    "name": "workspace_q28",
+    "source_bytes": 110999711,
+    "archive_bytes": 23095632,
+    "archive_sha256": "6f1bcd872c21ae7515d0b3cd4190b7d78883b82e1cb5a902de79f59e7c9b02c1",
+    "parts": [
+      {
+        "file": "workspace_q28.zip",
+        "bytes": 23095632,
+        "sha256": "6f1bcd872c21ae7515d0b3cd4190b7d78883b82e1cb5a902de79f59e7c9b02c1"
+      }
+    ],
+    "file_count": 862
+  },
+  {
+    "name": "workspace_repeat_mig25rb_2026-09-01",
+    "source_bytes": 88328790,
+    "archive_bytes": 17692783,
+    "archive_sha256": "caf4971e2ff5abf3476339e1d48bcd8c1c4b150a485deda61264edc33ae2b5a7",
+    "parts": [
+      {
+        "file": "workspace_repeat_mig25rb_2026-09-01.zip",
+        "bytes": 17692783,
+        "sha256": "caf4971e2ff5abf3476339e1d48bcd8c1c4b150a485deda61264edc33ae2b5a7"
+      }
+    ],
+    "file_count": 1176
+  },
+  {
+    "name": "workspace_short_hybrid_sweep",
+    "source_bytes": 864260,
+    "archive_bytes": 240456,
+    "archive_sha256": "638a19e2abfac74b6cd0966fd31b563352a6d741d1c8582645dcb8bb703c624a",
+    "parts": [
+      {
+        "file": "workspace_short_hybrid_sweep.zip",
+        "bytes": 240456,
+        "sha256": "638a19e2abfac74b6cd0966fd31b563352a6d741d1c8582645dcb8bb703c624a"
+      }
+    ],
+    "file_count": 211
+  },
+  {
+    "name": "workspace_YFQ_44A_blank",
+    "source_bytes": 1329969,
+    "archive_bytes": 462418,
+    "archive_sha256": "ca2c3053d06665764c5ac54a70c43f8bd485f4400c1da6c72afef37814dd565e",
+    "parts": [
+      {
+        "file": "workspace_YFQ_44A_blank.zip",
+        "bytes": 462418,
+        "sha256": "ca2c3053d06665764c5ac54a70c43f8bd485f4400c1da6c72afef37814dd565e"
+      }
+    ],
+    "file_count": 7
+  },
+  {
+    "name": "workspace_generated_inputs",
+    "source_bytes": 9637,
+    "archive_bytes": 5565,
+    "archive_sha256": "cdd6a4f57471a5b0b1accdb369a5ee9158e1b5c60699a5252cc025ad2ff6aaaa",
+    "parts": [
+      {
+        "file": "workspace_generated_inputs.zip",
+        "bytes": 5565,
+        "sha256": "cdd6a4f57471a5b0b1accdb369a5ee9158e1b5c60699a5252cc025ad2ff6aaaa"
+      }
+    ],
+    "file_count": 8
+  },
+  {
+    "name": "workspace_RepairMach_9_Local",
+    "source_bytes": 73332829,
+    "archive_bytes": 29067880,
+    "archive_sha256": "84511591c0c48d9a677474bdeae6b9e6d95b47becb0b00e8c16e6644dee7d03a",
+    "parts": [
+      {
+        "file": "workspace_RepairMach_9_Local.zip",
+        "bytes": 29067880,
+        "sha256": "84511591c0c48d9a677474bdeae6b9e6d95b47becb0b00e8c16e6644dee7d03a"
+      }
+    ],
+    "file_count": 138
+  },
+  {
+    "name": "workspace_RepairMach_Portable_Candidate",
+    "source_bytes": 74195892,
+    "archive_bytes": 29411557,
+    "archive_sha256": "ce24bc94aaf1b5c85525df980b21d31c45b4730a6db03b4840deeea9cf286966",
+    "parts": [
+      {
+        "file": "workspace_RepairMach_Portable_Candidate.zip",
+        "bytes": 29411557,
+        "sha256": "ce24bc94aaf1b5c85525df980b21d31c45b4730a6db03b4840deeea9cf286966"
+      }
+    ],
+    "file_count": 145
+  },
+  {
+    "name": "MQ20_backend_experiment_runs",
+    "source_bytes": 126549336,
+    "archive_bytes": 49759109,
+    "archive_sha256": "5415663b297dd16be827a049297584fffb339ddc85c20def3c73a9c39adcb43f",
+    "parts": [
+      {
+        "file": "MQ20_backend_experiment_runs.zip",
+        "bytes": 49759109,
+        "sha256": "5415663b297dd16be827a049297584fffb339ddc85c20def3c73a9c39adcb43f"
+      }
+    ],
+    "file_count": 30
+  },
+  {
+    "name": "MQ20_backend_experiment_bundles",
+    "source_bytes": 62550884,
+    "archive_bytes": 38222059,
+    "archive_sha256": "6ae34fca096f370c21121f00ff4d40398e6b14919c28053499ca7b24ba4884b3",
+    "parts": [
+      {
+        "file": "MQ20_backend_experiment_bundles.zip",
+        "bytes": 38222059,
+        "sha256": "6ae34fca096f370c21121f00ff4d40398e6b14919c28053499ca7b24ba4884b3"
+      }
+    ],
+    "file_count": 27
+  },
+  {
+    "name": "MQ20_backend_experiment_preflight",
+    "source_bytes": 1278235,
+    "archive_bytes": 199773,
+    "archive_sha256": "2f9f6f77ce2f0da51d316fd4afef2a3a6dfe417ac5f793b7de1cba03a5bf9e68",
+    "parts": [
+      {
+        "file": "MQ20_backend_experiment_preflight.zip",
+        "bytes": 199773,
+        "sha256": "2f9f6f77ce2f0da51d316fd4afef2a3a6dfe417ac5f793b7de1cba03a5bf9e68"
+      }
+    ],
+    "file_count": 7
+  },
+  {
+    "name": "MQ20_backend_experiment_postprocessor_check",
+    "source_bytes": 1627911,
+    "archive_bytes": 580166,
+    "archive_sha256": "bbaf137e2087e26813f483dc16e1c00eb8a751eab4e2e60a6f59498c7f9e649b",
+    "parts": [
+      {
+        "file": "MQ20_backend_experiment_postprocessor_check.zip",
+        "bytes": 580166,
+        "sha256": "bbaf137e2087e26813f483dc16e1c00eb8a751eab4e2e60a6f59498c7f9e649b"
+      }
+    ],
+    "file_count": 5
+  },
+  {
+    "name": "MQ20_backend_experiment_postprocessor_routes",
+    "source_bytes": 2004415,
+    "archive_bytes": 648078,
+    "archive_sha256": "82364abec5d0db8d2e30e5af8d61d902dc87a2d65e14b161f49726df68abd85e",
+    "parts": [
+      {
+        "file": "MQ20_backend_experiment_postprocessor_routes.zip",
+        "bytes": 648078,
+        "sha256": "82364abec5d0db8d2e30e5af8d61d902dc87a2d65e14b161f49726df68abd85e"
+      }
+    ],
+    "file_count": 5
+  },
+  {
+    "name": "MQ20_backend_experiment_postprocessor_routes_v2",
+    "source_bytes": 4033603,
+    "archive_bytes": 1299256,
+    "archive_sha256": "7422f9c5d2fc943f6246ee429ddb1e5693e0fda8d0b0b1bf0def7c159997d4a0",
+    "parts": [
+      {
+        "file": "MQ20_backend_experiment_postprocessor_routes_v2.zip",
+        "bytes": 1299256,
+        "sha256": "7422f9c5d2fc943f6246ee429ddb1e5693e0fda8d0b0b1bf0def7c159997d4a0"
+      }
+    ],
+    "file_count": 14
+  },
+  {
+    "name": "MQ20_backend_experiment_variants",
+    "source_bytes": 4119841,
+    "archive_bytes": 537895,
+    "archive_sha256": "50dca4ba517a47dfe2aa3ffcbaad1f7d48fe6d5ff72e91923e975bf12a4a3572",
+    "parts": [
+      {
+        "file": "MQ20_backend_experiment_variants.zip",
+        "bytes": 537895,
+        "sha256": "50dca4ba517a47dfe2aa3ffcbaad1f7d48fe6d5ff72e91923e975bf12a4a3572"
+      }
+    ],
+    "file_count": 99
+  },
+  {
+    "name": "MQ20_backend_experiment_source_3510",
+    "source_bytes": 0,
+    "archive_bytes": 22,
+    "archive_sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85",
+    "parts": [
+      {
+        "file": "MQ20_backend_experiment_source_3510.zip",
+        "bytes": 22,
+        "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85"
+      }
+    ],
+    "file_count": 0
+  },
+  {
+    "name": "workspace_root_calculation_files",
+    "source_bytes": 5581703,
+    "archive_bytes": 1316162,
+    "archive_sha256": "b9a545d34ecdc3947b8f091a7e70014709586b52698047afa2ce6ce452f09201",
+    "parts": [
+      {
+        "file": "workspace_root_calculation_files.zip",
+        "bytes": 1316162,
+        "sha256": "b9a545d34ecdc3947b8f091a7e70014709586b52698047afa2ce6ce452f09201"
+      }
+    ],
+    "file_count": 6
+  }
+]

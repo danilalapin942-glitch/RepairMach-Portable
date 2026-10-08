@@ -1,0 +1,254 @@
+[
+  {
+    "path": "app/aero_hybrid.py",
+    "sha256": "915f96224ed3101263d6fc33b50507c03fac0181236c9017ec21176b28c4edc1"
+  },
+  {
+    "path": "app/blind_readiness.py",
+    "sha256": "ca3eb58c4764697f17bcbdf0486b519005d08167bd6b9689eec36391d51805b6"
+  },
+  {
+    "path": "app/blind_study.py",
+    "sha256": "2028d5afcaac72beb2a03df3b0ff6576aa4e7498ce0daadad7fdaf6d597f19bb"
+  },
+  {
+    "path": "app/calculation_scenarios.py",
+    "sha256": "eca931021f93f6a5b9d4f4f16d2fb01aacf6b762395270aad4cc9a6dd3ed3e9f"
+  },
+  {
+    "path": "app/geometry_action_executor.py",
+    "sha256": "bf98c8c2b1b7a2b88ea622c5c30dcad0f09ce29c252f3a568bdc7ef08be98c87"
+  },
+  {
+    "path": "app/geometry_certificate.py",
+    "sha256": "b2aba1935e2fc81ca1f1fa4a88fbd0f73305edf42163f6c1c11db038d1a684bc"
+  },
+  {
+    "path": "app/geometry_certification.py",
+    "sha256": "5b67ff836660238c94b601750d84a5ffe18e8469ced23e7c6837144cba85ae97"
+  },
+  {
+    "path": "app/geometry_delta.py",
+    "sha256": "2699ec2558237cf9b26071f6216e98004cf07d90c9d36be16f2fdf5f98573ce4"
+  },
+  {
+    "path": "app/geometry_manifest.py",
+    "sha256": "66995b4da9355e760cb10500b660a6162eee08cd3ca1c072e687322f1f0a6d3d"
+  },
+  {
+    "path": "app/geometry_preflight.py",
+    "sha256": "d1620d9c5c89190254bd38993ec6ffce8ca262094cdd35bbd71a53ea23e69e2e"
+  },
+  {
+    "path": "app/geometry_remediation.py",
+    "sha256": "fbe3b5bb1548bcb925592245c9055d9516cc3f700398b7f87f9fd1b62a794c1d"
+  },
+  {
+    "path": "app/geometry_rules.py",
+    "sha256": "a908c6b3a1378741d123292c10c073cd56327f04cb784922c3b11c2c3b28192f"
+  },
+  {
+    "path": "app/geometry_twins.py",
+    "sha256": "c0124972515420c73ce2c1d396cc4b39bbb2bd00683414ee46005bab2d5248b5"
+  },
+  {
+    "path": "app/hybrid_pipeline.py",
+    "sha256": "9b5d4d6a790d669d1601064058ec7a11dfebb6d88ff49ea623e43fa2d59ae54c"
+  },
+  {
+    "path": "app/hybrid_workbook.mjs",
+    "sha256": "2994a4e21e918f75d4917798e351cdc6d4a6726e7120862d4aa9022504eeccf7"
+  },
+  {
+    "path": "app/mach_repair.py",
+    "sha256": "339a53c2960f1ea891aefa6c7c7cf422e3fa8472b0adcfee08f43d78cf6e5ea3"
+  },
+  {
+    "path": "app/machline_geometry.py",
+    "sha256": "ff207dc1fe2995b2cabb065d50e4b8382cd3cf1582257a18e1ad6505a2cf1b56"
+  },
+  {
+    "path": "app/machline_open_nozzle.py",
+    "sha256": "fb5d04b8e3c8ff356091bb176265ae22f796315ca9b6ca9831a8f2bb2db46280"
+  },
+  {
+    "path": "app/machline_postprocess.py",
+    "sha256": "f4080b2da96cd6c9ac4fa8b1de7df67b553d3865949191169f60c765e9af805c"
+  },
+  {
+    "path": "app/openvsp_runner.py",
+    "sha256": "54ec0e0aa6bf8c7e98170cca0fb46463f10f28d9ef4ced3f56b844b8a646d23f",
+    "source": "existing public portable distribution",
+    "installed_archived_sha256": "73c63ad4ac42580f665154085e2dcecd594898c6c9f304791858dca1d3276af7"
+  },
+  {
+    "path": "app/pressure_export.py",
+    "sha256": "c557f25cde7312ef4ecdb5cb8ba27e3f52c396b878144cd061c99e95a6ff3255"
+  },
+  {
+    "path": "app/repairmach_beta.py",
+    "sha256": "922a906aada2713f389083514d408fc04cda89c8bb7277472d352852a8ea8366"
+  },
+  {
+    "path": "app/tri_mesh.py",
+    "sha256": "8d8a4d519c04aeb09fecab1390a60f0e35a8d89325abf1630a7a16e310da54bd"
+  },
+  {
+    "path": "app/validation_metrics.py",
+    "sha256": "46c2e9369ae4fee42f1a93c8d959363f8b6b2d01e57fcc7590b0b2fa054d4d98"
+  },
+  {
+    "path": "app/vspaero_anchor_review.py",
+    "sha256": "1fa9629a155bf65df6067f08b1444e4436ea5441f5faa9ec4af87a7fd9df1137"
+  },
+  {
+    "path": "app/vspaero_runner.py",
+    "sha256": "99455edccb0141a261048b8e53c0c15f6c58834b042738ee863f57d7a3b340e7"
+  },
+  {
+    "path": "app/vspgeom_guard.vspscript",
+    "sha256": "ac4a63b0a5ee32cb257bd49ad780ff7f693e92e33be5380bc373bd7f5a829e77"
+  },
+  {
+    "path": "app/vspgeom_integrity.py",
+    "sha256": "effdc83452162007944233696e94fb5b56ccf6ac57fc247c8050e2bfc8d36742"
+  },
+  {
+    "path": "config/calculation_scenarios.json",
+    "sha256": "ebafd1aeb783eb3e9f90a61be1ae49c4aa1ff8648fea7c458a424a1db1c6cbba"
+  },
+  {
+    "path": "config/geometry_certification.json",
+    "sha256": "8dc01c8cb39e77229a1d44f9a285fbe2309c7b1ed1aebb43cee6bc66d619b1a5"
+  },
+  {
+    "path": "config/hybrid_method.json",
+    "sha256": "cda4acd0726b6455b3aa648d3b30ada54ad05f7cf37def071f64ed4867f7f642"
+  },
+  {
+    "path": "config/repairmach_settings.json",
+    "sha256": "105d984ddb4f8672db80f58f6e576b1591b078a53d026b91c304b92752a0b14e",
+    "source": "existing public portable distribution",
+    "installed_archived_sha256": "aa2f0bfe40d54ef7c680c1c42069e72e3dbaef21e112e64a3c4e499e6a221222"
+  },
+  {
+    "path": "docs/INDEPENDENT_CERTIFICATION.md",
+    "sha256": "83e57b3c6dac3c29c080fb8af9dbbb62a79a0c3ff44f34cc94948598acee7915"
+  },
+  {
+    "path": "docs/PARAVIEW_PRESSURE.md",
+    "sha256": "1c5f50e98fe878b2934a3385b8ff2432563416b88170dffce896ef6916194655"
+  },
+  {
+    "path": "tests/test_aero_hybrid.py",
+    "sha256": "bf7bdf4d212e85353513231e73f61f28e7ae413f7da6c1e89b12e68fa51e1ff3"
+  },
+  {
+    "path": "tests/test_blind_readiness.py",
+    "sha256": "4c5e90d093b38ec6fa8d5683033214cb77d2b47f1cbee7b8622514c36afe83c0"
+  },
+  {
+    "path": "tests/test_blind_study.py",
+    "sha256": "63860527709c61ab7293481f8a027eca26431850e201771eed1dcfd2cedfb14e"
+  },
+  {
+    "path": "tests/test_bounded_oscillation_retry.py",
+    "sha256": "bb7dae2fa3cd6e70851f565275644175805c67813416892a3abffba42860cbd5"
+  },
+  {
+    "path": "tests/test_calculation_scenarios.py",
+    "sha256": "9da18d1c76adb70601a54719ac905737e59d2aaf5d7c531a5f3efd7532cf473b"
+  },
+  {
+    "path": "tests/test_diagnostic_body_exclusion.py",
+    "sha256": "6893a1716434b44ae5448c90396b05c3d5a4eb3dd524f409a289ddaa8da1eb3a"
+  },
+  {
+    "path": "tests/test_geometry_action_executor.py",
+    "sha256": "49719ffb13d2f448d066fd791ed2d7b2693e696ee2ad733f94d7d0d1eb79d00c"
+  },
+  {
+    "path": "tests/test_geometry_certification.py",
+    "sha256": "77b3dd8164dd7ce5b220c4be7f35a26d25d555db801f2f663d4283dc982d6889"
+  },
+  {
+    "path": "tests/test_geometry_fail_closed.py",
+    "sha256": "4c5cfcadbd25bf911a9467501c026bb1b3c8de6f22f4803c693659fd19ea3011"
+  },
+  {
+    "path": "tests/test_geometry_preflight.py",
+    "sha256": "139c5294507db74fe562a66343a288017f87e22ada125f4e2355e159c49986d0"
+  },
+  {
+    "path": "tests/test_geometry_remediation.py",
+    "sha256": "3536ca13bcabbbd6756e562a3528c1f57998fc46f934bfde50d1bfd27bc40ccb"
+  },
+  {
+    "path": "tests/test_geometry_twins_readback.py",
+    "sha256": "571c8ca8fab0a58ec0b1eae62a324c8c9db5895766b80b1c27329ca033924f8a"
+  },
+  {
+    "path": "tests/test_hybrid_pipeline.py",
+    "sha256": "d55b92a43560c61844ead7a2591de9e80851f05ed4d56e37ad97c11618094602"
+  },
+  {
+    "path": "tests/test_hybrid_workbook.py",
+    "sha256": "af6a0d3dce56f3ef78f82e4b28940e7fe7d183b10da51e3e8cb968ebad205ed8"
+  },
+  {
+    "path": "tests/test_independent_certification.py",
+    "sha256": "f9bf5424892fafa72ba3349fb686966f2d151feb4e20bea938d40fc4f7678e76"
+  },
+  {
+    "path": "tests/test_machline_geometry.py",
+    "sha256": "2d096b395a7f167c8efa54de5b31a9feca6c2161a206b4233a7ab1e324e71742"
+  },
+  {
+    "path": "tests/test_machline_postprocess.py",
+    "sha256": "e5c7ec02b978639bfd6f4f6ee2f88457eb3ebe337590aeeed2ce30b5607fcdfc"
+  },
+  {
+    "path": "tests/test_pressure_export.py",
+    "sha256": "260ef54ce9c43fc70a655b25e366479e8bd146eb1147a3ad04029bcf694ab235"
+  },
+  {
+    "path": "tests/test_repairmach_certified_machline.py",
+    "sha256": "292b3c01f72e92a1e510bfeb4e0e73ccf3782a6f29d9bed77c69402b462b9961"
+  },
+  {
+    "path": "tests/test_tri_mesh.py",
+    "sha256": "13cd2032bbee75f67349bd2a81f450f9c2e4cb26307308066ffce2d66dd6f463"
+  },
+  {
+    "path": "tests/test_validation_metrics.py",
+    "sha256": "5fb4de9f354cce29e96507c0ffb7a27459bbaffc8258daa0a87296c7f181d2d7"
+  },
+  {
+    "path": "tests/test_vspaero_implicit_wake.py",
+    "sha256": "20ca24286854efe580f1d6c2c0b8771384c332727adb2a7b41c6a65e6a6cbc00"
+  },
+  {
+    "path": "tests/test_vspaero_native_guard.py",
+    "sha256": "1a957e1e2f66df792440395d621a168b303cfaac1fdd968b57e10475a1915a0f"
+  },
+  {
+    "path": "tests/test_vspaero_recovery_stages.py",
+    "sha256": "9bae5ea864328949f78b01ae1819ae1b2aa9660948989bdc92f882a2ea5e8641"
+  },
+  {
+    "path": "tests/test_vspaero_runner.py",
+    "sha256": "37f32d70b7b480f6bcabd795925b0f7a410310ec332c42b33c47aa9679acafd8"
+  },
+  {
+    "path": "tests/test_vspaero_wake_controls.py",
+    "sha256": "9148e679574fff51d7bbf0fe9f7f99a4625e3ff9a7709d295cdd746494bba559"
+  },
+  {
+    "path": "tests/test_vspgeom_integrity.py",
+    "sha256": "f7ead28d274ad9a1c983087e1075bedb05431607cba1e2642d843350a772345c"
+  },
+  {
+    "path": "tests/test_zero_mach_mapping.py",
+    "sha256": "4e444ee53558d2b36a446116cc50ef003c259e09899ad97cfcb2e8644703362a"
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "secret_findings": [],
+  "installed_checkout_differences": [
+    {
+      "path": "app/openvsp_runner.py",
+      "installed_sha256": "73c63ad4ac42580f665154085e2dcecd594898c6c9f304791858dca1d3276af7",
+      "checkout_sha256": "89de0ff0218904c0a33d5368784fb2614b5448e67bbdc3c4832fd844eafcd90b"
+    },
+    {
+      "path": "config/repairmach_settings.json",
+      "installed_sha256": "aa2f0bfe40d54ef7c680c1c42069e72e3dbaef21e112e64a3c4e499e6a221222",
+      "checkout_sha256": "2da52fc1bc1366ea967237e70cdd889d8ad17a59ceb932fad8967f557ba38841"
+    }
+  ],
+  "selected_roots": 25,
+  "selected_files": 44671,
+  "selected_bytes": 8021404218,
+  "excluded": "Git metadata, dependency caches, compiled object caches, Office/CAD lock files; upstream source downloads and unrelated temporary folders not selected"
+}

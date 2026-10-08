@@ -1,0 +1,184 @@
+{
+  "status": "PREPARED_VERIFIED_NOT_PUBLISHED",
+  "totals": {
+    "sets": 32,
+    "source_file_entries": 44807,
+    "source_bytes": 8040049926,
+    "archive_bytes": 2246268062,
+    "parts": 49
+  },
+  "archives": [
+    {
+      "name": "installed",
+      "parts": 4,
+      "verified": true
+    },
+    {
+      "name": "aircraft_models_drawings",
+      "parts": 4,
+      "verified": true
+    },
+    {
+      "name": "YFQ44_calculations",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "YFQ44_report",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_acceptance",
+      "parts": 4,
+      "verified": true
+    },
+    {
+      "name": "workspace_diagnostics",
+      "parts": 6,
+      "verified": true
+    },
+    {
+      "name": "workspace_outputs",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_daytime_lift_2026-08-28",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_mig25rb_refinement_2026-09-01",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_overnight_m14_m16_2026-08-31",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_overnight_mig25rb_2026-08-31",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_overnight_refinement_2026-08-27",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_overnight_sweep",
+      "parts": 4,
+      "verified": true
+    },
+    {
+      "name": "workspace_q20c",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_q20go",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_q20p",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_q28",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_repeat_mig25rb_2026-09-01",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_short_hybrid_sweep",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_YFQ_44A_blank",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_generated_inputs",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_RepairMach_9_Local",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_RepairMach_Portable_Candidate",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_runs",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_bundles",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_preflight",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_postprocessor_check",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_postprocessor_routes",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_postprocessor_routes_v2",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_variants",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "MQ20_backend_experiment_source_3510",
+      "parts": 1,
+      "verified": true
+    },
+    {
+      "name": "workspace_root_calculation_files",
+      "parts": 1,
+      "verified": true
+    }
+  ],
+  "readable_library_files": 87,
+  "original_source_metadata_unchanged": true,
+  "restoration_smoke": {
+    "exit_code": 0,
+    "stdout": "Verified and restored 8 files to C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\publication_2026-10-08\\restoration_smoke"
+  },
+  "program_tests": {
+    "count": 312,
+    "status": "OK"
+  },
+  "publication_block": "Automatic approval review requires explicit confirmation to publish the full snapshot to the public repository",
+  "target_repository": "https://github.com/danilalapin942-glitch/RepairMach-Portable"
+}

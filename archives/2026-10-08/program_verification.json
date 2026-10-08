@@ -1,0 +1,11 @@
+{
+  "snapshot_date": "2026-10-08",
+  "command": "python -m unittest discover -s tests -v",
+  "tests_run": 312,
+  "test_duration_seconds": 18.487,
+  "exit_code": 0,
+  "status": "OK",
+  "scope": "Existing software regression tests on the prepared publication worktree",
+  "new_aerodynamic_runs": 0,
+  "production_installation_modified": false
+}
