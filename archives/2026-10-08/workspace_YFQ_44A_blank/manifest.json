@@ -1,0 +1,62 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "workspace_YFQ_44A_blank",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\YFQ_44A_blank",
+  "source_files": [
+    {
+      "path": ".vsptime",
+      "bytes": 10,
+      "mtime_ns": 1789158406734990000,
+      "sha256": "86f23476b6143a80b4d04df9152a73e6f587920d9e419f4b872c6319e70e72cd"
+    },
+    {
+      "path": "create_blank_yfq44a.vspscript",
+      "bytes": 369,
+      "mtime_ns": 1789157700866596400,
+      "sha256": "291971c56dd4fe72dd45f7a7539f0b936c6ae87149498d03863da46decd03c5d"
+    },
+    {
+      "path": "validate_blank_yfq44a.vspscript",
+      "bytes": 417,
+      "mtime_ns": 1789157756456453500,
+      "sha256": "a28a539fbb13d7e6c5248e5c1048c30ed9ac06f6d870a712b3dd16d44970a655"
+    },
+    {
+      "path": "YFQ-44.jpg",
+      "bytes": 484842,
+      "mtime_ns": 1789158541137658700,
+      "sha256": "c89dab224ed42df57e17616bce9f0d12a95250171ae847affe3ceabd03468234"
+    },
+    {
+      "path": "YFQ-44.png",
+      "bytes": 58199,
+      "mtime_ns": 1789158586767902300,
+      "sha256": "f33e71adf25a8ac3e0f8aaed4021f27b4d7f11452d951a3c57672334dcb3e16b"
+    },
+    {
+      "path": "YFQ_44.vsp3",
+      "bytes": 393066,
+      "mtime_ns": 1789253642813892500,
+      "sha256": "b95853d609fa50900c6067f343eddf8b56b14232510177083ff31946e27c3032"
+    },
+    {
+      "path": "YFQ_44A_MASTER_blank.vsp3",
+      "bytes": 393066,
+      "mtime_ns": 1789253080849088600,
+      "sha256": "b95853d609fa50900c6067f343eddf8b56b14232510177083ff31946e27c3032"
+    }
+  ],
+  "source_bytes": 1329969,
+  "archive_bytes": 462418,
+  "archive_sha256": "ca2c3053d06665764c5ac54a70c43f8bd485f4400c1da6c72afef37814dd565e",
+  "parts": [
+    {
+      "file": "workspace_YFQ_44A_blank.zip",
+      "bytes": 462418,
+      "sha256": "ca2c3053d06665764c5ac54a70c43f8bd485f4400c1da6c72afef37814dd565e"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
