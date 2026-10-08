@@ -1,0 +1,68 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "workspace_generated_inputs",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\generated_inputs",
+  "source_files": [
+    {
+      "path": "MIG_full_13k_M15_ap2_FQRUP_kutta_no_wake_panels.json",
+      "bytes": 1227,
+      "mtime_ns": 1787691211604207700,
+      "sha256": "be0dfba783d82737f3747d17622ff066ce6d1b44bc27058f0ab756a1e13ece88"
+    },
+    {
+      "path": "MIG_full_13k_repaired_M15_ap2_FQRUP_kutta_no_wake_panels.json",
+      "bytes": 1263,
+      "mtime_ns": 1787691296946534400,
+      "sha256": "256a8eeb37a2c14e0250ce153521652a73ff6a894e67ddce7fde855046a722ae"
+    },
+    {
+      "path": "MIG_full_13k_repaired_M15_ap2_FQRUP_no_wake.json",
+      "bytes": 1159,
+      "mtime_ns": 1787692472772816300,
+      "sha256": "e287ac92117f5418f7845f079adcaa229cf09c2bd12b14ec2aca254e3251f19a"
+    },
+    {
+      "path": "MIG_full_21k_repaired_M15_ap2_FQRUP_kutta_no_wake_panels.json",
+      "bytes": 1263,
+      "mtime_ns": 1787691725286383500,
+      "sha256": "7a15c6ab578b0fd0f19c47db03aa4a3aa6d0a7455b54acd5de2ec05073390b01"
+    },
+    {
+      "path": "MIG_full_21k_repaired_M15_ap2_FQRUP_no_wake.json",
+      "bytes": 1159,
+      "mtime_ns": 1787692473219665600,
+      "sha256": "bfb2edc7b8f08bf0d594f639b17bfd6488c40d151e57f881abb129c0415a0f52"
+    },
+    {
+      "path": "MIG_full_7k_M15_am2_FQRUP_kutta_no_wake_panels.json",
+      "bytes": 1224,
+      "mtime_ns": 1787690549583235800,
+      "sha256": "d92b62628a506eabe22371a533436a8acfc2ba4f0a346a2d2aa713ed078c166f"
+    },
+    {
+      "path": "MIG_full_7k_M15_ap2_FQRUP_kutta_no_wake_panels.json",
+      "bytes": 1223,
+      "mtime_ns": 1787690550056587300,
+      "sha256": "16ca4e8c977a879993fc7d39d5aad079f325fa43d8de94552ade85e3c2cf2cf8"
+    },
+    {
+      "path": "MIG_full_7k_M15_ap2_FQRUP_no_wake.json",
+      "bytes": 1119,
+      "mtime_ns": 1787692472326021300,
+      "sha256": "7264add04362f16653dcd1a3598fb61ce0d0ae33213e60571613897cb6259060"
+    }
+  ],
+  "source_bytes": 9637,
+  "archive_bytes": 5565,
+  "archive_sha256": "cdd6a4f57471a5b0b1accdb369a5ee9158e1b5c60699a5252cc025ad2ff6aaaa",
+  "parts": [
+    {
+      "file": "workspace_generated_inputs.zip",
+      "bytes": 5565,
+      "sha256": "cdd6a4f57471a5b0b1accdb369a5ee9158e1b5c60699a5252cc025ad2ff6aaaa"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
