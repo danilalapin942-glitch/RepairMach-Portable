@@ -1,0 +1,19 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "MQ20_backend_experiment_source_3510",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\q20build\\source_3510",
+  "source_files": [],
+  "source_bytes": 0,
+  "archive_bytes": 22,
+  "archive_sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85",
+  "parts": [
+    {
+      "file": "MQ20_backend_experiment_source_3510.zip",
+      "bytes": 22,
+      "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
