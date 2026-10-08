@@ -1,0 +1,50 @@
+{
+  "schema": "repairmach.project-archive/1.0",
+  "snapshot_date": "2026-10-08",
+  "name": "MQ20_backend_experiment_postprocessor_check",
+  "source_root": "C:\\Users\\admin\\.codex\\.chatgpt-projects\\g-p-6910508be2a081919b9cb5881a96c92b\\q20build\\postprocessor_check",
+  "source_files": [
+    {
+      "path": "model.adb",
+      "bytes": 1602936,
+      "mtime_ns": 1790590330974561700,
+      "sha256": "56ffa716e100bdc7db4877caf9196711377735e7a3d4e62e383341b7d9f624cf"
+    },
+    {
+      "path": "model.adb.cases",
+      "bytes": 239,
+      "mtime_ns": 1790590330974561700,
+      "sha256": "ca613a29470b699f4bdcb12a846069a43e03f5801d8bfb3454725386e0db451f"
+    },
+    {
+      "path": "model.cuts",
+      "bytes": 15,
+      "mtime_ns": 1790590331201394400,
+      "sha256": "d56341ce2dd170a0d4d2e466fa2c16d409f82167b66bd4bddaf48bf5bd0052be"
+    },
+    {
+      "path": "model.slc",
+      "bytes": 23393,
+      "mtime_ns": 1790590671683667200,
+      "sha256": "6a4c0d27900907140d6b87c3c031e8c6f68c406cf07cd733554ad42f0a869eb3"
+    },
+    {
+      "path": "postprocessor.log",
+      "bytes": 1328,
+      "mtime_ns": 1790590671685660300,
+      "sha256": "4752f0b3f159f230dd32a69c4d71615249db4084900182c0633551f5de05077f"
+    }
+  ],
+  "source_bytes": 1627911,
+  "archive_bytes": 580166,
+  "archive_sha256": "bbaf137e2087e26813f483dc16e1c00eb8a751eab4e2e60a6f59498c7f9e649b",
+  "parts": [
+    {
+      "file": "MQ20_backend_experiment_postprocessor_check.zip",
+      "bytes": 580166,
+      "sha256": "bbaf137e2087e26813f483dc16e1c00eb8a751eab4e2e60a6f59498c7f9e649b"
+    }
+  ],
+  "verification": "Every archived file SHA-256 matches the inspected source; ZIP CRC verified while reading",
+  "result_semantics": "Historical statuses are preserved; inclusion does not qualify a model or result"
+}
