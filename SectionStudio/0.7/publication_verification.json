@@ -1,0 +1,127 @@
+{
+  "state": "VERIFIED_FOR_PUBLICATION",
+  "version": "0.7.0",
+  "client_date": "2026-10-09 Europe/Moscow",
+  "archive": "Fuselage_Section_Studio_v07.zip",
+  "archive_bytes": 1093992,
+  "archive_sha256": "aaf97608806bf29091b084873bfaf5283497e97c773c3a36f8104a9c25c7008b",
+  "files": [
+    {
+      "path": "Aircraft_Section_Library_v1.json",
+      "bytes": 262976,
+      "sha256": "c224fb2822bc3975f1b72be202513924864257837009f1cd04dde5c67606a3e0"
+    },
+    {
+      "path": "Example_edited.vsp3",
+      "bytes": 329395,
+      "sha256": "f175c1a4bf6d44855dd22fb5b44fe37839ee27e1256d93889518b5cb28d55776"
+    },
+    {
+      "path": "Example_input.vsp3",
+      "bytes": 271151,
+      "sha256": "b2bb2d5e1641a4e30a572d9be91db3c0b3de9459c98729d4ab3461415fb33af2"
+    },
+    {
+      "path": "Example_project.json",
+      "bytes": 318021,
+      "sha256": "269776acb552ca639502012839b88455a7744e6d4d0ed105cbf44a54080ef164"
+    },
+    {
+      "path": "Example_risks.json",
+      "bytes": 28431,
+      "sha256": "04311e2a665df5fbd000ea326887e07b7236fa1b44f8fca31dff81166926ad31"
+    },
+    {
+      "path": "Prepared_models/OKRUG_prepared.vsp3",
+      "bytes": 695825,
+      "sha256": "8e10c3b29abd13073152ec3fbace1763b0cea4a201350c91053ee5ae4c1ed9ca"
+    },
+    {
+      "path": "README.txt",
+      "bytes": 25234,
+      "sha256": "63c4d9d96dea0eca9a4419c47d08983842c8d646124ab1162e68e14fc34f213e"
+    },
+    {
+      "path": "Run_OpenVSP.bat",
+      "bytes": 1640,
+      "sha256": "fc235826024a037715a8f6e96bfd3e9cc5933d4e629111f16e5e70039c1a0f45"
+    },
+    {
+      "path": "Section_Library_preview.png",
+      "bytes": 285187,
+      "sha256": "0c041bcedacfa57283ba3e8eeb865cf8435ff0f23292e21f356ee282c5cc6e51"
+    },
+    {
+      "path": "Section_Studio.html",
+      "bytes": 405639,
+      "sha256": "0b67b072949118e61d6ec9c592831dc721c9413d0fa53e17647fb3352f507303"
+    },
+    {
+      "path": "Section_Studio_preview.png",
+      "bytes": 348295,
+      "sha256": "fb2a2b559dceb4ed7f0cecd40964a4a89887ba8f17709161e6514da1cd024299"
+    },
+    {
+      "path": "Validation.json",
+      "bytes": 7419,
+      "sha256": "b95d1fd1dbe0b08de202bcfe0344eabb6e9861b029e033e49987f8ccfb07d2c1"
+    },
+    {
+      "path": "source/app.js",
+      "bytes": 51159,
+      "sha256": "e5c255c80fabf26e4d77de2ddbfa29f7ec3833430477d9bab8e14df6839019aa"
+    },
+    {
+      "path": "source/audit.js",
+      "bytes": 11894,
+      "sha256": "1f0d2afe9d4c63e7651a729ce9ace1c0720e8ed77207a0c979fb86670e8f6126"
+    },
+    {
+      "path": "source/build.py",
+      "bytes": 624,
+      "sha256": "00814279d53fe32223eaf751040de99f40ba5f4bc49cfca714d74250999d1876"
+    },
+    {
+      "path": "source/core.js",
+      "bytes": 22507,
+      "sha256": "8d0be5dfb482141d5cd694df5a1b0cc9950bb2675db34962bb6060faebae576b"
+    },
+    {
+      "path": "source/sections.json",
+      "bytes": 264136,
+      "sha256": "bb7ca9d365454722e73a9e5299f7e937809ea19ac05afb5232cc1c1aa369564d"
+    },
+    {
+      "path": "source/template.html",
+      "bytes": 28932,
+      "sha256": "2424a0b8319512f4ddee04ff469b0f5e487ef5cff7cdba721f2952c1aad9d41b"
+    },
+    {
+      "path": "source/templates.js",
+      "bytes": 2571,
+      "sha256": "85deb154d4ff9cb2d8aa32a593ae4e554dc69cd09670d251a7f921694d83a0cd"
+    },
+    {
+      "path": "source/vsp.js",
+      "bytes": 24501,
+      "sha256": "bb7011d56530a5ace80fdfc44bb67abfb9b136754d7c380d8564a5d5346ca946"
+    }
+  ],
+  "archive_CRC_and_extracted_bytes_match": true,
+  "HTML_matches_source_build": true,
+  "JSON_and_VSP3_XML_parse": true,
+  "secret_scan_findings": [],
+  "outbound_script_calls": [],
+  "independent_checks": {
+    "state": "PASS",
+    "checks": 472,
+    "templates": 75,
+    "models": 7,
+    "inlineScripts": 5,
+    "browser_UI_rerun": false,
+    "OpenVSP_rerun": false,
+    "aerodynamic_solver_run": false
+  },
+  "supplied_Validation_json": "Author-provided historical checks retained unchanged; not independently rerun here",
+  "qualification": "software release publication only; no aerodynamic or CAD acceptance"
+}

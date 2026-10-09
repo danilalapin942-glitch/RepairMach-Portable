@@ -1,0 +1,12 @@
+{
+  "program": "Section Studio",
+  "version": "0.7.0",
+  "release_directory": "0.7",
+  "archive": "0.7/Fuselage_Section_Studio_v07.zip",
+  "archive_sha256": "aaf97608806bf29091b084873bfaf5283497e97c773c3a36f8104a9c25c7008b",
+  "publication_date": "2026-10-09",
+  "independent_programmatic_checks": 472,
+  "browser_UI_rerun_at_publication": false,
+  "OpenVSP_rerun_at_publication": false,
+  "aerodynamic_solver_run": false
+}

@@ -10,3 +10,5 @@ aircraft_library/**/*.json text eol=lf diff
 # Verification receipts have raw-byte SHA256 in the additive update manifest.
 archives/2026-10-08/visualization_update/evidence/** -text -diff
 archives/2026-10-08/visualization_update/update_manifest.json -text -diff
+# Preserve each supplied Section Studio release and its file hashes exactly.
+SectionStudio/0.7/** -text
